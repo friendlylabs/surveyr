@@ -1,0 +1,13 @@
+.env
+.env.backup
+.env.production
+build
+dist
+compiled
+.idea
+hot
+/vendor/
+node_modules
+npm-debug.log
+yarn-error.log
+/public/storage
