@@ -1,0 +1,352 @@
+ {
+    "title": "STUDENT FEEDBACK ON CLASSROOM TEACHING",
+    "logoPosition": "right",
+    "completedHtml": "<div style='max-width: 1000px; width: 100%; padding 32px; margin: 0 auto;'> <h3 style='text-align: justify'>Thank You!</h3>      <p style='text-align: justify'>Dear {student-name},</p>      <p style='text-align: justify'>Thank you for taking the time to provide your feedback on our classroom teaching. Your insights and opinions are invaluable to us and play a crucial role in improving the quality of education.</p>      <p style='text-align: justify'>We greatly appreciate your honest and thoughtful responses. Your feedback helps us understand what we are doing well and where we can make improvements to enhance your learning experience.</p>      <p style='text-align: justify'>Rest assured, your responses will be reviewed carefully and used to inform our teaching practices, curriculum development, and overall classroom environment.</p>      <p style='text-align: justify'>If you have any further comments or suggestions, please feel free to <a href='https://www.google.com/'>reach out to us</a>. We are always here to listen and support you.</p>      <p style='text-align: justify'>Thank you once again for your participation and contribution.</p>      <p style='text-align: justify'>Best regards,</p>      <p style='text-align: justify'>[Your School/Institution Name]</p> </div>",
+    "pages": [
+     {
+      "name": "intro",
+      "elements": [
+       {
+        "type": "dropdown",
+        "name": "college",
+        "title": "College: ",
+        "hideNumber": true,
+        "isRequired": true,
+        "choices": [
+         "Physiotherapy College",
+         "Pharmacy College",
+         "Nursing College",
+         "Dental College",
+         "Medical College",
+         "Yoga College",
+         "Polytechnic College",
+         "Engineering College",
+         "Language College",
+         "Management College",
+         "Law College",
+         "Education College",
+         "Mass Communication College",
+         "Hotel Management College",
+         "Fine Arts College",
+         "Science College",
+         "Arts & Social Science College",
+         "Home Science College",
+         "Library Science College",
+         "Buddhist College",
+         "Department of Liberal Arts and Humanities"
+        ],
+        "placeholder": "Select College"
+       },
+       {
+        "type": "text",
+        "name": "program",
+        "startWithNewLine": false,
+        "title": "Program & Specialization:",
+        "hideNumber": true,
+        "isRequired": true
+       },
+       {
+        "type": "text",
+        "name": "student-name",
+        "title": "Name of the Student:",
+        "hideNumber": true,
+        "isRequired": true
+       },
+       {
+        "type": "dropdown",
+        "name": "teacher-name",
+        "startWithNewLine": false,
+        "title": "Teacher Name:",
+        "hideNumber": true,
+        "isRequired": true,
+        "choices": [
+         "Oliver Bennett",
+         "Amelia Clarke",
+         "Thomas Hughes",
+         "Emily Morgan",
+         "George Turner",
+         "Charlotte Green",
+         "James Phillips",
+         "Sophie Ellis"
+        ]
+       },
+       {
+        "type": "multipletext",
+        "name": "course",
+        "title": "Course/Subject Taken:",
+        "hideNumber": true,
+        "isRequired": true,
+        "items": [
+         {
+          "name": "course-name",
+          "title": "Couse/Subject:"
+         },
+         {
+          "name": "date",
+          "inputType": "date",
+          "title": "Completion date:"
+         }
+        ],
+        "itemTitleWidth": "130"
+       },
+       {
+        "type": "radiogroup",
+        "name": "semester",
+        "startWithNewLine": false,
+        "title": "Semester:",
+        "hideNumber": true,
+        "isRequired": true,
+        "choices": [
+         "Even",
+         "Odd",
+         "Yearly"
+        ],
+        "colCount": 3
+       }
+      ]
+     },
+     {
+      "name": "rating-questions",
+      "elements": [
+       {
+        "type": "rating",
+        "name": "well-prepared",
+        "title": "The teacher is well-prepared for class and have good command over subject.",
+        "rateType": "smileys",
+        "autoGenerate": false,
+        "rateCount": 4,
+        "rateValues": [
+         "Need Improvement ",
+         "Satisfactory",
+         "Good ",
+         "Excellent"
+        ],
+        "minRateDescription": "Need Improvement ",
+        "maxRateDescription": "Excellent"
+       },
+       {
+        "type": "rating",
+        "name": "syllabus",
+        "title": "The teacher covers the entire syllabus in time.",
+        "rateType": "smileys",
+        "autoGenerate": false,
+        "rateCount": 4,
+        "rateValues": [
+         "Need Improvement ",
+         "Satisfactory",
+         "Good ",
+         "Excellent"
+        ],
+        "minRateDescription": "Need Improvement ",
+        "maxRateDescription": "Excellent"
+       },
+       {
+        "type": "rating",
+        "name": "delivery",
+        "title": "The teacher deliver the contents efficiently and makes the subject interesting.",
+        "rateType": "smileys",
+        "autoGenerate": false,
+        "rateCount": 4,
+        "rateValues": [
+         "Need Improvement ",
+         "Satisfactory",
+         "Good ",
+         "Excellent"
+        ],
+        "minRateDescription": "Need Improvement ",
+        "maxRateDescription": "Excellent"
+       },
+       {
+        "type": "rating",
+        "name": "guidance",
+        "title": "The teacher provides the guidance in / outside the class.",
+        "rateType": "smileys",
+        "autoGenerate": false,
+        "rateCount": 4,
+        "rateValues": [
+         "Need Improvement ",
+         "Satisfactory",
+         "Good ",
+         "Excellent"
+        ],
+        "minRateDescription": "Need Improvement ",
+        "maxRateDescription": "Excellent"
+       },
+       {
+        "type": "rating",
+        "name": "encouragement",
+        "title": "The teacher encourages students to participate in class discussion, ask question, participate to place their opinion.",
+        "rateType": "smileys",
+        "autoGenerate": false,
+        "rateCount": 4,
+        "rateValues": [
+         "Need Improvement ",
+         "Satisfactory",
+         "Good ",
+         "Excellent"
+        ],
+        "minRateDescription": "Need Improvement ",
+        "maxRateDescription": "Excellent"
+       },
+       {
+        "type": "rating",
+        "name": "modern-tools",
+        "title": "The teacher uses modern teaching tools, content notes, hand-outs, suggestion of references etc. (offline/online)",
+        "rateType": "smileys",
+        "autoGenerate": false,
+        "rateCount": 4,
+        "rateValues": [
+         "Need Improvement ",
+         "Satisfactory",
+         "Good ",
+         "Excellent"
+        ],
+        "minRateDescription": "Need Improvement ",
+        "maxRateDescription": "Excellent"
+       },
+       {
+        "type": "rating",
+        "name": "weak",
+        "title": "The teacher focuses the students who are academically weak or poor in performance.",
+        "rateType": "smileys",
+        "autoGenerate": false,
+        "rateCount": 4,
+        "rateValues": [
+         "Need Improvement ",
+         "Satisfactory",
+         "Good ",
+         "Excellent"
+        ],
+        "minRateDescription": "Need Improvement ",
+        "maxRateDescription": "Excellent"
+       },
+       {
+        "type": "rating",
+        "name": "counsel",
+        "title": "Teacher counsel the students in their physical, emotional, or academic difficulties.",
+        "rateType": "smileys",
+        "autoGenerate": false,
+        "rateCount": 4,
+        "rateValues": [
+         "Need Improvement ",
+         "Satisfactory",
+         "Good ",
+         "Excellent"
+        ],
+        "minRateDescription": "Need Improvement ",
+        "maxRateDescription": "Excellent"
+       },
+       {
+        "type": "rating",
+        "name": "non-traditional-methods",
+        "title": "The teacher assess students knowledge using non-traditional methods such as quizzes, seminars, assignments, and classroom presentations/participation.",
+        "rateType": "smileys",
+        "autoGenerate": false,
+        "rateCount": 4,
+        "rateValues": [
+         "Need Improvement ",
+         "Satisfactory",
+         "Good ",
+         "Excellent"
+        ],
+        "minRateDescription": "Need Improvement ",
+        "maxRateDescription": "Excellent"
+       },
+       {
+        "type": "rating",
+        "name": "class-time",
+        "title": "The teacher schedules class time and tasks to encourage students to solve problems and inspires to think critically.",
+        "rateType": "smileys",
+        "autoGenerate": false,
+        "rateCount": 4,
+        "rateValues": [
+         "Need Improvement ",
+         "Satisfactory",
+         "Good ",
+         "Excellent"
+        ],
+        "minRateDescription": "Need Improvement ",
+        "maxRateDescription": "Excellent"
+       },
+       {
+        "type": "rating",
+        "name": "study-material",
+        "title": "Teacher provides study material reference to contents like textbooks books, e-resources, e-journals, reference books, etc. on time.",
+        "rateType": "smileys",
+        "autoGenerate": false,
+        "rateCount": 4,
+        "rateValues": [
+         "Need Improvement ",
+         "Satisfactory",
+         "Good ",
+         "Excellent"
+        ],
+        "minRateDescription": "Need Improvement ",
+        "maxRateDescription": "Excellent"
+       },
+       {
+        "type": "rating",
+        "name": "experiment",
+        "title": "The teacher helps students during the conduction of experiment through set of instructions or demonstrations.",
+        "rateType": "smileys",
+        "autoGenerate": false,
+        "rateCount": 4,
+        "rateValues": [
+         "Need Improvement ",
+         "Satisfactory",
+         "Good ",
+         "Excellent"
+        ],
+        "minRateDescription": "Need Improvement ",
+        "maxRateDescription": "Excellent"
+       },
+       {
+        "type": "rating",
+        "name": "disciplined",
+        "title": "The classroom environment is well disciplined by the teacher. ",
+        "rateType": "smileys",
+        "autoGenerate": false,
+        "rateCount": 4,
+        "rateValues": [
+         "Need Improvement ",
+         "Satisfactory",
+         "Good ",
+         "Excellent"
+        ],
+        "minRateDescription": "Need Improvement ",
+        "maxRateDescription": "Excellent"
+       },
+       {
+        "type": "rating",
+        "name": "evaluation",
+        "title": "The evaluation process of teacher is well uniform and unbiased.",
+        "rateType": "smileys",
+        "autoGenerate": false,
+        "rateCount": 4,
+        "rateValues": [
+         "Need Improvement ",
+         "Satisfactory",
+         "Good ",
+         "Excellent"
+        ],
+        "minRateDescription": "Need Improvement ",
+        "maxRateDescription": "Excellent"
+       },
+       {
+        "type": "comment",
+        "name": "comments",
+        "title": "Additional comments or suggestions",
+        "hideNumber": true,
+        "rows": 3,
+        "autoGrow": true
+       }
+      ]
+     }
+    ],
+    "showQuestionNumbers": "onPage",
+    "completeText": "Submit",
+    "firstPageIsStarted": true,
+    "widthMode": "static",
+    "width": "1200",
+    "headerView": "advanced"
+   }

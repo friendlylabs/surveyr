@@ -1,0 +1,312 @@
+ {
+    "title": "HIPAA Release Form",
+    "description": "Please complete all sections of this HIPAA release form. If any sections are left blank, this form will be invalid and it will not be possible for your health information to be shared as requested. ",
+    "logoPosition": "right",
+    "pages": [
+     {
+      "name": "section1",
+      "elements": [
+       {
+        "type": "html",
+        "name": "question3",
+        "minWidth": "100px",
+        "maxWidth": "10%",
+        "html": "<span style='font-size: large'>I</span>"
+       },
+       {
+        "type": "text",
+        "name": "personName",
+        "maxWidth": "500px",
+        "startWithNewLine": false,
+        "title": "I",
+        "isRequired": true
+       },
+       {
+        "type": "html",
+        "name": "question4",
+        "minWidth": "350px",
+        "maxWidth": "350px",
+        "startWithNewLine": false,
+        "html": "<span style='font-size: medium'> give my permission for</span>"
+       },
+       {
+        "type": "text",
+        "name": "authorizedEntity",
+        "maxWidth": "500px",
+        "title": "give my permission for"
+       },
+       {
+        "type": "html",
+        "name": "question1",
+        "startWithNewLine": false,
+        "titleLocation": "hidden",
+        "html": "<span style='font-size: medium'> to share the information listed in</span>"
+       },
+       {
+        "type": "html",
+        "name": "question5",
+        "titleLocation": "hidden",
+        "html": "<span style='font-size: medium'>Section II of this document with the person(s) or organization(s) I have specified in Section IV of this document.</span>"
+       },
+       {
+        "type": "checkbox",
+        "name": "formOfDisclosure",
+        "title": "Form of Disclosure",
+        "titleLocation": "top",
+        "choices": [
+         {
+          "value": "electronicCopy ",
+          "text": " Electronic copy or access via a web-based portal "
+         },
+         {
+          "value": "hardCopy ",
+          "text": " Hard copy "
+         }
+        ]
+       }
+      ],
+      "questionTitleLocation": "hidden",
+      "title": "Section I"
+     },
+     {
+      "name": "section2",
+      "elements": [
+       {
+        "type": "html",
+        "name": "question6",
+        "html": "<span style='font-size: medium'>I would like to give the above healthcare organization permission to:</span></br> <span style='font-size: medium'>Tick as appropriate</span>"
+       },
+       {
+        "type": "checkbox",
+        "name": "discloseAllInformation",
+        "resetValueIf": "{disclosePartialInformation} notempty",
+        "choices": [
+         {
+          "value": "discloseAllOption",
+          "text": "Disclose my complete health record including, but not limited to, diagnoses, lab test results, treatment, and billing records for all conditions."
+         }
+        ]
+       },
+       {
+        "type": "html",
+        "name": "question7",
+        "html": "<span style='font-size: medium'>or</span>"
+       },
+       {
+        "type": "checkbox",
+        "name": "disclosePartialInformation",
+        "title": "Disclose my complete health record except for the following information",
+        "titleLocation": "top",
+        "resetValueIf": "{discloseAllInformation} notempty",
+        "choices": [
+         {
+          "value": "mentalHealth",
+          "text": "Mental health records"
+         },
+         {
+          "value": "communicableDeseases",
+          "text": "Communicable diseases including, but not limited to, HIV and AIDS"
+         },
+         {
+          "value": "alcoholDrugAbuse",
+          "text": "Alcohol/drug abuse treatment records"
+         },
+         {
+          "value": "geneticInfo",
+          "text": "Genetic information"
+         }
+        ],
+        "showOtherItem": true,
+        "otherText": "Other (specify)"
+       }
+      ],
+      "questionTitleLocation": "hidden",
+      "title": "Section II – Health Information "
+     },
+     {
+      "name": "section3",
+      "elements": [
+       {
+        "type": "comment",
+        "name": "reasonOfDataSharingRequest",
+        "title": "Please detail the reasons why information is being shared. If you are initiating the request for sharing information and do not wish to list the reasons for sharing, write 'at my request'",
+        "rows": 5
+       }
+      ],
+      "title": "Section III – Reason for Disclosure"
+     },
+     {
+      "name": "section4",
+      "elements": [
+       {
+        "type": "paneldynamic",
+        "name": "authorizedParties",
+        "title": "I give authorization for the health information detailed in section II of this document to be shared with the following individual(s) or organization(s)",
+        "description": "I understand that the person(s)/organization(s) listed below may not be covered by state/federal rules governing privacy and security of data and may be permitted to further share the information that is provided to them",
+        "templateElements": [
+         {
+          "type": "multipletext",
+          "name": "authorizedParty",
+          "titleLocation": "hidden",
+          "items": [
+           {
+            "name": "name",
+            "title": "Name"
+           },
+           {
+            "name": "organization",
+            "title": "Organization"
+           },
+           {
+            "name": "address",
+            "title": "Address"
+           }
+          ]
+         }
+        ],
+        "panelCount": 1,
+        "minPanelCount": 1
+       }
+      ],
+      "title": "Section IV – Who Can Receive My Health Information"
+     },
+     {
+      "name": "section5",
+      "elements": [
+       {
+        "type": "dropdown",
+        "name": "authValidityPeriod",
+        "title": "This authorization to share my health information is valid:",
+        "choices": [
+         {
+          "value": "allPeriods",
+          "text": "All past, present, and future periods"
+         },
+         {
+          "value": "untilEvent",
+          "text": "The date of the signature in section VI until the following event"
+         },
+         {
+          "value": "period",
+          "text": "Specified Period: From - To"
+         }
+        ]
+       },
+       {
+        "type": "text",
+        "name": "eventName",
+        "visibleIf": "{authValidityPeriod} = 'untilEvent'",
+        "titleLocation": "hidden",
+        "placeholder": "Enter event name"
+       },
+       {
+        "type": "text",
+        "name": "authValidFrom",
+        "visibleIf": "{authValidityPeriod} = 'period'",
+        "title": "From",
+        "titleLocation": "hidden",
+        "isRequired": true,
+        "maskType": "datetime",
+        "maskSettings": {
+         "pattern": "dd-MM-yyyy"
+        },
+        "placeholder": "from"
+       },
+       {
+        "type": "text",
+        "name": "authValidTo",
+        "visibleIf": "{authValidityPeriod} = 'period'",
+        "startWithNewLine": false,
+        "title": "To",
+        "titleLocation": "hidden",
+        "isRequired": true,
+        "maskType": "datetime",
+        "maskSettings": {
+         "pattern": "dd-MM-yyyy"
+        },
+        "placeholder": "to"
+       },
+       {
+        "type": "multipletext",
+        "name": "revokeAuthParty",
+        "title": "I understand that I am permitted to revoke this authorization to share my health data at any time and can do so by submitting a request in writing to",
+        "titleLocation": "top",
+        "items": [
+         {
+          "name": "name",
+          "title": "Name"
+         },
+         {
+          "name": "organization",
+          "title": "Organization"
+         },
+         {
+          "name": "address",
+          "title": "Address"
+         }
+        ]
+       },
+       {
+        "type": "html",
+        "name": "question2",
+        "html": "<span style='font-size: medium'> <span>I understand that:</span></br> <span>- In the event that my information has already been shared by the time my authorization is revoked, it may be too late to cancel permission to share my health data.</span> </span>- I understand that I do not need to give any further permission for the information detailed in Section II to be shared with the person(s) or organization(s) listed in Section IV.</span></br> <span>- I understand that the failure to sign/submit this authorization or the cancellation of this authorization will not prevent me from receiving any treatment or benefits I am entitled to receive, provided this information is not required to determine if I am eligible to receive those treatments or benefits or to pay for the services I receive.</span> </span> "
+       }
+      ],
+      "title": "Section V – Duration of Authorization"
+     },
+     {
+      "name": "section6",
+      "elements": [
+       {
+        "type": "signaturepad",
+        "name": "signature",
+        "title": "Signature"
+       },
+       {
+        "type": "text",
+        "name": "date",
+        "startWithNewLine": false,
+        "title": "Date",
+        "maskType": "datetime",
+        "maskSettings": {
+         "pattern": "dd-MM-yyyy"
+        }
+       },
+       {
+        "type": "text",
+        "name": "userNameConfirmation",
+        "title": "Print your name"
+       },
+       {
+        "type": "panel",
+        "name": "panel1",
+        "elements": [
+         {
+          "type": "text",
+          "name": "question9",
+          "title": "Name of person completing this form",
+          "titleLocation": "left"
+         },
+         {
+          "type": "signaturepad",
+          "name": "question8",
+          "title": "Signature of person completing this form",
+          "titleLocation": "left"
+         },
+         {
+          "type": "comment",
+          "name": "question10",
+          "title": "Describe below how this person has legal authority to sign this form"
+         }
+        ],
+        "title": "If this form is being completed by a person with legal authority to act an individual’s behalf, such as a parent or legal guardian of a minor or health care agent, please complete the following information"
+       }
+      ],
+      "title": "Section VI – Signature"
+     }
+    ],
+    "showQuestionNumbers": "off",
+    "questionErrorLocation": "bottom",
+    "widthMode": "static",
+    "width": "55%"
+   }

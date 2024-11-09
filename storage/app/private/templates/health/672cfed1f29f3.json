@@ -1,0 +1,538 @@
+ {
+    "title": "Pain Assessment Form",
+    "description": "Cognitively Intact ",
+    "logoPosition": "right",
+    "pages": [
+     {
+      "name": "patient-details",
+      "elements": [
+       {
+        "type": "text",
+        "name": "full-name",
+        "title": "Full Name",
+        "titleLocation": "left"
+       },
+       {
+        "type": "text",
+        "name": "id-number",
+        "startWithNewLine": false,
+        "title": "ID #",
+        "titleLocation": "left"
+       },
+       {
+        "type": "text",
+        "name": "health-care-provider",
+        "title": "Health Care Provider",
+        "titleLocation": "left"
+       },
+       {
+        "type": "text",
+        "name": "room-number",
+        "startWithNewLine": false,
+        "title": "Room #",
+        "titleLocation": "left"
+       },
+       {
+        "type": "text",
+        "name": "assessment-date",
+        "title": "Assessment Date",
+        "titleLocation": "left",
+        "inputType": "date"
+       },
+       {
+        "type": "text",
+        "name": "time",
+        "startWithNewLine": false,
+        "title": "Time",
+        "titleLocation": "left",
+        "inputType": "time"
+       }
+      ],
+      "questionTitleWidth": "110px",
+      "questionTitleLocation": "left",
+      "title": "Patient details"
+     },
+     {
+      "name": "pain-assessment",
+      "elements": [
+       {
+        "type": "radiogroup",
+        "name": "pain-control-goal",
+        "title": "Individual’s Pain Control Goal:",
+        "titleLocation": "top",
+        "choices": [
+         "Sleep comfortably",
+         "Comfort at rest",
+         "Comfort with movement",
+         "Total pain control",
+         "Stay alert",
+         "Perform desired activities"
+        ],
+        "showOtherItem": true,
+        "otherText": "Other (please specify)",
+        "colCount": 2
+       },
+       {
+        "type": "rating",
+        "name": "pain-intensity-goal",
+        "title": "Individuals Pain Intensity Goal:",
+        "titleLocation": "top",
+        "rateCount": 10,
+        "rateMax": 10,
+        "minRateDescription": "No pain",
+        "maxRateDescription": "Worst pain imaginable"
+       },
+       {
+        "type": "text",
+        "name": "current-diagnosis",
+        "title": "Current Pain-related Diagnosis(es):",
+        "titleLocation": "top"
+       },
+       {
+        "type": "radiogroup",
+        "name": "assessment-reason",
+        "title": "Reason for Assessment:",
+        "titleLocation": "top",
+        "choices": [
+         "MDS Admission ",
+         "MDS Significant Change ",
+         "MDS Readmission",
+         "MDS Quarterly ",
+         "MDS Annual ",
+         "New Condition ",
+         "Routine Monitoring"
+        ],
+        "colCount": 2
+       },
+       {
+        "type": "radiogroup",
+        "name": "pain-type",
+        "title": "Type of Pain:",
+        "titleLocation": "top",
+        "choices": [
+         "Nociceptive (Joint/bone/soft tissue) ",
+         "Neuropathic ",
+         "Mixed"
+        ],
+        "colCount": 2
+       },
+       {
+        "type": "boolean",
+        "name": "depression",
+        "title": "Depression:",
+        "titleLocation": "top"
+       },
+       {
+        "type": "panel",
+        "name": "depression-panel",
+        "elements": [
+         {
+          "type": "dropdown",
+          "name": "depression-scale",
+          "title": "Scale:",
+          "choices": [
+           "1–5: no depression",
+           "6–10: mild",
+           "11–15: moderate",
+           "16–20: severe"
+          ]
+         },
+         {
+          "type": "dropdown",
+          "name": "depression-score",
+          "startWithNewLine": false,
+          "title": "Score:",
+          "choices": [
+           "0 to 4 points",
+           "5 to 9 points",
+           "10 to 14 points",
+           "15 to 19 points",
+           "20 to 27 points"
+          ]
+         },
+         {
+          "type": "text",
+          "name": "depression-diagnosis-date",
+          "startWithNewLine": false,
+          "title": "Diagnosis date:",
+          "inputType": "date"
+         }
+        ],
+        "visibleIf": "{depression} = true",
+        "questionTitleLocation": "top",
+        "title": "Depression"
+       },
+       {
+        "type": "rating",
+        "name": "rate-severity",
+        "title": "Intensity of Pain",
+        "titleLocation": "top",
+        "description": "Rate the severity of your pain:",
+        "rateCount": 11,
+        "rateMin": 0,
+        "rateMax": 10,
+        "minRateDescription": "No Pain",
+        "maxRateDescription": "Worst Possible Pain"
+       },
+       {
+        "type": "imagepicker",
+        "name": "faces-pain-scale",
+        "title": "Faces pain scale",
+        "titleLocation": "top",
+        "description": "Choose the face that best describes how you are feeling:",
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "No hurt",
+          "imageLink": "https://api.surveyjs.io/private/Surveys/files?name=952dd683-462a-4903-a33b-d35492c36a43"
+         },
+         {
+          "value": "Item 2",
+          "text": "Hurts little bit",
+          "imageLink": "https://api.surveyjs.io/private/Surveys/files?name=f95c1e74-8404-4d95-bf18-66ea0bd437fc"
+         },
+         {
+          "value": "Item 3",
+          "text": "Hurts little more",
+          "imageLink": "https://api.surveyjs.io/private/Surveys/files?name=053e9a2f-9f43-42e1-8f40-214372a63efd"
+         },
+         {
+          "value": "Item 4",
+          "text": "Hurts even more",
+          "imageLink": "https://api.surveyjs.io/private/Surveys/files?name=afa9a3a8-d07e-4c7d-b24b-785387ec6bab"
+         },
+         {
+          "value": "Item 5",
+          "text": "Hurts whole lot",
+          "imageLink": "https://api.surveyjs.io/private/Surveys/files?name=2fee0fae-1af2-47cd-88fd-b99f6cd99946"
+         },
+         {
+          "value": "Item 6",
+          "text": "Hurts worst",
+          "imageLink": "https://api.surveyjs.io/private/Surveys/files?name=df1906f8-d7c5-4507-96e2-b43e9c05270f"
+         }
+        ],
+        "imageFit": "cover",
+        "minImageWidth": 120,
+        "minImageHeight": 100,
+        "maxImageWidth": 240,
+        "maxImageHeight": 200,
+        "showLabel": true
+       },
+       {
+        "type": "radiogroup",
+        "name": "verbal-descriptor",
+        "title": "Verbal Descriptor Scale",
+        "titleLocation": "top",
+        "description": "Select the words that best represent the intensity of your pain now.",
+        "choices": [
+         "No pain ",
+         "Mild pain ",
+         "Moderate pain ",
+         "Severe pain ",
+         "Extreme pain ",
+         "Pain as bad as could be"
+        ],
+        "colCount": 2
+       },
+       {
+        "type": "panel",
+        "name": "pain-location-panel",
+        "elements": [
+         {
+          "type": "signaturepad",
+          "name": "pain-type-marks",
+          "maxWidth": "30%",
+          "signatureWidth": 213,
+          "signatureHeight": 292,
+          "showPlaceholder": false,
+          "backgroundImage": "https://api.surveyjs.io/private/Surveys/files?name=6de9d008-5f99-459f-a01b-3c8e272666ef",
+          "waitForUpload": true
+         },
+         {
+          "type": "signaturepad",
+          "name": "pain-location-body",
+          "startWithNewLine": false,
+          "signatureWidth": 957,
+          "signatureHeight": 676,
+          "signatureAutoScaleEnabled": true,
+          "showPlaceholder": false,
+          "backgroundImage": "https://api.surveyjs.io/private/Surveys/files?name=4fa86ea3-7a97-4344-9857-06ee6c9fe630",
+          "penColor": "#f01919",
+          "waitForUpload": true
+         }
+        ],
+        "questionTitleLocation": "hidden",
+        "title": "Location",
+        "description": "Mark on the areas where you feel pain. If you feel more than one sensation in the same area, mark over that area with all the symbols that apply. Make sure you show all affected areas."
+       }
+      ],
+      "title": "Pain assessment"
+     },
+     {
+      "name": "pain-history",
+      "elements": [
+       {
+        "type": "panel",
+        "name": "pain-history-panel",
+        "elements": [
+         {
+          "type": "radiogroup",
+          "name": "pain-onset",
+          "title": "Onset of Pain:",
+          "choices": [
+           "New (last 7 days) ",
+           "Recent (last 3 mos.) ",
+           "More distant (> 3 mos.) ",
+           "Unknown"
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "radiogroup",
+          "name": "pain-frequency",
+          "title": "Frequency of Pain:",
+          "choices": [
+           "Constant ",
+           "Frequent ",
+           "Infrequent ",
+           "Unknown"
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "checkbox",
+          "name": "pain-description",
+          "title": "Description of Pain:",
+          "choices": [
+           "Aching ",
+           "Burning ",
+           "Cramping ",
+           "Crushing ",
+           "Dull ",
+           "Numbness",
+           "Pins & Needles ",
+           "Sharp ",
+           "Shooting ",
+           "Throbbing"
+          ],
+          "showOtherItem": true,
+          "otherText": "Other (please describe)",
+          "colCount": 2,
+          "maxSelectedChoices": 3,
+          "minSelectedChoices": 1
+         },
+         {
+          "type": "radiogroup",
+          "name": "pattern-change",
+          "title": "Change in Pattern of Pain: ",
+          "description": "Has the pain changed in description or intensity the last 7 days?",
+          "choices": [
+           "Yes",
+           "No",
+           "Unknown"
+          ],
+          "otherText": "Other (please describe)",
+          "colCount": 2
+         },
+         {
+          "type": "comment",
+          "name": "pattern-change-description",
+          "visibleIf": "{pattern-change} allof ['Yes']",
+          "title": "Please describe the change:",
+          "rows": 2,
+          "autoGrow": true
+         },
+         {
+          "type": "radiogroup",
+          "name": "what-increases-pain",
+          "title": "Causes/Increases in Pain:",
+          "choices": [
+           "Movement ",
+           "Coughing ",
+           "Cold ",
+           "Heat ",
+           "Fatigue ",
+           "Anxiety"
+          ],
+          "showOtherItem": true,
+          "otherText": "Other (please describe)",
+          "colCount": 2
+         },
+         {
+          "type": "radiogroup",
+          "name": "what-relieves-pain",
+          "title": "What Relieves the Pain: ",
+          "choices": [
+           "Cold ",
+           "Heat ",
+           "Exercise ",
+           "Eating",
+           "Opioids ",
+           "Non-Opioid Meds",
+           "Adjuvants ",
+           "Herbals ",
+           "Massage ",
+           "Relaxation ",
+           "Rest ",
+           "Repositioning ",
+           "Distraction"
+          ],
+          "showOtherItem": true,
+          "otherText": "Other (please specify)",
+          "colCount": 2
+         },
+         {
+          "type": "comment",
+          "name": "pain-medication-history",
+          "title": "Pain Medication History: ",
+          "maxLength": 250,
+          "rows": 2,
+          "autoGrow": true
+         },
+         {
+          "type": "matrix",
+          "name": "pain-effects",
+          "title": "Effects of Pain:",
+          "description": "Using the following scale, rate how the pain has had an effect in each area in the past 24 hours.",
+          "showCommentArea": true,
+          "commentText": "",
+          "alternateRows": true,
+          "rowTitleWidth": "250px",
+          "columns": [
+           {
+            "value": "Column 1",
+            "text": "0 (no effect)"
+           },
+           {
+            "value": "Column 2",
+            "text": "2 (mild effect)"
+           },
+           {
+            "value": "Column 3",
+            "text": "5 (moderate effect)"
+           },
+           {
+            "value": "Column 4",
+            "text": "10 (severe effect)"
+           }
+          ],
+          "rows": [
+           {
+            "value": "Row 1",
+            "text": "Accompanying Symptoms (e.g., nausea)"
+           },
+           {
+            "value": "Row 2",
+            "text": "Sleep Disturbance"
+           },
+           {
+            "value": "Row 3",
+            "text": "Appetite Change"
+           },
+           {
+            "value": "Row 4",
+            "text": "Physical Activity Change"
+           },
+           {
+            "value": "Row 5",
+            "text": "Mood/Behavior"
+           },
+           {
+            "value": "Row 6",
+            "text": "Concentration"
+           },
+           {
+            "value": "Row 7",
+            "text": "Relationship with Others"
+           },
+           {
+            "value": "Row 8",
+            "text": "Other (please describe below)"
+           }
+          ],
+          "isAllRowRequired": true
+         },
+         {
+          "type": "rating",
+          "name": "worst-pain-lately",
+          "title": "Worst Pain in 24 Hours:",
+          "rateCount": 11,
+          "rateMin": 0,
+          "rateMax": 10,
+          "minRateDescription": "No Pain",
+          "maxRateDescription": "Worst Possible Pain"
+         },
+         {
+          "type": "rating",
+          "name": "recent-medication-effectiveness",
+          "useDisplayValuesInDynamicTexts": false,
+          "title": "In the past 24 hours, how much have the medications or treatments eased your pain?",
+          "description": " ",
+          "descriptionLocation": "underInput",
+          "rateCount": 11,
+          "rateMin": 0,
+          "rateMax": 10,
+          "minRateDescription": "No relief",
+          "maxRateDescription": "Complete relief"
+         },
+         {
+          "type": "radiogroup",
+          "name": "plan",
+          "title": "Plan for Addressing Pain:",
+          "showCommentArea": true,
+          "commentText": "Comments:",
+          "choices": [
+           "Initiate pain management flow sheet ",
+           "Call Prescriber ",
+           "Refer to pain team ",
+           "Rehab referral (PT, OT, ST) ",
+           "Non-med intervention",
+           "Medications prescribed ",
+           "Spiritual counseling ",
+           "Staff education/communication"
+          ],
+          "showOtherItem": true,
+          "colCount": 2
+         }
+        ],
+        "questionTitleLocation": "top",
+        "title": "History of Pain"
+       },
+       {
+        "type": "signaturepad",
+        "name": "signature",
+        "maxWidth": "50%",
+        "title": "Signature of person completing assessment:",
+        "titleLocation": "top",
+        "signatureHeight": 120,
+        "waitForUpload": true
+       },
+       {
+        "type": "text",
+        "name": "title",
+        "maxWidth": "30%",
+        "startWithNewLine": false,
+        "title": "Title:",
+        "titleLocation": "top"
+       },
+       {
+        "type": "text",
+        "name": "date",
+        "maxWidth": "20%",
+        "startWithNewLine": false,
+        "title": "Date:",
+        "titleLocation": "top",
+        "inputType": "date"
+       }
+      ],
+      "title": "History of pain"
+     }
+    ],
+    "showPrevButton": false,
+    "showQuestionNumbers": "off",
+    "showTOC": true,
+    "completeText": "Complete",
+    "widthMode": "static",
+    "width": "1200"
+   }

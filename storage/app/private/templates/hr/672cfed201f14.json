@@ -1,0 +1,222 @@
+ {
+    "title": "Expense Reimbursement Claim Form",
+    "completedHtml": "<div style='max-width: 1000px; width: 100%; padding 32px; margin: 0 auto;'>    <p style='text-align: justify'>Dear {full-name},</p>     <p style='text-align: justify'>Thank you for submitting your expense reimbursement claim form. We appreciate your diligence in following our expense reporting procedures. Your claim has been received and will be processed promptly. If there are any questions or additional information needed, a member of our finance team will contact you.</p> <h5 style='text-align: justify'>What happens next</h5><ul><li style='margin-top: 1em; text-align: justify;'><b>Review and Approval:</b> Your claim will be reviewed for compliance with our company policies</li><li style='margin-top: 0.5em; text-align: justify;'><b>Processing:</b> Once approved, the reimbursement will be processed and included in the next payroll cycle or as per our reimbursement schedule.</li><li style='margin-top: 0.5em; text-align: justify;'><b>Notification:</b> You will be notified via email once your reimbursement has been processed.</li></ul> <p style='text-align: justify'>If you have any questions or need further assistance, please do not hesitate to <a href='mailto:finance@example.com'>contact us</a>.</p>     <p style='text-align: justify'>Thank you for your attention to detail and cooperation.</p>     <p style='text-align: justify'>Best regards,</p> <p style='text-align: justify'>Finance Team</p></div>",
+    "pages": [
+     {
+      "name": "details",
+      "elements": [
+       {
+        "type": "multipletext",
+        "name": "applicant-full-name",
+        "maxWidth": "80%",
+        "indent": 2,
+        "title": "Employee Details",
+        "isRequired": true,
+        "items": [
+         {
+          "name": "surname",
+          "title": "Surname"
+         },
+         {
+          "name": "first-name",
+          "title": "First name"
+         },
+         {
+          "name": "department",
+          "title": "Department"
+         },
+         {
+          "name": "job-title",
+          "title": "Job title"
+         }
+        ],
+        "colCount": 2,
+        "itemTitleWidth": "90"
+       },
+       {
+        "type": "signaturepad",
+        "name": "receipts area",
+        "maxWidth": "20%",
+        "startWithNewLine": false,
+        "titleLocation": "hidden",
+        "readOnly": true,
+        "placeholder": "Staple Receipts",
+        "placeholderReadOnly": "Staple receipts here"
+       },
+       {
+        "type": "matrixdynamic",
+        "name": "all-receipts",
+        "title": "Itemize Receipts",
+        "columns": [
+         {
+          "name": "date",
+          "title": "Receipts Date",
+          "cellType": "text",
+          "minWidth": "15%",
+          "width": "15%",
+          "inputType": "date"
+         },
+         {
+          "name": "description",
+          "title": "Expense Description",
+          "cellType": "comment",
+          "minWidth": "25%",
+          "width": "25%",
+          "maxLength": 70,
+          "rows": 1
+         },
+         {
+          "name": "category",
+          "title": "Category",
+          "cellType": "dropdown",
+          "minWidth": "25%",
+          "width": "25%",
+          "choices": [
+           {
+            "value": "travel",
+            "text": "Travel Expenses"
+           },
+           {
+            "value": "accomodation",
+            "text": "Accommodation"
+           },
+           {
+            "value": "meals",
+            "text": "Meals and Entertainment"
+           },
+           {
+            "value": "office",
+            "text": "Office Supplies and Equipment"
+           },
+           {
+            "value": "communication",
+            "text": "Communication Expenses"
+           },
+           {
+            "value": "prof-development",
+            "text": "Professional Development"
+           },
+           {
+            "value": "miscellaneous",
+            "text": "Miscellaneous Business Expenses"
+           },
+           {
+            "value": "relocation",
+            "text": "Relocation Expenses"
+           },
+           {
+            "value": "health",
+            "text": "Health and Wellness"
+           }
+          ]
+         },
+         {
+          "name": "vendor",
+          "title": "Vendor",
+          "cellType": "text",
+          "minWidth": "20%",
+          "width": "20%"
+         },
+         {
+          "name": "amount",
+          "title": "Amount",
+          "cellType": "text",
+          "minWidth": "15%",
+          "width": "15%",
+          "totalType": "sum",
+          "totalDisplayStyle": "currency",
+          "inputType": "number",
+          "step": 0.1
+         }
+        ],
+        "choices": [
+         1,
+         2,
+         3,
+         4,
+         5
+        ],
+        "minRowCount": 2,
+        "maxRowCount": 15,
+        "confirmDelete": true,
+        "confirmDeleteText": "Are you sure you want to remove this receipt from the list??",
+        "addRowText": "Add receipt"
+       },
+       {
+        "type": "checkbox",
+        "name": "statement",
+        "titleLocation": "hidden",
+        "isRequired": true,
+        "requiredErrorText": "Your confirmation is required.",
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "In claiming the above, I confirm that the information supplied is correct and that the travelling and out of pocket expenses shown have been actually and necessarily incurred in connection with my attendance at the event(s)."
+         }
+        ]
+       },
+       {
+        "type": "signaturepad",
+        "name": "signature",
+        "indent": 2,
+        "title": "Signature",
+        "titleLocation": "left",
+        "signatureHeight": 150
+       },
+       {
+        "type": "text",
+        "name": "date",
+        "startWithNewLine": false,
+        "title": "Date",
+        "titleLocation": "left",
+        "defaultValueExpression": "today()",
+        "inputType": "date"
+       },
+       {
+        "type": "panel",
+        "name": "office-use",
+        "elements": [
+         {
+          "type": "text",
+          "name": "office-use-date",
+          "title": "Date",
+          "titleLocation": "top",
+          "maskType": "pattern",
+          "maskSettings": {
+           "pattern": "99/99/9999"
+          }
+         },
+         {
+          "type": "text",
+          "name": "office-use-reference",
+          "startWithNewLine": false,
+          "title": "Reference #"
+         },
+         {
+          "type": "boolean",
+          "name": "office-use-approved",
+          "title": "Approved"
+         },
+         {
+          "type": "text",
+          "name": "office-use-approver-name",
+          "startWithNewLine": false,
+          "title": "Approver's Name"
+         }
+        ],
+        "readOnly": true,
+        "title": "OFFICE USE ONLY"
+       }
+      ]
+     }
+    ],
+    "calculatedValues": [
+     {
+      "name": "full-name",
+      "expression": "{applicant-full-name.surname} + ' ' + {applicant-full-name.first-name}"
+     }
+    ],
+    "showQuestionNumbers": "off",
+    "widthMode": "static",
+    "width": "1200"
+   }

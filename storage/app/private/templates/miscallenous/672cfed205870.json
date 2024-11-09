@@ -1,0 +1,361 @@
+ {
+    "title": "Pizza Order Form",
+    "logoPosition": "right",
+    "completedHtml": "<h3>Thank you for placing the order!</h3>",
+    "questionErrorLocation": "bottom",
+    "pages": [
+      {
+        "name": "page1",
+        "elements": [
+          {
+            "type": "panel",
+            "name": "neapolitan",
+            "elements": [
+              {
+                "type": "expression",
+                "name": "price_n",
+                "minWidth": "220px",
+                "title": "Pizza Neapolitan",
+                "description": "tomato sauce, mozzarella, anchovies, bazil",
+                "descriptionLocation": "underTitle",
+                "expression": "5 + {size_n}",
+                "displayStyle": "currency"
+              },
+              {
+                "type": "image",
+                "name": "pic_n",
+                "width": "180px",
+                "minWidth": "180px",
+                "maxWidth": "180px",
+                "startWithNewLine": false,
+                "imageLink": "https://api.surveyjs.io/private/Surveys/files?name=c5b0302a-d6c8-46b4-ac57-7d519d0df0d1",
+                "contentMode": "image",
+                "imageFit": "cover",
+                "imageHeight": 80,
+                "imageWidth": 180
+              },
+              {
+                "type": "dropdown",
+                "name": "size_n",
+                "minWidth": "220px",
+                "title": "Size",
+                "titleLocation": "left",
+                "defaultValue": 1,
+                "choices": [
+                  {
+                    "value": 0,
+                    "text": "Small"
+                  },
+                  {
+                    "value": 1,
+                    "text": "Medium"
+                  },
+                  {
+                    "value": 2,
+                    "text": "Large"
+                  }
+                ],
+                "allowClear": false
+              },
+              {
+                "type": "dropdown",
+                "name": "qty_n",
+                "minWidth": "220px",
+                "startWithNewLine": false,
+                "title": "Qty",
+                "titleLocation": "left",
+                "choices": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ]
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "pepperoni",
+            "elements": [
+              {
+                "type": "expression",
+                "name": "price_p",
+                "title": "Pepperoni",
+                "titleLocation": "top",
+                "description": "tomato sauce, pepperoni, red peppers, onion",
+                "expression": "5 + {size_p}",
+                "displayStyle": "currency"
+              },
+              {
+                "type": "image",
+                "name": "pic_p",
+                "width": "180px",
+                "minWidth": "180px",
+                "maxWidth": "180px",
+                "startWithNewLine": false,
+                "imageLink": "https://api.surveyjs.io/private/Surveys/files?name=8bcd88b7-df19-466d-8622-19100e400383",
+                "contentMode": "image",
+                "imageFit": "cover",
+                "imageHeight": 80,
+                "imageWidth": 180
+              },
+              {
+                "type": "dropdown",
+                "name": "size_p",
+                "minWidth": "220px",
+                "title": "Size",
+                "titleLocation": "left",
+                "defaultValue": 1,
+                "choices": [
+                  {
+                    "value": 0,
+                    "text": "Small"
+                  },
+                  {
+                    "value": 1,
+                    "text": "Medium"
+                  },
+                  {
+                    "value": 2,
+                    "text": "Large"
+                  }
+                ],
+                "allowClear": false
+              },
+              {
+                "type": "dropdown",
+                "name": "qty_p",
+                "minWidth": "220px",
+                "startWithNewLine": false,
+                "title": "Qty",
+                "titleLocation": "left",
+                "choices": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ]
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "marinara",
+            "elements": [
+              {
+                "type": "expression",
+                "name": "price_m",
+                "title": "Marinara",
+                "description": "tomato sauce, tuna, shrimps, mushrooms, cheese, onion",
+                "expression": "5 + {size_m}",
+                "displayStyle": "currency"
+              },
+              {
+                "type": "image",
+                "name": "pic_m",
+                "width": "180px",
+                "minWidth": "180px",
+                "maxWidth": "180px",
+                "startWithNewLine": false,
+                "imageLink": "https://api.surveyjs.io/private/Surveys/files?name=24735b69-0ffe-4e49-9c90-1d9db1c8b83b",
+                "contentMode": "image",
+                "imageFit": "cover",
+                "imageHeight": 80,
+                "imageWidth": 180
+              },
+              {
+                "type": "dropdown",
+                "name": "size_m",
+                "minWidth": "220px",
+                "title": "Size",
+                "titleLocation": "left",
+                "defaultValue": 1,
+                "choices": [
+                  {
+                    "value": 0,
+                    "text": "Small"
+                  },
+                  {
+                    "value": 1,
+                    "text": "Medium"
+                  },
+                  {
+                    "value": 2,
+                    "text": "Large"
+                  }
+                ],
+                "allowClear": false
+              },
+              {
+                "type": "dropdown",
+                "name": "qty_m",
+                "minWidth": "220px",
+                "startWithNewLine": false,
+                "title": "Qty",
+                "titleLocation": "left",
+                "choices": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ]
+              }
+            ]
+          },
+          {
+            "type": "expression",
+            "name": "question5",
+            "title": "Total",
+            "expression": "{price_n} * {qty_n} + {price_m} * {qty_m} + {price_p} * {qty_p}",
+            "displayStyle": "currency"
+          }
+        ]
+      },
+      {
+        "name": "page2",
+        "elements": [
+          {
+            "type": "panel",
+            "name": "toppings-panel",
+            "elements": [
+              {
+                "type": "checkbox",
+                "name": "toppings",
+                "title": "Toppings",
+                "choices": [
+                  "Olives",
+                  "Mozzarella",
+                  "Mushrooms",
+                  "Red pepper",
+                  "Pepperoni",
+                  "Shrimps"
+                ],
+                "colCount": 3
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "delivery-panel",
+            "elements": [
+              {
+                "type": "boolean",
+                "name": "need-delivery",
+                "title": "Would you like the order delivered?",
+                "defaultValue": "false"
+              },
+              {
+                "type": "text",
+                "name": "pickup-date",
+                "visibleIf": "{need-delivery} = false",
+                "title": "Pickup Date",
+                "inputType": "date"
+              },
+              {
+                "type": "text",
+                "name": "Pickup-time",
+                "visibleIf": "{need-delivery} = false",
+                "startWithNewLine": false,
+                "title": "Pickup Time",
+                "isRequired": true,
+                "inputType": "time"
+              },
+              {
+                "type": "text",
+                "name": "delivery-address",
+                "visibleIf": "{need-delivery} = true",
+                "title": "Delivery Address"
+              },
+              {
+                "type": "text",
+                "name": "delivery-date",
+                "visibleIf": "{need-delivery} = true",
+                "title": "Delivery Date",
+                "isRequired": true,
+                "inputType": "date"
+              },
+              {
+                "type": "text",
+                "name": "delivery-time",
+                "visibleIf": "{need-delivery} = true",
+                "startWithNewLine": false,
+                "title": "Delivery Time",
+                "isRequired": true,
+                "inputType": "time"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "page3",
+        "elements": [
+          {
+            "type": "panel",
+            "name": "contacts",
+            "elements": [
+              {
+                "type": "text",
+                "name": "phone",
+                "title": "Phone number",
+                "autocomplete": "tel",
+                "maskType": "pattern",
+                "maskSettings": {
+                  "saveMaskedValue": true,
+                  "pattern": "+1 (999) 999-99-99"
+                }
+              },
+              {
+                "type": "text",
+                "name": "email",
+                "startWithNewLine": false,
+                "title": "Email",
+                "validators": [
+                  {
+                    "type": "email",
+                    "text": "Please enter a valid email in the example@example.com format."
+                  }
+                ],
+                "inputType": "email",
+                "autocomplete": "email",
+                "placeholder": "Enter your email to receive an order confirmation and a receipt"
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "full-name-panel",
+            "elements": [
+              {
+                "type": "multipletext",
+                "name": "full-name",
+                "title": "Full name",
+                "items": [
+                  {
+                    "name": "first-name",
+                    "title": "First name"
+                  },
+                  {
+                    "name": "last-name",
+                    "title": "Last name"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "html",
+            "name": "question4",
+            "html": "<iframe src='/paypaldemo' width='100%' height='200px' frameBorder='0'/>"
+          }
+        ]
+      }
+    ],
+    "showQuestionNumbers": "off",
+    "checkErrorsMode": "onComplete",
+    "completeText": "Place Order",
+    "widthMode": "responsive"
+  }

@@ -1,0 +1,509 @@
+ {
+    "title": "Product Usage Research Survey",
+    "completedHtmlOnCondition": [
+     {
+      "expression": "{models-unwrapped} allof ['none']",
+      "html": "Thank you for your interest in our survey. Unfortunately, based on your responses, you are not eligible to participate at this time. We appreciate your understanding and hope you will consider participating in future surveys."
+     }
+    ],
+    "pages": [
+     {
+      "name": "participant-information",
+      "elements": [
+       {
+        "type": "text",
+        "name": "name",
+        "title": "Full name",
+        "isRequired": true
+       },
+       {
+        "type": "text",
+        "name": "dob",
+        "startWithNewLine": false,
+        "title": "Date of birth",
+        "inputType": "date"
+       },
+       {
+        "type": "text",
+        "name": "age",
+        "title": "Age",
+        "resetValueIf": "{dob} empty",
+        "setValueExpression": "age({dob})",
+        "readOnly": true,
+        "validators": [
+         {
+          "type": "expression"
+         }
+        ]
+       },
+       {
+        "type": "radiogroup",
+        "name": "gender",
+        "startWithNewLine": false,
+        "title": "Gender",
+        "choices": [
+         "Male",
+         "Female"
+        ],
+        "otherText": "Other (please specify)",
+        "colCount": 2
+       },
+       {
+        "type": "text",
+        "name": "occupation",
+        "title": "Occupation",
+        "placeholder": "Start typing...",
+        "dataList": [
+         "Software Developer",
+         "Registered Nurse",
+         "Medical and Health Services Manager",
+         "Data Scientist",
+         "Information Security Analyst",
+         "Market Research Analyst",
+         "Management Analyst",
+         "Financial Manager",
+         "Industrial Engineer",
+         "Physical Therapist",
+         "Physician Assistant",
+         "Construction Manager",
+         "Human Resources Specialist",
+         "Accountant and Auditor",
+         "Marketing Manager"
+        ]
+       },
+       {
+        "type": "dropdown",
+        "name": "location",
+        "title": "Location",
+        "choices": [
+         "Item 1",
+         "Item 2",
+         "Item 3"
+        ],
+        "choicesByUrl": {
+         "url": "https://surveyjs.io/api/CountriesExample"
+        },
+        "placeholder": "Select country...",
+        "autocomplete": "country"
+       },
+       {
+        "type": "text",
+        "name": "email",
+        "title": "Email",
+        "description": "(optional)",
+        "inputType": "email",
+        "autocomplete": "email",
+        "placeholder": "example@gmail.com"
+       },
+       {
+        "type": "text",
+        "name": "phone-number",
+        "startWithNewLine": false,
+        "title": "Phone Number",
+        "description": "(optional)",
+        "maskType": "pattern",
+        "maskSettings": {
+         "pattern": "+1(999)-999-99-99"
+        }
+       },
+       {
+        "type": "radiogroup",
+        "name": "income",
+        "title": "Household Income",
+        "choices": [
+         "Below $25,000",
+         "$25,000 - $50,000",
+         "$50,000 - $75,000",
+         "$75,000 - $100,000",
+         "Above $100,000"
+        ],
+        "colCount": 2
+       },
+       {
+        "type": "radiogroup",
+        "name": "education-level",
+        "title": "Education Level",
+        "choices": [
+         "High School:",
+         "Some College",
+         "Bachelor’s Degree",
+         "Master’s Degree",
+         "Doctorate"
+        ],
+        "showOtherItem": true,
+        "otherPlaceholder": "please specify here...",
+        "otherText": "Other:",
+        "colCount": 2
+       },
+       {
+        "type": "radiogroup",
+        "name": "marital-status",
+        "title": "Marital Status",
+        "choices": [
+         "Single",
+         "Married",
+         "Divorced",
+         "Widowed"
+        ],
+        "colCount": 2
+       }
+      ],
+      "title": "Section 1: Demographics"
+     },
+     {
+      "name": "product-information",
+      "elements": [
+       {
+        "type": "checkbox",
+        "name": "models",
+        "title": "Please select the model of sneakers you have used from the following list:",
+        "valueName": "models",
+        "isRequired": true,
+        "choices": [
+         " Nike Air Max Plus OG 'Voltage Purple'",
+         " Nike Dunk Low 'Brazil'",
+         " Salehe Bembury x New Balance 1906R 'Lava'",
+         " Stash x Nike Air Max 95 'Black'",
+         " Supreme x Nike Air Max Dn 'Black'",
+         " Travis Scott x Jordan Jumpman Jack 'Sail'",
+         " Trophy Room x Air Jordan 1 Low OG 'Away'"
+        ],
+        "showNoneItem": true,
+        "colCount": 2,
+        "maxSelectedChoices": 7,
+        "minSelectedChoices": 1,
+        "valuePropertyName": "model_id"
+       },
+       {
+        "type": "matrixdynamic",
+        "name": "models-rating",
+        "visibleIf": "{models-unwrapped} <> ['none'] and {models-unwrapped} notempty",
+        "title": "Please rate each model",
+        "valueName": "models",
+        "columns": [
+         {
+          "name": "model_id",
+          "title": "Model",
+          "cellType": "expression"
+         },
+         {
+          "name": "purchase-date",
+          "title": "Purchase Date",
+          "cellType": "text",
+          "inputType": "date"
+         },
+         {
+          "name": "frequency",
+          "title": "Frequency of Use",
+          "cellType": "dropdown",
+          "choices": [
+           " Daily",
+           " Several times a week",
+           " Once a week",
+           " Several times a month",
+           " Once a month or less"
+          ]
+         },
+         {
+          "name": "primary-activity",
+          "title": "Primary Activity",
+          "cellType": "dropdown",
+          "choices": [
+           "Casual wear",
+           "Sports/Exercise",
+           "Work/School",
+           "Special occasions",
+           "Collecting"
+          ]
+         }
+        ],
+        "choices": [
+         1,
+         2,
+         3,
+         4,
+         5
+        ],
+        "allowAddRows": false,
+        "allowRemoveRows": false,
+        "rowCount": 1
+       },
+       {
+        "type": "paneldynamic",
+        "name": "purchase-details",
+        "visibleIf": "{models-unwrapped} <> ['none'] and {models-unwrapped} notempty",
+        "title": "Purchase details",
+        "valueName": "models",
+        "templateElements": [
+         {
+          "type": "radiogroup",
+          "name": "first-hear",
+          "title": "How did you first hear about this sneaker model?",
+          "choices": [
+           " Social Media",
+           " Friend/Family",
+           " Online Advertisement",
+           " In-store Display",
+           " Sneaker Review Website"
+          ],
+          "showOtherItem": true,
+          "otherPlaceholder": "please specify",
+          "otherText": "Other:"
+         },
+         {
+          "type": "radiogroup",
+          "name": "where-purchased",
+          "startWithNewLine": false,
+          "title": "Where did you purchase this sneaker model?",
+          "choices": [
+           "Online Retailer",
+           " Brand's Official Website",
+           " Physical Store",
+           " Reseller"
+          ],
+          "showOtherItem": true,
+          "otherPlaceholder": "please specify",
+          "otherText": "Other:"
+         },
+         {
+          "type": "boolean",
+          "name": "remember-name",
+          "visibleIf": "{panel.where-purchased} notempty and {panel.where-purchased-Comment} notempty",
+          "title": "Do you remember the name of that {panel.where-purchased}?"
+         },
+         {
+          "type": "text",
+          "name": "specify-name",
+          "visibleIf": "{panel.remember-name} notempty",
+          "startWithNewLine": false,
+          "title": "Please specify "
+         },
+         {
+          "type": "matrixdropdown",
+          "name": "rating-matrix",
+          "title": "On a scale of 1 to 5, rate the following:",
+          "showHeader": false,
+          "alternateRows": true,
+          "columns": [
+           {
+            "name": "rating-scale",
+            "cellType": "rating",
+            "rateType": "smileys",
+            "autoGenerate": false,
+            "rateValues": [
+             {
+              "value": 1,
+              "text": "Very Dissatisfied"
+             },
+             {
+              "value": 2,
+              "text": "Dissatisfied"
+             },
+             {
+              "value": 3,
+              "text": "Neutral"
+             },
+             {
+              "value": 4,
+              "text": "Satisfied"
+             },
+             {
+              "value": 5,
+              "text": "Very Satisfied"
+             }
+            ],
+            "minRateDescription": "Very Dissatisfied",
+            "maxRateDescription": "Very Satisfied"
+           }
+          ],
+          "choices": [
+           1,
+           2,
+           3,
+           4,
+           5
+          ],
+          "rows": [
+           {
+            "value": "Row 1",
+            "text": "How satisfied are you with the comfort of these sneakers?"
+           },
+           {
+            "value": "Row 2",
+            "text": "How satisfied are you with the durability of these sneakers?"
+           },
+           {
+            "value": "Row 3",
+            "text": "How satisfied are you with the style/design of these sneakers?"
+           }
+          ]
+         }
+        ],
+        "templateTitle": "Model {panel.model_id}",
+        "allowAddPanel": false,
+        "allowRemovePanel": false,
+        "showQuestionNumbers": "onSurvey"
+       }
+      ],
+      "title": "Section 2: Purchase and Usage Patterns"
+     },
+     {
+      "name": "usage-patterns",
+      "elements": [
+       {
+        "type": "paneldynamic",
+        "name": "most-least-panel",
+        "visibleIf": "{models-unwrapped} <> ['none'] and {models-unwrapped} notempty",
+        "title": "Please select and rank your most and least favorite features of the sneakers.",
+        "valueName": "models",
+        "templateElements": [
+         {
+          "type": "ranking",
+          "name": "like-most",
+          "title": "What features do you like the most about {panel.model_id}?",
+          "description": "(Select all that apply and then rank in order of priority)",
+          "choices": [
+           " Comfort",
+           " Style/Design",
+           " Brand Reputation",
+           " Durability",
+           " Exclusivity/Limited Edition",
+           " Versatility"
+          ],
+          "minSelectedChoices": 2,
+          "selectToRankEnabled": true
+         },
+         {
+          "type": "ranking",
+          "name": "like-least",
+          "title": "What features do you like the least about {panel.model_id}?",
+          "description": "(Select all that apply and then rank in order of how much you dislike them)",
+          "choices": [
+           " Comfort",
+           " Style/Design",
+           " Brand Reputation",
+           " Durability",
+           " Exclusivity/Limited Edition",
+           " Versatility"
+          ],
+          "minSelectedChoices": 2,
+          "selectToRankEnabled": true
+         },
+         {
+          "type": "boolean",
+          "name": "issues",
+          "title": "Have you encountered any issues with {panel.model_id}?",
+          "commentText": "If yes, please describe:"
+         },
+         {
+          "type": "comment",
+          "name": "describe-issue",
+          "visibleIf": "{panel.issues} = true",
+          "title": "Please describe:",
+          "enableIf": "{panel.issues} = true",
+          "maxLength": 250,
+          "rows": 2,
+          "autoGrow": true
+         },
+         {
+          "type": "radiogroup",
+          "name": "recommend",
+          "title": "Would you recommend {panel.model_id} to others?",
+          "choices": [
+           " Yes",
+           " No",
+           " Maybe"
+          ],
+          "colCount": 3
+         },
+         {
+          "type": "radiogroup",
+          "name": "purchase-same-brand",
+          "title": "How likely are you to purchase another pair of sneakers from this brand?",
+          "choices": [
+           "Very Unlikely",
+           "Unlikely",
+           "Neutral",
+           "Likely",
+           "Very Likely"
+          ],
+          "colCount": 3
+         }
+        ],
+        "templateTitle": "Model {panel.model_id}",
+        "allowAddPanel": false,
+        "allowRemovePanel": false,
+        "showQuestionNumbers": "onSurvey"
+       }
+      ],
+      "title": "Section 3: Product Features and Preferences "
+     },
+     {
+      "name": "additional-feedback-section",
+      "elements": [
+       {
+        "type": "paneldynamic",
+        "name": "additional-question",
+        "visibleIf": "{models-unwrapped} <> ['none'] and {models-unwrapped} notempty",
+        "titleLocation": "hidden",
+        "valueName": "models",
+        "templateElements": [
+         {
+          "type": "boolean",
+          "name": "support",
+          "title": "Have you contacted customer support? ",
+          "titleLocation": "top"
+         },
+         {
+          "type": "rating",
+          "name": "support-experience",
+          "visibleIf": "{panel.support} = true",
+          "title": "How would you rate your experience?",
+          "titleLocation": "top",
+          "rateCount": 10,
+          "rateMax": 10,
+          "minRateDescription": "Very Poor",
+          "maxRateDescription": "Excellent"
+         },
+         {
+          "type": "comment",
+          "name": "improvements",
+          "title": "What improvements would you suggest for {panel.model_id}?",
+          "titleLocation": "top",
+          "maxLength": 250,
+          "rows": 3,
+          "autoGrow": true
+         },
+         {
+          "type": "comment",
+          "name": "additional-comments",
+          "title": "Is there anything else you would like to share about your experience with {panel.model_id}?",
+          "titleLocation": "top",
+          "maxLength": 250,
+          "rows": 3,
+          "autoGrow": true
+         }
+        ],
+        "templateTitle": "Model {panel.model_id}",
+        "allowAddPanel": false,
+        "allowRemovePanel": false,
+        "showQuestionNumbers": "onSurvey"
+       }
+      ],
+      "title": "Section 4: Additional Feedback "
+     }
+    ],
+    "triggers": [
+     {
+      "type": "complete",
+      "expression": "{models-unwrapped} = ['none']"
+     }
+    ],
+    "showProgressBar": "auto",
+    "progressBarType": "questions",
+    "progressBarShowPageTitles": true,
+    "progressBarShowPageNumbers": true,
+    "goNextPageAutomatic": true,
+    "widthMode": "static",
+    "width": "1050"
+   }

@@ -1,0 +1,66 @@
+{
+    "title": "CONSENT FORM FOR PROCESSING PERSONAL DATA",
+    "logoPosition": "right",
+    "pages": [
+     {
+      "name": "page1",
+      "elements": [
+       {
+        "type": "html",
+        "name": "question1",
+        "html": "<p style='text-align: justify'>     During the event you may be photographed or filmed. Having requested your consent     by written or oral statement, <em>Your company name</em> may disclose, publish, transmit     or quote such material in activities intended for the public. You can withdraw consent any time and     object to the processing indicating it to the organisers. In addition to personal data that we process for the purpose of organising the     event/meeting to enable your participation, in this consent form you have the option to provide     consent to either one or more personal data processing activities. </p> <p style='margin-top: 1em'>     <strong>         For photos/videos and publishing personal data you are requested to give consent, as follows:     </strong> </p>"
+       },
+       {
+        "type": "checkbox",
+        "name": "question2",
+        "titleLocation": "hidden",
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "I consent that video(s) and/or photo(s) are taken of me during the event/meeting and used in communication activities."
+         },
+         {
+          "value": "Item 2",
+          "text": "I consent that my name and contact details are published in the list of participants of the event/meeting."
+         }
+        ],
+        "minSelectedChoices": 2
+       },
+       {
+        "type": "multipletext",
+        "name": "question3",
+        "title": "Participant details",
+        "items": [
+         {
+          "name": "text1",
+          "title": "Full name:"
+         },
+         {
+          "name": "department",
+          "title": "Department:"
+         },
+         {
+          "name": "text3",
+          "inputType": "date",
+          "title": "Date:"
+         }
+        ],
+        "itemTitleWidth": "100"
+       },
+       {
+        "type": "signaturepad",
+        "name": "question4",
+        "startWithNewLine": false,
+        "title": "Signature",
+        "isRequired": true,
+        "penColor": "#4C6489"
+       }
+      ]
+     }
+    ],
+    "showQuestionNumbers": "off",
+    "completeText": "Submit",
+    "widthMode": "static",
+    "width": "800px",
+    "headerView": "advanced"
+   }

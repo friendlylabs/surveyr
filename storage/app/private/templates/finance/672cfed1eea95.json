@@ -1,0 +1,1243 @@
+ {
+    "title": "Insurance Application Form",
+    "logoPosition": "right",
+    "pages": [
+     {
+      "name": "Introduction",
+      "elements": [
+       {
+        "type": "html",
+        "name": "instructions",
+        "html": "<p style='text-align: justify;'>Thank you for starting the process of applying for, or changing, your insurance cover. Here is what you need to know before completing this form.</p><p style='margin-top: 1em; text-align: justify;'>  <strong>WHAT IS THIS FORM FOR?</strong></p><p style='margin-top: 0.5em; text-align: justify;'>You can use this form to apply for, or change, the following types of insurance:</p><ul><li style='margin-top: 0.5em; text-align: justify;'><b>Death only cover (sometimes called life insurance)</b> — This provides you or your dependents (as applicable) with a lump sum payment in the event that you die or suffer a Terminal Illness.* </li><li style='margin-top: 0.5em; text-align: justify;'><b>Death & TPD (Total and Permanent Disablement) cover</b> — This provides you or your dependents (as applicable) with a lump sum payment in the event that you die, suffer a Terminal Illness, or you have become Totally and Permanently Disabled.*</li><li style='margin-top: 0.5em; text-align: justify;'><b>Income Protection cover</b> —This provides you with a monthly income for up to 2 years in the event that you become Partially Disabled or Totally Disabled and a Sickness or Injury causes you to be unable to work and earn an income.* </li></ul><p style='margin-top: 0.5em; text-align: justify;'>*Subject to acceptance of your claim by the insurer. You can find more detailed information about each type ofcover in our <a href='https://www.google.com/'>Insurance Guide</a>.</p><p style='margin-top: 1em; text-align: justify;'>  <strong>HOW TO SUBMIT THE FORM?</strong></p><p style='margin-top: 0.5em; text-align: justify;'>Please return the completed application form as a scanned copy via email:</p> <ul><li style='margin-top: 0.5em; text-align: justify;'>Email: example@insurance.com </li></ul><p style='margin-top: 1em; text-align: justify;'>  <strong>HOW LONG DOES THE PROCESS TAKE?</strong></p><p style='margin-top: 0.5em; text-align: justify;'>Processing time is approximately 4-6 weeks, pending any supplementary statements requiredby the insurer.</p>"
+       }
+      ]
+     },
+     {
+      "name": "page2",
+      "elements": [
+       {
+        "type": "panel",
+        "name": "panel1",
+        "elements": [
+         {
+          "type": "dropdown",
+          "name": "question2",
+          "title": "Title",
+          "hideNumber": true,
+          "choices": [
+           "Mr.",
+           "Mrs.",
+           "Ms.",
+           "Miss"
+          ]
+         },
+         {
+          "type": "text",
+          "name": "question3",
+          "startWithNewLine": false,
+          "title": "Surname",
+          "hideNumber": true
+         },
+         {
+          "type": "text",
+          "name": "question4",
+          "startWithNewLine": false,
+          "title": "Given name",
+          "hideNumber": true
+         }
+        ],
+        "questionTitleWidth": "92px",
+        "questionTitleLocation": "left",
+        "title": "Name",
+        "showNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question5",
+        "title": "Date of birth",
+        "inputType": "date"
+       },
+       {
+        "type": "radiogroup",
+        "name": "gender",
+        "startWithNewLine": false,
+        "title": "Gender at birth",
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "Male"
+         },
+         {
+          "value": "Item 2",
+          "text": "Female"
+         }
+        ],
+        "colCount": 2
+       },
+       {
+        "type": "panel",
+        "name": "panel2",
+        "elements": [
+         {
+          "type": "text",
+          "name": "question7",
+          "title": "No",
+          "hideNumber": true
+         },
+         {
+          "type": "text",
+          "name": "question8",
+          "startWithNewLine": false,
+          "title": "Street",
+          "hideNumber": true
+         },
+         {
+          "type": "text",
+          "name": "question9",
+          "title": "State",
+          "hideNumber": true
+         },
+         {
+          "type": "text",
+          "name": "question10",
+          "startWithNewLine": false,
+          "title": "Postal code",
+          "hideNumber": true
+         }
+        ],
+        "questionTitleWidth": "92px",
+        "questionTitleLocation": "left",
+        "title": "Residential Address",
+        "showNumber": true
+       },
+       {
+        "type": "panel",
+        "name": "panel3",
+        "elements": [
+         {
+          "type": "text",
+          "name": "question11",
+          "title": "No",
+          "hideNumber": true
+         },
+         {
+          "type": "text",
+          "name": "question12",
+          "startWithNewLine": false,
+          "title": "Street",
+          "hideNumber": true
+         },
+         {
+          "type": "text",
+          "name": "question13",
+          "title": "State",
+          "hideNumber": true
+         },
+         {
+          "type": "text",
+          "name": "question14",
+          "startWithNewLine": false,
+          "title": "Postal code",
+          "hideNumber": true
+         }
+        ],
+        "questionTitleWidth": "92px",
+        "questionTitleLocation": "left",
+        "title": "Mailing Address",
+        "description": "(if different to above)",
+        "showNumber": true
+       },
+       {
+        "type": "radiogroup",
+        "name": "question1",
+        "title": "We may need to contact you to clarify information you have provided in the application. If so we will contact you during business hours. Please nominate a preferred local contact time: ",
+        "titleLocation": "top",
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "8am – 11am"
+         },
+         {
+          "value": "Item 2",
+          "text": "11am – 2pm"
+         },
+         {
+          "value": "Item 3",
+          "text": "2pm – 5pm"
+         }
+        ]
+       },
+       {
+        "type": "panel",
+        "name": "panel4",
+        "elements": [
+         {
+          "type": "text",
+          "name": "question15",
+          "title": "Phone (home)",
+          "hideNumber": true,
+          "maskType": "pattern",
+          "maskSettings": {
+           "pattern": "99 99999999"
+          }
+         },
+         {
+          "type": "text",
+          "name": "question16",
+          "startWithNewLine": false,
+          "title": "Phone (work)",
+          "hideNumber": true,
+          "maskType": "pattern",
+          "maskSettings": {
+           "pattern": "99 99999999"
+          }
+         },
+         {
+          "type": "text",
+          "name": "question17",
+          "title": "Mobile",
+          "hideNumber": true,
+          "maskType": "pattern",
+          "maskSettings": {
+           "pattern": "9999999999"
+          }
+         },
+         {
+          "type": "text",
+          "name": "question18",
+          "startWithNewLine": false,
+          "title": "E-mail",
+          "hideNumber": true,
+          "inputType": "email",
+          "autocomplete": "email",
+          "placeholder": "example@gmail.com"
+         }
+        ],
+        "questionTitleWidth": "92px",
+        "questionTitleLocation": "left",
+        "title": "Contact Details",
+        "showNumber": true
+       },
+       {
+        "type": "boolean",
+        "name": "citizen-resident",
+        "title": "Are you an American citizen or a permanent resident of the US?",
+        "titleLocation": "top"
+       },
+       {
+        "type": "boolean",
+        "name": "permanent-residency",
+        "visibleIf": "{citizen-resident} = false",
+        "title": "Are you applying for or intending to apply for permanent residency in the US?",
+        "titleLocation": "top"
+       },
+       {
+        "type": "panel",
+        "name": "panel5",
+        "elements": [
+         {
+          "type": "text",
+          "name": "question19",
+          "title": "Type of visa",
+          "hideNumber": true
+         },
+         {
+          "type": "text",
+          "name": "question20",
+          "startWithNewLine": false,
+          "title": "Expiry date",
+          "hideNumber": true,
+          "errorLocation": "bottom",
+          "inputType": "date"
+         }
+        ],
+        "visibleIf": "{permanent-residency} = false",
+        "questionTitleWidth": "92px",
+        "questionTitleLocation": "left",
+        "title": "Please advise what type of visa you hold and expiry date.",
+        "showNumber": true
+       }
+      ],
+      "questionTitleWidth": "92px",
+      "questionTitleLocation": "left",
+      "title": "A. Life Insured",
+      "description": "(Life insured to complete this section in full.)"
+     },
+     {
+      "name": "page1",
+      "elements": [
+       {
+        "type": "radiogroup",
+        "name": "question21",
+        "title": "Please select",
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "New"
+         },
+         {
+          "value": "Item 2",
+          "text": "Increase"
+         }
+        ]
+       },
+       {
+        "type": "radiogroup",
+        "name": "insurance-type",
+        "maxWidth": "70%",
+        "title": "Please select",
+        "commentText": "",
+        "commentPlaceholder": "$",
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "Death Only"
+         },
+         {
+          "value": "Item 2",
+          "text": "Death & TPD"
+         },
+         {
+          "value": "Item 3",
+          "text": "Income Protection"
+         }
+        ],
+        "colCount": 3
+       },
+       {
+        "type": "text",
+        "name": "question22",
+        "maxWidth": "30%",
+        "startWithNewLine": false,
+        "title": "Amount (in US dollars)",
+        "maskType": "currency",
+        "maskSettings": {
+         "allowNegativeValues": false,
+         "prefix": "$"
+        }
+       },
+       {
+        "type": "radiogroup",
+        "name": "question23",
+        "visibleIf": "{insurance-type} = 'Item 3'",
+        "title": "Benefit Period",
+        "commentText": "Amount",
+        "commentPlaceholder": "$",
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "2 years (to age 65 if earlier)"
+         }
+        ],
+        "showOtherItem": true,
+        "otherText": "Other – please specify # of years",
+        "colCount": 2
+       },
+       {
+        "type": "radiogroup",
+        "name": "question24",
+        "visibleIf": "{insurance-type} = 'Item 3'",
+        "title": "Waiting Period",
+        "commentText": "Amount",
+        "commentPlaceholder": "$",
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "30 days"
+         },
+         {
+          "value": "Item 2",
+          "text": "60 days"
+         },
+         {
+          "value": "Item 3",
+          "text": "90 days"
+         }
+        ],
+        "showOtherItem": true,
+        "otherText": "Other – please specify # of days",
+        "colCount": 2
+       }
+      ],
+      "title": "B. Type of Insurance"
+     },
+     {
+      "name": "page3",
+      "elements": [
+       {
+        "type": "boolean",
+        "name": "another-insurer",
+        "title": "(a) Do you have, or are you applying for life, disability or trauma insurance on your life (including any pending applications held with any other insurer)? "
+       },
+       {
+        "type": "matrixdynamic",
+        "name": "question26",
+        "visibleIf": "{another-insurer} = true",
+        "title": "Please complete policy details below.",
+        "titleLocation": "top",
+        "hideNumber": true,
+        "alternateRows": true,
+        "columns": [
+         {
+          "name": "Column 1",
+          "title": "Policy Number",
+          "cellType": "text"
+         },
+         {
+          "name": "Column 2",
+          "title": "Commencing Date",
+          "cellType": "text",
+          "inputType": "date"
+         },
+         {
+          "name": "Column 3",
+          "title": "Policy Owner",
+          "cellType": "text"
+         },
+         {
+          "name": "Column 4",
+          "title": "Insurer",
+          "cellType": "text"
+         },
+         {
+          "name": "Column 5",
+          "title": "Type of Cover",
+          "cellType": "dropdown",
+          "choices": [
+           {
+            "value": "Item 1",
+            "text": "Death Only"
+           },
+           {
+            "value": "Item 2",
+            "text": "Death & TPD"
+           },
+           {
+            "value": "Item 3",
+            "text": "Income Protection"
+           }
+          ]
+         },
+         {
+          "name": "Column 6",
+          "title": "Amount of Cover",
+          "cellType": "text",
+          "maskType": "currency",
+          "maskSettings": {
+           "prefix": "$"
+          }
+         },
+         {
+          "name": "Column 7",
+          "title": "Existing Income Protection",
+          "cellType": "comment",
+          "rows": 1,
+          "placeholder": "Waiting Period # days; Benefit Period # years"
+         },
+         {
+          "name": "Column 8",
+          "title": "To Be Replaced",
+          "cellType": "boolean"
+         }
+        ],
+        "choices": [
+         1,
+         2,
+         3,
+         4,
+         5
+        ],
+        "rowCount": 1,
+        "addRowText": "Add insurer"
+       },
+       {
+        "type": "boolean",
+        "name": "ever-declined",
+        "title": "(b) Have you ever been declined, deferred or accepted on special terms for life, disability or trauma insurance?",
+        "hideNumber": true
+       },
+       {
+        "type": "comment",
+        "name": "question28",
+        "visibleIf": "{ever-declined} = true",
+        "title": "Please provide details.",
+        "hideNumber": true
+       },
+       {
+        "type": "boolean",
+        "name": "even-claimed",
+        "title": "(c) Have you ever claimed benefits from any source (excluding unemployment), e.g. Accident, Sickness, Workers Compensation, Social Security, Disability Income Insurance or Pension?",
+        "hideNumber": true
+       },
+       {
+        "type": "comment",
+        "name": "question25",
+        "visibleIf": "{even-claimed} = true",
+        "title": "Please provide details.",
+        "hideNumber": true
+       },
+       {
+        "type": "boolean",
+        "name": "tobacco",
+        "title": "(a) In the last 12 months, have you smoked tobacco or any other substance such as cigarettes, cigars, pipes or used e-cigarettes or other nicotine products?"
+       },
+       {
+        "type": "comment",
+        "name": "question29",
+        "visibleIf": "{tobacco} = true",
+        "title": "Please state substance and daily quantity below.",
+        "description": "(Please note ‘packet’ is not sufficient detail.)",
+        "hideNumber": true,
+        "rows": 2,
+        "autoGrow": true
+       },
+       {
+        "type": "boolean",
+        "name": "alcohol",
+        "title": "(b) Do you drink alcohol?",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question27",
+        "visibleIf": "{alcohol} = true",
+        "title": "Please state how many standard drinks you consume per week on average (one standard drink = 30ml spirits (one nip), 100ml wine, 10oz/285ml beer):",
+        "hideNumber": true
+       },
+       {
+        "type": "boolean",
+        "name": "illicit-drugs",
+        "title": "(c) Have you ever used illicit drugs or received advice, treatment or counselling for the use of alcohol or illicit drugs?",
+        "hideNumber": true
+       },
+       {
+        "type": "comment",
+        "name": "question31",
+        "visibleIf": "{illicit-drugs} = true",
+        "title": " Please provide details.",
+        "hideNumber": true,
+        "rows": 2,
+        "autoGrow": true
+       },
+       {
+        "type": "text",
+        "name": "question30",
+        "title": "(a) What is your height? ",
+        "titleLocation": "left",
+        "maskType": "numeric",
+        "maskSettings": {
+         "min": 0
+        },
+        "placeholder": "cm"
+       },
+       {
+        "type": "text",
+        "name": "question32",
+        "startWithNewLine": false,
+        "title": "(b) What is your weight?",
+        "titleLocation": "left",
+        "hideNumber": true,
+        "maskType": "numeric",
+        "placeholder": "kg"
+       },
+       {
+        "type": "boolean",
+        "name": "travel",
+        "title": "Do you have definite plans to travel or reside overseas?"
+       },
+       {
+        "type": "matrixdynamic",
+        "name": "question33",
+        "visibleIf": "{travel} = true",
+        "title": "Please state.",
+        "hideNumber": true,
+        "alternateRows": true,
+        "columns": [
+         {
+          "name": "Column 1",
+          "title": "Countries",
+          "cellType": "dropdown",
+          "choicesByUrl": {
+           "url": "https://surveyjs.io/api/CountriesExample"
+          }
+         },
+         {
+          "name": "Column 2",
+          "title": "Duration of travel",
+          "cellType": "text",
+          "inputType": "number",
+          "placeholder": "in days"
+         },
+         {
+          "name": "Column 3",
+          "title": "Frequency of travel",
+          "cellType": "text"
+         },
+         {
+          "name": "Column 4",
+          "title": "Reason for travel",
+          "cellType": "comment",
+          "rows": 1
+         },
+         {
+          "name": "Column 5",
+          "title": "Date of departure",
+          "cellType": "text",
+          "inputType": "date"
+         }
+        ],
+        "choices": [
+         1,
+         2,
+         3,
+         4,
+         5
+        ],
+        "rowCount": 1,
+        "addRowText": "Add destination"
+       },
+       {
+        "type": "boolean",
+        "name": "activities",
+        "title": "Do you engage in or intend to engage in any of the following: abseiling, aviation (other than as a passenger on a recognized airline), football (all codes including touch football and oztag), long-distance sailing, hang gliding, scuba diving, motor racing, non-competitive off-road motorcycle sport (trail bike riding/dirt bike riding/motocross), parachuting, powerboat racing, mountaineering, martial arts or any other hazardous activity?"
+       },
+       {
+        "type": "html",
+        "name": "question48",
+        "visibleIf": "{activities} = true",
+        "html": "<u>Please request</u> and fill in <b>Appendix G</b> (Aviation or Activities/Pursuits Questionnaire)."
+       }
+      ],
+      "title": "C. Personal History",
+      "description": "(Life insured to complete this section in full.)"
+     },
+     {
+      "name": "page4",
+      "elements": [
+       {
+        "type": "panel",
+        "name": "panel6",
+        "elements": [
+         {
+          "type": "boolean",
+          "name": "family-history-question",
+          "title": "Have any of your immediate family (father, mother, brother, sister), prior to the age of 60 (living or dead), ever experienced heart disease, stroke, breast cancer, ovarian cancer, prostate cancer, colon (bowel) cancer, polycystic kidney disease, diabetes, Huntington’s chorea, Alzheimer’s disease, Dementia, Motor neurone disease, Multiple sclerosis, Muscular dystrophy, Parkinson’s disease or any other hereditary disease?",
+          "hideNumber": true
+         },
+         {
+          "type": "matrixdynamic",
+          "name": "question35",
+          "visibleIf": "{family-history-question} = true",
+          "title": "Please provide details in the table below. ",
+          "hideNumber": true,
+          "alternateRows": true,
+          "columns": [
+           {
+            "name": "Column 1",
+            "title": "Relative",
+            "cellType": "dropdown",
+            "minWidth": "20%",
+            "choices": [
+             "Father",
+             "Mother",
+             "Brother",
+             "Sister"
+            ]
+           },
+           {
+            "name": "Column 2",
+            "title": "Condition/Illness (for heart disease or cancer please specify the type)",
+            "cellType": "text",
+            "minWidth": "40%"
+           },
+           {
+            "name": "Column 3",
+            "title": "Age at onset (approx.)",
+            "cellType": "text",
+            "minWidth": "20%",
+            "inputType": "number"
+           },
+           {
+            "name": "Column 4",
+            "title": "Age at death (if applicable)",
+            "cellType": "text",
+            "minWidth": "20%",
+            "inputType": "number"
+           }
+          ],
+          "choices": [
+           1,
+           2,
+           3,
+           4,
+           5
+          ],
+          "rowCount": 1,
+          "addRowText": "Add relative"
+         }
+        ],
+        "title": "Family History",
+        "showNumber": true
+       },
+       {
+        "type": "panel",
+        "name": "panel7",
+        "elements": [
+         {
+          "type": "matrixdropdown",
+          "name": "question36",
+          "title": "(a) In the last 5 years, have you had sexual intercourse without a condom with the following persons?",
+          "hideNumber": true,
+          "showHeader": false,
+          "alternateRows": true,
+          "columns": [
+           {
+            "name": "Column 1",
+            "cellType": "boolean"
+           }
+          ],
+          "choices": [
+           1,
+           2,
+           3,
+           4,
+           5
+          ],
+          "rows": [
+           {
+            "value": "Row 1",
+            "text": "(i) Someone who might have exposed you to the Human Immunodeficiency Virus (HIV) infection. (This may include unprotected sexual intercourse with someone other than your regular partner whose HIV status is unknown to you.)"
+           },
+           {
+            "value": "Row 2",
+            "text": "(ii) Someone who injects non-prescribed drugs."
+           },
+           {
+            "value": "Row 3",
+            "text": "(iii) Someone who is a sex worker."
+           },
+           {
+            "value": "Row 4",
+            "text": "(iv) Someone who is infected with Human Immunodeficiency Virus (HIV) infection."
+           },
+           {
+            "value": "Row 5",
+            "text": "(v) Someone who is infected with Hepatitis B. (You may answer ‘No’ if you are vaccinated and have immunity for Hepatitis B.)"
+           },
+           {
+            "value": "Row 6",
+            "text": "(vi) Someone who is infected with Hepatitis C."
+           }
+          ],
+          "rowTitleWidth": "70%"
+         },
+         {
+          "type": "boolean",
+          "name": "question37",
+          "title": "(b) In the last 5 years, have you been diagnosed with or experienced symptoms of Sexually Transmitted Infection/s (STIs) (examples, chlamydia, gonorrhoea, syphilis)?",
+          "hideNumber": true
+         }
+        ],
+        "title": "Sexual Health",
+        "showNumber": true
+       }
+      ],
+      "title": "C. Personal History",
+      "description": "(Life insured to complete this section in full.) "
+     },
+     {
+      "name": "page5",
+      "elements": [
+       {
+        "type": "panel",
+        "name": "panel8",
+        "elements": [
+         {
+          "type": "boolean",
+          "name": "d-1-a",
+          "title": "(a) High blood pressure, chest pains, high cholesterol, heart murmurs, rheumatic fever, any heart complaint or stroke."
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-b",
+          "title": "(b) Asthma, chronic lung disease, sleep apnoea, COVID-19 (do not include a negative test result, or if never diagnosed) or other respiratory disorder."
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-c",
+          "title": "(c) Indigestion, gastric or duodenal ulcer or any bowel disorder."
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-d",
+          "title": "(d) Depression, anxiety/stress state, fatigue (including chronic fatigue syndrome), panic attacks, psychiatric treatment/counselling, mental illness or nervous disorder."
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-e",
+          "title": "(e) Epilepsy, fits of any kind, paralysis, migraines, tinnitus, dizziness or recurrent headaches or any neurological disorder including multiple sclerosis."
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-f",
+          "title": "(f) Arthritis, repetitive strain injury (RSI), fibromyalgia."
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-g",
+          "title": "(g) Back or neck complaint, whiplash, sciatica or any other disorder of joints (excluding arthritis), bones or muscles."
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-h",
+          "title": "(h) Psoriasis or eczema, skin disorder, defect in hearing or sight."
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-i",
+          "title": "(i) Diabetes, abnormal blood sugar, gout or thyroid disorder."
+         },
+         {
+          "type": "html",
+          "name": "d-1-additional-forms",
+          "visibleIf": "{d-1-a} = true or {d-1-b} = true or {d-1-c} = true or {d-1-d} = true or {d-1-e} = true or {d-1-f} = true or {d-1-g} = true or {d-1-h} = true or {d-1-i} = true",
+          "html": "As you have answered ‘Yes’ to some of the above question(s), <u>please also request</u> and complete a questionnaire for each condition <b>(Appendixes H to L)</b>."
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-j",
+          "title": "(j) Cancer, cyst, lump, tumour or growth of any kind including skin cancer such as melanoma, BCC, SCC (basal cell or squamous cell carcinoma) or skin lesions/moles that have changed in shape, colour or size."
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-k",
+          "title": "(k) Liver disorder (including fatty liver), pancreas, prostate, kidney or bladder disorder, renal colic or stone."
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-l",
+          "title": "(l) Blood disorder, anaemia, haemochromatosis, haemophilia or leukaemia."
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-m",
+          "title": "(m) Hepatitis B or C (including carrier), Human Immunodeficiency Virus (HIV) infection, Acquired Immune Deficiency Syndrome (AIDS)."
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-n",
+          "visibleIf": "{gender} = 'Item 2'",
+          "title": "(n) Are you pregnant?",
+          "resetValueIf": "{gender} = 'Item 1'"
+         },
+         {
+          "type": "text",
+          "name": "d-1-due-date",
+          "visibleIf": "{d-1-n} = true and {gender} = 'Item 2'",
+          "title": "Please provide estimated date child is due.",
+          "resetValueIf": "{gender} = 'Item 1' or {d-1-n} = false",
+          "inputType": "date"
+         },
+         {
+          "type": "html",
+          "name": "d-1-advised",
+          "visibleIf": "{gender} = 'Item 2'",
+          "resetValueIf": "{gender} = 'Item 1'",
+          "html": "Have you ever had or been advised to have treatment for:"
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-o",
+          "visibleIf": "{gender} = 'Item 2'",
+          "title": "(o) Any breast lump (even if you have not seen a doctor) or any abnormal mammogram or breast ultrasound? ",
+          "resetValueIf": "{gender} = 'Item 1'"
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-p",
+          "visibleIf": "{gender} = 'Item 2'",
+          "title": "(p) An abnormal cervical smear (pap smear) test including the detection of Human Papilloma Virus (HPV) or any abnormality of the ovaries?",
+          "resetValueIf": "{gender} = 'Item 1'"
+         },
+         {
+          "type": "boolean",
+          "name": "d-1-q",
+          "visibleIf": "{gender} = 'Item 2'",
+          "title": "(q) Abnormal vaginal bleeding within the last 12 months or endometriosis?",
+          "resetValueIf": "{gender} = 'Item 1'"
+         }
+        ],
+        "questionTitleWidth": "70%",
+        "questionTitleLocation": "left",
+        "title": "Have you ever experienced symptoms of, or had, or been told you have, or received any advice, investigation or treatment for any of the following?",
+        "showNumber": true,
+        "showQuestionNumbers": "off"
+       },
+       {
+        "type": "matrixdropdown",
+        "name": "question6",
+        "visibleIf": "{d-1-j} = true or {d-1-k} = true or {d-1-l} = true or {d-1-m} = true",
+        "title": "For each ‘Yes’ answer in questions 1j–1m above, please provide full details in the table below.",
+        "hideNumber": true,
+        "columns": [
+         {
+          "name": "Column 1",
+          "title": "Illness, Injury or Tests",
+          "cellType": "text",
+          "minWidth": "130px",
+          "width": "200px"
+         },
+         {
+          "name": "Column 2",
+          "title": "Date of Illness/Injury",
+          "cellType": "text",
+          "inputType": "date"
+         },
+         {
+          "name": "Column 3",
+          "title": "Time off Work",
+          "cellType": "text"
+         },
+         {
+          "name": "Column 4",
+          "title": "Degree of Recovery %",
+          "cellType": "text",
+          "inputType": "number"
+         },
+         {
+          "name": "Column 5",
+          "title": "Results of Tests",
+          "cellType": "text",
+          "minWidth": "130px",
+          "width": "200px"
+         },
+         {
+          "name": "Column 6",
+          "title": "Reason and type of treatment including date of last symptoms",
+          "cellType": "comment",
+          "minWidth": "130px",
+          "width": "200px",
+          "rows": 1
+         },
+         {
+          "name": "Column 7",
+          "title": "Full name and address of doctor or hospital (if any)",
+          "cellType": "comment",
+          "minWidth": "130px",
+          "width": "200px",
+          "rows": 1
+         }
+        ],
+        "choices": [
+         1,
+         2,
+         3,
+         4,
+         5
+        ],
+        "rows": [
+         {
+          "value": "Row 1",
+          "text": "(j)",
+          "visibleIf": "{d-1-j} = true"
+         },
+         {
+          "value": "Row 2",
+          "text": "(k)",
+          "visibleIf": "{d-1-k} = true"
+         },
+         {
+          "value": "Row 3",
+          "text": "(l)",
+          "visibleIf": "{d-1-l} = true"
+         },
+         {
+          "value": "Row 4",
+          "text": "(m)",
+          "visibleIf": "{d-1-m} = true"
+         },
+         {
+          "value": "Row 5",
+          "text": "(o)",
+          "visibleIf": "{d-1-o} = true"
+         },
+         {
+          "value": "Row 6",
+          "text": "(p)",
+          "visibleIf": "{d-1-p} = true"
+         },
+         {
+          "value": "Row 7",
+          "text": "(q)",
+          "visibleIf": "{d-1-q} = true"
+         }
+        ],
+        "rowTitleWidth": "10px"
+       },
+       {
+        "type": "boolean",
+        "name": "question58",
+        "title": "Have you ever experienced symptoms of or had any other illness, disease or disorder?",
+        "titleLocation": "top"
+       },
+       {
+        "type": "panel",
+        "name": "panel9",
+        "elements": [
+         {
+          "type": "boolean",
+          "name": "question59",
+          "title": "(a) Had any medical examinations, consultations, X-rays, pathology tests or procedures? "
+         },
+         {
+          "type": "boolean",
+          "name": "question60",
+          "title": "(b) Occasionally or regularly taken any stimulants, sedatives, medications or prescribed drugs?"
+         }
+        ],
+        "questionTitleWidth": "70%",
+        "questionTitleLocation": "left",
+        "title": "In the last 5 years have you:",
+        "showNumber": true,
+        "showQuestionNumbers": "off"
+       },
+       {
+        "type": "boolean",
+        "name": "question61",
+        "title": "Are you currently under ongoing monitoring, consultation or review for any condition, complaint or finding?"
+       },
+       {
+        "type": "boolean",
+        "name": "question62",
+        "title": "Are you currently considering or have you been advised/referred to undergo further treatment, investigation or procedure?"
+       }
+      ],
+      "title": "D. Medical and Health History",
+      "description": "(Life insured to complete this section in full.) "
+     },
+     {
+      "name": "page6",
+      "elements": [
+       {
+        "type": "panel",
+        "name": "panel10",
+        "elements": [
+         {
+          "type": "text",
+          "name": "question34",
+          "title": "Name:"
+         },
+         {
+          "type": "text",
+          "name": "question38",
+          "title": "Address:"
+         },
+         {
+          "type": "text",
+          "name": "question46",
+          "startWithNewLine": false,
+          "title": "Zip code:",
+          "maskType": "pattern",
+          "maskSettings": {
+           "pattern": "99999"
+          }
+         },
+         {
+          "type": "text",
+          "name": "question39",
+          "title": "Phone:",
+          "maskType": "pattern",
+          "maskSettings": {
+           "pattern": "99 99999999"
+          }
+         },
+         {
+          "type": "text",
+          "name": "question40",
+          "startWithNewLine": false,
+          "title": "Email (if known):"
+         }
+        ],
+        "questionTitleWidth": "130px",
+        "questionTitleLocation": "left",
+        "title": "(a) Details of your personal doctor",
+        "description": "IF NO PERSONAL DOCTOR, PLEASE STATE NAME/ADDRESS OF LAST DOCTOR OR MEDICAL CENTRE YOU ATTENDED.",
+        "showNumber": true,
+        "showQuestionNumbers": "off"
+       },
+       {
+        "type": "text",
+        "name": "question41",
+        "title": "(b) What was the date of your last consultation?",
+        "description": "(Give approximate date if exact date unknown.)",
+        "hideNumber": true,
+        "inputType": "date"
+       },
+       {
+        "type": "text",
+        "name": "since-date",
+        "startWithNewLine": false,
+        "title": "(c) Since when have you attended the surgery/practice?",
+        "description": "(Give approximate date if exact date unknown.)",
+        "hideNumber": true,
+        "inputType": "date",
+        "maskType": "numeric",
+        "placeholder": "in years"
+       },
+       {
+        "type": "panel",
+        "name": "panel11",
+        "elements": [
+         {
+          "type": "text",
+          "name": "question42",
+          "title": "Name:"
+         },
+         {
+          "type": "text",
+          "name": "question43",
+          "title": "Address:"
+         },
+         {
+          "type": "text",
+          "name": "question47",
+          "startWithNewLine": false,
+          "title": "Zip code:",
+          "maskType": "pattern",
+          "maskSettings": {
+           "pattern": "99999"
+          }
+         },
+         {
+          "type": "text",
+          "name": "question44",
+          "title": "Phone:",
+          "maskType": "pattern",
+          "maskSettings": {
+           "pattern": "99 99999999"
+          }
+         },
+         {
+          "type": "text",
+          "name": "question45",
+          "startWithNewLine": false,
+          "title": "Email (if known):"
+         }
+        ],
+        "visibleIf": "{duration} =<12",
+        "questionTitleWidth": "130px",
+        "questionTitleLocation": "left",
+        "title": " (d) Please provide the name and address of your previous personal doctor or medical center.",
+        "showQuestionNumbers": "off"
+       }
+      ],
+      "title": "E. Doctor’s Details",
+      "description": "(Life insured to complete this section in full.)"
+     },
+     {
+      "name": "page7",
+      "elements": [
+       {
+        "type": "text",
+        "name": "question49",
+        "title": "(a) What is your usual occupation?"
+       },
+       {
+        "type": "boolean",
+        "name": "manual-work",
+        "title": "(b) Do you perform any manual work?",
+        "hideNumber": true
+       },
+       {
+        "type": "matrixdropdown",
+        "name": "question51",
+        "visibleIf": "{manual-work} = true",
+        "title": "Please describe duties and percentage of time spent in each.",
+        "hideNumber": true,
+        "columns": [
+         {
+          "name": "Column 2",
+          "title": "% of time",
+          "cellType": "text",
+          "minWidth": "50px",
+          "width": "50px"
+         },
+         {
+          "name": "Column 3",
+          "title": "Please describe your specific duties and where they are performed",
+          "cellType": "comment",
+          "rows": 1
+         }
+        ],
+        "choices": [
+         1,
+         2,
+         3,
+         4,
+         5
+        ],
+        "rows": [
+         {
+          "value": "Row 1",
+          "text": "Sendentary"
+         },
+         {
+          "value": "Row 2",
+          "text": "Light manual"
+         },
+         {
+          "value": "Row 3",
+          "text": "Heavy manual"
+         }
+        ],
+        "rowTitleWidth": "110px"
+       },
+       {
+        "type": "text",
+        "name": "question52",
+        "title": "What is your annual income? ",
+        "maskType": "currency",
+        "maskSettings": {
+         "prefix": "$"
+        }
+       },
+       {
+        "type": "radiogroup",
+        "name": "question53",
+        "title": "Hours currently working per week.",
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "Zero"
+         },
+         {
+          "value": "Item 2",
+          "text": "1–14 hours"
+         },
+         {
+          "value": "Item 3",
+          "text": "15–60 hours"
+         }
+        ],
+        "showOtherItem": true,
+        "otherText": ">60 hours – please provide number of hours if >60",
+        "colCount": 4
+       }
+      ],
+      "title": "F. Present Occupation",
+      "description": "(Life insured to complete this section in full.)"
+     }
+    ],
+    "calculatedValues": [
+     {
+      "name": "duration",
+      "expression": " dateDiff({since-date}, today(), 'months')"
+     }
+    ],
+    "showQuestionNumbers": "onPage",
+    "showTOC": true,
+    "checkErrorsMode": "onValueChanged",
+    "firstPageIsStarted": true,
+    "widthMode": "static",
+    "width": "1500"
+   }
