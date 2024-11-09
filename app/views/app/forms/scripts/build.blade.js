@@ -1,0 +1,97 @@
+const creatorOptions = {
+    showLogicTab: true,
+    isAutoSave: true
+};
+
+const creator = new SurveyCreator.SurveyCreator(creatorOptions);
+creator.text = `{!! json_encode($form->content) !!}`;
+
+creator.render("surveyCreator");
+
+// Function to create the logo element
+function createLogoElement() {
+
+    const logoElement = document.getElementById('svcLogo');
+    if(logoElement) {
+        return false;
+    }
+
+    const logoContainer = document.createElement('div');
+    logoContainer.id = 'svcLogo';
+
+    // Create an anchor element
+    const logoLink = document.createElement('a');
+    logoLink.href = '/'; // Set the homepage URL here
+    logoLink.style.display = 'flex'; // Use flex to align items if needed
+    logoLink.style.alignItems = 'center'; // Center align the logo vertically
+
+    const logo = document.createElement('img');
+    logo.src = '/assets/images/brand/logo-dark.png'; // Set your logo path here
+    logo.alt = 'Logo';
+    logo.style.height = '40px'; // Adjust size as necessary
+    logo.style.margin = '0 10px'; // Adjust margin as necessary
+    logo.style.marginTop = '10px'; // Adjust margin as necessary
+    
+    logoLink.appendChild(logo); // Append logo to the anchor link
+    logoContainer.appendChild(logoLink); // Append anchor link to the logo container
+    
+    return logoContainer;
+}
+
+// Function to create the save status element
+function createSaveStatusElement() {
+    
+}
+
+// Function to update save status
+function updateSaveStatus(status) {
+    
+}
+
+// Observer to modify the menu after rendering
+const observer = new MutationObserver((mutations, obs) => {
+    const svcMenuTab = document.querySelector('.svc-tabbed-menu');
+    if (svcMenuTab) {
+        setTimeout(() => {
+            // Inject logo
+            const logoElement = createLogoElement();
+
+            if(logoElement) {
+                svcMenuTab.prepend(logoElement);
+            }
+
+            obs.disconnect(); // Stop observing once modifications are made
+        }, 100); // Delay to ensure the menu is rendered
+    }
+});
+
+observer.observe(document.getElementById("surveyCreator"), {
+    childList: true,
+    subtree: true
+});
+
+// Example of save function using the created save status
+creator.saveSurveyFunc = function () {
+    const formContent = creator.text;
+
+    $.ajax({
+        url: "{{ route('forms.update', $form->id) }}",
+        type: 'POST',
+        data: {
+            _token: csrf_token,
+            content: formContent
+        },
+        success: function (response) {
+            if(!response.status) {
+                return console.log(response);
+            }
+        },
+        error: function (error) {
+            console.log('An error occurred while saving the form.');
+        }
+    });
+};
+
+document.addEventListener("DOMContentLoaded", function() {
+    creator.render(document.getElementById("surveyCreator"));
+});

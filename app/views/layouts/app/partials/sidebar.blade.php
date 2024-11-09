@@ -1,0 +1,37 @@
+<div class="collapse navbar-collapse navbar-top-collapse order-1 order-lg-0 justify-content-center" id="navbarTopCollapse">
+    <ul class="navbar-nav navbar-nav-top" data-dropdown-on-hover="data-dropdown-on-hover">
+        <li class="nav-item">
+            <a class="nav-link lh-1" href="@route('app.home')" wire:navigate>
+                <i class="fa-solid fa-grid-2 me-2 fs-10"></i>
+                Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link lh-1" href="@route('spaces.list')" wire:navigate>
+                <i class="fa-solid fa-folders me-2 fs-10"></i>
+                Spaces
+            </a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle lh-1 @active('app.forms')"
+                href="javascript:void(0)" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="fa-regular fa-table-tree me-2 fs-10"></span>
+                Forms
+            </a>
+            <ul class="dropdown-menu navbar-dropdown-caret">
+                <li class="nav-item">
+                    <a class="nav-link dropdown-item" href="@route('forms.list')" wire:navigate>
+                        <span class="fa-solid fa-bars-sort me-2 fs-10"></span>
+                        List
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link dropdown-item" href="@route('forms.build')" wire:navigate>
+                        <i class="fa-solid fa-screwdriver-wrench me-2 fs-10"></i>
+                        Buid
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
