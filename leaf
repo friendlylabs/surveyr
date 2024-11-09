@@ -1,0 +1,73 @@
+#!/usr/bin/env php
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Register The Auto Loader
+|--------------------------------------------------------------------------
+|
+| Composer provides a convenient, automatically generated class loader
+| for our application. We just need to utilize it! We'll require it
+| into the script here so that we do not have to worry about the
+| loading of any our classes "manually". Feels great to relax.
+|
+*/
+require __DIR__ . '/vendor/autoload.php';
+
+/*
+|--------------------------------------------------------------------------
+| Bring in (env)
+|--------------------------------------------------------------------------
+|
+| Quickly use our environment variables
+|
+*/
+try {
+    \Dotenv\Dotenv::createUnsafeImmutable(__DIR__)->load();
+} catch (\Throwable $th) {
+    trigger_error($th);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Load Leaf configuration
+|--------------------------------------------------------------------------
+|
+| Leaf MVC allows you to customize Leaf and it's modules using
+| configuration files defined in the config folder. This line
+| loads the configuration files and makes them available to
+| your application.
+|
+*/
+Leaf\Core::loadApplicationConfig();
+Leaf\Database::connect();
+
+/*
+|--------------------------------------------------------------------------
+| Initialise Leaf CMD
+|--------------------------------------------------------------------------
+|
+| Initialise aloe CLI
+|
+*/
+$console = new \Aloe\Console('Leaf MVC', 'v3.5.0');
+
+/*
+|--------------------------------------------------------------------------
+| Add commands
+|--------------------------------------------------------------------------
+|
+| Add custom commands
+|
+*/
+\App\Console\Commands::register($console);
+
+/*
+|--------------------------------------------------------------------------
+| Run The console Application
+|--------------------------------------------------------------------------
+|
+| Transport water and dissolved substances to the rest of Leaf😂
+|
+*/
+$console->run();
