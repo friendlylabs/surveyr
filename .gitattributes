@@ -1,0 +1,7 @@
+/public/vendor/* linguist-vendored
+/public/assets/vendor/* linguist-vendored
+
+/public/vendor/*.js linguist-detectable=false
+/public/vendor/*.css linguist-detectable=false
+/public/assets/vendor/*.js linguist-detectable=false
+/public/assets/vendor/*.css linguist-detectable=false
