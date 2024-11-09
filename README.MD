@@ -1,37 +1,58 @@
-# Origin: Minimal Leaf Starter Kit
+# README
 
-A minimal starter kit for Leaf PHP, inspired by Laravel Breeze. This kit provides essential scaffolding for authentication, built with **Blade**, **Bootstrap**, and yes... **jQuery**. 😉
+Survey is an open-source form builder that allows anyone to create engaging forms for surveys, questionnaires, quizzes, and polls.
 
-## What comes in origin
+## Features
 
-#### Authentication
+- 📝 **Drag and Drop Builder**Effortlessly design forms using an intuitive drag-and-drop interface. Add various question types, text fields, dropdowns, checkboxes, and more with just a few clicks. The builder simplifies creating interactive and visually appealing forms, making it accessible for non-technical users.
+- 🧠 **Conditional Logic and Branching**Implement powerful conditional logic to show or hide questions based on user responses. This feature allows you to create personalized, dynamic forms that adapt to each user's answers, enhancing engagement and relevance.
+- 🔗 **Webhooks Integration**Seamlessly connect your forms with other platforms and automate workflows using webhooks. Push form submissions to your CRM, send notifications to Slack, trigger emails, or integrate with third-party services to streamline your data processing.
+- 🖼️ **Tailored Templates**Get started quickly with a variety of pre-designed templates tailored for different use cases like customer feedback, event registrations, quizzes, and more. Customize these templates to fit your brand's look and feel.
+- 📊 **Insightful Analytics**Gain valuable insights from your data with built-in analytics. Track form performance, response rates, and user behavior. Visualize your data with charts and graphs to make informed decisions and optimize your surveys for better results.
+- 📤 **Flexible Data Export**Easily export your form data in multiple formats, such as CSV, Excel, or JSON. This flexibility ensures that you can analyze your data offline or import it into other tools for deeper analysis.
+- 📶 **Offline Data Collection (Coming Soon)**
+  Collect responses even when there's no internet connection. Once the device is back online, the data automatically syncs to ensure you never miss any submissions. This feature is perfect for field surveys, remote areas, or on-the-go data collection.
 
-Origin provides a secure and flexible authentication system, enabling users to register, log in, and log out with ease. It includes:
+## System dependencies
 
-- **Session Management**: Keeps users logged in with robust session handling, ensuring security and user experience.
-- **2FA Verification**: Adds an extra layer of protection by allowing users to enable two-factor authentication (2FA) for their accounts, offering both SMS and app-based token options.
-- **Sign-in Mail Alerts**: Notifies users of any login attempts or new sign-ins, helping them monitor account activity in real-time.
-- **OAuth Login with Google**: Simplifies sign-in with the option to authenticate using Google, speeding up the process for users who prefer single sign-on (SSO).
+- PHP 8+
+- MySQL 5.7+
 
-#### Well-Designed UI/UX
+## Getting started
 
-The app features a responsive design, ensuring a seamless experience on any device, from desktops to mobile phones. The intuitive user interface (UI) ensures that users can navigate the app easily, while the optimized user experience (UX) patterns reduce friction and make it easy to access key features.
+- Fork the repository or install from composer
 
-#### Mailing Templates
+  ```
+  composer create-project friendlylabs/surveyr
+  ```
+- Run the migrations and seed the database
 
-Ready-to-use email templates for common transactional emails like password resets, account confirmation, and notifications. These templates are designed to be customizable and professional, keeping consistent with the app’s branding.
+  ```
+  php leaf db:migrate
+  ```
 
-## Why Origin?
+  ```
+  php leaf db:seed
+  ```
 
-Origin is perfect for developers who want a quick start with Leaf PHP without all the overhead. It's lightweight, simple and minimal, allowing you to focus on building your app while providing a basic structure for common web application features.
+## Contributing
 
-## Installation
+We welcome contributions from the community. If you have ideas for new features, bug fixes, or enhancements, feel free to submit a pull request. For major changes, please open an issue first to discuss the proposed changes.
 
-1. Clone the repository:
-   ```bash
-   composer create-project leafs/origin:dev-main <PROJECT>
-   ```
+## License
+
+Survey is open-source software licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](https://www.gnu.org/licenses/agpl-3.0.html). You are free to use, modify, and distribute the software under the terms of this license.
 
 ## Credits
 
-- Logo Icon made by [Jeremiah Foster](https://www.jeremiahfoster.com/)
+Survey is developed and maintained by [Friendly Labs](https://friendlylabs.io/), a team passionate about building tools that empower individuals and organizations to create, collaborate, and innovate. We believe in the power of open-source software to drive positive change and foster a more inclusive and accessible digital world.
+
+- [surveyjs](https://surveyjs.io) - For the survey builder library
+- [leafphp](https://leafphp.dev) - Project Framework
+- [bootstrap](https://getbootstrap.com) - Frontend Framework
+- [fontawesome](https://fontawesome.com) - Icons
+
+**Disclaimer:**
+
+1. This project is not affiliated with or endorsed by the surveyjs, leafphp, bootstrap, or fontawesome projects. The names and logos are trademarks of their respective owners.
+2. Surveyr leverages **SurveyJS** for its form-building capabilities. With that being said Surveyr must strictly be used for non-commercial purposes unless you obtain a developer license from SurveyJS. For more information, please review the [SurveyJS License.](https://surveyjs.io/licensing)
