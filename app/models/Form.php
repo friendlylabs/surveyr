@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Models;
-use Leaf\Database as DB;
 
-// all json_array items are stored as strings: ["1", "2", "3"]
+use Leaf\Database as DB;
 
 class Form extends Model
 {    
@@ -13,13 +12,14 @@ class Form extends Model
         'description',
         'slug',
         'content',
+        'questions',    // summary of content, indexes only questions
         'user_id',
         'collaborators',
         'spaces',
         'is_locked',
         'current_editor',
         'is_indefinite',
-        'submission_url',
+        'reviews',
         'webhook_url',
         'access_code',
         'start_date',
@@ -31,8 +31,10 @@ class Form extends Model
     
     protected $casts = [
         'content' => 'json',
+        'questions' => 'json',
         'collaborators' => 'json',
         'spaces' => 'json',
+        'reviews' => 'json',
         'is_locked' => 'boolean',
         'is_indefinite' => 'boolean',
         'start_date' => 'datetime',
@@ -45,22 +47,30 @@ class Form extends Model
         'is_indefinite' => 0,
         'collaborators' => '[]',
         'spaces' => '[]',
-        'content' => '[]'
+        'content' => '[]',
+        'reviews' => '["reviewed", "pending"]'
     ];
 
     # user forms
-    public static function userForms($user_id) : object
+    public static function userForms($userId) : object
     {
-        return static::where('user_id', $user_id)
-            ->orWhereJsonContains('collaborators', $user_id)
+        /*return static::where('user_id', $userId)
+            ->orWhereJsonContains('collaborators', $userId)
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get();*/
+
+        $spaces = Space::absoluteUserSpaces($userId);
+        return static::where(function ($query) use ($userId, $spaces) {
+            $query->where('user_id', $userId)
+                ->orWhereJsonContains('collaborators', (string) $userId)
+                ->orWhereJsonContains('spaces', array_map('strval', $spaces));
+        })->orderBy('created_at', 'desc')->get();
     }
 
     # active forms (start_date < now, end_date > now) or (is_indefinite = 1)
-    public static function openForms($user_id) : object
+    public static function openForms($userId) : object
     {
-        return static::where('user_id', $user_id)
+        return static::where('user_id', $userId)
             ->where(function($query) {
                 $query->where('start_date', '<', now())
                     ->where('end_date', '>', now())
@@ -86,6 +96,7 @@ class Form extends Model
             ]);
     }
 
+    # belongs to user
     public function user()
     {
         return $this->belongsTo(User::class);
