@@ -9,6 +9,7 @@ class Collection extends Model
     protected $fillable = [
         "form_id",
         "submission",
+        'review'
     ];
 
     public $timestamps = true;
@@ -17,6 +18,26 @@ class Collection extends Model
         "created_at" => "datetime",
         "updated_at" => "datetime",
     ];
+
+    # filtered review
+    # where users is author or collaborator or belongs to space with which a form belongs
+    public static function ofReview(string $review, int $userId) : object
+    {
+        $spaces = Space::where('user_id', $userId)
+            ->orWhereJsonContains('members', (string) $userId)->get()->pluck('id')->toArray();
+        if(!$spaces || !count($spaces)) $spaces = [0];
+
+        return static::where('review', $review)
+            ->where(function ($query) use ($userId, $spaces) {
+                $query->whereHas('form', function ($query) use ($userId, $spaces) {
+                    $query->where('user_id', $userId)
+                        ->orWhereJsonContains('collaborators', (string) $userId)
+                        ->orWhereJsonContains('spaces', array_map('strval', $spaces));
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
 
     # form collections
     public static function formCollections(int $form_id) : object
@@ -27,29 +48,43 @@ class Collection extends Model
     # recent submissions
     public static function recentSubmissions(int $userId, int $limit=10) : object
     {
-        # collection where user is the owner or collaborator
-        return Collection::whereHas('form', function ($query) use ($userId) {
-            $query->where('user_id', $userId)
-                  ->orWhereJsonContains('collaborators', $userId);
-            })
-        ->orderBy('created_at', 'desc')
-        ->limit(10)
+        $spaces = Space::where('user_id', $userId)
+            ->orWhereJsonContains('members', (string) $userId)->get()->pluck('id')->toArray();
+        if(!$spaces || !count($spaces)) $spaces = [0];
+
+        if(!$spaces) $spaces = [];
+        return static::where(function ($query) use ($userId, $spaces) {
+            $query->whereHas('form', function ($query) use ($userId, $spaces) {
+                $query->where('user_id', $userId)
+                    ->orWhereJsonContains('collaborators', (string) $userId)
+                    ->orWhereJsonContains('spaces', array_map('strval', $spaces));
+            });
+        })
+        ->orderBy('created_at', 'desc') // Order by created_at descending
+        ->limit($limit)
         ->get();
     }
 
     # form stats (count)
     public static function formStats($userId, int $limit=5) : object
     {
-        // SELECT form_id, COUNT(id) FROM collections GROUP BY form_id
+        $spaces = Space::where('user_id', $userId)
+            ->orWhereJsonContains('members', (string) $userId)->get()->pluck('id')->toArray();
+        if(!$spaces || !count($spaces)) $spaces = [0];
+
         return static::with('form')
-            ->whereHas('form', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            })
-            ->select('form_id', DB::$capsule::raw('COUNT(id) as count'))
-            ->groupBy('form_id')
-            ->orderBy('count', 'desc')
-            ->limit($limit)
-            ->get();
+        ->where(function ($query) use ($userId, $spaces) {
+            $query->whereHas('form', function ($query) use ($userId, $spaces) {
+                $query->where('user_id', $userId)
+                    ->orWhereJsonContains('collaborators', (string) $userId)
+                    ->orWhereJsonContains('spaces', array_map('strval', $spaces));
+            });
+        })
+        ->select('form_id', DB::$capsule::raw('COUNT(id) as count'))
+        ->groupBy('form_id')
+        ->orderBy('count', 'desc')
+        ->limit($limit)
+        ->get();
     }
 
 
