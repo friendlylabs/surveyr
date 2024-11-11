@@ -1,5 +1,4 @@
 /public/vendor/* linguist-vendored
 /public/assets/vendor/* linguist-vendored
 
-/public/vendor/* linguist-detectable=false
-/public/assets/vendor/* linguist-detectable=false
+*.css linguist-detectable=false
