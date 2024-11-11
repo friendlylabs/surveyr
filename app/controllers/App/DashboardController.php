@@ -11,7 +11,6 @@
  */
 
 namespace App\Controllers\App;
-
 use App\Controllers\Controller;
 
 use App\Models\Form;
@@ -61,11 +60,11 @@ class DashboardController extends Controller
                 'icon' => 'fa-regular fa-folders text-info'
             ],
 
-            # TODO: unreviewed
+            # unreviewed
             [
                 'title' => 'Pending',
                 'subtitle' => 'unreviewed submissions',
-                'count' => 0,
+                'count' => Collection::ofReview('pending', auth()->id())->count(),
                 'icon' => 'fa-regular fa-seal-exclamation text-danger'
             ]
 
