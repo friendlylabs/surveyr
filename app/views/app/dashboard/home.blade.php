@@ -80,26 +80,26 @@
                                         <tr>
                                             <th>Form Name</th>
                                             <th>Submission Summary</th>
-                                            <th class="text-end"></th>
+                                            <th class="text-end">Submitted</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($recentSubmissions as $submission)
                                             <tr>
-                                                <td class="align-middle ps-1">
+                                                <td class="align-middle ps-1" style="min-width: 200px;">
                                                     <a href="{{ route('forms.submissions', $submission->form_id) }}" class="fw-bold">
                                                         {{ $submission->form->title }}
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <div class="text-truncate" style="max-width: 200px;">
+                                                    <div class="text-truncate" style="max-width: 60%;">
                                                         @foreach($submission->submission as $key => $value)
-                                                            <span class="text-body-secondary fs-10 fw-bold">{{ $key }}:</span>
-                                                            <span class="text-body-secondary fs-10">{{ $value }}</span><br>
+                                                            <span class="text-body-secondary fs-10">{{ $key }}:</span>
+                                                            <span class="text-body-secondary fs-10 fw-bold">
+                                                                {{ is_array($value) ? implode(', ', $value) : $value }}
+                                                            </span> |
 
-                                                            @if ($loop->index == 3)
-                                                                @break
-                                                            @endif
+                                                            @if ($loop->index == 3) @break @endif
                                                         @endforeach
                                                     </div>
                                                 </td>
