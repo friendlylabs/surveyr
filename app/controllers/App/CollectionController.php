@@ -64,9 +64,9 @@ class CollectionController extends Controller
         # data allocation
         $this->form = $form;
         $this->collections = Collection::formCollections($formId);
-        $this->questions = $this->extractQuestions($form->content);
+        $this->questions = $this->extractQuestions($form->questions);
 
-        $this->renderPage("Submissions for $form->title", "app.collections.show");
+        $this->renderPage("Submissions for $form->title", "app.collections.list");
     }
 
     /**
@@ -99,13 +99,12 @@ class CollectionController extends Controller
      * @param array $formContent
      * @return array
      */
-    protected function extractQuestions(array $formContent) : array
+    protected function extractQuestions(array $formQuestions) : array
     {
         $questions = [];
-        foreach($formContent['pages'] as $page){
-            foreach ($page['elements'] as $element) {
-                $questions[$element['name']] = $element['title'];
-            }
+        foreach($formQuestions as $question){
+            if(!isset($question['title'])) continue;
+            $questions[$question['name']] = trim($question['title']) != '' ? $question['title'] : null; 
         }
 
         return $questions;
@@ -121,11 +120,10 @@ class CollectionController extends Controller
                 return $element['name'];
             }, $page['elements']);
             
-            // Add the tab with name, questions, and an undefined vizPanel
+            // TODO: Tabify visualization
             $tabs[] = [
-                'name' => $page['title'],
-                'questions' => $questions,
-                'vizPanel' => null
+                'name' => $page['title'] ?? 'Page',
+                'questions' => $questions
             ];
         }
         
