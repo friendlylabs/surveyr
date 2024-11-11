@@ -182,7 +182,7 @@ return [
     | Allow users to register
     |
     */
-    'ALLOW_REGISTRATION' => true,   
+    'ALLOW_REGISTRATION' => false,   
 
     /*
     |--------------------------------------------------------------------------
@@ -277,7 +277,7 @@ return [
     | Verify email before login
     |
     */
-    'VERIFY_EMAIL' => true,
+    'VERIFY_EMAIL' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -287,7 +287,7 @@ return [
     | Enforce email verification before login
     |
     */
-    'ENFORCE_VERIFY_EMAIL' => true,
+    'ENFORCE_VERIFY_EMAIL' => false,
 
     /*
     |--------------------------------------------------------------------------
