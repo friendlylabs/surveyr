@@ -21,9 +21,6 @@ class Controller extends \Leaf\Controller
             $this->title = null;
         }
 
-        if(!$this->isWireNavigation()) {            
-            $this->alpineScript = '<script src="/vendor/alpine/alpine.wire.js"></script>';
-        }
     }
 
     public function __set($name, $value)
