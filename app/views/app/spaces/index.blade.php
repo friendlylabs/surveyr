@@ -39,7 +39,7 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <a class="dropdown-item" href="{{ route('spaces.manage', $space->id) }}">
+                                                    <a class="dropdown-item" href="{{ route('spaces.show', $space->id) }}">
                                                         <i class="fa-solid fa-edit me-2"></i>
                                                         Manage Space
                                                     </a>
@@ -61,15 +61,18 @@
                                         {{ \App\Models\Space::spaceForms($space->id)->count() }} Forms
                                     </div>
                                     <div class="col-auto text-end">
-                                        <!-- TODO: Requires optimization -->
+
                                         @php $collaborators = \App\Models\Space::spaceMembers($space->id) @endphp
                                         @if($collaborators->count())
-                                            @foreach($collaborators as $collaborator)
-                                                <div class="avatar avatar-s rounded-circle">
-                                                    <img class="rounded-circle" src="{{ urlPath($collaborator->avatar) }}" alt="{{ $collaborator->fullname }}">
-                                                </div>
-                                            @endforeach
+                                            <div class="avatar-group avatar-group-dense d-block mx-auto">
+                                                @foreach($collaborators as $collaborator)
+                                                    <div class="avatar avatar-s rounded-circle">
+                                                        <img class="rounded-circle" src="{{ urlPath($collaborator->avatar) }}" alt="{{ $collaborator->fullname }}">
+                                                    </div>
+                                                @endforeach
+                                            </div>
                                         @endif
+                                        
                                     </div>
                                 </div>
                             </div>
