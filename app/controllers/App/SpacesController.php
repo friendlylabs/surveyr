@@ -33,7 +33,9 @@ class SpacesController extends Controller
         if(!$this->spaceMemberCheck($id)) return $this->errorPage(403);
 
         $this->space = $space;
+        $this->collabCol = false;
         $this->forms = Space::spaceForms($id);
+        $this->users = User::where('id', '!=', auth()->id())->get();
         
         return $this->renderPage("Space: $space->name", "app.spaces.show");
     }
@@ -82,6 +84,39 @@ class SpacesController extends Controller
         }
     }
 
+    # Update a space record
+    public function update(){
+        try{
+            # validate space ownership
+            if(!$this->spaceOwnerShipCheck(request()->params('spaceId')))
+                return $this->jsonError("You do not have permission to update this space");
+
+            # fetch and validate request data
+            $data = request()->body();
+            $space = Space::find($data['spaceId']);
+
+            if(!$space) return $this->jsonError("Space not found");
+
+            if(strlen($data['spaceName']) < 3 || strlen($data['spaceDescription']) < 10)
+                return $this->jsonError("Name and description must be at least 3 and 10 characters, respectively");
+
+            # update space
+            $space->name = $data['spaceName'] ?? $space->name;
+            $space->description = $data['spaceDescription'] ?? $space->description;
+            $space->members = $data['spaceMembers'] ?? [];
+
+            if($space->save())
+                return $this->jsonSuccess("Space updated successfully", $space);
+            
+
+            return $this->jsonError("Failed to update space");
+        }
+
+        catch(\Exception $e){
+            return $this->jsonException($e);
+        }
+    }
+
     # delete a space record
     public function delete($id)
     {
@@ -98,23 +133,6 @@ class SpacesController extends Controller
             response()->redirect(route('spaces.list'));
         }
     }
-
-    # manage space details
-    public function manage($id)
-    {
-        $space = Space::find($id);
-        if(!$space) return render("errors.404");
-
-        if(!$this->spaceOwnerShipCheck($id))
-            return $this->jsonError("You do not have permission to manage this space");
-
-        $this->space = $space;
-        $this->members = Space::spaceMembers($id);
-        $this->users = User::all();
-
-        return $this->renderPage("Manage Space: $space->name", "app.spaces.manage");
-    }
-
 
     # verify space ownership
     protected function spaceOwnerShipCheck($space_id)
@@ -143,9 +161,9 @@ class SpacesController extends Controller
         app()::get('/', ['name'=>'spaces.list', 'SpacesController@index']);
         
         app()::get('/show/{id}', ['name'=>'spaces.show', 'SpacesController@show']);
-        app()::get('/manage/{id}', ['name'=>'spaces.manage', 'SpacesController@manage']);
         app()::get('/delete/{id}', ['name'=>'spaces.delete', 'SpacesController@delete']);
         
         app()::post('/store', ['name'=>'spaces.store', 'SpacesController@store']);
+        app()::post('/update', ['name'=>'spaces.update', 'SpacesController@update']);
     }
 }
