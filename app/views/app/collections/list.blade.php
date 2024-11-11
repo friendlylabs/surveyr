@@ -1,20 +1,5 @@
 @extends('layouts.app.main')
 @section('content')
-    <style>
-        .rotated-th {
-            height: 110px ;
-            position: relative ;
-        }
-        .rotated-th__label {
-            bottom: 5px ;
-            left: 50% ;
-            position: absolute ;
-            transform: rotate( -90deg ) ;
-            transform-origin: center left ;
-            white-space: nowrap ;
-        }
-    </style>
-
     <div class="content pb-0">
         <div class="row">
             <div class="col-12 mb-4 position-relative">
@@ -24,8 +9,13 @@
                 </p>
 
                 <div class="position-absolute end-5 top-0">
+                    <!-- export to csv -->
+                    <a href="javascript:void(0)" class="btn btn-primary btn-sm" id="exportTableToCsv" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Export to CSV">
+                        <i class="fa-solid fa-download"></i>
+                    </a>
+
                     <a href="@route('forms.visualize', $form->id)" class="btn btn-primary btn-sm">
-                        <i class="fa-solid fa-chart me-2 d-inline d-md-none"></i>
+                        <i class="fa-solid fa-chart d-inline d-md-none"></i>
                         <span class="d-none d-md-inline">Visualize</span>
                     </a>                    
                 </div>
@@ -40,7 +30,7 @@
                         <thead>
                             <tr>
                                 @foreach($questions as $key => $question)
-                                    <th>
+                                    <th style="max-width: 300px; overflow-x:auto;">
                                         <div class="">
                                             <span class="" data-bs-toggle="tooltip" title="{{$question}}">
                                                 {{ $key }}
@@ -61,9 +51,7 @@
                                                    <!--  { { $collection->submission[$key] }} -->
                                                    @if(is_array($collection->submission[$key]))
                                                         @foreach($collection->submission[$key] as $item => $value)
-                                                            <div>
-                                                                <span class="fw-bold">{{ $item }}:</span> {{ $value }}
-                                                            </div>
+                                                            <div> {{ $value }} </div>
                                                         @endforeach
                                                     @else
                                                         {{ $collection->submission[$key] }}
@@ -90,3 +78,4 @@
         @endif
     </div>
 @endsection
+@script('app.collections.scripts.list')
