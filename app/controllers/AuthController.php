@@ -45,7 +45,8 @@ class AuthController extends Controller
     {
         $data = auth()->login([
             'email' => request()->get('email'),
-            'password' => request()->get('password')
+            'password' => request()->get('password'),
+            'status' => 'active'
         ]);
 
         if($data){
