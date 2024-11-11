@@ -70,7 +70,6 @@ observer.observe(document.getElementById("surveyCreator"), {
     subtree: true
 });
 
-// Example of save function using the created save status
 creator.saveSurveyFunc = function () {
     const formContent = creator.text;
 
@@ -79,7 +78,8 @@ creator.saveSurveyFunc = function () {
         type: 'POST',
         data: {
             _token: csrf_token,
-            content: formContent
+            content: formContent,
+            questions: JSON.stringify(creator.survey.getAllQuestions())
         },
         success: function (response) {
             if(!response.status) {
