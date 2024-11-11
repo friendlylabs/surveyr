@@ -9,6 +9,7 @@ use App\Models\Form;
 use App\Models\User;
 use App\Models\Space;
 use App\Models\Template;
+use App\Models\ReviewType;
 
 class FormsController extends Controller
 {
@@ -18,6 +19,8 @@ class FormsController extends Controller
     }
 
     public function index(){
+        
+        $this->collabCol = true;
         $this->templates = Template::all();
         $this->forms = Form::userForms(auth()->id());
 
@@ -43,10 +46,8 @@ class FormsController extends Controller
         ];
 
         $form = Form::create($data);
-        if($form){
-            return redirect(route('forms.setup', $form->id, $form->slug));
-        }
-
+        if($form) return redirect(route('forms.setup', $form->id, $form->slug));
+        
         throw new \Exception("Unknown error occurred, failed to create form");
     }
 
@@ -75,7 +76,7 @@ class FormsController extends Controller
 
         $form = Form::create($data);
         if($form){
-            return redirect(route('forms.setup', $form->id, $form->slug));
+            return redirect(route('forms.build', $form->id, $form->slug));
         }
     }
 
@@ -83,11 +84,12 @@ class FormsController extends Controller
     public function setup($id, $slug)
     {
         $form = Form::find($id);
-        if(!$form) return render("errors.404");
+        if(!$form) return $this->errorPage(404);
 
-        if(!$this->formOwnerShipCheck($id))
-            return $this->jsonError("You do not have permission to setup this form");
+        if(!$this->formOwnerShipCheck($id) && !$this->hasAccessbySpace($form->spaces))
+            return $this->errorPage(403);
 
+        $this->reviewTypes = ReviewType::all();
         $this->spaces = Space::userSpaces(auth()->id());
         $this->users = User::where('id', '!=', auth()->id())->get();
 
@@ -99,10 +101,10 @@ class FormsController extends Controller
     public function customize($id, $slug)
     {
         $form = Form::find($id);
-        if(!$form) return render("errors.404");
+        if(!$form) return $this->errorPage(404);
 
-        if(!$this->formOwnerShipCheck($id))
-            return $this->jsonError("You do not have permission to edit this form");
+        if(!$this->formOwnerShipCheck($id) && !$this->hasAccessbySpace($form->spaces))
+            return $this->errorPage(403);
         
         $this->form = $form;
         return $this->renderPage("Edit Form: $form->title", "app.forms.edit");
@@ -115,22 +117,26 @@ class FormsController extends Controller
             $form = Form::find($id);
             if(!$form) return $this->jsonError("Form not found");
 
-            if(!$this->formOwnerShipCheck($id))
+            if(!$this->formOwnerShipCheck($id) && !$this->hasAccessbySpace($form->spaces))
                 return $this->jsonError("You do not have permission to update this form");
 
-            $content = str_replace('&quot;', '"', request()->params('content'));
+            $content = html_entity_decode(request()->params('content'));
+            $questions = html_entity_decode(request()->params('questions'));
 
             if(!$content || !json_decode($content, true))
                 return $this->jsonError("An unknown error occured, failed to update form");
 
             $content = json_decode(html_entity_decode($content));
+            $questions = json_decode(html_entity_decode($questions));
+
+            # data insertion
             $form->title = $content->title ?? $form->title;
             $form->description = $content->description ?? $form->description;
             $form->content = $content ?? $form->content;
+            $form->questions = $questions;
 
-            if($form->save()){
+            if($form->save())
                 return $this->jsonSuccess("Form updated successfully");
-            }
 
             return $this->jsonError("An unknown error occured, failed to update form");
         }
@@ -144,11 +150,11 @@ class FormsController extends Controller
     public function preview($id)
     {
         $form = Form::find($id);
-        if(!$form) return render("errors.404");
+        if(!$form) return $this->errorPage(404);
 
         // check form ownership
-        if(!$this->formOwnerShipCheck($id))
-            return $this->jsonError("You do not have permission to access this form");
+        if(!$this->formOwnerShipCheck($id) && !$this->hasAccessbySpace($form->spaces))
+            return $this->errorPage(403);
 
         $this->form = $form;
         $this->active = 'forms';
@@ -163,7 +169,7 @@ class FormsController extends Controller
             $form = Form::find($id);
             if(!$form) return $this->jsonError("Form not found");
 
-            if(!$this->formOwnerShipCheck($id))
+            if(!$this->formOwnerShipCheck($id) && !$this->hasAccessbySpace($form->spaces))
                 return $this->jsonError("You do not have permission to update this form");
 
             switch($setting){
@@ -328,6 +334,19 @@ class FormsController extends Controller
         if(!$form) return false;
 
         return ($form->user_id == auth()->id()) || in_array(auth()->id(), $form->collaborators);
+    }
+
+    # check ownership by space
+    public function hasAccessbySpace(array $spaces) : bool
+    {
+        $spaces = Space::whereIn('id', $spaces)
+            ->where('user_id', auth()->id())
+            ->orWhereJsonContains('members', (string) auth()->id())
+            ->get();
+
+        if($spaces->count()) return true;
+
+        return false;
     }
 
     public static function routes()
