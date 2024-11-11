@@ -2,3 +2,4 @@
 /public/assets/vendor/* linguist-vendored
 
 *.css linguist-detectable=false
+*.blade.php linguist-language=PHP
