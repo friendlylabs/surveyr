@@ -24,12 +24,21 @@ class Space extends Model
         "members" => "[]"
     ];
 
-    public static function userSpaces($user_id) : object
+    public static function userSpaces(int $userId) : object
     {
-        return static::where('user_id', $user_id)
-            ->orWhereJsonContains('members', $user_id)
+        return static::where('user_id', $userId)
+            ->orWhereJsonContains('members', (string) $userId)
             ->orderBy('created_at', 'desc')
             ->get();
+    }
+
+    public static function absoluteUserSpaces(int $userId) : array
+    {
+        $spaces = Space::where('user_id', $userId)
+            ->orWhereJsonContains('members', (string) $userId)->get()->pluck('id')->toArray();
+        if(!$spaces || !count($spaces)) $spaces = [0];
+
+        return $spaces;
     }
 
     public static function spaceForms($space_id) : object
