@@ -4,8 +4,8 @@
             <tr>
                 <th></th>
                 <th>Form Name</th>
-                <th>Collaborators</th>
-                <th>Closure</th>
+                @if($collabCol)<th class="text-center">Collaborators</th>@endif
+                <th class="text-center">Status</th>
                 <th>Modified</th>
                 <th class="text-end"></th>
             </tr>
@@ -18,33 +18,37 @@
                     </td>
                     <td class="p-1">
                         <a class="fw-bold" href="@route('forms.customize', $form->id, $form->slug)">{{ $form->title }}</a> <br>
-                        <span class="text-body-tertiary fs-9">{{ substring($form->description, 100) }}</span>
+                        <span class="text-body-tertiary fs-9">{{ !$form->description ? $form->title :substring($form->description, 100) }}</span>
                     </td>
-                    <td class="text-center">
-                        <div class="avatar-group avatar-group-dense mx-auto">
-                            @if($form->user_id == $loggedUser['id'])
+                    @if($collabCol)
+                        <td class="text-center">
+                            <div class="avatar-group avatar-group-dense d-block mx-auto">
                                 <div class="avatar avatar-s rounded-circle">
-                                    <img class="rounded-circle " src="{{ urlPath($loggedUser['avatar']) }}" alt="{{ $loggedUser['fullname'] }}">
+                                    <img class="rounded-circle " src="{{ urlPath($form->user->avatar) }}" alt="{{ $form->user->fullname }}">
                                 </div>
-                            @endif
-                            @if (count($form->collaborators) > 0)
-                                @php $collaborators = \App\Models\User::whereIn('id', $form->collaborators)->get(); @endphp
-                                @foreach($collaborators as $collaborator)
-                                    <div class="avatar avatar-s rounded-circle">
-                                        <img class="rounded-circle " src="{{ urlPath($collaborator->avatar) }}" alt="{{ $collaborator->fullname }}">
-                                    </div>
-                                @endforeach
-                            @endif
-                        </div>
-                    </td>
-                    <td>
+                                @if (count($form->collaborators) > 0)
+                                    @php $collaborators = \App\Models\User::whereIn('id', $form->collaborators)->get(); @endphp
+                                    @foreach($collaborators as $collaborator)
+                                        <div class="avatar avatar-s rounded-circle">
+                                            <img class="rounded-circle " src="{{ urlPath($collaborator->avatar) }}" alt="{{ $collaborator->fullname }}">
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </td>
+                    @endif
+                    <td class="text-center">
                         @if($form->is_indefinite)
                             <span class="text-success fs-9">Indefinite</span>                            
                         @elseif($form->end_date->isPast() && !$form->is_indefinite)
                             <i class="fa-solid fa-circle text-danger"></i>
+                        @elseif($form->start_date->isFuture())
+                            <span class="text-info fs-9"> 
+                                Starts In {{ str_replace('from now', '', $form->start_date->diffForHumans()) }}
+                            </span>
                         @else
                             <span class="text-success fs-9"> 
-                                In {{ str_replace('from now', '', $form->end_date->diffForHumans()) }}
+                                Ends In {{ str_replace('from now', '', $form->end_date->diffForHumans()) }}
                             </span>
                         @endif
                     </td>
