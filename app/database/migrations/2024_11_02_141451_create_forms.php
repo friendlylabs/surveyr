@@ -19,13 +19,14 @@ class CreateForms extends Database
                 $table->text('description')->nullable();
                 $table->string('slug', 50);
                 $table->json('content');
+                $table->json('questions')->nullable();
                 $table->integer('user_id');
                 $table->json('collaborators')->nullable();
                 $table->json('spaces')->nullable();
                 $table->tinyInteger('is_locked')->default(0);
                 $table->tinyInteger('current_editor')->default(0);
                 $table->tinyInteger('is_indefinite')->default(0);
-                $table->text('submission_url')->nullable();
+                $table->json('reviews')->nullable();
                 $table->text('webhook_url')->nullable();
                 $table->text('access_code')->nullable();
                 $table->timestamp('start_date')->useCurrent();
