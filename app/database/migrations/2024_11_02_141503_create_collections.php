@@ -31,6 +31,7 @@ class CreateCollections extends Database
                 $table->increments('id');
                 $table->integer('form_id');
                 $table->json('submission');
+                $table->char('review', 50)->default('pending');
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 
