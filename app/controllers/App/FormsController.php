@@ -90,9 +90,9 @@ class FormsController extends Controller
         ];
 
         $form = Form::create($data);
-        if($form){
-            return redirect(route('forms.build', $form->id, $form->slug));
-        }
+        if($form) return redirect(route('forms.setup', $form->id, $form->slug));
+
+        throw new \Exception("Unknown error occurred, failed to create form");        
     }
 
     /**
