@@ -20,7 +20,7 @@ class CreateForms extends Database
                 $table->string('slug', 50);
                 $table->json('content');
                 $table->json('questions')->nullable();
-                $table->integer('user_id');
+                $table->unsignedInteger('user_id');
                 $table->json('collaborators')->nullable();
                 $table->json('spaces')->nullable();
                 $table->tinyInteger('is_locked')->default(0);
