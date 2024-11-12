@@ -1,17 +1,26 @@
+<p style="text-align: center;">
+  <img src="https://raw.githubusercontent.com/friendlylabs/surveyr/refs/heads/main/public/assets/images/brand/logo-dark.png?token=GHSAT0AAAAAACF53G7FOMP623KU4YC7GM4AZZTVVNQ" alt="Surveyr Logo" width="200" />
+</p>
+
 # README
 
 Survey is an open-source form builder that allows anyone to create engaging forms for surveys, questionnaires, quizzes, and polls.
 
+The project is still in the early stages of development, while I am doing my best to make it as stable as possible, there are still a lot of features that need to be implemented and bugs that need to be fixed, some of these include:
+
+- Password Restrictions
+- Webhooks ping
+- Submission reviews, etc
+
 ## Features
 
-- 📝 **Drag and Drop Builder**Effortlessly design forms using an intuitive drag-and-drop interface. Add various question types, text fields, dropdowns, checkboxes, and more with just a few clicks. The builder simplifies creating interactive and visually appealing forms, making it accessible for non-technical users.
-- 🧠 **Conditional Logic and Branching**Implement powerful conditional logic to show or hide questions based on user responses. This feature allows you to create personalized, dynamic forms that adapt to each user's answers, enhancing engagement and relevance.
-- 🔗 **Webhooks Integration**Seamlessly connect your forms with other platforms and automate workflows using webhooks. Push form submissions to your CRM, send notifications to Slack, trigger emails, or integrate with third-party services to streamline your data processing.
-- 🖼️ **Tailored Templates**Get started quickly with a variety of pre-designed templates tailored for different use cases like customer feedback, event registrations, quizzes, and more. Customize these templates to fit your brand's look and feel.
-- 📊 **Insightful Analytics**Gain valuable insights from your data with built-in analytics. Track form performance, response rates, and user behavior. Visualize your data with charts and graphs to make informed decisions and optimize your surveys for better results.
-- 📤 **Flexible Data Export**Easily export your form data in multiple formats, such as CSV, Excel, or JSON. This flexibility ensures that you can analyze your data offline or import it into other tools for deeper analysis.
-- 📶 **Offline Data Collection (Coming Soon)**
-  Collect responses even when there's no internet connection. Once the device is back online, the data automatically syncs to ensure you never miss any submissions. This feature is perfect for field surveys, remote areas, or on-the-go data collection.
+- 📝 **Drag and Drop Builder:** Effortlessly design forms using an intuitive drag-and-drop interface. Add various question types, text fields, dropdowns, checkboxes, and more with just a few clicks. The builder simplifies creating interactive and visually appealing forms, making it accessible for non-technical users.
+- 🧠 **Conditional Logic and Branching:** Implement powerful conditional logic to show or hide questions based on user responses. This feature allows you to create personalized, dynamic forms that adapt to each user's answers, enhancing engagement and relevance.
+- 🔗 **Webhooks Integration (In progress):** Seamlessly connect your forms with other platforms and automate workflows using webhooks. Push form submissions to your CRM, send notifications to Slack, trigger emails, or integrate with third-party services to streamline your data processing.
+- 🖼️ **Tailored Templates:** Get started quickly with a variety of pre-designed templates tailored for different use cases like customer feedback, event registrations, quizzes, and more. Customize these templates to fit your brand's look and feel.
+- 📊 **Insightful Analytics:** Gain valuable insights from your data with built-in analytics. Track form performance, response rates, and user behavior. Visualize your data with charts and graphs to make informed decisions and optimize your surveys for better results.
+- 📤 **Flexible Data Export:** Easily export your form data in multiple formats, such as CSV, Excel, or JSON. This flexibility ensures that you can analyze your data offline or import it into other tools for deeper analysis.
+- 📶 **Offline Data Collection (Coming Soon):** Collect responses even when there's no internet connection. Once the device is back online, the data automatically syncs to ensure you never miss any submissions. This feature is perfect for field surveys, remote areas, or on-the-go data collection.
 
 ## System dependencies
 
