@@ -10,7 +10,7 @@
 
                             <a class="d-flex flex-center text-decoration-none" href="/">
                                 <div class="d-flex align-items-center fw-bolder fs-3 d-inline-block">
-                                    <img src="/assets/images/logo-dark.png" alt="app logo" height="40" /><br>
+                                    <img src="/assets/images/brand/logo-dark.png" alt="app logo" height="40" /><br>
                                 </div>
                             </a>
 
