@@ -4,22 +4,6 @@ use Leaf\Schema;
 use Leaf\Database;
 use Illuminate\Database\Schema\Blueprint;
 
-/*
-CREATE TABLE `spaces` (
-	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(50) NOT NULL COLLATE 'latin1_swedish_ci',
-	`description` TEXT NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
-	`user_id` INT(11) NOT NULL,
-	`members` JSON NULL DEFAULT NULL,
-	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`) USING BTREE
-)
-COLLATE='latin1_swedish_ci'
-ENGINE=InnoDB
-;
-*/
-
 class CreateSpaces extends Database
 {
     /**
@@ -34,7 +18,7 @@ class CreateSpaces extends Database
                 $table->string('name', 50);
                 $table->text('description')->nullable();
                 $table->char('color', 9)->default('#000000');
-                $table->integer('user_id');
+                $table->unsignedInteger('user_id');
                 $table->json('members')->nullable();
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
