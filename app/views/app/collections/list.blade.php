@@ -5,7 +5,7 @@
             <div class="col-12 mb-4 position-relative">
                 <h3 class="fs-7">{{ $form->title }}</h3>
                 <p class="text-body-tertiary">
-                    View, Visualize and manage your form submissions
+                    <em>Note:</em> this section is still under development. <br> You can view the submissions made to this form here.
                 </p>
 
                 <div class="position-absolute end-5 top-0">
@@ -29,6 +29,8 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
+                                <th></th>
+                                <th>Review</th>
                                 @foreach($questions as $key => $question)
                                     <th style="max-width: 300px; overflow-x:auto;">
                                         <div class="">
@@ -44,18 +46,30 @@
                             <!-- $collections -->
                             @foreach($collections as $collection)
                                 <tr>
+                                    <td>
+                                        <div class="ps-1" style="max-width:200px">
+                                            <a href="{{ route('collections.show', $collection->id) }}" class="fw-bold" data-bs-toggle="tooltip" title="View Submission">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>{{ ucfirst($collection->review) }}</td>
                                     @foreach($questions as $key => $question)
                                         <td>
                                             <div class="ps-1" style="max-width:200px">
                                                 @if(isset($collection->submission[$key]))
-                                                   <!--  { { $collection->submission[$key] }} -->
-                                                   @if(is_array($collection->submission[$key]))
-                                                        @foreach($collection->submission[$key] as $item => $value)
-                                                            <div> {{ $value }} </div>
-                                                        @endforeach
-                                                    @else
-                                                        {{ $collection->submission[$key] }}
-                                                    @endif
+                                                    @php
+                                                        $currentValue = $collection->submission[$key];
+
+                                                        // Loop until we find a non-array value
+                                                        while (is_array($currentValue)) {
+                                                            // If it's an array, get the first element
+                                                            $currentValue = reset($currentValue);
+                                                        }
+                                                    @endphp
+
+                                                    {{-- Display the final value --}}
+                                                    <div>{!! is_array($currentValue) ? '-' : strip_tags($currentValue) !!}</div>
                                                 @else
                                                     -
                                                 @endif
