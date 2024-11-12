@@ -8,7 +8,7 @@ Survey is an open-source form builder that allows anyone to create engaging form
 
 The project is still in the early stages of development, while I am doing my best to make it as stable as possible, there are still a lot of features that need to be implemented and bugs that need to be fixed, some of these include:
 
-- Password Restrictions
+- form access code restrictions
 - Webhooks ping
 - Submission reviews, etc
 
