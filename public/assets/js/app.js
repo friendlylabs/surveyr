@@ -126,13 +126,13 @@ function submitForm(event, responseHandler = null){
 
 // anchor tag click event
 function confirmDelete(event){
-
     event.preventDefault();
     const buttonHref = event.target.href;
+    var text = event.target.getAttribute('data-delete-msg') ?? 'You will not be able to recover this record!';
 
     Swal.fire({
         title: 'Are you sure?',
-        text: 'You will not be able to recover this record!',
+        text: text,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, delete it!',
@@ -145,16 +145,6 @@ function confirmDelete(event){
         }
     });
 }
-
-toast.settings({
-    timeout: 1500,
-    transitionIn: 'fadeInDown',
-    transitionOut: 'fadeOutUp',
-    position: 'bottomCenter',
-    close: true,
-    progressBar: true,
-    pauseOnHover: true
-});
 
 document.addEventListener('DOMContentLoaded', function () {
 
