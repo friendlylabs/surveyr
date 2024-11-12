@@ -22,28 +22,10 @@
         <link href="/assets/fonts/fontawesome/all.css" rel="stylesheet"/>
 
 		<link href="/assets/vendors/simplebar/simplebar.min.css" rel="stylesheet">
-		<link href="/assets/css/theme-rtl.css" type="text/css" rel="stylesheet" id="style-rtl">
 		<link href="/assets/css/theme.min.css" type="text/css" rel="stylesheet" id="style-default">
-		<link href="/assets/css/user-rtl.min.css" type="text/css" rel="stylesheet" id="user-style-rtl">
 		<link href="/assets/css/user.min.css" type="text/css" rel="stylesheet" id="user-style-default">
-        <link href="/assets/css/iziToast.min.css" rel="stylesheet">
+        <link href="/assets/css/toast.min.css" rel="stylesheet">
         <link href="/assets/css/app.css" rel="stylesheet">
-
-        <script>
-            var phoenixIsRTL = window.config.config.phoenixIsRTL;
-            if (phoenixIsRTL) {
-                var linkDefault = document.getElementById('style-default');
-                var userLinkDefault = document.getElementById('user-style-default');
-                linkDefault.setAttribute('disabled', true);
-                userLinkDefault.setAttribute('disabled', true);
-                document.querySelector('html').setAttribute('dir', 'rtl');
-            } else {
-                var linkRTL = document.getElementById('style-rtl');
-                var userLinkRTL = document.getElementById('user-style-rtl');
-                linkRTL.setAttribute('disabled', true);
-                userLinkRTL.setAttribute('disabled', true);
-            }
-        </script>
 
         <link href="/assets/vendors/leaflet/leaflet.css" rel="stylesheet">
         <link href="/assets/vendors/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
@@ -81,7 +63,7 @@
         <script src="/assets/vendors/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js"></script>
 		<script src="/assets/js/phoenix.js"></script>
         <script src="/assets/js/jquery-3.7.1.min.js"></script>
-        <script src="/assets/js/iziToast.min.js"></script>
+        <script src="/assets/js/toast.min.js"></script>
         <script src="/vendor/select/bootstrap-select.min.js"></script>
         <script src="/vendor/swal/sweetalert.min.js"></script>
 
