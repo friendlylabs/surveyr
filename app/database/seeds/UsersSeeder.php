@@ -14,10 +14,12 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
+        // User::truncate();
+        
         User::create([
             'username' => 'admin',
             'fullname' => 'Admin User',
-            'email' => 'admin@origin.app',
+            'email' => 'admin@admin.com',
             'password' => Password::hash('password'),
             'role' => 'admin',
             'avatar' => '/assets/images/users/avatar.jpg',
