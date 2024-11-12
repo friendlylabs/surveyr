@@ -43,7 +43,7 @@ class Space extends Model
 
     public static function spaceForms($space_id) : object
     {
-        return Form::whereJsonContains('spaces', $space_id)->get();
+        return Form::whereJsonContains('spaces', (string) $space_id)->get();
     }
 
     public static function spaceMembers($space_id) : object
