@@ -29,7 +29,7 @@ class CreateCollections extends Database
         if (!static::$capsule::schema()->hasTable('collections')) :
             static::$capsule::schema()->create('collections', function (Blueprint $table) {
                 $table->increments('id');
-                $table->integer('form_id');
+                $table->unsignedInteger('form_id');
                 $table->json('submission');
                 $table->char('review', 50)->default('pending');
                 $table->timestamp('created_at')->useCurrent();
