@@ -14,7 +14,7 @@ class CreateUsers extends Database
     {
         if (!static::$capsule::schema()->hasTable("users")):
         	static::$capsule::schema()->create("users", function (Blueprint $table) {
-                $table->bigIncrements('id');
+                $table->increments('id');
                 $table->string('username')->unique();
                 $table->string('fullname');
                 $table->string('email')->unique();
