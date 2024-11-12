@@ -17,8 +17,8 @@ class CreateTemplates extends Database
                 $table->increments('id');
                 $table->string('title', 100);
                 $table->text('description')->nullable();
-                $table->text('preview');
                 $table->text('content');
+                $table->text('preview');
                 $table->string('category', 50);
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
