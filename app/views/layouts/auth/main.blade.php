@@ -25,7 +25,7 @@
 		<link href="/assets/css/user-rtl.min.css" type="text/css" rel="stylesheet" id="user-style-rtl">
 		<link href="/assets/css/user.min.css" type="text/css" rel="stylesheet" id="user-style-default">
 		<link href="/assets/fonts/phosphor/duotone/style.css" rel="stylesheet"/>
-        <link href="/assets/css/iziToast.min.css" rel="stylesheet">
+        <link href="/assets/css/toast.min.css" rel="stylesheet">
 
         <script>
             var phoenixIsRTL = window.config.config.phoenixIsRTL;
@@ -66,7 +66,7 @@
 		<script src="/assets/vendors/dayjs/dayjs.min.js"></script>
 		<script src="/assets/js/phoenix.js"></script>
         <script src="/assets/js/jquery-3.7.1.min.js"></script>
-        <script src="/assets/js/iziToast.min.js"></script>
+        <script src="/assets/js/toast.min.js"></script>
 		<script src="/assets/js/app.js"></script>
         @stack('scripts')
 
