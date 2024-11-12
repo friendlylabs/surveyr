@@ -2,6 +2,7 @@
 
 namespace App\Database\Seeds;
 
+use Google\Service\Dfareporting\Resource\UserRoles;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,6 +15,9 @@ class DatabaseSeeder extends Seeder
     {
         return [
             UsersSeeder::class,
+            ReviewTypesSeeder::class,
+            TemplatesSeeder::class,
+            UserRolesSeeder::class,
         ];
     }
 }
