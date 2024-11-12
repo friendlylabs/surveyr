@@ -1,0 +1,306 @@
+{
+	"table": "templates",
+	"rows":
+	[
+		{
+			"id": 1,
+			"title": "Alumni Survey 2024",
+			"description": null,
+			"content": "storage/app/private/templates/education/672cfed1e3222.json",
+			"preview": "/assets/images/templates/672cfed1e3222.png",
+			"category": "education",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 2,
+			"title": "Online Course Registration Form",
+			"description": null,
+			"content": "storage/app/private/templates/education/672cfed1e515c.json",
+			"preview": "/assets/images/templates/672cfed1e515c.png",
+			"category": "education",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 3,
+			"title": "Student Enrollment Form",
+			"description": null,
+			"content": "storage/app/private/templates/education/672cfed1e700a.json",
+			"preview": "/assets/images/templates/672cfed1e700a.png",
+			"category": "education",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 4,
+			"title": "Event Registration Form",
+			"description": null,
+			"content": "storage/app/private/templates/education/672cfed1e9066.json",
+			"preview": "/assets/images/templates/672cfed1e9066.png",
+			"category": "education",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 5,
+			"title": "Teacher Evaluation Form",
+			"description": null,
+			"content": "storage/app/private/templates/education/672cfed1ea257.json",
+			"preview": "/assets/images/templates/672cfed1ea257.png",
+			"category": "education",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 6,
+			"title": "Geography Quiz",
+			"description": null,
+			"content": "storage/app/private/templates/education/672cfed1eb379.json",
+			"preview": "/assets/images/templates/672cfed1eb379.png",
+			"category": "education",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 7,
+			"title": "Scholastic Assessment Test",
+			"description": null,
+			"content": "storage/app/private/templates/education/672cfed1ec438.json",
+			"preview": "/assets/images/templates/672cfed1ec438.png",
+			"category": "education",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 8,
+			"title": "Student Feedback",
+			"description": null,
+			"content": "storage/app/private/templates/education/672cfed1ed510.json",
+			"preview": "/assets/images/templates/672cfed1ed510.png",
+			"category": "education",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 9,
+			"title": "Insurance Application Form",
+			"description": null,
+			"content": "storage/app/private/templates/finance/672cfed1eea95.json",
+			"preview": "/assets/images/templates/672cfed1eea95.png",
+			"category": "finance",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 10,
+			"title": "Mortgage Loan Application Form",
+			"description": null,
+			"content": "storage/app/private/templates/finance/672cfed1efc31.json",
+			"preview": "/assets/images/templates/672cfed1efc31.png",
+			"category": "finance",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 12,
+			"title": "Dental Appointment Request",
+			"description": null,
+			"content": "storage/app/private/templates/health/672cfed1f1497.json",
+			"preview": "/assets/images/templates/672cfed1f1497.png",
+			"category": "health",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 13,
+			"title": "HIPAA Release Form",
+			"description": "Please complete all sections of this HIPAA release form. If any sections are left blank, this form will be invalid and it will not be possible for your health information to be shared as requested. ",
+			"content": "storage/app/private/templates/health/672cfed1f1b73.json",
+			"preview": "/assets/images/templates/672cfed1f1b73.png",
+			"category": "health",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 14,
+			"title": "Patient Past Medical, Social & Family History",
+			"description": null,
+			"content": "storage/app/private/templates/health/672cfed1f22f6.json",
+			"preview": "/assets/images/templates/672cfed1f22f6.png",
+			"category": "health",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 15,
+			"title": "Pain Assessment Form",
+			"description": "Cognitively Intact",
+			"content": "storage/app/private/templates/health/672cfed1f29f3.json",
+			"preview": "/assets/images/templates/672cfed1f29f3.png",
+			"category": "health",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 16,
+			"title": "Patient Assessment Form",
+			"description": null,
+			"content": "storage/app/private/templates/health/672cfed1f3093.json",
+			"preview": "/assets/images/templates/672cfed1f3093.png",
+			"category": "health",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 17,
+			"title": "Patient Feedback Questionnaire",
+			"description": null,
+			"content": "storage/app/private/templates/health/672cfed1f3760.json",
+			"preview": "/assets/images/templates/672cfed1f3760.png",
+			"category": "health",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 18,
+			"title": "Symptoms Questionaire",
+			"description": null,
+			"content": "storage/app/private/templates/health/672cfed1f3dc6.json",
+			"preview": "/assets/images/templates/672cfed1f3dc6.png",
+			"category": "health",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 19,
+			"title": "360 Degree Feedback Review Form",
+			"description": null,
+			"content": "storage/app/private/templates/hr/672cfed200308.json",
+			"preview": "/assets/images/templates/672cfed200308.png",
+			"category": "hr",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 20,
+			"title": "Background check consent form",
+			"description": null,
+			"content": "storage/app/private/templates/hr/672cfed200cf2.json",
+			"preview": "/assets/images/templates/672cfed200cf2.png",
+			"category": "hr",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 21,
+			"title": "Employee Information Form",
+			"description": "An employee information form contains personal and job-related key information of who worked for the company. It can also be used as an emergency contact information form.",
+			"content": "storage/app/private/templates/hr/672cfed201694.json",
+			"preview": "/assets/images/templates/672cfed201694.png",
+			"category": "hr",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 22,
+			"title": "Expense Reimbursement Claim Form",
+			"description": null,
+			"content": "storage/app/private/templates/hr/672cfed201f14.json",
+			"preview": "/assets/images/templates/672cfed201f14.png",
+			"category": "hr",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 23,
+			"title": "Consent Form",
+			"description": null,
+			"content": "storage/app/private/templates/hr/672cfed202737.json",
+			"preview": "/assets/images/templates/672cfed202737.png",
+			"category": "hr",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 24,
+			"title": "Job Application Form",
+			"description": "Thank you for your interest in working with us. Please fill out the form and send your application. We will get back to you within a week.",
+			"content": "storage/app/private/templates/hr/672cfed202f6f.json",
+			"preview": "/assets/images/templates/672cfed202f6f.png",
+			"category": "hr",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 25,
+			"title": "Flexible working hours request form",
+			"description": null,
+			"content": "storage/app/private/templates/hr/672cfed2038da.json",
+			"preview": "/assets/images/templates/672cfed2038da.png",
+			"category": "hr",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 26,
+			"title": "Grant Application Form for NPO",
+			"description": null,
+			"content": "storage/app/private/templates/miscallenous/672cfed20446b.json",
+			"preview": "/assets/images/templates/672cfed20446b.png",
+			"category": "miscallenous",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 27,
+			"title": "Market Fit Survey Template",
+			"description": null,
+			"content": "storage/app/private/templates/miscallenous/672cfed204e9f.json",
+			"preview": "/assets/images/templates/672cfed204e9f.png",
+			"category": "miscallenous",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 28,
+			"title": "Pizza Order Form",
+			"description": null,
+			"content": "storage/app/private/templates/miscallenous/672cfed205870.json",
+			"preview": "/assets/images/templates/672cfed205870.png",
+			"category": "miscallenous",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 29,
+			"title": "Product Feedback Survey",
+			"description": "Your opinion matters to us!",
+			"content": "storage/app/private/templates/miscallenous/672cfed206137.json",
+			"preview": "/assets/images/templates/672cfed206137.png",
+			"category": "miscallenous",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 30,
+			"title": "Cancellation Survey",
+			"description": "Thank you for using our service. We would highly appreciate if you would take the time to fill our cancellation survey. This would help us improve the service.",
+			"content": "storage/app/private/templates/miscallenous/672cfed20698c.json",
+			"preview": "/assets/images/templates/672cfed20698c.png",
+			"category": "miscallenous",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		},
+		{
+			"id": 31,
+			"title": "Product Usage Research Survey",
+			"description": null,
+			"content": "storage/app/private/templates/miscallenous/672cfed20728e.json",
+			"preview": "/assets/images/templates/672cfed20728e.png",
+			"category": "miscallenous",
+			"created_at": "2024-11-07 20:58:06",
+			"updated_at": "2024-11-07 21:32:01"
+		}
+	]
+}
