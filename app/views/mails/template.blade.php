@@ -4,7 +4,7 @@
 	<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="main">
 		<tr>
 			<td style="text-align:center; padding-top:1rem;"> 
-                <img width="200" src="/assets/images/logo-dark.png" alt="Logo">
+                <img width="200" src="/assets/images/brand/logo-dark.png" alt="Logo">
 			</td>
 		</tr>
 		<tr>
