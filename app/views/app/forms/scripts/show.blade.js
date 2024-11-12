@@ -51,18 +51,7 @@ survey.onComplete.add(function (result) {
             
 });
 
-// initializers and settings
-const toast = iziToast;
-toast.settings({
-    timeout: 1500,
-    transitionIn: 'fadeInDown',
-    transitionOut: 'fadeOutUp',
-    position: 'bottomCenter',
-    close: true,
-    progressBar: true,
-    pauseOnHover: true
-});
-
 document.addEventListener("DOMContentLoaded", function() {
     survey.render(document.getElementById("surveyContainer"));
+    survey.applyTheme(SurveyTheme.SolidLightPanelless);
 });
