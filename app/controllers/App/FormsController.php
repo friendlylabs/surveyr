@@ -9,6 +9,7 @@ use App\Models\Form;
 use App\Models\User;
 use App\Models\Space;
 use App\Models\Template;
+use App\Models\Collection;
 use App\Models\ReviewType;
 
 class FormsController extends Controller
@@ -18,6 +19,11 @@ class FormsController extends Controller
         parent::__construct();
     }
 
+    /**
+     * Show user forms
+     * 
+     * @return void
+     */
     public function index(){
         
         $this->collabCol = true;
@@ -27,7 +33,11 @@ class FormsController extends Controller
         return $this->renderPage("My Forms", "app.forms.index");
     }
 
-    # initiate a new form
+    /**
+     * Start a new form
+     * 
+     * @return void
+     */
     public function build()
     {
         $faker = Faker::create();
@@ -51,7 +61,12 @@ class FormsController extends Controller
         throw new \Exception("Unknown error occurred, failed to create form");
     }
 
-    // start a build from template
+    /**
+     * Start form from template
+     * 
+     * @param int $id
+     * @return void
+     */
     public function template($id)
     {
         $template = Template::find($id);
@@ -80,7 +95,13 @@ class FormsController extends Controller
         }
     }
 
-    # form setup
+    /**
+     * Setup form
+     * 
+     * @param int $id
+     * @param string $slug
+     * @return void
+     */
     public function setup($id, $slug)
     {
         $form = Form::find($id);
@@ -97,7 +118,13 @@ class FormsController extends Controller
         return $this->renderPage("Setup Form: $form->title", "app.forms.setup");
     }
 
-    # Customize the form
+    /**
+     * Form customization
+     * 
+     * @param int $id
+     * @param string $slug
+     * @return void
+     */
     public function customize($id, $slug)
     {
         $form = Form::find($id);
@@ -110,7 +137,12 @@ class FormsController extends Controller
         return $this->renderPage("Edit Form: $form->title", "app.forms.edit");
     }
 
-    # update the form
+    /**
+     * Update form
+     * 
+     * @param int $id
+     * @return void
+     */
     public function update($id)
     {
         try{
@@ -146,7 +178,12 @@ class FormsController extends Controller
         }
     }
 
-    # form preview
+    /**
+     * Form preview
+     * 
+     * @param int $id
+     * @return void
+     */
     public function preview($id)
     {
         $form = Form::find($id);
@@ -161,8 +198,13 @@ class FormsController extends Controller
         return $this->renderPage("$form->title", "app.forms.preview");
     }
 
-
-    # form setup update
+    /**
+     * Setting update
+     * 
+     * @param string $setting
+     * @param int $id
+     * @return void
+     */
     public function setting($setting, $id)
     {
         try{
@@ -185,6 +227,12 @@ class FormsController extends Controller
         }
     }
 
+    /**
+    * Update form general properties
+    *
+    * @param object $form
+    * @return void
+    */
     protected function updateGeneral($form)
     {
         $data = [
@@ -213,7 +261,12 @@ class FormsController extends Controller
         return $this->jsonError("An unknown error occured, failed to update form");
     }
 
-    # update form access
+    /**
+     * Update form access properties
+     * 
+     * @param object $form
+     * @return void
+     */
     protected function updateAccess($form)
     {
         $data = [
@@ -238,8 +291,12 @@ class FormsController extends Controller
         return $this->jsonError("An unknown error occured, failed to update form access");
     }
 
-
-    # form submission properties
+    /**
+     * Update form submission properties
+     * 
+     * @param object $form
+     * @return void
+     */
     protected function updateSubmission($form)
     {
         $formContent = $form->content;
@@ -276,7 +333,11 @@ class FormsController extends Controller
         return $this->jsonError("An unknown error occured, failed to update form submission properties");        
     }
 
-    # search forms
+    /**
+     * Search forms
+     * 
+     * @return void
+     */
     public function search()
     {
         $search = request()->params('q');
@@ -298,8 +359,13 @@ class FormsController extends Controller
         return $this->jsonSuccess("Search results");
     }
 
-
-    # show public form
+    /**
+     * Delete form
+     * 
+     * @param int $id as md5 hash
+     * @param string $slug
+     * @return void
+     */
     public function show($hash, $slug){
         $form = Form::publicForm($hash, $slug);
         if(!$form) return $this->errorPage(404);
@@ -324,6 +390,28 @@ class FormsController extends Controller
         $this->surveyMode = $surveyMode;
         $this->formContent = $formContent;
         return $this->renderPage($form->title, "app.forms.show");
+    }
+
+    /**
+     * Delete form
+     * 
+     * @param int $id
+     * @return void
+     */
+    public function delete($id){
+        $form = Form::find($id);
+        if(!$form) return $this->errorPage(404);
+
+        # check form ownership
+        if($form->user_id != auth()->id())
+            return $this->errorPage(403);
+
+        if(!$form->delete())
+            return $this->errorPage(500);
+
+        // delete form collections
+        Collection::where('form_id', $id)->delete();
+        return redirect(route('forms.list'));
     }
 
     
@@ -351,7 +439,7 @@ class FormsController extends Controller
 
     public static function routes()
     {
-        app()::get('index', ['name'=>'forms.list', 'FormsController@index']);
+        app()::get('', ['name'=>'forms.list', 'FormsController@index']);
         app()::get('build', ['name'=>'forms.build', 'FormsController@build']);
         app()::get('search', ['name'=>'forms.search', 'FormsController@search']);
 
