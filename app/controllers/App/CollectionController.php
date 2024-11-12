@@ -2,15 +2,29 @@
 
 namespace App\Controllers\App;
 
+/**
+ * ----------------------------------------------------
+ * Collection Controller
+ * ----------------------------------------------------
+ * 
+ * This controller is responsible for handling form submissions
+ * and related functionalities.
+ */
+
 use App\Controllers\Controller;
+use App\Controllers\App\FormsController;
+
 use App\Models\Collection;
 use App\Models\Form;
 
 class CollectionController extends Controller
 {
+    protected $formInstance;
+
     public function __construct()
     {
         parent::__construct();
+        $this->formInstance = new FormsController();
     }
 
     /**
@@ -53,18 +67,21 @@ class CollectionController extends Controller
     * @param int $formId
     * @return mixed
     */
-    public function show($formId)
+    public function list($formId)
     {
         # request validation
         $form = Form::find($formId);
         if(!$form) return $this->errorPage(404);
 
-        $this->active = 'forms';
+        # validate user access
+        if(!$this->formInstance->formOwnerShipCheck($form->id) && !$this->formInstance->hasAccessbySpace($form->spaces)){
+            return $this->errorPage(403);
+        }
 
         # data allocation
         $this->form = $form;
         $this->collections = Collection::formCollections($formId);
-        $this->questions = $this->extractQuestions($form->questions);
+        $this->questions = $this->extractQuestions($form->questions ?? []);
 
         $this->renderPage("Submissions for $form->title", "app.collections.list");
     }
@@ -81,7 +98,10 @@ class CollectionController extends Controller
         $form = Form::find($formId);
         if(!$form) return $this->errorPage(404);
 
-        $this->active = 'forms';
+        # validate user access
+        if(!$this->formInstance->formOwnerShipCheck($form->id) && !$this->formInstance->hasAccessbySpace($form->spaces)){
+            return $this->errorPage(403);
+        }
 
         # data allocation
         $this->form = $form;
@@ -90,6 +110,75 @@ class CollectionController extends Controller
         $this->collections = Collection::formCollections($formId)->pluck('submission')->toArray();
 
         $this->renderPage("Visualize Submissions for $form->title", "app.collections.visualize");
+    }
+
+    /**
+     * Show Submission
+     * 
+     * @param int $id
+     * @return void
+     */
+    public function show($id)
+    {
+        # fetch the collection and form data
+        $collection = Collection::find($id);
+        if(!$collection) return $this->errorPage(404);
+
+        $form = Form::find($collection->form_id);
+        if(!$form) return $this->errorPage(404);
+
+        $formContent = $form->content;
+        $formContent['mode'] = 'display';
+
+        # validate user access
+        if(!$this->formInstance->formOwnerShipCheck($form->id) && !$this->formInstance->hasAccessbySpace($form->spaces)){
+            return $this->errorPage(403);
+        }
+
+        # data allocation
+        $this->form = $form;
+        $this->collection = $collection;
+        $this->formContent = $formContent;
+
+        $this->renderPage($form->title, "app.collections.show");
+    }
+
+    /**
+     * Review Submission
+     * 
+     * @param int $id
+     * @return void
+     */
+    public function review($id)
+    {
+        try{
+            # fetch the collection and form data
+            $collection = Collection::find($id);
+            if(!$collection) return $this->jsonError("Submission not found");
+
+            $form = Form::find($collection->form_id);
+            if(!$form) return $this->jsonError("Form not found");
+
+            # validate user access
+            if(!$this->formInstance->formOwnerShipCheck($form->id) && !$this->formInstance->hasAccessbySpace($form->spaces)){
+                return $this->jsonError("You don't have access to this form");
+            }
+
+            $review = request()->params('review');
+            if(!$review || !is_array($form->reviews))
+                return $this->jsonError("Review data is required");
+
+            $collection->review = $review;
+            if(!$collection->save())
+                return $this->jsonError("Failed to save review");
+
+            return $this->jsonSuccess("Review saved successfully");
+        }
+
+        catch(\Exception $e){
+            return $this->jsonException($e);
+        }
+
     }
 
 
@@ -110,6 +199,13 @@ class CollectionController extends Controller
         return $questions;
     }
 
+    /**
+     * Tabify form 
+     * Generate tabs from form content
+     * 
+     * @param array $formContent
+     * @return array
+     */
     function tabifyInfo($formContent) {
         
         $tabs = [];
@@ -132,7 +228,11 @@ class CollectionController extends Controller
 
     # TODO: Review Scales
     public static function routes(){
-        app()::get('/submissions/{form}', ['name'=>'forms.submissions', 'CollectionController@show']);
         app()::get('/visualize/{form}', ['name'=>'forms.visualize', 'CollectionController@visualize']);
+
+        app()::get('/submissions/show/{form}', ['name'=>'collections.show', 'CollectionController@show']);
+        app()::get('/submissions/all/{form}', ['name'=>'forms.submissions', 'CollectionController@list']);
+
+        app()::post('/submissions/review/{id}', ['name'=>'collections.review', 'CollectionController@review']);
     }
 }
