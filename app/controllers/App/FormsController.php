@@ -130,8 +130,19 @@ class FormsController extends Controller
         $form = Form::find($id);
         if(!$form) return $this->errorPage(404);
 
-        if(!$this->formOwnerShipCheck($id) && !$this->hasAccessbySpace($form->spaces))
-            return $this->errorPage(403);
+        if(!$this->formOwnerShipCheck($id))return $this->errorPage(403);
+
+        // alert user if form has submissions
+        $collections = Collection::where('form_id', $id)->count();
+        if($collections){
+            echo <<<HTML
+            <script>
+                if(!confirm('This form already has submissions, editing the form may affect the submissions and even break out your form. Do you want to continue?')){
+                    window.location.href = '/app/forms';
+                }
+            </script>
+            HTML;
+        }
         
         $this->form = $form;
         return $this->renderPage("Edit Form: $form->title", "app.forms.edit");
