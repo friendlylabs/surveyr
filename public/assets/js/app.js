@@ -146,8 +146,6 @@ function confirmDelete(event){
     });
 }
 
-// initializers and settings
-const toast = iziToast;
 toast.settings({
     timeout: 1500,
     transitionIn: 'fadeInDown',
