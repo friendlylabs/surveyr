@@ -3,7 +3,7 @@
 @style('/vendor/surveyjs/defaultV2.min.css','src')
 
 @section('content')
-    <div class="content" style="padding-bottom: 0 !important;">
+    <div class="content">
         <div class="row">
             <div class="col-12 mb-4 position-relative">
                 <h3 class="fs-7">{{ $form->title }}</h3>
@@ -34,4 +34,6 @@
 
 @script('/vendor/surveyjs/survey.core.min.js','src')
 @script('/vendor/surveyjs/survey-js-ui.min.js','src')
+@script('/vendor/surveyjs/themes/index.min.js','src')
+
 @script('app.forms.scripts.render')
