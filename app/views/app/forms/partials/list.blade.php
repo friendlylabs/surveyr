@@ -14,7 +14,8 @@
             @foreach($forms as $form)
                 <tr>
                     <td>
-                        <input type="checkbox" class="formChecklist" name="formsChecklist[]">
+                        <!-- TODO: bulky form actions -->
+                        <input type="checkbox" class="formChecklist d-none" name="formsChecklist[]">
                     </td>
                     <td class="p-1">
                         <a class="fw-bold" href="@route('forms.customize', $form->id, $form->slug)">{{ $form->title }}</a> <br>
@@ -80,7 +81,8 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item text-danger" href="@route('forms.delete', $form->id)">
+                                    <a class="dropdown-item text-danger" href="@route('forms.delete', $form->id)" onclick="confirmDelete(event)" 
+                                        data-delete-msg="Deleting this form will delete all its submissions. Are you sure you want to proceed?">
                                         <i class="fa-solid fa-trash me-2"></i> Delete Form
                                     </a>
                                 </li>
