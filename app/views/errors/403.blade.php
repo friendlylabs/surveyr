@@ -1,32 +1,24 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Forbiden Access</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            rel="stylesheet"
-        />
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-        />
-        <style>
-            body {
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                flex-direction: column !important;
-                height: 95vh !important;
-            }
-        </style>
-    </head>
-
-    <body>
-        <h2>
-            Error 4<span role="img" aria-label="O">&#x1f635;</span
-            ><span role="img" aria-label="3">&#x1f635;</span>
-        </h2>
-        <p>Forbiden Access. You don't have permission to access this page.</p>
-    </body>
-</html>
+@extends('layouts.auth.main')
+@section('content')
+    <main class="main" id="top">
+        <div class="px-3">
+            <div class="row min-vh-100 flex-center p-5">
+                <div class="col-12 col-xl-10 col-xxl-8">
+                    <div class="row justify-content-center align-items-center g-5">
+                        <div class="col-12 col-lg-6 text-center order-lg-1">
+                            <img class="img-fluid w-lg-100 d-dark-none" src="/assets/images/vector/403-illustration.png" alt="" width="400" />
+                            <img class="img-fluid w-md-50 w-lg-100 d-light-none" src="/assets/images/vector/dark_403-illustration.png" alt="" width="540" />
+                        </div>
+                        <div class="col-12 col-lg-6 text-center text-lg-start">
+                            <img class="img-fluid mb-6 w-50 w-lg-75 d-dark-none" src="/assets/images/vector/403.png" alt="" />
+                            <img class="img-fluid mb-6 w-50 w-lg-75 d-light-none" src="/assets/images/vector/dark_403.png" alt="" />
+                            <h2 class="text-body-secondary fw-bolder mb-3">Access Forbidden!</h2>
+                            <p class="text-body mb-5">Halt! Thou art endeavouring to trespass upon a realm not granted unto thee. <br class="d-none d-sm-block" /> </p>
+                            <a class="btn btn-lg btn-primary" href="@route('app.home')">Go Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+@endsection

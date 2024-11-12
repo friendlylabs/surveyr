@@ -1,1 +1,24 @@
-<html><head><title>Bad Request</title><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700;display=swap"><style>body{display:flex;justify-content:center;align-items:center;background-color:rgb(0,30,38);color:white;margin:0;padding:0px 30px;font-family:DM Sans,sans-serif;}h1{margin:0;font-weight:normal;}strong{display:inline-block;width:65px;}</style></head><body><h1 style="color: #34be6d;border-right:1px solid #555855;padding-right:20px;">400</h1><main style="padding-left:20px;"><p>Bad Request. The request could not be understood.</p></main></body></html>
+@extends('layouts.auth.main')
+@section('content')
+    <main class="main" id="top">
+        <div class="px-3">
+            <div class="row min-vh-100 flex-center p-5">
+                <div class="col-12 col-xl-10 col-xxl-8">
+                    <div class="row justify-content-center align-items-center g-5">
+                        <div class="col-12 col-lg-6 text-center order-lg-1">
+                            <img class="img-fluid w-lg-100 d-dark-none" src="/assets/images/vector/500-illustration.png" alt="" width="400" />
+                            <img class="img-fluid w-md-50 w-lg-100 d-light-none" src="/assets/images/vector/dark_500-illustration.png" alt="" width="540" />
+                        </div>
+                        <div class="col-12 col-lg-6 text-center text-lg-start">
+                            <img class="img-fluid mb-6 w-50 w-lg-75 d-dark-none" src="/assets/images/vector/500.png" alt="" />
+                            <img class="img-fluid mb-6 w-50 w-lg-75 d-light-none" src="/assets/images/vector/dark_500.png" alt="" />
+                            <h2 class="text-body-secondary fw-bolder mb-3">Page Missing!</h2>
+                            <p class="text-body mb-5">But no worries! Our ostrich is looking everywhere <br class="d-none d-sm-block" />while you wait safely. </p>
+                            <a class="btn btn-lg btn-primary" href="@route('app.home')">Go Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+@endsection
