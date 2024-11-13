@@ -18,7 +18,7 @@
                                 Enter your email address to reset your password
                             </p>
 
-                            <form action="{{ route('reset') }}" id="resetForm" class="p-2">
+                            <form action="{{ route('reset') }}" id="resetForm" class="p-2" onsubmit="submitForm(event)">
                                 @csrf
                             
                                 <div class="alert alert-success d-none fs-9">
@@ -49,28 +49,3 @@
         </div>
     </div>
 @endsection
-@push('scripts')
-    <script>
-        $('#resetForm').submit(function(e) {
-            e.preventDefault();
-            var form = $(this);
-            buttonState('#btnReset', 'loading');
-
-            $.ajax({
-                url: form.attr('action'),
-                method: 'POST',
-                data: form.serialize(),
-                success: function(response) {
-                    
-                },
-                error: function(xhr) {
-                    toast.error({ message: 'Unknown Error Occurred' });
-                },
-                complete: function() {
-                    buttonState('#btnReset', 'reset', 'Reset Password');
-                }   
-            });
-            
-        });
-    </script>
-@endpush
