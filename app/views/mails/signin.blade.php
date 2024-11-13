@@ -12,7 +12,7 @@
                 <p>Hi there {{ $name }},</p>
                 <p>We wanted to let you know that a new device was used to sign in to your account, If you suspect any suspicious activity on your account, please contact us immediately and secure your account by changing your password.</p>
                 <p>Best regards, </p>
-				<p>The Team - {{ getenv('app_name') }}</p>
+				<p>The Team - {{ _env('app_name') }}</p>
             </td>
         </tr>
     </table>

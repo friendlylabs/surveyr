@@ -257,7 +257,7 @@ return [
     | Secret string to encode JWT
     |
     */
-    'TOKEN_SECRET' => getenv('APP_KEY'),
+    'TOKEN_SECRET' => _env('APP_KEY'),
 
     /*
     |--------------------------------------------------------------------------

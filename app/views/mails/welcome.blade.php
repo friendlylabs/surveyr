@@ -14,11 +14,11 @@
                 <p><strong>Username:</strong> {{ $username }}</p>
                 <p><strong>Password:</strong> {{ $password }}</p>
                 <p>For security reasons, we recommend changing your password after your first login.</p>
-                <p>You can log in to your account <a href="{{ getenv('app_url') }}" target="_blank">here</a>.</p>
+                <p>You can log in to your account <a href="{{ _env('app_url') }}" target="_blank">here</a>.</p>
                 <p>If you have any questions or need further assistance, feel free to contact us.</p>
                 <p>Welcome aboard!</p>
                 <p>Best regards,</p>
-                <p>{{ getenv('app_name') }}</p>
+                <p>{{ _env('app_name') }}</p>
             </td>
         </tr>
         

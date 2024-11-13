@@ -22,7 +22,7 @@
                 <p>{{ $confirmationLink }}</p>
                 <p>Thank you for joining us! We're excited to have you on board.</p>
                 <p>Best regards,</p>
-                <p> {{ getenv('app_name') }} </p>
+                <p> {{ _env('app_name') }} </p>
             </td>
         </tr>
         

@@ -80,7 +80,7 @@ class Controller extends \Leaf\Controller
         $this->status = false;
         $this->message = "An unexpected error occurred";
 
-        if (getenv('app_debug') != 'false') {
+        if (_env('app_debug') != 'false') {
             $this->debug = [
                 'message' => $e->getMessage(),
                 'line' => $e->getLine(),

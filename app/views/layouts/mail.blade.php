@@ -3,7 +3,7 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>{{ getenv('app_name')}} Mail</title>
+		<title>{{ _env('app_name')}} Mail</title>
 		<style media="all" type="text/css">    
 			body {
 			font-family: Helvetica, sans-serif;
@@ -250,7 +250,7 @@
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td class="content-block">
-                                        <span class="apple-link"> Copyright &copy; {{getenv('app_name')}} {{date('Y')}} </span>
+                                        <span class="apple-link"> Copyright &copy; {{_env('app_name')}} {{date('Y')}} </span>
                                     </td>
                                 </tr>
                             </table>

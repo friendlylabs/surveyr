@@ -11,7 +11,7 @@
 			<div class="d-flex align-items-center">
 				<div class="d-flex align-items-center">
 					<img src="/assets/images/brand/icon.png" alt="phoenix" width="27" />
-					<h5 class="logo-text ms-2 d-none d-sm-block">{{ getenv('APP_NAME') }}</h5>
+					<h5 class="logo-text ms-2 d-none d-sm-block">{{ _env('APP_NAME') }}</h5>
 				</div>
 			</div>
 		</a>

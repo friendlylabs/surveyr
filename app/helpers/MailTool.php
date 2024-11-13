@@ -12,11 +12,11 @@ class MailTool
     public function __construct()
     {
         $this->mailer = new SmtpMailer(
-            host: getenv('mail_host'),
-            username: getenv('mail_username'),
-            password: getenv('mail_password'),
-            encryption: getenv('mail_encryption'),
-            port: intval(getenv('mail_port'))
+            host: _env('mail_host'),
+            username: _env('mail_username'),
+            password: _env('mail_password'),
+            encryption: _env('mail_encryption'),
+            port: intval(_env('mail_port'))
         );
     }
 
@@ -34,7 +34,7 @@ class MailTool
     public function send($subject, $body, $recipientEmail, $recipientName, $senderName = null)
     {
         $mail = new Nette\Mail\Message;
-        $mail->setFrom($senderName ?? getenv('mail_username'))
+        $mail->setFrom($senderName ?? _env('mail_username'))
             ->addTo($recipientEmail, $recipientName)
             ->setSubject($subject)
             ->setBody($body);
@@ -55,7 +55,7 @@ class MailTool
     public function sendToAll($subject, $body, $recipients, $senderName = null)
     {
         $mail = new Nette\Mail\Message;
-        $mail->setFrom($senderName ?? getenv('mail_username'))
+        $mail->setFrom($senderName ?? _env('mail_username'))
             ->setSubject($subject)
             ->setBody($body);
 
@@ -78,7 +78,7 @@ class MailTool
     public function sendHtml($subject, $body, $recipientEmail, $recipientName, $senderName = null)
     {
         $mail = new Nette\Mail\Message;
-        $mail->setFrom($senderName ?? getenv('mail_username'))
+        $mail->setFrom($senderName ?? _env('mail_username'))
             ->addTo($recipientEmail, $recipientName)
             ->setSubject($subject)
             ->setHtmlBody($body);

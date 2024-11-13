@@ -23,13 +23,13 @@
 
                 <div style="margin-top: 20px;">
                     <p>Alternatively, you can copy and paste the following link in your browser: <br>
-                        <a href="{{ getenv('app_url') . '/auth/verify-email?token=' . $token }}" target="_blank">{{ getenv('app_url') . '/auth/verify-email?token=' . $token }}</a>
+                        <a href="{{ _env('app_url') . '/auth/verify-email?token=' . $token }}" target="_blank">{{ _env('app_url') . '/auth/verify-email?token=' . $token }}</a>
                     </p>
                 </div>
 
                 <p>If you did not create an account, no further action is required.</p>
                 <p>Best regards, </p>
-				<p>The Team - {{ getenv('app_name') }}</p>
+				<p>The Team - {{ _env('app_name') }}</p>
             </td>
         </tr>
     </table>

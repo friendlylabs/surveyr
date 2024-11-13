@@ -23,7 +23,7 @@
 				<p>Please note, this code is valid for only a limited time.</p>
 				<p>If you did not request this code, please disregard this email or contact our support team immediately.</p>
 				<p>Best regards,<br>The Support Team</p>
-                <p>{{ getenv('app_name') }}</p>
+                <p>{{ _env('app_name') }}</p>
 			</td>
 		</tr>
 	</table>				
