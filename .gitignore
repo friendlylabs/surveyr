@@ -6,6 +6,9 @@ dist
 compiled
 .idea
 hot
+changes.php
+/changes/
+check.cmd
 /vendor/
 node_modules
 npm-debug.log
