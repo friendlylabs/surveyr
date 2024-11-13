@@ -1,16 +1,12 @@
-<p style="text-align: center;">
-  <img src="https://raw.githubusercontent.com/friendlylabs/surveyr/refs/heads/main/public/assets/images/brand/logo-dark.png?token=GHSAT0AAAAAACF53G7FOMP623KU4YC7GM4AZZTVVNQ" alt="Surveyr Logo" width="200" />
+<p align="center">
+  <img src="https://raw.githubusercontent.com/friendlylabs/surveyr/refs/heads/main/public/assets/images/brand/logo.png" alt="Surveyr Logo" width="200" />
 </p>
 
 # README
 
-Survey is an open-source form builder that allows anyone to create engaging forms for surveys, questionnaires, quizzes, and polls.
+Surveyr is an open-source form builder that allows anyone to create engaging forms for surveys, questionnaires, quizzes, and polls.
 
-The project is still in the early stages of development, while I am doing my best to make it as stable as possible, there are still a lot of features that need to be implemented and bugs that need to be fixed, some of these include:
-
-- form access code restrictions
-- Webhooks ping
-- Submission reviews, etc
+The project is still in the early stages of development, while I am doing my best to make it as stable as possible, there are still a lot of features that need to be implemented and bugs that need to be fixed, for more information on the current state of the project, please refer to the [project board](https://github.com/orgs/friendlylabs/projects/3/views/1).
 
 ## Features
 
@@ -50,11 +46,11 @@ We welcome contributions from the community. If you have ideas for new features,
 
 ## License
 
-Survey is open-source software licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](https://www.gnu.org/licenses/agpl-3.0.html). You are free to use, modify, and distribute the software under the terms of this license.
+Surveyr is open-source software licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](https://www.gnu.org/licenses/agpl-3.0.html). You are free to use, modify, and distribute the software under the terms of this license.
 
 ## Credits
 
-Survey is developed and maintained by [Friendly Labs](https://friendlylabs.io/), a team passionate about building tools that empower individuals and organizations to create, collaborate, and innovate. We believe in the power of open-source software to drive positive change and foster a more inclusive and accessible digital world.
+Surveyr is developed and maintained by [Friendly Labs](https://friendlylabs.io/), a team passionate about building tools that empower individuals and organizations to create, collaborate, and innovate. We believe in the power of open-source software to drive positive change and foster a more inclusive and accessible digital world.
 
 - [surveyjs](https://surveyjs.io) - For the survey builder library
 - [leafphp](https://leafphp.dev) - Project Framework
