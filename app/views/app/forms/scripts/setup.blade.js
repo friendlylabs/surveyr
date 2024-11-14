@@ -1,3 +1,13 @@
+const publicUrl = document.getElementById('publicUrl');
+var qrcode = new QRCode(document.getElementById("qrcode"), {
+    width : 150,
+    height : 150,    
+    colorDark : "#1e6b5b",
+    colorLight : "#ffffff",
+});
+
+qrcode.makeCode(publicUrl.value);
+
 document.querySelectorAll('.profile-overview-switch').forEach(button => {
     button.addEventListener('click', function() {
         const targetBlock = this.getAttribute('data-target-block');
