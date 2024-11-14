@@ -82,7 +82,7 @@ class FormsController extends Controller
         $data = [
             'title' => $data['title'],
             'slug' => slugify($data['title']) . '-' . uniqid(),
-            'description' => $data['description'] ?? '',
+            'description' => $data['description'] ?? $data['title'],
             'user_id' => auth()->id(),
             'content' => $data,
             'start_date' => now()->addDays(7),
