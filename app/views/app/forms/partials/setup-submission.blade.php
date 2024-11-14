@@ -9,13 +9,13 @@
             <div class="row">
                 <div class="col-12 mb-3">
                     <label for="reviewFormat" class="form-label d-block">Review Format</label>
+                    <small class="text-muted fs-10 ms-3 d-block">Select the review format for this form</small>
                     <select class="form-selector" id="reviewFormat" name="reviews" data-placeholder="Select Review Format">
                         @foreach ($reviewTypes as $review)
                             <option
                                 value="{!! json_encode($review->properties) !!}"
                                 {{ array_diff($review->properties, $form->reviews)  ? '' : 'selected' }}>
-
-                                {{ $review->name }}
+                                {{ $review->name }} ({{ implode(', ', $review->properties) }})
                             </option>
                         @endforeach
                     </select>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-12 mb-3">
                     <label for="WebhookUrl" class="form-label d-block">Webhook URL</label>
-                    <small class="text-muted fs-10 ms-3 d-block">Ping an external service after submission</small>
+                    <small class="text-danger fs-10 ms-3 d-block">Make sure you have this site whitelisted in your app to avoid <b>cors</b> issues</small>
                     <input type="text" class="form-control" placeholder="Webhook url" id="WebhookUrl" name="webhook_url" value="{{ $form->webhook_url }}">
                 </div>
 
