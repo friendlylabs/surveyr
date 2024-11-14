@@ -392,7 +392,9 @@ class FormsController extends Controller
                 $formContent['mode'] = 'display';             // read-only mode
                 $surveyMode = 'restricted';
             }else{
-                return response()->markup(view('app.forms.closed'), 418);
+                return response()->markup(view('app.forms.closed',[
+                    'formId' => $form->id,
+                ]), 418);
             }
         }
 
