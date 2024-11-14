@@ -10,9 +10,17 @@
 | you set here will be called when a 404 error is encountered
 |
 */
-// app()->set404(function() {
-// 	response()->page(ViewsPath("errors/404.html", false), 404);
-// });
+app()->set404(function() {
+
+    # api and ajax based 404 handler
+    if (strpos($_SERVER['REQUEST_URI'], '/api/') === 0 or request()->isXhr()) {
+        return response()->json(['status'=>false, 'message' => 'Resource Not Found'], 404);
+    }
+
+    # web based 404 handler
+ 	return response()->markup(view("errors.404", ['title'=>'Resource Not Found']), 404);
+
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -24,9 +32,18 @@
 | you set here will be called when a 500 error is encountered
 |
 */
-// app()->setErrorHandler(function() {
-// 	response()->page(ViewsPath("errors/500.html", false), 500);
-// });
+if(_env('app_debug') === 'false'){
+    app()->setErrorHandler(function() {
+        
+        # api and ajax 500 handler
+        if (strpos($_SERVER['REQUEST_URI'], '/api/') === 0 or request()->isXhr()) {
+            return response()->json(['status'=>false, 'message' => 'Server Error'], 500);
+        }
+        
+        # web based 404 handler
+        return response()->markup(view("errors.500", ['title'=>'Server Error']), 500);
+    });
+}
 
 
 /*
