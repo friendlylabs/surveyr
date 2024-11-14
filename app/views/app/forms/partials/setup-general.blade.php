@@ -8,12 +8,12 @@
 
             <div class="mb-3">
                 <label for="title" class="form-label">Form Title</label>
-                <input type="text" class="form-control" id="title" name="title" value="{{ $form->title }}">
+                <input type="text" class="form-control" id="title" name="title" value="{{ $form->title }}" required>
             </div>
 
             <div class="mb-3">
                 <label for="description" class="form-label">Form Description</label>
-                <textarea class="form-control" id="description" name="description" rows="3">{{ $form->description }}</textarea>
+                <textarea class="form-control" id="description" name="description" rows="3" required>{{ $form->description }}</textarea>
             </div>
 
             <div class="mb-3">
