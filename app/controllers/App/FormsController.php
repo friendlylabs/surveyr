@@ -253,7 +253,7 @@ class FormsController extends Controller
         ];
 
         if(in_array(null, $data) && strlen($data['title']) < 3 && strlen($data['description']) < 10)
-            return $this->jsonError("Invalid form data");
+            return $this->jsonError("Name and description must be at least 3 and 10 characters, respectively");
 
         $data['collaborators'] = request()->params('collaborators', []);
         $data['spaces'] = request()->params('spaces', []);
@@ -392,7 +392,7 @@ class FormsController extends Controller
                 $formContent['mode'] = 'display';             // read-only mode
                 $surveyMode = 'restricted';
             }else{
-                return $this->errorPage(403);
+                return response()->markup(view('app.forms.closed'), 418);
             }
         }
 
