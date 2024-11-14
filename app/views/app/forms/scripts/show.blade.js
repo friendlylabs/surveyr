@@ -1,3 +1,9 @@
+/**
+ * This script is used to render the survey form and handle submission.
+ * TODO: The script requires optimization and refactoring.
+ *       - webhook handling is to be done on the back as a queued job
+ */
+
 const surveyMode = `{{ $surveyMode }}`;
 const surveyJson = `{!! json_encode($formContent) !!}`;
 const survey = new Survey.Model(surveyJson);
@@ -15,42 +21,64 @@ if (surveyMode === 'restricted') {
         font-size: 1.2em;
         position: fixed;
         width: 100%;
-        bottom: 0;
+        bottom: 0;  
         left: 0;
         z-index: 1;
     `;
     document.body.insertBefore(banner, document.body.firstChild); // Adds banner at the top of the page
 }
 
-// Add event listener to handle survey completion
-survey.onComplete.add(function (result) {
-
-    const submissionUrl = `{{ route('forms.collect', md5($form->id), $form->slug) }}`;
-    const submissionMethod = 'POST';
-
-    $.ajax({
-        url: submissionUrl,
-        method: submissionMethod,
-        headers: {
-            'X-CSRF-TOKEN': csrf_token
-        },
+// Function to send AJAX requests
+function sendAjaxRequest(url, data, includeCsrf = false) {
+    const headers = includeCsrf ? { 'X-CSRF-TOKEN': csrf_token } : {};
+    
+    return $.ajax({
+        url: url,
+        method: 'POST',
+        headers: headers,
         data: {
-            content: result.data
-        },
-        success: function (response) {
-            if (response.status) {
-                toast.success({ message: response.message });
-            } else {
-                toast.error({ message: response.message ?? 'An Unknown error occured' });
-            }
-        },
-        error: function (error) {
-            toast.error({ message: 'An error occurred while submitting the form' });
+            content: data
         }
     });
-            
+}
+
+// Add event listener to handle survey completion
+survey.onComplete.add(function (result) {
+    const submissionUrl = `{{ route('forms.collect', md5($form->id), $form->slug) }}`;
+    const webhook = `{{ $form->webhook_url ?? null }}`;
+
+    // Prepare requests
+    const requests = [
+        // Send data to your main server (with CSRF token)
+        sendAjaxRequest(submissionUrl, result.data, true)
+    ];
+
+    // If webhook URL is defined, send data to it (without CSRF token)
+    if (webhook) {
+        requests.push(sendAjaxRequest(webhook, result.data, false));
+    }
+
+    // Use Promise.all to handle both requests
+    Promise.all(requests)
+        .then(([mainResponse, webhookResponse]) => {
+            // Handle response from your main server
+            if (mainResponse.status) {
+                toast.success({ message: mainResponse.message });
+            } else {
+                toast.error({ message: mainResponse.message ?? 'An unknown error occurred' });
+            }
+
+            // Optionally handle webhook response if needed
+            if (webhook && webhookResponse) {
+                console.log('Webhook Response:', webhookResponse);
+            }
+        })
+        .catch(() => {
+            toast.error({ message: 'An error occurred while submitting the form' });
+        });
 });
 
+// Initialize and render survey when DOM is ready
 document.addEventListener("DOMContentLoaded", function() {
     survey.render(document.getElementById("surveyContainer"));
     survey.applyTheme(SurveyTheme.SolidLightPanelless);
