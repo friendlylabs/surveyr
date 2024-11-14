@@ -9,7 +9,7 @@
 		<meta name="msapplication-TileImage" content="/assets/img/favicons/mstile-150x150.png">
 
         <link rel="shortcut icon" href="/favicon.ico">
-		<title>{{ _env('APP_NAME') }} {{ $title }}</title>
+		<title>{{ _env('APP_NAME') }} {{ $title ?? 'App' }}</title>
         
 		<script src="/assets/vendors/simplebar/simplebar.min.js"></script>
 		<script src="/assets/js/config.js"></script>
