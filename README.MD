@@ -12,7 +12,7 @@ The project is still in the early stages of development, while I am doing my bes
 
 - 📝 **Drag and Drop Builder:** Effortlessly design forms using an intuitive drag-and-drop interface. Add various question types, text fields, dropdowns, checkboxes, and more with just a few clicks. The builder simplifies creating interactive and visually appealing forms, making it accessible for non-technical users.
 - 🧠 **Conditional Logic and Branching:** Implement powerful conditional logic to show or hide questions based on user responses. This feature allows you to create personalized, dynamic forms that adapt to each user's answers, enhancing engagement and relevance.
-- 🔗 **Webhooks Integration (In progress):** Seamlessly connect your forms with other platforms and automate workflows using webhooks. Push form submissions to your CRM, send notifications to Slack, trigger emails, or integrate with third-party services to streamline your data processing.
+- 🔗 **Webhooks Integration:** Seamlessly connect your forms with other platforms and automate workflows using webhooks. Push form submissions to your CRM, send notifications to Slack, trigger emails, or integrate with third-party services to streamline your data processing.
 - 🖼️ **Tailored Templates:** Get started quickly with a variety of pre-designed templates tailored for different use cases like customer feedback, event registrations, quizzes, and more. Customize these templates to fit your brand's look and feel.
 - 📊 **Insightful Analytics:** Gain valuable insights from your data with built-in analytics. Track form performance, response rates, and user behavior. Visualize your data with charts and graphs to make informed decisions and optimize your surveys for better results.
 - 📤 **Flexible Data Export:** Easily export your form data in multiple formats, such as CSV, Excel, or JSON. This flexibility ensures that you can analyze your data offline or import it into other tools for deeper analysis.
@@ -39,7 +39,6 @@ The project is still in the early stages of development, while I am doing my bes
   ```
   php leaf db:seed
   ```
-
 - Start the development server
 
   ```
