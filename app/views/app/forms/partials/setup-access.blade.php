@@ -38,13 +38,14 @@
 
             <div class="mb-3">
                 <label for="accessCode" class="form-label">Access Password</label>
+                <small class="text-muted fs-10 ms-3 d-block">Set a password to restrict access to this form (under development)</small>
                 <input type="password" placeholder="leave empty to allow public access" class="form-control" id="accessCode" name="access_code" value="{{ $form->access_code }}">
             </div>
 
             <div class="mb-3 position-relative">
                 <label for="publicUrl" class="form-label">Public URL</label>
                 <input type="text" class="form-control" id="publicUrl" readOnly value="{{ request()->getUrl() . route('forms.show', md5($form->id), $form->slug) }}">
-                <button type="button" class="btn btn-light btn-sm mt-2 position-absolute" style="top: 1.1rem; right: 0.1rem;"
+                <button type="button" class="btn btn-light btn-sm mt-2 position-absolute" style="top: 0.45rem; right: 0.1rem;"
                     onclick="copyToClipboard('{{ request()->getUrl() . route('forms.show', md5($form->id), $form->slug) }}')">
                     <i class="fa-regular fa-clipboard"></i>
                 </button>
