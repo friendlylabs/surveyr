@@ -96,10 +96,11 @@
                                                         @foreach($submission->submission as $key => $value)
                                                             <span class="text-body-secondary fs-10">{{ $key }}:</span>
                                                             <span class="text-body-secondary fs-10 fw-bold">
-                                                                {{ is_array($value) ? implode(', ', $value) : $value }}
-                                                            </span> |
+                                                                @php is_array($value) ? $value = implode(', ', $value) : $value = $value @endphp
+                                                                @if (strpos($value, 'data:image') !== false) 🖼️ @endif
+                                                            </span>
 
-                                                            @if ($loop->index == 3) @break @endif
+                                                            @if ($loop->index == 3) @break @else | @endif
                                                         @endforeach
                                                     </div>
                                                 </td>
