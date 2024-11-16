@@ -97,7 +97,7 @@
                                                             <span class="text-body-secondary fs-10">{{ $key }}:</span>
                                                             <span class="text-body-secondary fs-10 fw-bold">
                                                                 @php is_array($value) ? $value = implode(', ', $value) : $value = $value @endphp
-                                                                @if (strpos($value, 'data:image') !== false) 🖼️ @endif
+                                                                @if (strpos($value, 'data:image') !== false) 🖼️ @else {{$value}} @endif
                                                             </span>
 
                                                             @if ($loop->index == 3) @break @else | @endif
