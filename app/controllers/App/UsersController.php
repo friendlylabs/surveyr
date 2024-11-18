@@ -12,7 +12,7 @@ class UsersController extends Controller
     public function index(){
 
         # validate user role
-        if(!in_array(auth()::user()['role'], ['admin', 'moderator']))
+        if(!in_array(auth()->user()->role, ['admin', 'moderator']))
             return $this->errorPage(403);
 
         # fetch and allocate data
@@ -30,11 +30,11 @@ class UsersController extends Controller
     public function store(){
         try{
             # validate user role
-            if(!in_array(auth()::user()['role'], ['admin', 'moderator']))
+            if(!in_array(auth()->user()->role, ['admin', 'moderator']))
                 return $this->jsonError('You are not authorized to perform this action');
 
             $data = request()->body();
-            if(auth()::user()['role'] == 'moderator'){
+            if(auth()->user()->role == 'moderator'){
                 if($data['role'] == 'admin' || $data['role'] == 'moderator')
                     return $this->jsonError('You are not authorized to create users with admin or moderator role');
             }
@@ -53,7 +53,7 @@ class UsersController extends Controller
                 return $this->jsonError('Failed to create user');
 
             # send welcome email
-            if(AuthConfig('VERIFY_EMAIL')){
+            if(AuthConfig('email.verify')){
                 (new MailTool())->sendHtml('Welcome to Surveyor', view('mails.welcome', [
                     'name' => $data['fullname'],
                     'username' => $user['email'],
@@ -61,6 +61,7 @@ class UsersController extends Controller
                 ]), $user['email'], $user['fullname']);
             }
 
+            $this->redirect = route('users.index');
             return $this->jsonSuccess('User created successfully');
             
         }
@@ -73,14 +74,14 @@ class UsersController extends Controller
 
     public function activate($id){
         # access control
-        if(!in_array(auth()::user()['role'], ['admin', 'moderator']))
+        if(!in_array(auth()->user()->role, ['admin', 'moderator']))
             return $this->errorPage(403);
 
         $user = User::find($id);
         if(!$user) return $this->errorPage(404);
 
         # only an admin can modify the admin|moderator status
-        if(auth()::user()['role'] == 'moderator'){
+        if(auth()->user()->role == 'moderator'){
             if($user->role == 'admin' || $user->role == 'moderator')
                 return $this->errorPage(403);
         }
@@ -93,14 +94,14 @@ class UsersController extends Controller
 
     public function suspend($id){
         # access control
-        if(!in_array(auth()::user()['role'], ['admin', 'moderator']))
+        if(!in_array(auth()->user()->role, ['admin', 'moderator']))
             return $this->errorPage(403);
 
         $user = User::find($id);
         if(!$user) return $this->errorPage(404);
 
         # only an admin can modify the admin|moderator status
-        if(auth()::user()['role'] == 'moderator'){
+        if(auth()->user()->role == 'moderator'){
             if($user->role == 'admin' || $user->role == 'moderator')
                 return $this->errorPage(403);
         }
@@ -115,7 +116,7 @@ class UsersController extends Controller
     {
         try{
             # validate user role
-            if(!in_array(auth()::user()['role'], ['admin', 'moderator']))
+            if(!in_array(auth()->user()->role, ['admin', 'moderator']))
                 return $this->jsonError('You are not authorized to perform this action');
 
             # fetch and validate request data
@@ -124,7 +125,7 @@ class UsersController extends Controller
             if(!$user) return $this->jsonError('User not found');
 
             # only an admin can modify the admin|moderator
-            if(auth()::user()['role'] == 'moderator'){
+            if(auth()->user()->role == 'moderator'){
                 if($data['role'] == 'admin' || $data['role'] == 'moderator')
                     return $this->jsonError('You are not authorized to create users with admin or moderator role');
             }
