@@ -32,7 +32,7 @@ class Controller extends \Leaf\Controller
     {
         if(auth()->id() and !request()->isAjax()) {
             $this->data['loggedUser'] = auth()->user();
-            unset($this->data['loggedUser']['password']);
+            unset($this->data['loggedUser']->password);
         }
     }
 
@@ -84,15 +84,10 @@ class Controller extends \Leaf\Controller
             $this->debug = [
                 'message' => $e->getMessage(),
                 'line' => $e->getLine(),
-                'file' => $e->getFile(),
+                'file' => $e->getFile()
             ];
         }
 
         return response()->json($this->data);
-    }
-
-    protected function isWireNavigation()
-    {
-        return isset($_SERVER['HTTP_X_LIVEWIRE_NAVIGATE']);
     }
 }
