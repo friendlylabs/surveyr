@@ -7,7 +7,7 @@ class GoogleUtil
     public static function authClient()
     {
 
-        $authConfigsFile = AuthConfig('GOOGLE_APPLICATION_CREDENTIALS');
+        $authConfigsFile = AuthConfig('google.credentials');
         if(!file_exists($authConfigsFile)){
             
             $authConfigsCredentials = [
