@@ -13,7 +13,7 @@
                                 </div>
                             </a>
 
-                            @if(AuthConfig('ALLOW_GOOGLE_AUTH'))
+                            @if(AuthConfig('google.auth'))
                                 <a href="{{ route('google.auth') }}" class="btn btn-phoenix-secondary w-100 mb-3">
                                     <span class="fab fa-google text-danger me-2 fs-9"></span>Sign in with google
                                 </a>
@@ -52,7 +52,7 @@
                                         <a class="fs-9 fw-semibold text-danger" href="{{ route('reset', 'request') }}">Forgot Password?</a>
                                     </div>
 
-                                    @if(AuthConfig('ALLOW_REGISTRATION'))
+                                    @if(AuthConfig('allowRegistration'))
                                         <div class="col-auto">
                                             <div class="text-center">
                                                 <a class="fs-9 fw-bold" href="{{ route('register') }}">Create an account</a>

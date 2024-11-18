@@ -39,7 +39,7 @@
 		<li class="nav-item dropdown">
 			<a class="nav-link lh-1 pe-0" id="navbarDropdownUser" href="#!" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
 				<div class="avatar avatar-l ">
-					<img class="rounded-circle " src="{{ urlPath($loggedUser['avatar']) }}" alt="{{ $loggedUser['fullname'] }}" />
+					<img class="rounded-circle " src="{{ urlPath($loggedUser->avatar) }}" alt="{{ $loggedUser->fullname }}" />
 				</div>
 			</a>
 			<div class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border" aria-labelledby="navbarDropdownUser">
