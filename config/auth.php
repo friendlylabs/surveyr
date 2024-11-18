@@ -199,7 +199,7 @@ return [
     | form.
     |
     */
-    'allowRegistration' => true,
+    'allowRegistration' => false,
 
     /*
     |--------------------------------------------------------------------------
