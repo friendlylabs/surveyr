@@ -25,7 +25,7 @@ class AuthController extends Controller
 
     public function register()
     {
-        if(!AuthConfig('ALLOW_REGISTRATION'))
+        if(!AuthConfig('allowRegistration'))
             return response()->redirect(route('login'));
 
         return $this->renderPage('Register', 'auth.register');
@@ -51,7 +51,9 @@ class AuthController extends Controller
 
         if($data){
 
-            if(!$data['user']['email_verified'] && AuthConfig('ENFORCE_VERIFY_EMAIL')){
+            $user = auth()->user();
+
+            if(!$user->email_verified && AuthConfig('email.verify.enforce')){
                 auth()->logout();
                 return response()->json([
                     'status' => false,
@@ -60,29 +62,29 @@ class AuthController extends Controller
                 ]);
             }
 
-            if(!$data['user']['two_fa']):
-                session()->set('session_id', md5(uniqid().time().$data['user']['id']));
+            if(!$user->two_fa):
+                session()->set('session_id', md5(uniqid().time().$user->id));
 
                 else:
                     $this->sendTwoFaToken();
                     $redirect = route('2fa');
             endif;
 
-            if($data['user']['notify_signin']){
+            if($user->notify_signin){
                 (new MailTool())->sendHtml('New Signin', view('mails.signin', [
-                    'name' => $data['user']['fullname'],
+                    'name' => $user->fullname,
                     'ip' => request()->getIp(),
-                    # TODO: 'location' => request()->location()
-                ]), $data['user']['email'], $data['user']['fullname']);
+                ]), $user->email, $user->fullname);
             }
         }
 
-        return $this->jsonResponse($data, "Welcome, Login successful", "Invalid login details", $redirect ?? route('app.home'));
+        $this->redirect = $redirect ?? route('app.home');
+        return $this->jsonResponse($data, "Welcome, Login successful", "Invalid login details");
     }
 
     public function signup()
     {
-        if(!AuthConfig('ALLOW_REGISTRATION'))
+        if(!AuthConfig('allowRegistration'))
             return response()->redirect(route('login'));
 
         $request = request()->validate([
@@ -106,7 +108,7 @@ class AuthController extends Controller
             'password' => Password::hash($request['password'])
         ]);
 
-        if(AuthConfig('VERIFY_EMAIL') && $data){
+        if(AuthConfig('email.verify') && $data){
             $verificationToken = Password::hash(uniqid() . time());
 
             UserToken::create([
@@ -201,9 +203,9 @@ class AuthController extends Controller
         ]);
 
         (new MailTool())->sendHtml('2FA Code', view('mails.2fa', [
-            'name' => $user['fullname'],
+            'name' => $user->fullname,
             'token' => $token
-        ]), $user['email'], $user['fullname']);
+        ]), $user['email'], $user->fullname);
     }
 
     public function reset()
