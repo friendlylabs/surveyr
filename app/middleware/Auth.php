@@ -27,13 +27,13 @@ class Auth
     {
         self::$user = auth()->user() ?? null;
 
-        self::$home = AuthConfig('GUARD_HOME');
-        self::$login = AuthConfig('GUARD_LOGIN');
+        self::$home = AuthConfig('route.home');
+        self::$login = AuthConfig('route.login');
 
         self::$routes = [
-            '2fa' => AuthConfig('GUARD_2FA'),
-            'verify' => AuthConfig('GUARD_VERIFY'),
-            'logout' => AuthConfig('GUARD_LOGOUT')
+            '2fa' => AuthConfig('route.2fa'),
+            'verify' => AuthConfig('route.verify'),
+            'logout' => AuthConfig('route.logout')
         ];
         
         self::$uri = ltrim($_SERVER['REQUEST_URI'], '/');
@@ -80,11 +80,11 @@ class Auth
 
         # pages for logged in users only
         if (is_array($rules['access'])) {
-            if (self::$user && !in_array(self::$user['role'], $rules['access'])) {
+            if (self::$user && !in_array(self::$user->role, $rules['access'])) {
                 exit(header("Location: " . self::$home));
             }
         } elseif ($rules['access'] !== 'all') {
-            if (self::$user && self::$user['role'] !== $rules['access']) {
+            if (self::$user && self::$user->role !== $rules['access']) {
                 exit(header("Location: " . self::$home));
             }
         }
