@@ -8,15 +8,15 @@
         <div class="form-group">
             <label for="username" class="form-label">Username</label>
             <input name="username" class="form-control" type="text" required
-                value="{{ ($loggedUser['username'] != '') ? $loggedUser['username'] : $loggedUser['fullname'] }}">
+                value="{{ ($loggedUser->username != '') ? $loggedUser->username : $loggedUser->fullname }}">
         </div>
         <div class="form-group">
             <label for="fullname" class="form-label">Full Name</label>
-            <input name="fullname" class="form-control" type="text" value="{{ $loggedUser['fullname'] }}" required>
+            <input name="fullname" class="form-control" type="text" value="{{ $loggedUser->fullname }}" required>
         </div>
         <div class="form-group">
             <label for="email" class="form-label">Email Address</label>
-            <input name="email" class="form-control" type="email" value="{{ $loggedUser['email'] }}" required>
+            <input name="email" class="form-control" type="email" value="{{ $loggedUser->email }}" required>
         </div>
         <div class="form-group">
             <label for="avatar" class="form-label">Avatar</label>

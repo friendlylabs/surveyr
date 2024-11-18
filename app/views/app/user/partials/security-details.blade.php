@@ -20,7 +20,7 @@
         <div class="form-group mt-3">
             <label for="2fa" class="form-label">2F Authentication</label>
             <div class="custom-control custom-switch inline-switch">
-                <input name="2fa" type="checkbox" class="custom-control-input" id="2fa" {{ $loggedUser['two_fa'] ? 'checked' : null }}>
+                <input name="2fa" type="checkbox" class="custom-control-input" id="2fa" {{ $loggedUser->two_fa ? 'checked' : null }}>
                 <label class="custom-control-label" for="2fa"></label>
             </div>
         </div>
@@ -29,7 +29,7 @@
         <div class="form-group mt-3">
             <label for="emailNotifications" class="form-label">Email Notifications</label>
             <div class="custom-control custom-switch inline-switch">
-                <input name="loging" type="checkbox" class="custom-control-input" id="emailNotifications" {{ $loggedUser['notify_signin'] ? 'checked' : null }}>
+                <input name="loging" type="checkbox" class="custom-control-input" id="emailNotifications" {{ $loggedUser->notify_signin ? 'checked' : null }}>
                 <label class="custom-control-label" for="emailNotifications"></label>
             </div>
         </div>
