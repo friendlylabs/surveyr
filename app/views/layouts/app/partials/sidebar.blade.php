@@ -34,7 +34,7 @@
             </ul>
         </li>
 
-        @if(in_array($loggedUser['role'], ['admin', 'moderator']))
+        @if(in_array($loggedUser->role, ['admin', 'moderator']))
             <li class="nav-item">
                 <a class="nav-link lh-1 @active('app.users')" href="@route('users.index')">
                     <i class="fa-solid fa-users me-2 fs-10"></i>

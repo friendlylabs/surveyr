@@ -31,7 +31,7 @@
                         <select class="form-selector" id="role" name="role" data-placeholder="Select User Role" required>
                             <option value="user">User</option>
                             <option value="moderator">Moderator</option>
-                            @if($loggedUser['role'] === 'admin')
+                            @if($loggedUser->role === 'admin')
                                 <option value="admin">Admin</option>
                             @endif
                         </select>
