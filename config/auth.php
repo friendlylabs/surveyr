@@ -270,7 +270,7 @@ return [
     | Enable or disable email verification
     |
     */
-    'email.verify' => true,
+    'email.verify' => false,
 
     /*
     |--------------------------------------------------------------------------
