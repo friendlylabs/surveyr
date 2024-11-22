@@ -52,7 +52,6 @@ class Controller extends \Leaf\Controller
         if ($state) {
             $this->status = true;
             $this->message = $successMsg;
-            $this->redirect = $redirect;
         } else {
             $this->status = false;
             $this->message = $errorMsg;
