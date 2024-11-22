@@ -11,6 +11,7 @@ use App\Models\Space;
 use App\Models\Template;
 use App\Models\Collection;
 use App\Models\ReviewType;
+use App\Models\Theme;
 
 class FormsController extends Controller
 {
@@ -110,6 +111,7 @@ class FormsController extends Controller
         if(!$this->formOwnerShipCheck($id) && !$this->hasAccessbySpace($form->spaces))
             return $this->errorPage(403);
 
+        $this->themes = Theme::all();
         $this->reviewTypes = ReviewType::all();
         $this->spaces = Space::userSpaces(auth()->id());
         $this->users = User::where('id', '!=', auth()->id())->get();
