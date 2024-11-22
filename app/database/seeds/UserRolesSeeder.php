@@ -12,8 +12,6 @@ class UserRolesSeeder extends Seeder
      */
     public function run()
     {
-        //UserRole::truncate();
-
         UserRole::create([
             'name' => 'admin',
             'description' => 'Administrator',

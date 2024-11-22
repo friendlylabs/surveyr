@@ -37,7 +37,6 @@ class ReviewTypesSeeder extends Seeder
             ),
         );
 
-        // ReviewType::truncate();
         ReviewType::insert($review_types);
     }
 }

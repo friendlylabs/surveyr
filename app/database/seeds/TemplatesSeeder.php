@@ -13,8 +13,6 @@ class TemplatesSeeder extends Seeder
      */
     public function run()
     {
-        //Template::truncate();
-
         $templatesRecords = file_get_contents(StoragePath('app/db/templates.json'));
         $templates = json_decode($templatesRecords, true)['rows'];
 
