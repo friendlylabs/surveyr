@@ -8,10 +8,10 @@ use App\Controllers\Controller;
 use App\Models\Form;
 use App\Models\User;
 use App\Models\Space;
+use App\Models\Theme;
 use App\Models\Template;
 use App\Models\Collection;
 use App\Models\ReviewType;
-use App\Models\Theme;
 
 class FormsController extends Controller
 {
@@ -231,6 +231,8 @@ class FormsController extends Controller
                 case 'general': return $this->updateGeneral($form); break;
                 case 'access': return $this->updateAccess($form); break;
                 case 'submission': return $this->updateSubmission($form); break;
+                case 'theme': return $this->updateTheme($form); break;
+                
                 default: return $this->jsonError("Invalid setting option");
             }
         }
@@ -344,6 +346,25 @@ class FormsController extends Controller
         }
 
         return $this->jsonError("An unknown error occured, failed to update form submission properties");        
+    }
+
+    /**
+     * Update form theme
+     * 
+     * @param object $form
+     * @return void
+     */
+    protected function updateTheme($form)
+    {
+        $theme = request()->params('theme');
+        if(!$theme) return $this->jsonError("Invalid theme");
+
+        $form->theme = $theme;
+        if($form->save()){
+            return $this->jsonSuccess("Form theme updated successfully");
+        }
+
+        return $this->jsonError("An unknown error occured, failed to update form theme");
     }
 
     /**
