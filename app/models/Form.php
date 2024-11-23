@@ -22,6 +22,7 @@ class Form extends Model
         'reviews',
         'webhook_url',
         'access_code',
+        'theme',
         'start_date',
         'end_date'
     ];
