@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Surveyr</title>
+    <meta name="description" content="Surveyr is a survey platform that makes designing and sharing surveys a breeze.">
+    <meta http-equiv="refresh" content="9; url=/auth/login">
+
+    <link rel="manifest" href="/manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/assets/js/service-worker.js').then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script> 
+
+    <link rel="stylesheet" href="/assets/css/splash.css">
+</head>
+<body>
+    <div class="letters"><span class="fall--1"><span class="bfall--1"><span class="plonge--1"><span class="tremble">S</span></span></span></span><span class="fall--2"><span class="bfall--2"><span class="plonge--2"><span class="tremble">u</span></span></span></span><span class="fall--3"><span class="bfall--3"><span class="plonge--3"><span class="tremble">r</span></span></span></span><span class="fall--4"><span class="bfall--4"><span class="plonge--4"><span class="tremble">v</span></span></span></span><span class="fall--5"><span class="bfall--5"><span class="plonge--5"><span class="tremble">e</span></span></span></span><span class="fall--6"><span class="bfall--6"><span class="plonge--6"><span class="tremble">y</span></span></span></span><span class="fall--7"><span class="bfall--7"><span class="plonge--7"><span class="tremble">7</span></span></span></span><span class="fall--8"><span class="bfall--8"><span class="plonge--8"><span class="tremble">r</span></span></span></span>
+    </div>
+    <div class="objects">
+    <div class="object circle"></div>
+    <div class="object square"></div>
+    <div class="object diamond"></div>
+    <div class="object circle"></div>
+    <div class="object square"></div>
+    <div class="object diamond"></div>
+    <div class="object circle"></div>
+    <div class="object square"></div>
+    <div class="object diamond"></div>
+    <div class="object circle"></div>
+    <div class="object square"></div>
+    <div class="object diamond"></div>
+    <div class="object circle"></div>
+    <div class="object square"></div>
+    <div class="object diamond"></div>
+    </div>
+    <div class="full-water">
+    <div class="water">
+        <div class="splash splash--1"></div>
+        <div class="splash splash--2"></div>
+        <div class="splash splash--3"></div>
+        <div class="splash splash--4"></div>
+        <div class="splash splash--5"></div>
+        <div class="splash splash--6"></div>
+        <div class="splash splash--7"></div>
+        <div class="splash splash--8"></div>
+        <div class="splash splash--9"></div>
+        <svg class="wobble" viewBox="0 0 841.9 73.5">
+        <path id="trampoline" fill="#ED1C24" d="M851,79.5H-8V13.4c0,0,243,0,430,0s429,0,429,0V79.5z"></path>
+        <animate xlink:href="#trampoline" attributeName="d" begin="5.2s" dur="1s" fill="freeze" keyTimes="0; 0.2; 0.5; 1" values="M851,79.5H-8V13.4c0,0,243,0,430,0s429,0,429,0V79.5z; M851,79.5H-8V13.4c0,0,243,10,430,10s429-10,429-10V79.5z; M851,79.5H-8V13.4c0,0,243-4,430-4s429,4,429,4V79.5z; M851,79.5H-8V13.4c0,0,243,0,430,0s429,0,429,0V79.5z;"></animate>
+        </svg>
+    </div>
+    </div>
+    <div id="replay">
+        <center>
+            <img src="/assets/images/brand/logo-dark.png" width="130" alt="Logo">
+        </center>
+    </div>    
+</body>
+</html>
