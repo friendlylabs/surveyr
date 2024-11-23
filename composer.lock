@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6b9f262f17ebcc68bf6c9acdc215c4a7",
+    "content-hash": "8bae7585acd4fd22044b12c22f5f7651",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -575,16 +575,16 @@
         },
         {
             "name": "google/apiclient",
-            "version": "v2.17.0",
+            "version": "v2.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client.git",
-                "reference": "b1f63d72c44307ec8ef7bf18f1012de35d8944ed"
+                "reference": "846f149c9f879449145326dad99ef00bf1d879f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/b1f63d72c44307ec8ef7bf18f1012de35d8944ed",
-                "reference": "b1f63d72c44307ec8ef7bf18f1012de35d8944ed",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/846f149c9f879449145326dad99ef00bf1d879f3",
+                "reference": "846f149c9f879449145326dad99ef00bf1d879f3",
                 "shasum": ""
             },
             "require": {
@@ -638,22 +638,22 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client/issues",
-                "source": "https://github.com/googleapis/google-api-php-client/tree/v2.17.0"
+                "source": "https://github.com/googleapis/google-api-php-client/tree/v2.18.0"
             },
-            "time": "2024-07-10T14:57:54+00:00"
+            "time": "2024-10-16T21:58:58+00:00"
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.376.0",
+            "version": "v0.381.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "013c4fcdda03c804e96c6aad332456e05916c665"
+                "reference": "e26fd3ea9c1931f205481843519b8fdc166e7026"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/013c4fcdda03c804e96c6aad332456e05916c665",
-                "reference": "013c4fcdda03c804e96c6aad332456e05916c665",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/e26fd3ea9c1931f205481843519b8fdc166e7026",
+                "reference": "e26fd3ea9c1931f205481843519b8fdc166e7026",
                 "shasum": ""
             },
             "require": {
@@ -682,29 +682,29 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.376.0"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.381.0"
             },
-            "time": "2024-10-06T01:06:23+00:00"
+            "time": "2024-11-11T01:08:23+00:00"
         },
         {
             "name": "google/auth",
-            "version": "v1.42.0",
+            "version": "v1.43.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-auth-library-php.git",
-                "reference": "0c25599a91530b5847f129b271c536f75a7563f5"
+                "reference": "b6a80acd906492086db59aada9196dcfb9c512fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/0c25599a91530b5847f129b271c536f75a7563f5",
-                "reference": "0c25599a91530b5847f129b271c536f75a7563f5",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/b6a80acd906492086db59aada9196dcfb9c512fe",
+                "reference": "b6a80acd906492086db59aada9196dcfb9c512fe",
                 "shasum": ""
             },
             "require": {
                 "firebase/php-jwt": "^6.0",
                 "guzzlehttp/guzzle": "^7.4.5",
                 "guzzlehttp/psr7": "^2.4.5",
-                "php": "^8.0",
+                "php": "^8.1",
                 "psr/cache": "^2.0||^3.0",
                 "psr/http-message": "^1.1||^2.0"
             },
@@ -742,9 +742,9 @@
             "support": {
                 "docs": "https://googleapis.github.io/google-auth-library-php/main/",
                 "issues": "https://github.com/googleapis/google-auth-library-php/issues",
-                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.42.0"
+                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.43.0"
             },
-            "time": "2024-08-26T18:33:48+00:00"
+            "time": "2024-11-07T19:35:20+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -936,16 +936,16 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "2.0.3",
+            "version": "2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "6ea8dd08867a2a42619d65c3deb2c0fcbf81c8f8"
+                "reference": "f9c436286ab2892c7db7be8c8da4ef61ccf7b455"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/6ea8dd08867a2a42619d65c3deb2c0fcbf81c8f8",
-                "reference": "6ea8dd08867a2a42619d65c3deb2c0fcbf81c8f8",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/f9c436286ab2892c7db7be8c8da4ef61ccf7b455",
+                "reference": "f9c436286ab2892c7db7be8c8da4ef61ccf7b455",
                 "shasum": ""
             },
             "require": {
@@ -999,7 +999,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/2.0.3"
+                "source": "https://github.com/guzzle/promises/tree/2.0.4"
             },
             "funding": [
                 {
@@ -1015,7 +1015,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-18T10:29:17+00:00"
+            "time": "2024-10-17T10:06:22+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -1864,21 +1864,21 @@
         },
         {
             "name": "leafs/aloe",
-            "version": "1.4.9",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/aloe.git",
-                "reference": "5b91d6d8a89f25c661dc75209acad21a0783df61"
+                "reference": "3eb5a5cc3ed3d0aed7c4db38c662ef274346cc29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/aloe/zipball/5b91d6d8a89f25c661dc75209acad21a0783df61",
-                "reference": "5b91d6d8a89f25c661dc75209acad21a0783df61",
+                "url": "https://api.github.com/repos/leafsphp/aloe/zipball/3eb5a5cc3ed3d0aed7c4db38c662ef274346cc29",
+                "reference": "3eb5a5cc3ed3d0aed7c4db38c662ef274346cc29",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": "*",
-                "leafs/fs": "^1.0",
+                "leafs/fs": "2.0",
                 "leafs/mvc-core": "*",
                 "psy/psysh": "^0.10.9|^0.11",
                 "symfony/console": "^5.0|^6.0",
@@ -1917,7 +1917,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/aloe/issues",
-                "source": "https://github.com/leafsphp/aloe/tree/1.4.9"
+                "source": "https://github.com/leafsphp/aloe/tree/v2.0.1"
             },
             "funding": [
                 {
@@ -1929,7 +1929,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-09-21T11:10:27+00:00"
+            "time": "2024-11-12T19:41:40+00:00"
         },
         {
             "name": "leafs/anchor",
@@ -1992,19 +1992,20 @@
         },
         {
             "name": "leafs/auth",
-            "version": "v2.4",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/auth.git",
-                "reference": "115dca27e3e95e2bff2aea4ff785942cb089c617"
+                "reference": "f0f73559b883e10cb66b7eb78de594bc5cd30d14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/auth/zipball/115dca27e3e95e2bff2aea4ff785942cb089c617",
-                "reference": "115dca27e3e95e2bff2aea4ff785942cb089c617",
+                "url": "https://api.github.com/repos/leafsphp/auth/zipball/f0f73559b883e10cb66b7eb78de594bc5cd30d14",
+                "reference": "f0f73559b883e10cb66b7eb78de594bc5cd30d14",
                 "shasum": ""
             },
             "require": {
+                "firebase/php-jwt": "^6.10",
                 "leafs/date": "*",
                 "leafs/db": "*",
                 "leafs/form": "*",
@@ -2013,7 +2014,8 @@
                 "leafs/session": "*"
             },
             "require-dev": {
-                "leafs/alchemy": "^1.0",
+                "friendsofphp/php-cs-fixer": "^3.64",
+                "leafs/alchemy": "^2.0",
                 "pestphp/pest": "^1.0 | ^2.0"
             },
             "type": "library",
@@ -2050,7 +2052,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/auth/issues",
-                "source": "https://github.com/leafsphp/auth/tree/v2.4"
+                "source": "https://github.com/leafsphp/auth/tree/v3.0.3"
             },
             "funding": [
                 {
@@ -2062,7 +2064,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-08-17T05:19:28+00:00"
+            "time": "2024-11-12T19:28:17+00:00"
         },
         {
             "name": "leafs/blade",
@@ -2189,16 +2191,16 @@
         },
         {
             "name": "leafs/csrf",
-            "version": "v0.5.1",
+            "version": "v0.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/csrf.git",
-                "reference": "6c436f1a8f54d34e46761ba960d735e67bf38a13"
+                "reference": "5c99d829d1b667e50e41a3d3b1e5d324a215de88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/csrf/zipball/6c436f1a8f54d34e46761ba960d735e67bf38a13",
-                "reference": "6c436f1a8f54d34e46761ba960d735e67bf38a13",
+                "url": "https://api.github.com/repos/leafsphp/csrf/zipball/5c99d829d1b667e50e41a3d3b1e5d324a215de88",
+                "reference": "5c99d829d1b667e50e41a3d3b1e5d324a215de88",
                 "shasum": ""
             },
             "require": {
@@ -2237,7 +2239,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/csrf/issues",
-                "source": "https://github.com/leafsphp/csrf/tree/v0.5.1"
+                "source": "https://github.com/leafsphp/csrf/tree/v0.5.3"
             },
             "funding": [
                 {
@@ -2249,7 +2251,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-10-05T10:03:56+00:00"
+            "time": "2024-11-15T16:55:25+00:00"
         },
         {
             "name": "leafs/date",
@@ -2454,23 +2456,25 @@
         },
         {
             "name": "leafs/form",
-            "version": "v2.2",
+            "version": "v3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/form.git",
-                "reference": "8fb270adcc536dcbb7e0dbf282bbecd43faa69af"
+                "reference": "0b050d7150f74239322020f68698f6fbe142738a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/form/zipball/8fb270adcc536dcbb7e0dbf282bbecd43faa69af",
-                "reference": "8fb270adcc536dcbb7e0dbf282bbecd43faa69af",
+                "url": "https://api.github.com/repos/leafsphp/form/zipball/0b050d7150f74239322020f68698f6fbe142738a",
+                "reference": "0b050d7150f74239322020f68698f6fbe142738a",
                 "shasum": ""
             },
             "require": {
-                "ext-json": "*"
+                "ext-json": "*",
+                "leafs/anchor": "*"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.0",
+                "leafs/alchemy": "^2.1",
                 "pestphp/pest": "^1.22"
             },
             "type": "library",
@@ -2505,7 +2509,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/form/issues",
-                "source": "https://github.com/leafsphp/form/tree/v2.2"
+                "source": "https://github.com/leafsphp/form/tree/v3.2"
             },
             "funding": [
                 {
@@ -2517,30 +2521,35 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-08-25T01:52:17+00:00"
+            "time": "2024-11-09T03:39:36+00:00"
         },
         {
             "name": "leafs/fs",
-            "version": "v1.3.0",
+            "version": "v2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/fs.git",
-                "reference": "9ce15e17db85f70f90a673b3cb8309f939423abc"
+                "reference": "aa4023628503e1251740df6678d4003843a0cd67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/fs/zipball/9ce15e17db85f70f90a673b3cb8309f939423abc",
-                "reference": "9ce15e17db85f70f90a673b3cb8309f939423abc",
+                "url": "https://api.github.com/repos/leafsphp/fs/zipball/aa4023628503e1251740df6678d4003843a0cd67",
+                "reference": "aa4023628503e1251740df6678d4003843a0cd67",
                 "shasum": ""
             },
             "require": {
                 "symfony/finder": "^5.3|^6.0"
             },
             "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.64",
+                "leafs/alchemy": "^2.1",
                 "pestphp/pest": "^1.21"
             },
             "type": "library",
             "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
                 "psr-4": {
                     "Leaf\\": "src"
                 }
@@ -2569,7 +2578,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/fs/issues",
-                "source": "https://github.com/leafsphp/fs/tree/v1.3.0"
+                "source": "https://github.com/leafsphp/fs/tree/v2.0"
             },
             "funding": [
                 {
@@ -2581,26 +2590,26 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-08-17T05:01:25+00:00"
+            "time": "2024-11-07T15:37:55+00:00"
         },
         {
             "name": "leafs/http",
-            "version": "v2.7",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/http.git",
-                "reference": "7be4caa852cc8b317b9ef8afc34b2ed26d10131c"
+                "reference": "c0553e5cfd603ea0364c2f12b3f07c73870eef0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/http/zipball/7be4caa852cc8b317b9ef8afc34b2ed26d10131c",
-                "reference": "7be4caa852cc8b317b9ef8afc34b2ed26d10131c",
+                "url": "https://api.github.com/repos/leafsphp/http/zipball/c0553e5cfd603ea0364c2f12b3f07c73870eef0d",
+                "reference": "c0553e5cfd603ea0364c2f12b3f07c73870eef0d",
                 "shasum": ""
             },
             "require": {
                 "leafs/anchor": "*",
-                "leafs/form": "*",
-                "leafs/fs": "*"
+                "leafs/form": "^3.0",
+                "leafs/fs": "^2.0"
             },
             "type": "library",
             "autoload": {
@@ -2636,7 +2645,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/http/issues",
-                "source": "https://github.com/leafsphp/http/tree/v2.7"
+                "source": "https://github.com/leafsphp/http/tree/v3.0.1"
             },
             "funding": [
                 {
@@ -2648,20 +2657,20 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-10-01T16:28:07+00:00"
+            "time": "2024-11-10T22:54:57+00:00"
         },
         {
             "name": "leafs/leaf",
-            "version": "v3.7.1",
+            "version": "v3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/leaf.git",
-                "reference": "362352fe3934dcd045371e46eed8ee39b337b840"
+                "reference": "58157173d19ab2cdd78b723d17de871e5427b03d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/leaf/zipball/362352fe3934dcd045371e46eed8ee39b337b840",
-                "reference": "362352fe3934dcd045371e46eed8ee39b337b840",
+                "url": "https://api.github.com/repos/leafsphp/leaf/zipball/58157173d19ab2cdd78b723d17de871e5427b03d",
+                "reference": "58157173d19ab2cdd78b723d17de871e5427b03d",
                 "shasum": ""
             },
             "require": {
@@ -2671,8 +2680,9 @@
                 "php": "^7.4|^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.0",
-                "pestphp/pest": "^1.21"
+                "friendsofphp/php-cs-fixer": "^3.64",
+                "leafs/alchemy": "^2.0",
+                "pestphp/pest": "*"
             },
             "type": "library",
             "autoload": {
@@ -2707,7 +2717,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/leaf/issues",
-                "source": "https://github.com/leafsphp/leaf/tree/v3.7.1"
+                "source": "https://github.com/leafsphp/leaf/tree/v3.8"
             },
             "funding": [
                 {
@@ -2719,25 +2729,25 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-10-10T13:53:21+00:00"
+            "time": "2024-11-06T21:56:46+00:00"
         },
         {
             "name": "leafs/logger",
-            "version": "v1.4.0",
+            "version": "v2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/logger.git",
-                "reference": "7134400920d10e630f39266749410914e4ec41d6"
+                "reference": "cd87e9b4a6581c608901d7e349c9c5d9dcaa7856"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/logger/zipball/7134400920d10e630f39266749410914e4ec41d6",
-                "reference": "7134400920d10e630f39266749410914e4ec41d6",
+                "url": "https://api.github.com/repos/leafsphp/logger/zipball/cd87e9b4a6581c608901d7e349c9c5d9dcaa7856",
+                "reference": "cd87e9b4a6581c608901d7e349c9c5d9dcaa7856",
                 "shasum": ""
             },
             "require": {
                 "leafs/date": "*",
-                "leafs/fs": "*"
+                "leafs/fs": "^2.0"
             },
             "type": "library",
             "autoload": {
@@ -2770,7 +2780,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/logger/issues",
-                "source": "https://github.com/leafsphp/logger/tree/v1.4.0"
+                "source": "https://github.com/leafsphp/logger/tree/v2.0"
             },
             "funding": [
                 {
@@ -2782,20 +2792,20 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-10-02T14:50:29+00:00"
+            "time": "2024-11-10T22:33:43+00:00"
         },
         {
             "name": "leafs/mvc-core",
-            "version": "v1.6.0",
+            "version": "v1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/mvc-core.git",
-                "reference": "57a80133a79b5b5efe4782e116ba5b6a2febd5fd"
+                "reference": "90ec908dbe28ce3a7d08a2984ee3b9fc56832e1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/mvc-core/zipball/57a80133a79b5b5efe4782e116ba5b6a2febd5fd",
-                "reference": "57a80133a79b5b5efe4782e116ba5b6a2febd5fd",
+                "url": "https://api.github.com/repos/leafsphp/mvc-core/zipball/90ec908dbe28ce3a7d08a2984ee3b9fc56832e1a",
+                "reference": "90ec908dbe28ce3a7d08a2984ee3b9fc56832e1a",
                 "shasum": ""
             },
             "require": {
@@ -2841,7 +2851,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/mvc-core/issues",
-                "source": "https://github.com/leafsphp/mvc-core/tree/v1.6.0"
+                "source": "https://github.com/leafsphp/mvc-core/tree/v1.7.0"
             },
             "funding": [
                 {
@@ -2853,7 +2863,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-10-02T11:30:49+00:00"
+            "time": "2024-11-12T14:11:58+00:00"
         },
         {
             "name": "leafs/password",
@@ -2911,16 +2921,16 @@
         },
         {
             "name": "leafs/session",
-            "version": "v2.2",
+            "version": "v2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/session.git",
-                "reference": "380227b221943445cdf024ddfc9661372b470a58"
+                "reference": "eb7d9a4884cbe9c3aaa003066d010d05ccf02ce7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/session/zipball/380227b221943445cdf024ddfc9661372b470a58",
-                "reference": "380227b221943445cdf024ddfc9661372b470a58",
+                "url": "https://api.github.com/repos/leafsphp/session/zipball/eb7d9a4884cbe9c3aaa003066d010d05ccf02ce7",
+                "reference": "eb7d9a4884cbe9c3aaa003066d010d05ccf02ce7",
                 "shasum": ""
             },
             "require": {
@@ -2963,7 +2973,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/session/issues",
-                "source": "https://github.com/leafsphp/session/tree/v2.2"
+                "source": "https://github.com/leafsphp/session/tree/v2.3.1"
             },
             "funding": [
                 {
@@ -2975,7 +2985,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-08-17T05:51:54+00:00"
+            "time": "2024-11-08T23:41:45+00:00"
         },
         {
             "name": "leafs/vite",
@@ -3045,16 +3055,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "3.7.0",
+            "version": "3.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "f4393b648b78a5408747de94fca38beb5f7e9ef8"
+                "reference": "32e515fdc02cdafbe4593e30a9350d486b125b67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/f4393b648b78a5408747de94fca38beb5f7e9ef8",
-                "reference": "f4393b648b78a5408747de94fca38beb5f7e9ef8",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/32e515fdc02cdafbe4593e30a9350d486b125b67",
+                "reference": "32e515fdc02cdafbe4593e30a9350d486b125b67",
                 "shasum": ""
             },
             "require": {
@@ -3074,12 +3084,14 @@
                 "guzzlehttp/psr7": "^2.2",
                 "mongodb/mongodb": "^1.8",
                 "php-amqplib/php-amqplib": "~2.4 || ^3",
-                "phpstan/phpstan": "^1.9",
-                "phpstan/phpstan-deprecation-rules": "^1.0",
-                "phpstan/phpstan-strict-rules": "^1.4",
-                "phpunit/phpunit": "^10.5.17",
+                "php-console/php-console": "^3.1.8",
+                "phpstan/phpstan": "^2",
+                "phpstan/phpstan-deprecation-rules": "^2",
+                "phpstan/phpstan-strict-rules": "^2",
+                "phpunit/phpunit": "^10.5.17 || ^11.0.7",
                 "predis/predis": "^1.1 || ^2",
-                "ruflin/elastica": "^7",
+                "rollbar/rollbar": "^4.0",
+                "ruflin/elastica": "^7 || ^8",
                 "symfony/mailer": "^5.4 || ^6",
                 "symfony/mime": "^5.4 || ^6"
             },
@@ -3130,7 +3142,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/3.7.0"
+                "source": "https://github.com/Seldaek/monolog/tree/3.8.0"
             },
             "funding": [
                 {
@@ -3142,7 +3154,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-06-28T09:40:51+00:00"
+            "time": "2024-11-12T13:57:08+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -4298,16 +4310,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v5.4.44",
+            "version": "v5.4.47",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "5b5a0aa66e3296e303e22490f90f521551835a83"
+                "reference": "c4ba980ca61a9eb18ee6bcc73f28e475852bb1ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/5b5a0aa66e3296e303e22490f90f521551835a83",
-                "reference": "5b5a0aa66e3296e303e22490f90f521551835a83",
+                "url": "https://api.github.com/repos/symfony/console/zipball/c4ba980ca61a9eb18ee6bcc73f28e475852bb1ed",
+                "reference": "c4ba980ca61a9eb18ee6bcc73f28e475852bb1ed",
                 "shasum": ""
             },
             "require": {
@@ -4377,7 +4389,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v5.4.44"
+                "source": "https://github.com/symfony/console/tree/v5.4.47"
             },
             "funding": [
                 {
@@ -4393,7 +4405,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-20T07:56:40+00:00"
+            "time": "2024-11-06T11:30:55+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -4464,16 +4476,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v5.4.43",
+            "version": "v5.4.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "ae25a9145a900764158d439653d5630191155ca0"
+                "reference": "63741784cd7b9967975eec610b256eed3ede022b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/ae25a9145a900764158d439653d5630191155ca0",
-                "reference": "ae25a9145a900764158d439653d5630191155ca0",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/63741784cd7b9967975eec610b256eed3ede022b",
+                "reference": "63741784cd7b9967975eec610b256eed3ede022b",
                 "shasum": ""
             },
             "require": {
@@ -4507,7 +4519,7 @@
             "description": "Finds files and directories via an intuitive fluent interface",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/finder/tree/v5.4.43"
+                "source": "https://github.com/symfony/finder/tree/v5.4.45"
             },
             "funding": [
                 {
@@ -4523,7 +4535,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-13T14:03:51+00:00"
+            "time": "2024-09-28T13:32:08+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -5001,16 +5013,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v5.4.44",
+            "version": "v5.4.47",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "1b9fa82b5c62cd49da8c9e3952dd8531ada65096"
+                "reference": "5d1662fb32ebc94f17ddb8d635454a776066733d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/1b9fa82b5c62cd49da8c9e3952dd8531ada65096",
-                "reference": "1b9fa82b5c62cd49da8c9e3952dd8531ada65096",
+                "url": "https://api.github.com/repos/symfony/process/zipball/5d1662fb32ebc94f17ddb8d635454a776066733d",
+                "reference": "5d1662fb32ebc94f17ddb8d635454a776066733d",
                 "shasum": ""
             },
             "require": {
@@ -5043,7 +5055,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v5.4.44"
+                "source": "https://github.com/symfony/process/tree/v5.4.47"
             },
             "funding": [
                 {
@@ -5059,7 +5071,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-17T12:46:43+00:00"
+            "time": "2024-11-06T11:36:42+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -5146,16 +5158,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v6.4.12",
+            "version": "v6.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "f8a1ccebd0997e16112dfecfd74220b78e5b284b"
+                "reference": "73a5e66ea2e1677c98d4449177c5a9cf9d8b4c6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/f8a1ccebd0997e16112dfecfd74220b78e5b284b",
-                "reference": "f8a1ccebd0997e16112dfecfd74220b78e5b284b",
+                "url": "https://api.github.com/repos/symfony/string/zipball/73a5e66ea2e1677c98d4449177c5a9cf9d8b4c6f",
+                "reference": "73a5e66ea2e1677c98d4449177c5a9cf9d8b4c6f",
                 "shasum": ""
             },
             "require": {
@@ -5212,7 +5224,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v6.4.12"
+                "source": "https://github.com/symfony/string/tree/v6.4.15"
             },
             "funding": [
                 {
@@ -5228,20 +5240,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-20T08:15:52+00:00"
+            "time": "2024-11-13T13:31:12+00:00"
         },
         {
             "name": "symfony/translation",
-            "version": "v6.4.12",
+            "version": "v6.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "cf8360b8352b086be620fae8342c4d96e391a489"
+                "reference": "bee9bfabfa8b4045a66bf82520e492cddbaffa66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/cf8360b8352b086be620fae8342c4d96e391a489",
-                "reference": "cf8360b8352b086be620fae8342c4d96e391a489",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/bee9bfabfa8b4045a66bf82520e492cddbaffa66",
+                "reference": "bee9bfabfa8b4045a66bf82520e492cddbaffa66",
                 "shasum": ""
             },
             "require": {
@@ -5307,7 +5319,7 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/translation/tree/v6.4.12"
+                "source": "https://github.com/symfony/translation/tree/v6.4.13"
             },
             "funding": [
                 {
@@ -5323,7 +5335,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-16T06:02:54+00:00"
+            "time": "2024-09-27T18:14:25+00:00"
         },
         {
             "name": "symfony/translation-contracts",
@@ -5405,16 +5417,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v6.4.11",
+            "version": "v6.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "ee14c8254a480913268b1e3b1cba8045ed122694"
+                "reference": "38254d5a5ac2e61f2b52f9caf54e7aa3c9d36b80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/ee14c8254a480913268b1e3b1cba8045ed122694",
-                "reference": "ee14c8254a480913268b1e3b1cba8045ed122694",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/38254d5a5ac2e61f2b52f9caf54e7aa3c9d36b80",
+                "reference": "38254d5a5ac2e61f2b52f9caf54e7aa3c9d36b80",
                 "shasum": ""
             },
             "require": {
@@ -5470,7 +5482,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v6.4.11"
+                "source": "https://github.com/symfony/var-dumper/tree/v6.4.15"
             },
             "funding": [
                 {
@@ -5486,7 +5498,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-30T16:03:21+00:00"
+            "time": "2024-11-08T15:28:48+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -5650,16 +5662,16 @@
     "packages-dev": [
         {
             "name": "fakerphp/faker",
-            "version": "v1.23.1",
+            "version": "v1.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FakerPHP/Faker.git",
-                "reference": "bfb4fe148adbf78eff521199619b93a52ae3554b"
+                "reference": "a136842a532bac9ecd8a1c723852b09915d7db50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/bfb4fe148adbf78eff521199619b93a52ae3554b",
-                "reference": "bfb4fe148adbf78eff521199619b93a52ae3554b",
+                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/a136842a532bac9ecd8a1c723852b09915d7db50",
+                "reference": "a136842a532bac9ecd8a1c723852b09915d7db50",
                 "shasum": ""
             },
             "require": {
@@ -5707,9 +5719,9 @@
             ],
             "support": {
                 "issues": "https://github.com/FakerPHP/Faker/issues",
-                "source": "https://github.com/FakerPHP/Faker/tree/v1.23.1"
+                "source": "https://github.com/FakerPHP/Faker/tree/v1.24.0"
             },
-            "time": "2024-01-02T13:46:09+00:00"
+            "time": "2024-11-07T15:11:20+00:00"
         }
     ],
     "aliases": [],
