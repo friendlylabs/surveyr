@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8bae7585acd4fd22044b12c22f5f7651",
+    "content-hash": "a487cb293326b6ecd155733a496cde2f",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -2796,16 +2796,16 @@
         },
         {
             "name": "leafs/mvc-core",
-            "version": "v1.7.0",
+            "version": "v1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/mvc-core.git",
-                "reference": "90ec908dbe28ce3a7d08a2984ee3b9fc56832e1a"
+                "reference": "4192f232196f4b2dfa0ae344323076fff623142a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/mvc-core/zipball/90ec908dbe28ce3a7d08a2984ee3b9fc56832e1a",
-                "reference": "90ec908dbe28ce3a7d08a2984ee3b9fc56832e1a",
+                "url": "https://api.github.com/repos/leafsphp/mvc-core/zipball/4192f232196f4b2dfa0ae344323076fff623142a",
+                "reference": "4192f232196f4b2dfa0ae344323076fff623142a",
                 "shasum": ""
             },
             "require": {
@@ -2851,7 +2851,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/mvc-core/issues",
-                "source": "https://github.com/leafsphp/mvc-core/tree/v1.7.0"
+                "source": "https://github.com/leafsphp/mvc-core/tree/v1.7.1"
             },
             "funding": [
                 {
@@ -2863,7 +2863,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-11-12T14:11:58+00:00"
+            "time": "2024-11-23T14:22:57+00:00"
         },
         {
             "name": "leafs/password",

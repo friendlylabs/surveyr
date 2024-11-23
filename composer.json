@@ -16,7 +16,7 @@
         "leafs/aloe": "*",
         "illuminate/console": "^8.75",
         "leafs/blade": "*",
-        "leafs/mvc-core": "*",
+        "leafs/mvc-core": "^1.7",
         "leafs/leaf": "^3.7",
         "leafs/logger": "*",
         "leafs/cors": "*",
