@@ -21,10 +21,14 @@
                 </p>
 
                 <div class="position-absolute end-5 top-0">
-                    <a href="{{ route('forms.customize', $form->id, $form->slug) }}" class="btn btn-primary btn-sm">
-                        <i class="fa-solid fa-plus d-inline d-md-none"></i>
-                        <span class="d-none d-md-inline">Customize Form</span>
+                    <a href="{{ route('forms.customize', $form->id, $form->slug) }}" class="btn btn-outline-dark" target="_blank"
+                        data-bs-toggle="tooltip" data-bs-placement="bottom" title="Customize Form">
+                        <i class="fa-solid fa-gear"></i>
                     </a>
+                    <a class="btn btn-primary" href="@route('forms.preview', $form->id, $form->slug)" target="_blank">
+                        <i class="fa-solid fa-eye d-inline d-md-none"></i>
+                        <span class="d-none d-md-inline fs-12">Preview</span>
+                    </a>  
                 </div>
             </div>
         </div>
@@ -38,6 +42,14 @@
                             <div class="mx-auto" id="qrcode"></div>
                         </div>
 
+                        <!-- download #qrcode img -->
+                        <div class="text-center mb-3">
+                            <a href="javascript:void(0)" class="btn btn-sm btn-outline-primary" onclick="downloadQRCode(`{{$form->slug}}`)">
+                                <i class="fa fa-download"></i>
+                                Download QR Code
+                            </a>
+                        </div>
+
                         @include('app.forms.partials.setup-overview')
                     </div>
                 </div>
@@ -47,6 +59,7 @@
                 @include('app.forms.partials.setup-general')
                 @include('app.forms.partials.setup-access')
                 @include('app.forms.partials.setup-submission')
+                @include('app.forms.partials.setup-appearance')
             </div>
         </div>
     </div>
