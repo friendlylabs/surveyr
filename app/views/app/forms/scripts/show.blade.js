@@ -6,6 +6,10 @@
 
 const surveyMode = `{{ $surveyMode }}`;
 const surveyJson = `{!! json_encode($formContent) !!}`;
+
+var formTheme = "{{ $form->theme }}";
+const SurveyThemeLight = SurveyTheme[formTheme + 'LightPanelless'];
+
 const survey = new Survey.Model(surveyJson);
 
 // Check if survey is in restricted mode
@@ -81,5 +85,5 @@ survey.onComplete.add(function (result) {
 // Initialize and render survey when DOM is ready
 document.addEventListener("DOMContentLoaded", function() {
     survey.render(document.getElementById("surveyContainer"));
-    survey.applyTheme(SurveyTheme.SolidLightPanelless);
+    survey.applyTheme(SurveyThemeLight);
 });
