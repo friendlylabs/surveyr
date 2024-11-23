@@ -19,4 +19,12 @@
             <span class="d-none d-sm-block">Submission</span>
         </a>
     </li>
+
+    <!-- apperance -->
+    <li class="py-3 profile-overview-menu profile-overview-switch" data-target-block="#appearanceSettings">
+        <a href="javascript:void(0)" class="text-muted d-flex align-items-center text-center-sm">
+            <i class="fa-regular fa-paint-brush me-4"></i>
+            <span class="d-none d-sm-block">Appearance</span>
+        </a>
+    </li>
 </ul>
