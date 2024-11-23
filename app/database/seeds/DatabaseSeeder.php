@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             UsersSeeder::class,
             ReviewTypesSeeder::class,
             TemplatesSeeder::class,
+            ThemesSeeder::class,
             UserRolesSeeder::class,
         ];
     }
