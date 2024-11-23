@@ -29,6 +29,7 @@ class CreateForms extends Database
                 $table->json('reviews')->nullable();
                 $table->text('webhook_url')->nullable();
                 $table->text('access_code')->nullable();
+                $table->text('theme')->default('Solid');
                 $table->timestamp('start_date')->useCurrent();
                 $table->timestamp('end_date')->nullable();
                 $table->timestamp('created_at')->useCurrent();
