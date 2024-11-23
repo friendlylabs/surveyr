@@ -20,26 +20,21 @@
         <link href="/assets/fonts/fontawesome/all.css" rel="stylesheet"/>
 
 		<link href="/assets/vendors/simplebar/simplebar.min.css" rel="stylesheet">
-		<link href="/assets/css/theme-rtl.css" type="text/css" rel="stylesheet" id="style-rtl">
 		<link href="/assets/css/theme.min.css" type="text/css" rel="stylesheet" id="style-default">
-		<link href="/assets/css/user-rtl.min.css" type="text/css" rel="stylesheet" id="user-style-rtl">
 		<link href="/assets/css/user.min.css" type="text/css" rel="stylesheet" id="user-style-default">
 		<link href="/assets/fonts/phosphor/duotone/style.css" rel="stylesheet"/>
         <link href="/assets/css/toast.min.css" rel="stylesheet">
 
+        <link rel="manifest" href="/manifest.json">
         <script>
-            var phoenixIsRTL = window.config.config.phoenixIsRTL;
-            if (phoenixIsRTL) {
-                var linkDefault = document.getElementById('style-default');
-                var userLinkDefault = document.getElementById('user-style-default');
-                linkDefault.setAttribute('disabled', true);
-                userLinkDefault.setAttribute('disabled', true);
-                document.querySelector('html').setAttribute('dir', 'rtl');
-            } else {
-                var linkRTL = document.getElementById('style-rtl');
-                var userLinkRTL = document.getElementById('user-style-rtl');
-                linkRTL.setAttribute('disabled', true);
-                userLinkRTL.setAttribute('disabled', true);
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/assets/js/service-worker.js').then(function(registration) {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    }, function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+                });
             }
         </script>
 

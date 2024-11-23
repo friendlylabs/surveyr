@@ -12,13 +12,20 @@
     <script src="/vendor/surveyjs/survey.core.min.js"></script>
     <script src="/vendor/surveyjs/survey-js-ui.min.js"></script>
 
-    <!-- (Optional) Predefined theme configurations -->
     <script src="/vendor/surveyjs/themes/index.min.js"></script>
-    @stack('styles')
+    <link href="/assets/fonts/fontawesome/all.css" rel="stylesheet"/>
 
+    @stack('styles')
     <style>
         body{margin: 0; padding: 0; font-family: Arial, sans-serif;}
-        
+        .recordBtn { height: 35px; width: 35px; background: #F8BBD0; border: none; border-radius: 4px; cursor: pointer; }
+        .saveRecord { height: 35px; width: 35px; background: #C8E6C9; border: none; border-radius: 4px; cursor: pointer; }
+
+        .saveRecord i { color: green; }
+        .recordBtn i { color: crimson; }
+
+        .recordBtn:hover { background: #F48FB1; }
+        .saveRecord:hover { background: #A5D6A7; }
     </style>
 </head>
 <body>
