@@ -1,0 +1,99 @@
+{
+    "name": "Surveyr",
+    "short_name": "Surveyr",
+    "start_url": "splash.html",
+    "display": "standalone",
+    "description": "Surveyr is an open-source form builder that allows one to create engaging forms for surveys, questionnaires, quizzes, and polls.",
+    "lang": "en",
+    "dir": "auto",
+    "theme_color": "#19b394",
+    "background_color": "#fff",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "/assets/pwa/android-launchericon-512-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/assets/pwa/android-launchericon-192-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/assets/pwa/android-launchericon-144-144.png",
+            "sizes": "144x144",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/assets/pwa/android-launchericon-96-96.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/assets/pwa/android-launchericon-72-72.png",
+            "sizes": "72x72",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/assets/pwa/android-launchericon-48-48.png",
+            "sizes": "48x48",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/assets/pwa/screenshots/1.jpg",
+            "sizes": "1312x759",
+            "type": "image/jpg",
+            "form_factor": "wide",
+            "description": "Homepage"
+        },
+        {
+            "src": "/assets/pwa/screenshots/2.jpg",
+            "sizes": "1311x759",
+            "type": "image/jpg",
+            "description": "Form builder"
+        },
+        {
+            "src": "/assets/pwa/screenshots/3.jpg",
+            "sizes": "1317x761",
+            "type": "image/jpg",
+            "description": "Form statistics"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "My Form",
+            "short_name": "My Form",
+            "description": "List of forms",
+            "url": "/app/forms?startLive",
+            "icons": [
+                {
+                    "src": "/assets/pwa/android-launchericon-192-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "New Form",
+            "short_name": "New Form",
+            "description": "Create a new form",
+            "url": "/app/forms/build?startLive",
+            "icons": [
+                {
+                    "src": "/assets/pwa/android-launchericon-192-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ],
+    "display_override": ["window-controls-overlay"], 
+    "protocol_handlers": [{"protocol":"mailto","url":"/newEmail?to=%s"}]
+}
