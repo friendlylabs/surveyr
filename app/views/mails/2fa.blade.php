@@ -4,7 +4,7 @@
 	<table role="presentation" border="0" cellpadding="0" cellspacing="0" class="main">
 		<tr>
 			<td style="text-align:center; padding-top:1rem;">
-                <img width="200" src="/assets/images/brand/logo-dark.png" alt="Logo">
+				<img width="200" src="{{ _env('APP_URL') }}/assets/images/brand/logo-dark.png" alt="Logo">
 			</td>
 		</tr>
 		<tr>
@@ -23,7 +23,7 @@
 				<p>Please note, this code is valid for only a limited time.</p>
 				<p>If you did not request this code, please disregard this email or contact our support team immediately.</p>
 				<p>Best regards,<br>The Support Team</p>
-                <p>{{ _env('app_name') }}</p>
+                <p>{{ _env('APP_NAME') }}</p>
 			</td>
 		</tr>
 	</table>				

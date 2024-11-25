@@ -4,7 +4,7 @@
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="main">
         <tr>
             <td style="text-align:center; padding-top:1rem;">
-                <img width="200" src="/assets/images/brand/logo-dark.png" alt="Logo">
+                <img width="200" src="{{ _env('APP_URL') }}/assets/images/brand/logo-dark.png" alt="Logo">
             </td>
         </tr>
         <tr>
@@ -22,7 +22,7 @@
                 <p>{{ $confirmationLink }}</p>
                 <p>Thank you for joining us! We're excited to have you on board.</p>
                 <p>Best regards,</p>
-                <p> {{ _env('app_name') }} </p>
+                <p> {{ _env('APP_NAME') }} </p>
             </td>
         </tr>
         

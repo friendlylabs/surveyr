@@ -5,7 +5,7 @@
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="main">
         <tr>
             <td style="text-align:center; padding-top:1rem;">
-                <img width="200" src="/assets/images/brand/logo-dark.png" alt="Logo">
+                <img width="200" src="{{ _env('APP_URL') }}/assets/images/brand/logo-dark.png" alt="Logo">
             </td>
         </tr>
         <tr>
@@ -16,16 +16,16 @@
                 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                     <tbody>
                         <tr style="text-align:center">
-                            <td><a href="{{_env('app_url')}}/auth/password/{{ $token }}" target="_blank">Reset Password</a></td>
+                            <td><a href="{{_env('APP_URL')}}/auth/password/{{ $token }}" target="_blank">Reset Password</a></td>
                         </tr>
                     </tbody>
                 </table>
                 <p>If you're having trouble clicking the "Reset Password" button, copy and paste the following URL into your web browser:</p>
-                <p><a href="{{_env('app_url')}}/auth/password/{{ $token }}" target="_blank">{{_env('app_url')}}/auth/password/{{ $token }}</a></p>
+                <p><a href="{{_env('APP_URL')}}/auth/password/{{ $token }}" target="_blank">{{_env('APP_URL')}}/auth/password/{{ $token }}</a></p>
                 <p>This password reset link will expire in 2 hours.</p>
                 <p>If you didn't request a password reset, please disregard this message.</p>
                 <p>Best regards,</p>
-                <p>{{ _env('app_name') }}</p>
+                <p>{{ _env('APP_NAME') }}</p>
             </td>
         </tr>
     </table>

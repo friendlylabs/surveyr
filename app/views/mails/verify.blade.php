@@ -4,7 +4,7 @@
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="main">
         <tr>
             <td style="text-align:center; padding-top:1rem;">
-                <img width="200" src="/assets/images/brand/logo-dark.png" alt="Logo">
+                <img width="200" src="{{ _env('APP_URL') }}/assets/images/brand/logo-dark.png" alt="Logo">
             </td>
         </tr>
         <tr>
@@ -23,13 +23,13 @@
 
                 <div style="margin-top: 20px;">
                     <p>Alternatively, you can copy and paste the following link in your browser: <br>
-                        <a href="{{ _env('app_url') . '/auth/verify-email?token=' . $token }}" target="_blank">{{ _env('app_url') . '/auth/verify-email?token=' . $token }}</a>
+                        <a href="{{ _env('APP_URL') . '/auth/verify-email?token=' . $token }}" target="_blank">{{ _env('APP_URL') . '/auth/verify-email?token=' . $token }}</a>
                     </p>
                 </div>
 
                 <p>If you did not create an account, no further action is required.</p>
                 <p>Best regards, </p>
-				<p>The Team - {{ _env('app_name') }}</p>
+				<p>The Team - {{ _env('APP_NAME') }}</p>
             </td>
         </tr>
     </table>
