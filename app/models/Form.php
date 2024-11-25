@@ -55,11 +55,6 @@ class Form extends Model
     # user forms
     public static function userForms($userId) : object
     {
-        /*return static::where('user_id', $userId)
-            ->orWhereJsonContains('collaborators', $userId)
-            ->orderBy('created_at', 'desc')
-            ->get();*/
-
         $spaces = Space::absoluteUserSpaces($userId);
         return static::where(function ($query) use ($userId, $spaces) {
             $query->where('user_id', $userId)
@@ -101,5 +96,11 @@ class Form extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    # has many collections
+    public function collections()
+    {
+        return $this->hasMany(Collection::class);
     }
 }
