@@ -10,8 +10,7 @@
 		<a class="navbar-brand me-1 me-sm-3" href="javascript:void(0)">
 			<div class="d-flex align-items-center">
 				<div class="d-flex align-items-center">
-					<img src="/assets/images/brand/icon.png" alt="phoenix" width="27" />
-					<h5 class="logo-text ms-2 d-none d-sm-block">{{ _env('APP_NAME') }}</h5>
+                    <a href="@route('app.home')"><img src="/assets/images/brand/logo.png" alt="phoenix" width="100" /></a>
 				</div>
 			</div>
 		</a>
