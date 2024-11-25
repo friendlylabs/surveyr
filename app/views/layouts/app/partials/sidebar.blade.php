@@ -13,25 +13,11 @@
             </a>
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle lh-1 @active('app.forms')"
+            <a class="nav-link lh-1 @active('app.forms')" href="@route('forms.list')"
                 href="javascript:void(0)" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="fa-regular fa-table-tree me-2 fs-10"></span>
                 Forms
             </a>
-            <ul class="dropdown-menu navbar-dropdown-caret">
-                <li class="nav-item">
-                    <a class="nav-link dropdown-item" href="@route('forms.list')">
-                        <span class="fa-solid fa-bars-sort me-2 fs-10"></span>
-                        List
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link dropdown-item" href="@route('forms.build')">
-                        <i class="fa-solid fa-screwdriver-wrench me-2 fs-10"></i>
-                        Buid
-                    </a>
-                </li>
-            </ul>
         </li>
 
         @if(in_array($loggedUser->role, ['admin', 'moderator']))
