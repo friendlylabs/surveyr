@@ -20,9 +20,7 @@ function load_dir_files($directory) {
 			endif;
 
 		endforeach;
-
     }
-
 }
 
 /*
