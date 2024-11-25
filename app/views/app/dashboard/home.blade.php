@@ -79,32 +79,22 @@
                                     <thead>
                                         <tr>
                                             <th>Form Name</th>
-                                            <th>Submission Summary</th>
-                                            <th class="text-end">Submitted</th>
+                                            <th class="text-center">Submissions</th>
+                                            <th class="text-center">Pending Review</th>
+                                            <th class="text-end">Last Submission</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($recentSubmissions as $submission)
                                             <tr>
-                                                <td class="align-middle ps-1" style="min-width: 200px;">
-                                                    <a href="{{ route('forms.submissions', $submission->form_id) }}" class="fw-bold">
+                                                <td class="align-middle ps-1">
+                                                    <a href="@route('forms.submissions', $submission->form_id)">
                                                         {{ $submission->form->title }}
                                                     </a>
                                                 </td>
-                                                <td>
-                                                    <div class="text-truncate" style="max-width: 60%;">
-                                                        @foreach($submission->submission as $key => $value)
-                                                            <span class="text-body-secondary fs-10">{{ $key }}:</span>
-                                                            <span class="text-body-secondary fs-10 fw-bold">
-                                                                @php is_array($value) ? $value = implode(', ', $value) : $value = $value @endphp
-                                                                @if (strpos($value, 'data:image') !== false) 🖼️ @else {{$value}} @endif
-                                                            </span>
-
-                                                            @if ($loop->index == 3) @break @else | @endif
-                                                        @endforeach
-                                                    </div>
-                                                </td>
-                                                <td class="align-middle text-end pe-1">{{ $submission->created_at->diffForHumans() }}</td>
+                                                <td class="align-middle text-center">{{ $submission->submission }}</td>
+                                                <td class="align-middle text-center">{{ $submission->pending_review }}</td>
+                                                <td class="align-middle text-end pe-1">{{ carbon()::parse($submission->latest_submission)->diffForHumans() }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
