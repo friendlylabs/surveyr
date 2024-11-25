@@ -20,7 +20,7 @@
 
                             <form action="@route('update.password')" id="resetForm" class="p-2">
                                 @csrf
-                                
+                                <input type="hidden" name="token" value="{{ $token }}">                                
                                 <div class="mb-3 text-start">
                                     <div class="form-icon-container" data-password="data-password">
                                         <input class="form-control form-icon-input pe-6" name="password" id="password" type="password" placeholder="Password" data-password-input="data-password-input" required>
