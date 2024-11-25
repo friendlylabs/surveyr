@@ -2796,7 +2796,7 @@
         },
         {
             "name": "leafs/mvc-core",
-            "version": "v1.7.1",
+            "version": "v1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/mvc-core.git",
@@ -2851,7 +2851,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/mvc-core/issues",
-                "source": "https://github.com/leafsphp/mvc-core/tree/v1.7.1"
+                "source": "https://github.com/leafsphp/mvc-core/tree/v1.7.2"
             },
             "funding": [
                 {
