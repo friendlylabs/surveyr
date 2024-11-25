@@ -65,13 +65,19 @@ class UserController extends Controller
 
     public function updatePassword()
     {
-        $request = request()->validate([
+        /*$request = request()->validate([
             'current_password' => 'required',
             'new_password' => 'required|min:6',
             'confirm_password' => 'required'
-        ]);
+        ]);*/
 
-        if (!$request) {
+        $request = [
+            'current_password' => request()->params('current_password'),
+            'new_password' => request()->params('new_password'),
+            'confirm_password' => request()->params('confirm_password')
+        ];
+
+        if (in_array(null, $request) || strlen($request['new_password']) < 6) {
             return $this->jsonError("Invalid password details");
         }
 
@@ -95,11 +101,13 @@ class UserController extends Controller
     }
 
     public function updateSecurity(){
-        $request = request()->validate([
+        /*$request = request()->validate([
             'password' => 'required',
-        ]);
+        ]);*/
 
-        if (!$request) 
+        $request['password'] = request()->params('password');
+
+        if (!$request['password'])
             return $this->jsonError("Please provide your password");
 
 

@@ -87,13 +87,19 @@ class AuthController extends Controller
         if(!AuthConfig('allowRegistration'))
             return response()->redirect(route('login'));
 
-        $request = request()->validate([
+        /*$request = request()->validate([
             'email' => 'required|email',
             'fullname' => 'required',
             'password' => 'required|min:6'
-        ]);
+        ]);*/
 
-        if (!$request) {
+        $request = [
+            'email' => !filter_var(request()->params('email'), FILTER_VALIDATE_EMAIL) ? null : request()->params('email'),
+            'fullname' => strlen(request()->params('fullname')) < 3 ? null : request()->params('fullname'),
+            'password' => request()->params('password')
+        ];
+
+        if (in_array(null, $request) || strlen($request['password']) < 6 ) {
             return $this->jsonError("Invalid registration details");
         }
 
@@ -140,9 +146,10 @@ class AuthController extends Controller
 
     public function twoFactorSubmit()
     {
-        $request = request()->validate(['code' => 'required']);
+        // $request = request()->validate(['code' => 'required']);
+        $request['code'] = request()->params('code');
 
-        if (!$request) {
+        if (!$request['code']) {
             return $this->jsonError("Invalid 2FA code");
         }
 
@@ -211,7 +218,7 @@ class AuthController extends Controller
     public function reset()
     {
         try {
-            $request = request()->validate(['email' => 'required|email']);
+            $request = request()->validate(['email' => 'email']);
 
             if (!$request) {
                 return $this->jsonError("Invalid email address");
@@ -270,8 +277,15 @@ class AuthController extends Controller
 
     public function updatePassword()
     {
-        $request = $this->validateRequest(['password' => 'required|min:6', 'token' => 'required']);
-        if (!$request) return $this->jsonError('Invalid password details');
+        // $request = $this->validateRequest(['password' => 'required|min:6', 'token' => 'required']);
+
+        $request = [
+            'password' => request()->params('password'),
+            'token' => request()->params('token')
+        ];
+
+        if(!$request['password'] || !$request['token'])
+            return $this->jsonError('Invalid password details');
 
         $user = User::where('remember_token', base64_decode($request['token']))->first();
         if (!$user || $this->isTokenExpired($user)) {
@@ -358,6 +372,7 @@ class AuthController extends Controller
                     $this->oauthData = $userData;
                     return $this->renderPage('Register', 'auth.register');
                 }else{
+                    auth()->config('password.key', false);
                     auth()->login(['id' => $user->id]);
                     session()->set('session_id', md5(uniqid().time().$user->id));
                 }
