@@ -40,7 +40,7 @@
                                     <div class="form-icon-container" data-password="data-password">
                                         <input class="form-control form-icon-input pe-6" name="password" id="password" type="password" placeholder="Password" data-password-input="data-password-input" required>
                                         <span class="fas fa-key text-body fs-9 form-icon"></span>
-                                        <button type="button" class="btn px-3 py-0 h-100 position-absolute top-0 end-0 text-body-tertiary" data-password-toggle="data-password-toggle">
+                                        <button type="button" class="btn px-3 py-0 h-100 position-absolute top-0 end-0 text-body-tertiary" aria-label="passwordToggle" data-password-toggle="data-password-toggle">
                                             <span class="fa fa-eye show"></span>
                                             <span class="fa fa-eye-slash hide"></span>
                                         </button>
