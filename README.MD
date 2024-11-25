@@ -69,4 +69,4 @@ Surveyr is developed and maintained by [Friendly Labs](https://friendlylabs.io/)
 **Disclaimer:**
 
 1. This project is not affiliated with or endorsed by the surveyjs, leafphp, bootstrap, or fontawesome projects. The names and logos are trademarks of their respective owners.
-2. Surveyr leverages **SurveyJS** for its form-building capabilities. With that being said Surveyr must strictly be used for non-commercial purposes unless you obtain a developer license from SurveyJS. For more information, please review the [SurveyJS License.](https://surveyjs.io/licensing)
+2. Surveyr leverages **SurveyJS** for its form-building capabilities. With that being said Surveyr must strictly be used for non-commercial purposes unless you obtain a developer license from SurveyJS. For more information, please review the [SurveyJS License.](https://surveyjs.io/licensing)  Also [read](https://surveyjs.answerdesk.io/ticket/details/t20848/is-developer-license-required-for-opensource-tools) this QA thread
