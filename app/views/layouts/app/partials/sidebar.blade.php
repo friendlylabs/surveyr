@@ -14,7 +14,7 @@
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link lh-1 @active('app.forms')" href="@route('forms.list')"
-                href="javascript:void(0)" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="fa-regular fa-table-tree me-2 fs-10"></span>
                 Forms
             </a>
