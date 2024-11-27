@@ -76,9 +76,10 @@ class AuthController extends Controller
                     'ip' => request()->getIp(),
                 ]), $user->email, $user->fullname);
             }
+            
+            $this->redirect = $redirect ?? route('app.home');
         }
 
-        $this->redirect = $redirect ?? route('app.home');
         return $this->jsonResponse($data, "Welcome, Login successful", "Invalid login details");
     }
 
