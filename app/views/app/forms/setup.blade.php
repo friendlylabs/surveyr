@@ -2,12 +2,12 @@
 
 @style('/vendor/flatpickr/flatpickr.min.css','src')
 <style>
-    #qrcode img {
-        display: unset !important;
+    #qrcode {
         margin: 1rem auto;
         border: 2px solid #368d7b;
         padding: 6px;
         border-radius: 5px;
+        width: 166px;
     }
 </style>
 
