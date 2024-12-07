@@ -13,6 +13,12 @@
                 </p>
 
                 <div class="position-absolute end-5 top-0">
+                    @if(SurveyrConfig('ai_form_generator'))
+                        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#aiFormModal">
+                            <i class="fa-solid fa-robot"></i>
+                        </button>
+                    @endif
+
                     <a href="@route('forms.build')" class="btn btn-primary btn-sm">
                         <i class="fa-solid fa-plus me-2 d-inline d-md-none"></i>
                         <span class="d-none d-md-inline">New Form</span>
@@ -55,6 +61,10 @@
             </div>
         </div>
     </div>
+
+    @if(SurveyrConfig('ai_form_generator'))
+        @include('app.forms.partials.generator')
+    @endif
 @endsection
 @script('/vendor/splide/splide.min.js','src')
 @script('app.forms.scripts.index')
