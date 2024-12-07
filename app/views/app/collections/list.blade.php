@@ -4,9 +4,6 @@
         <div class="row">
             <div class="col-12 mb-4 position-relative">
                 <h3 class="fs-7">{{ $form->title }}</h3>
-                <p class="text-body-tertiary">
-                    <em>Note:</em> this section is still under development. <br> You can view the submissions made to this form here.
-                </p>
 
                 <div class="position-absolute end-5 top-0">
                     <!-- export to csv -->
@@ -24,7 +21,7 @@
 
 
         @if($collections->count())
-            <div class="mt-4 mb-0 mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis pt-3 pb-3 border-y h-100" style="min-height: calc(100vh - 205px);">
+            <div class="mt-4 mb-0 mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis pt-3 pb-3 border-y h-100" style="min-height: calc(100vh - 168px);">
                 <div style="overflow-x: auto;">
                     <table class="table table-hover">
                         <thead>
@@ -63,8 +60,7 @@
 
                                                         // Loop until we find a non-array value
                                                         while (is_array($currentValue)) {
-                                                            // If it's an array, get the first element
-                                                            $currentValue = reset($currentValue);
+                                                            $currentValue = reset($currentValue); // If it's an array, get the first element
                                                         }
                                                     @endphp
 
