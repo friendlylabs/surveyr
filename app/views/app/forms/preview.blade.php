@@ -6,10 +6,7 @@
     <div class="content">
         <div class="row">
             <div class="col-12 mb-4 position-relative">
-                <h3 class="fs-7">{{ $form->title }}</h3>
-                <p class="text-body-tertiary" style="max-width: 250pxs">
-                    {{ $form->description }}
-                </p>
+                <h3 class="fs-7 mb-5">{{ $form->title }}</h3>
 
                 <div class="position-absolute end-5 top-0">
                     <a href="{{ route('forms.setup', $form->id, $form->slug) }}" class="btn btn-secondary btn-sm me-1">
