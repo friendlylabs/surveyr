@@ -13,6 +13,8 @@ use App\Models\Template;
 use App\Models\Collection;
 use App\Models\ReviewType;
 
+use App\Utils\OpenaiUtil;
+
 class FormsController extends Controller
 {
     public function __construct()
@@ -450,6 +452,49 @@ class FormsController extends Controller
         return redirect(route('forms.list'));
     }
 
+    /**
+     * Generate form
+     * 
+     * @return void
+     */
+    public function generate(){
+
+        try{
+            $data = [
+                'title' => request()->params('title'),
+                'description' => request()->params('description')
+            ];
+
+            if(in_array(null, $data) && strlen($data['title']) < 10)
+                return $this->jsonError("All fields are required and the title must be at least 10 characters");
+
+            if(strlen($data['description']) < 50)
+                return $this->jsonError("Please provide a detailed description of the form for better generation");
+
+            $formData = OpenaiUtil::formGenerator($data['title'], $data['description']);
+            if(!$formData) return $this->jsonError("An unknown error occured, failed to generate form");
+
+            $form = Form::create([
+                'title' => $data['title'],
+                'slug' => slugify($data['title']) . '-' . uniqid(),
+                'description' => $data['description'],
+                'user_id' => auth()->id(),
+                'content' => $formData,
+                'start_date' => now()->addDays(7),
+                'end_date' => now()->addDays(14)
+            ]);
+
+            $this->redirect = route('forms.setup', $form->id, $form->slug);
+            if($form) return $this->jsonSuccess("Form generated successfully", ['form' => $form]);
+
+            return $this->jsonError("An unknown error occured, failed to generate form");
+        }
+
+        catch(\Exception $e){
+            return $this->jsonException($e);
+        }        
+    }
+
     
     # check form ownership
     public function formOwnerShipCheck($id) : bool
@@ -457,7 +502,7 @@ class FormsController extends Controller
         $form = Form::find($id);
         if(!$form) return false;
 
-        return ($form->user_id == auth()->id()) || in_array(auth()->id(), $form->collaborators);
+        return ($form->user_id == auth()->id()) || in_array((string) auth()->id(), $form->collaborators);
     }
 
     # check ownership by space
@@ -485,6 +530,7 @@ class FormsController extends Controller
         app()::get('customize/{id}/{slug}', ['name'=>'forms.customize', 'FormsController@customize']);
         
         app()::post('edit/{id}', ['name'=>'forms.update', 'FormsController@update']);
+        app()::post('generate', ['name'=>'forms.generate', 'FormsController@generate']);
         app()::post('setup/{setting}/{id}', ['name'=>'forms.setup.update', 'FormsController@setting']);
 
         app()::get('template/{id}', ['name'=>'forms.template', 'FormsController@template']);
