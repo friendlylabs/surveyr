@@ -2,6 +2,22 @@
 
 /*
 |--------------------------------------------------------------------------
+| Surveyr Configs
+|--------------------------------------------------------------------------
+|
+| This function is used to get the value of a configuration
+| from the config/surveyr.php file.
+|
+*/
+if(!function_exists('SurveyrConfig')){
+    function SurveyrConfig($key){
+        $configs = \Leaf\Config::getStatic('mvc.config.surveyr');
+        return $configs[$key] ?? null;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
 | Pre Load Directory Files
 |--------------------------------------------------------------------------
 | This function is used to load all files in a given directory
