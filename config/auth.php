@@ -291,7 +291,9 @@ return [
     | Enable or disable Google Auth
     |
     */
-    'google.auth' => false,
+    'google.auth' => (function() {
+        return class_exists('\Google\Client');
+    })(),
 
     /*
     |--------------------------------------------------------------------------
