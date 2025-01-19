@@ -396,7 +396,7 @@ class FormsController extends Controller
     }
 
     /**
-     * Delete form
+     * Show form
      * 
      * @param int $id as md5 hash
      * @param string $slug
