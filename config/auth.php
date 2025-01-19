@@ -168,7 +168,7 @@ return [
     | Secret string to encode JWT
     |
     */
-    'token.secret' => _env('TOKEN_SECRET', '@leaf$MVC*JWT#AUTH.Secret'),
+    'token.secret' => _env('APP_KEY', '@leaf$MVC*JWT#AUTH.Secret'),
 
     /*
     |--------------------------------------------------------------------------
