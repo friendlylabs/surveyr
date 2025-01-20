@@ -56,8 +56,9 @@ return [
     |
     */
     'except' => [
-        'api/{wild}',
-        'hook/{wild}',
+        '/api/{wild}',
+        '/hook/{wild}',
+        '/api/collection/store',
     ],
 
     /*
@@ -102,10 +103,10 @@ return [
     | however, you can configure a custom error handler to handle
     | your own error pages.
     |
-    | onError: function() {
-    |     // Your custom error handler
-    | }
-    |
     */
-    'onError' => null,
+    'onError' => (
+        function() {
+            return response()->json(['status'=>false, 'message' => 'CSRF Token Error'], 403);
+        }
+    )
 ];
