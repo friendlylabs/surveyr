@@ -23,7 +23,7 @@
         "leafs/auth": "*",
         "leafs/db": "*",
         "leafs/vite": "*",
-        "leafs/csrf": "^0.5.1",
+        "leafs/csrf": "^0.5.4",
         "nette/mail": "^4.0",
         "leafs/experimental": "^1.0"
     },
