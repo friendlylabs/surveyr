@@ -20,7 +20,7 @@ app()->get('policy/privacy', ['name' => 'policy.privacy',function() {
 # ------------------------------------------------------------------------------
 
 
-app()::group('p', ['namespace' => '\App\Controllers\App', function() {
+app()::group('p', ['namespace' => '\App\Controllers\Base', function() {
     app()->get('forms/{hash}/{slug}', ['name' => 'forms.show', 'FormsController@show']);
     app()->post('forms/{hash}/{slug}', ['name' => 'forms.collect', 'CollectionController@store']);
 }]);

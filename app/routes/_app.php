@@ -1,7 +1,7 @@
 <?php
 
 app()->redirect('app', 'app/home');
-app()::group('app', ['namespace'=>'\App\Controllers\App', function() {
+app()::group('app', ['namespace'=>'\App\Controllers\Base', function() {
 
     app()->get('home', ['name'=>'app.home', 'DashboardController@home']);
 
@@ -11,8 +11,8 @@ app()::group('app', ['namespace'=>'\App\Controllers\App', function() {
     app()->post('password', ['name'=>'app.password.update', 'UserController@updatePassword']);
     app()->post('security', ['name'=>'app.security.update', 'UserController@updateSecurity']); 
     
-    app()::group('users', fn() => \App\Controllers\App\UsersController::routes());
-    app()::group('forms', fn() => \App\Controllers\App\FormsController::routes());
-    app()::group('spaces', fn() => \App\Controllers\App\SpacesController::routes());
-    app()::group('forms', fn() => \App\Controllers\App\CollectionController::routes());
+    app()::group('users', fn() => \App\Controllers\Base\UsersController::routes());
+    app()::group('forms', fn() => \App\Controllers\Base\FormsController::routes());
+    app()::group('spaces', fn() => \App\Controllers\Base\SpacesController::routes());
+    app()::group('forms', fn() => \App\Controllers\Base\CollectionController::routes());
 }]);
