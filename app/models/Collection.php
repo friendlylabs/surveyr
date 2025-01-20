@@ -85,19 +85,27 @@ class Collection extends Model
             ->orWhereJsonContains('members', (string) $userId)->get()->pluck('id')->toArray();
         if(!$spaces || !count($spaces)) $spaces = [0];
 
-        return static::with('form')
-        ->where(function ($query) use ($userId, $spaces) {
-            $query->whereHas('form', function ($query) use ($userId, $spaces) {
-                $query->where('user_id', $userId)
-                    ->orWhereJsonContains('collaborators', (string) $userId)
-                    ->orWhereJsonContains('spaces', array_map('strval', $spaces));
-            });
-        })
-        ->select('form_id', DB::$capsule::raw('COUNT(id) as count'))
-        ->groupBy('form_id')
-        ->orderBy('count', 'desc')
-        ->limit($limit)
-        ->get();
+        $statistics = static::with('form')
+            ->where(function ($query) use ($userId, $spaces) {
+                $query->whereHas('form', function ($query) use ($userId, $spaces) {
+                    $query->where('user_id', $userId)
+                        ->orWhereJsonContains('collaborators', (string) $userId)
+                        ->orWhereJsonContains('spaces', array_map('strval', $spaces));
+                });
+            })
+            ->select('form_id', DB::$capsule::raw('COUNT(id) as count'))
+            ->groupBy('form_id')
+            ->orderBy('count', 'desc')
+            ->limit($limit)
+            ->get();
+
+        // unset form.content, form.questions, form.description, stat.submission
+        $statistics->map(function($stat) {
+            unset($stat->form->content, $stat->form->questions, $stat->form->description);
+            return $stat;
+        });
+
+        return $statistics;
     }
 
 
