@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\App;
+namespace App\Controllers\Base;
 
 use App\Models\User;
 use Leaf\Helpers\Password;

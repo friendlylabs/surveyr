@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\App;
+namespace App\Controllers\Base;
 
 /**
  * ----------------------------------------------------
@@ -12,7 +12,7 @@ namespace App\Controllers\App;
  */
 
 use App\Controllers\Controller;
-use App\Controllers\App\FormsController;
+use App\Controllers\Base\FormsController;
 
 use App\Models\Collection;
 use App\Models\Form;
