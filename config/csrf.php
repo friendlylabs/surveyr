@@ -58,7 +58,6 @@ return [
     'except' => [
         '/api/{wild}',
         '/hook/{wild}',
-        '/api/collection/store',
     ],
 
     /*
