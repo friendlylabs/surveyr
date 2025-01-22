@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "leafs/aloe": "*",
+        "leafs/aloe": "^2.3",
         "illuminate/console": "^8.75",
         "leafs/blade": "*",
         "leafs/mvc-core": "^1.7",
@@ -24,8 +24,7 @@
         "leafs/db": "*",
         "leafs/vite": "*",
         "leafs/csrf": "^0.5.4",
-        "nette/mail": "^4.0",
-        "leafs/experimental": "^1.0"
+        "nette/mail": "^4.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.16"

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "42b964df862e0e8db6c9471f09273847",
+    "content-hash": "8f3730d16bf06dda22f5650c991f22d5",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -170,16 +170,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.9.3",
+            "version": "3.9.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "61446f07fcb522414d6cfd8b1c3e5f9e18c579ba"
+                "reference": "ec16c82f20be1a7224e65ac67144a29199f87959"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/61446f07fcb522414d6cfd8b1c3e5f9e18c579ba",
-                "reference": "61446f07fcb522414d6cfd8b1c3e5f9e18c579ba",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/ec16c82f20be1a7224e65ac67144a29199f87959",
+                "reference": "ec16c82f20be1a7224e65ac67144a29199f87959",
                 "shasum": ""
             },
             "require": {
@@ -195,15 +195,13 @@
                 "doctrine/coding-standard": "12.0.0",
                 "fig/log-test": "^1",
                 "jetbrains/phpstorm-stubs": "2023.1",
-                "phpstan/phpstan": "1.12.6",
-                "phpstan/phpstan-strict-rules": "^1.6",
-                "phpunit/phpunit": "9.6.20",
-                "psalm/plugin-phpunit": "0.18.4",
+                "phpstan/phpstan": "2.1.1",
+                "phpstan/phpstan-strict-rules": "^2",
+                "phpunit/phpunit": "9.6.22",
                 "slevomat/coding-standard": "8.13.1",
                 "squizlabs/php_codesniffer": "3.10.2",
                 "symfony/cache": "^5.4|^6.0|^7.0",
-                "symfony/console": "^4.4|^5.4|^6.0|^7.0",
-                "vimeo/psalm": "4.30.0"
+                "symfony/console": "^4.4|^5.4|^6.0|^7.0"
             },
             "suggest": {
                 "symfony/console": "For helpful console commands such as SQL execution and import of files."
@@ -263,7 +261,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.9.3"
+                "source": "https://github.com/doctrine/dbal/tree/3.9.4"
             },
             "funding": [
                 {
@@ -279,33 +277,31 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-10-10T17:56:43+00:00"
+            "time": "2025-01-16T08:28:55+00:00"
         },
         {
             "name": "doctrine/deprecations",
-            "version": "1.1.3",
+            "version": "1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/deprecations.git",
-                "reference": "dfbaa3c2d2e9a9df1118213f3b8b0c597bb99fab"
+                "reference": "31610dbb31faa98e6b5447b62340826f54fbc4e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/dfbaa3c2d2e9a9df1118213f3b8b0c597bb99fab",
-                "reference": "dfbaa3c2d2e9a9df1118213f3b8b0c597bb99fab",
+                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/31610dbb31faa98e6b5447b62340826f54fbc4e9",
+                "reference": "31610dbb31faa98e6b5447b62340826f54fbc4e9",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1 || ^8.0"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^9",
-                "phpstan/phpstan": "1.4.10 || 1.10.15",
-                "phpstan/phpstan-phpunit": "^1.0",
+                "doctrine/coding-standard": "^9 || ^12",
+                "phpstan/phpstan": "1.4.10 || 2.0.3",
+                "phpstan/phpstan-phpunit": "^1.0 || ^2",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
-                "psalm/plugin-phpunit": "0.18.4",
-                "psr/log": "^1 || ^2 || ^3",
-                "vimeo/psalm": "4.30.0 || 5.12.0"
+                "psr/log": "^1 || ^2 || ^3"
             },
             "suggest": {
                 "psr/log": "Allows logging deprecations via PSR-3 logger implementation"
@@ -313,7 +309,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Doctrine\\Deprecations\\": "lib/Doctrine/Deprecations"
+                    "Doctrine\\Deprecations\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -324,9 +320,9 @@
             "homepage": "https://www.doctrine-project.org/",
             "support": {
                 "issues": "https://github.com/doctrine/deprecations/issues",
-                "source": "https://github.com/doctrine/deprecations/tree/1.1.3"
+                "source": "https://github.com/doctrine/deprecations/tree/1.1.4"
             },
-            "time": "2024-01-30T19:34:25+00:00"
+            "time": "2024-12-07T21:18:45+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -512,16 +508,16 @@
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v6.10.1",
+            "version": "v6.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "500501c2ce893c824c801da135d02661199f60c5"
+                "reference": "30c19ed0f3264cb660ea496895cfb6ef7ee3653b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/500501c2ce893c824c801da135d02661199f60c5",
-                "reference": "500501c2ce893c824c801da135d02661199f60c5",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/30c19ed0f3264cb660ea496895cfb6ef7ee3653b",
+                "reference": "30c19ed0f3264cb660ea496895cfb6ef7ee3653b",
                 "shasum": ""
             },
             "require": {
@@ -569,9 +565,9 @@
             ],
             "support": {
                 "issues": "https://github.com/firebase/php-jwt/issues",
-                "source": "https://github.com/firebase/php-jwt/tree/v6.10.1"
+                "source": "https://github.com/firebase/php-jwt/tree/v6.10.2"
             },
-            "time": "2024-05-18T18:05:11+00:00"
+            "time": "2024-11-24T11:22:49+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -1366,16 +1362,16 @@
         },
         {
             "name": "leafs/aloe",
-            "version": "2.0.1",
+            "version": "2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/aloe.git",
-                "reference": "3eb5a5cc3ed3d0aed7c4db38c662ef274346cc29"
+                "reference": "44279ef8be81a34c682f858afa9e4056ff2dc8d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/aloe/zipball/3eb5a5cc3ed3d0aed7c4db38c662ef274346cc29",
-                "reference": "3eb5a5cc3ed3d0aed7c4db38c662ef274346cc29",
+                "url": "https://api.github.com/repos/leafsphp/aloe/zipball/44279ef8be81a34c682f858afa9e4056ff2dc8d1",
+                "reference": "44279ef8be81a34c682f858afa9e4056ff2dc8d1",
                 "shasum": ""
             },
             "require": {
@@ -1419,7 +1415,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/aloe/issues",
-                "source": "https://github.com/leafsphp/aloe/tree/v2.0.1"
+                "source": "https://github.com/leafsphp/aloe/tree/v2.3"
             },
             "funding": [
                 {
@@ -1431,7 +1427,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-11-12T19:41:40+00:00"
+            "time": "2025-01-07T22:31:21+00:00"
         },
         {
             "name": "leafs/anchor",
@@ -1494,16 +1490,16 @@
         },
         {
             "name": "leafs/auth",
-            "version": "v3.0.3",
+            "version": "v3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/auth.git",
-                "reference": "f0f73559b883e10cb66b7eb78de594bc5cd30d14"
+                "reference": "dab2f84c4bf85a541386c2141446624f9a861aea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/auth/zipball/f0f73559b883e10cb66b7eb78de594bc5cd30d14",
-                "reference": "f0f73559b883e10cb66b7eb78de594bc5cd30d14",
+                "url": "https://api.github.com/repos/leafsphp/auth/zipball/dab2f84c4bf85a541386c2141446624f9a861aea",
+                "reference": "dab2f84c4bf85a541386c2141446624f9a861aea",
                 "shasum": ""
             },
             "require": {
@@ -1554,7 +1550,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/auth/issues",
-                "source": "https://github.com/leafsphp/auth/tree/v3.0.3"
+                "source": "https://github.com/leafsphp/auth/tree/v3.4"
             },
             "funding": [
                 {
@@ -1566,20 +1562,20 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-11-12T19:28:17+00:00"
+            "time": "2025-01-15T19:12:34+00:00"
         },
         {
             "name": "leafs/blade",
-            "version": "v3.1",
+            "version": "v3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/blade.git",
-                "reference": "b4a3a5f68af6490bc70b9bb8f6fabbcd1246e732"
+                "reference": "338de62f43d3eeb892c477e6bbf87dbdd913ff9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/blade/zipball/b4a3a5f68af6490bc70b9bb8f6fabbcd1246e732",
-                "reference": "b4a3a5f68af6490bc70b9bb8f6fabbcd1246e732",
+                "url": "https://api.github.com/repos/leafsphp/blade/zipball/338de62f43d3eeb892c477e6bbf87dbdd913ff9a",
+                "reference": "338de62f43d3eeb892c477e6bbf87dbdd913ff9a",
                 "shasum": ""
             },
             "require": {
@@ -1616,7 +1612,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/blade/issues",
-                "source": "https://github.com/leafsphp/blade/tree/v3.1"
+                "source": "https://github.com/leafsphp/blade/tree/v3.3"
             },
             "funding": [
                 {
@@ -1628,7 +1624,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-09-23T22:23:29+00:00"
+            "time": "2025-01-19T11:01:27+00:00"
         },
         {
             "name": "leafs/cors",
@@ -1822,21 +1818,24 @@
         },
         {
             "name": "leafs/db",
-            "version": "v2.2.1",
+            "version": "v2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/db.git",
-                "reference": "440f0c1a7792c11c1621b82a378c3342677b15fd"
+                "reference": "bd7afbc182fa6b69080db3bd49d340ec4aa6f8fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/db/zipball/440f0c1a7792c11c1621b82a378c3342677b15fd",
-                "reference": "440f0c1a7792c11c1621b82a378c3342677b15fd",
+                "url": "https://api.github.com/repos/leafsphp/db/zipball/bd7afbc182fa6b69080db3bd49d340ec4aa6f8fe",
+                "reference": "bd7afbc182fa6b69080db3bd49d340ec4aa6f8fe",
                 "shasum": ""
+            },
+            "require": {
+                "ext-pdo": "*"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.14",
-                "leafs/alchemy": "^1.0",
+                "leafs/alchemy": "^2.2",
                 "pestphp/pest": "^1.21"
             },
             "type": "library",
@@ -1871,7 +1870,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/db/issues",
-                "source": "https://github.com/leafsphp/db/tree/v2.2.1"
+                "source": "https://github.com/leafsphp/db/tree/v2.3"
             },
             "funding": [
                 {
@@ -1883,20 +1882,20 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-09-30T21:13:15+00:00"
+            "time": "2025-01-09T16:44:48+00:00"
         },
         {
             "name": "leafs/exception",
-            "version": "v3.4",
+            "version": "v3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/exceptions.git",
-                "reference": "74ba10351944d3503f268e111be58308d16d51eb"
+                "reference": "dea2feb7f179c6d6a6e4cae45c97d353ae1f57cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/exceptions/zipball/74ba10351944d3503f268e111be58308d16d51eb",
-                "reference": "74ba10351944d3503f268e111be58308d16d51eb",
+                "url": "https://api.github.com/repos/leafsphp/exceptions/zipball/dea2feb7f179c6d6a6e4cae45c97d353ae1f57cb",
+                "reference": "dea2feb7f179c6d6a6e4cae45c97d353ae1f57cb",
                 "shasum": ""
             },
             "require": {
@@ -1946,7 +1945,7 @@
                 "whoops"
             ],
             "support": {
-                "source": "https://github.com/leafsphp/exceptions/tree/v3.4"
+                "source": "https://github.com/leafsphp/exceptions/tree/v3.6"
             },
             "funding": [
                 {
@@ -1954,61 +1953,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-08-23T12:20:17+00:00"
-        },
-        {
-            "name": "leafs/experimental",
-            "version": "v1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/leafsphp/experimental-modules.git",
-                "reference": "d3492193a0c0e5177426406dde876c6dbd15182e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/experimental-modules/zipball/d3492193a0c0e5177426406dde876c6dbd15182e",
-                "reference": "d3492193a0c0e5177426406dde876c6dbd15182e",
-                "shasum": ""
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Leaf\\Experiments\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Darko",
-                    "email": "mickdd22@gmail.com",
-                    "homepage": "https://mychi.netlify.app",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Leaf PHP experimental modules",
-            "homepage": "https://leafphp.netlify.app/#/",
-            "keywords": [
-                "encryption",
-                "framework",
-                "hashing",
-                "leaf",
-                "php",
-                "sodium"
-            ],
-            "support": {
-                "issues": "https://github.com/leafsphp/experimental-modules/issues",
-                "source": "https://github.com/leafsphp/experimental-modules/tree/v1.0"
-            },
-            "funding": [
-                {
-                    "url": "https://opencollective.com/leaf",
-                    "type": "open_collective"
-                }
-            ],
-            "time": "2021-09-21T13:53:44+00:00"
+            "time": "2024-12-14T11:49:35+00:00"
         },
         {
             "name": "leafs/form",
@@ -2150,16 +2095,16 @@
         },
         {
             "name": "leafs/http",
-            "version": "v3.0.1",
+            "version": "v3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/http.git",
-                "reference": "c0553e5cfd603ea0364c2f12b3f07c73870eef0d"
+                "reference": "b757da89c0e9d9f24e9eb0d4b574ee1aec35d25e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/http/zipball/c0553e5cfd603ea0364c2f12b3f07c73870eef0d",
-                "reference": "c0553e5cfd603ea0364c2f12b3f07c73870eef0d",
+                "url": "https://api.github.com/repos/leafsphp/http/zipball/b757da89c0e9d9f24e9eb0d4b574ee1aec35d25e",
+                "reference": "b757da89c0e9d9f24e9eb0d4b574ee1aec35d25e",
                 "shasum": ""
             },
             "require": {
@@ -2201,7 +2146,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/http/issues",
-                "source": "https://github.com/leafsphp/http/tree/v3.0.1"
+                "source": "https://github.com/leafsphp/http/tree/v3.4"
             },
             "funding": [
                 {
@@ -2213,20 +2158,20 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-11-10T22:54:57+00:00"
+            "time": "2025-01-17T12:00:41+00:00"
         },
         {
             "name": "leafs/leaf",
-            "version": "v3.8",
+            "version": "v3.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/leaf.git",
-                "reference": "58157173d19ab2cdd78b723d17de871e5427b03d"
+                "reference": "c01dc4420230987b41003838096712a42ba46556"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/leaf/zipball/58157173d19ab2cdd78b723d17de871e5427b03d",
-                "reference": "58157173d19ab2cdd78b723d17de871e5427b03d",
+                "url": "https://api.github.com/repos/leafsphp/leaf/zipball/c01dc4420230987b41003838096712a42ba46556",
+                "reference": "c01dc4420230987b41003838096712a42ba46556",
                 "shasum": ""
             },
             "require": {
@@ -2273,7 +2218,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/leaf/issues",
-                "source": "https://github.com/leafsphp/leaf/tree/v3.8"
+                "source": "https://github.com/leafsphp/leaf/tree/v3.10.2"
             },
             "funding": [
                 {
@@ -2285,7 +2230,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-11-06T21:56:46+00:00"
+            "time": "2025-01-16T10:21:44+00:00"
         },
         {
             "name": "leafs/logger",
@@ -2352,16 +2297,16 @@
         },
         {
             "name": "leafs/mvc-core",
-            "version": "v1.7.2",
+            "version": "v1.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/mvc-core.git",
-                "reference": "4192f232196f4b2dfa0ae344323076fff623142a"
+                "reference": "8efaec512859abb7901f8566e92be1f37bd41aa2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/mvc-core/zipball/4192f232196f4b2dfa0ae344323076fff623142a",
-                "reference": "4192f232196f4b2dfa0ae344323076fff623142a",
+                "url": "https://api.github.com/repos/leafsphp/mvc-core/zipball/8efaec512859abb7901f8566e92be1f37bd41aa2",
+                "reference": "8efaec512859abb7901f8566e92be1f37bd41aa2",
                 "shasum": ""
             },
             "require": {
@@ -2407,7 +2352,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/mvc-core/issues",
-                "source": "https://github.com/leafsphp/mvc-core/tree/v1.7.2"
+                "source": "https://github.com/leafsphp/mvc-core/tree/v1.11.1"
             },
             "funding": [
                 {
@@ -2419,7 +2364,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-11-23T14:22:57+00:00"
+            "time": "2025-01-05T22:46:14+00:00"
         },
         {
             "name": "leafs/password",
@@ -2611,16 +2556,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.72.5",
+            "version": "2.72.6",
             "source": {
                 "type": "git",
-                "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "afd46589c216118ecd48ff2b95d77596af1e57ed"
+                "url": "https://github.com/CarbonPHP/carbon.git",
+                "reference": "1e9d50601e7035a4c61441a208cb5bed73e108c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/afd46589c216118ecd48ff2b95d77596af1e57ed",
-                "reference": "afd46589c216118ecd48ff2b95d77596af1e57ed",
+                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/1e9d50601e7035a4c61441a208cb5bed73e108c5",
+                "reference": "1e9d50601e7035a4c61441a208cb5bed73e108c5",
                 "shasum": ""
             },
             "require": {
@@ -2640,7 +2585,7 @@
                 "doctrine/orm": "^2.7 || ^3.0",
                 "friendsofphp/php-cs-fixer": "^3.0",
                 "kylekatarnls/multi-tester": "^2.0",
-                "ondrejmirtes/better-reflection": "*",
+                "ondrejmirtes/better-reflection": "<6",
                 "phpmd/phpmd": "^2.9",
                 "phpstan/extension-installer": "^1.0",
                 "phpstan/phpstan": "^0.12.99 || ^1.7.14",
@@ -2653,10 +2598,6 @@
             ],
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "3.x-dev",
-                    "dev-2.x": "2.x-dev"
-                },
                 "laravel": {
                     "providers": [
                         "Carbon\\Laravel\\ServiceProvider"
@@ -2666,6 +2607,10 @@
                     "includes": [
                         "extension.neon"
                     ]
+                },
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev",
+                    "dev-master": "3.x-dev"
                 }
             },
             "autoload": {
@@ -2714,7 +2659,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-06-03T19:18:41+00:00"
+            "time": "2024-12-27T09:28:11+00:00"
         },
         {
             "name": "nette/mail",
@@ -3289,12 +3234,12 @@
             ],
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-0.11": "0.11.x-dev"
-                },
                 "bamarni-bin": {
                     "bin-links": false,
                     "forward-command": false
+                },
+                "branch-alias": {
+                    "dev-0.11": "0.11.x-dev"
                 }
             },
             "autoload": {
@@ -3431,16 +3376,16 @@
         },
         {
             "name": "symfony/deprecation-contracts",
-            "version": "v3.5.0",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/deprecation-contracts.git",
-                "reference": "0e0d29ce1f20deffb4ab1b016a7257c4f1e789a1"
+                "reference": "74c71c939a79f7d5bf3c1ce9f5ea37ba0114c6f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/0e0d29ce1f20deffb4ab1b016a7257c4f1e789a1",
-                "reference": "0e0d29ce1f20deffb4ab1b016a7257c4f1e789a1",
+                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/74c71c939a79f7d5bf3c1ce9f5ea37ba0114c6f6",
+                "reference": "74c71c939a79f7d5bf3c1ce9f5ea37ba0114c6f6",
                 "shasum": ""
             },
             "require": {
@@ -3448,12 +3393,12 @@
             },
             "type": "library",
             "extra": {
+                "thanks": {
+                    "url": "https://github.com/symfony/contracts",
+                    "name": "symfony/contracts"
+                },
                 "branch-alias": {
                     "dev-main": "3.5-dev"
-                },
-                "thanks": {
-                    "name": "symfony/contracts",
-                    "url": "https://github.com/symfony/contracts"
                 }
             },
             "autoload": {
@@ -3478,7 +3423,7 @@
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.5.0"
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.5.1"
             },
             "funding": [
                 {
@@ -3494,7 +3439,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:32:20+00:00"
+            "time": "2024-09-25T14:20:29+00:00"
         },
         {
             "name": "symfony/finder",
@@ -3585,8 +3530,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -3661,8 +3606,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -3739,8 +3684,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -3823,8 +3768,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -3897,8 +3842,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -3973,8 +3918,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -4097,16 +4042,16 @@
         },
         {
             "name": "symfony/service-contracts",
-            "version": "v3.5.0",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/service-contracts.git",
-                "reference": "bd1d9e59a81d8fa4acdcea3f617c581f7475a80f"
+                "reference": "e53260aabf78fb3d63f8d79d69ece59f80d5eda0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/bd1d9e59a81d8fa4acdcea3f617c581f7475a80f",
-                "reference": "bd1d9e59a81d8fa4acdcea3f617c581f7475a80f",
+                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/e53260aabf78fb3d63f8d79d69ece59f80d5eda0",
+                "reference": "e53260aabf78fb3d63f8d79d69ece59f80d5eda0",
                 "shasum": ""
             },
             "require": {
@@ -4119,12 +4064,12 @@
             },
             "type": "library",
             "extra": {
+                "thanks": {
+                    "url": "https://github.com/symfony/contracts",
+                    "name": "symfony/contracts"
+                },
                 "branch-alias": {
                     "dev-main": "3.5-dev"
-                },
-                "thanks": {
-                    "name": "symfony/contracts",
-                    "url": "https://github.com/symfony/contracts"
                 }
             },
             "autoload": {
@@ -4160,7 +4105,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/service-contracts/tree/v3.5.0"
+                "source": "https://github.com/symfony/service-contracts/tree/v3.5.1"
             },
             "funding": [
                 {
@@ -4176,7 +4121,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:32:20+00:00"
+            "time": "2024-09-25T14:20:29+00:00"
         },
         {
             "name": "symfony/string",
@@ -4361,16 +4306,16 @@
         },
         {
             "name": "symfony/translation-contracts",
-            "version": "v3.5.0",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation-contracts.git",
-                "reference": "b9d2189887bb6b2e0367a9fc7136c5239ab9b05a"
+                "reference": "4667ff3bd513750603a09c8dedbea942487fb07c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/b9d2189887bb6b2e0367a9fc7136c5239ab9b05a",
-                "reference": "b9d2189887bb6b2e0367a9fc7136c5239ab9b05a",
+                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/4667ff3bd513750603a09c8dedbea942487fb07c",
+                "reference": "4667ff3bd513750603a09c8dedbea942487fb07c",
                 "shasum": ""
             },
             "require": {
@@ -4378,12 +4323,12 @@
             },
             "type": "library",
             "extra": {
+                "thanks": {
+                    "url": "https://github.com/symfony/contracts",
+                    "name": "symfony/contracts"
+                },
                 "branch-alias": {
                     "dev-main": "3.5-dev"
-                },
-                "thanks": {
-                    "name": "symfony/contracts",
-                    "url": "https://github.com/symfony/contracts"
                 }
             },
             "autoload": {
@@ -4419,7 +4364,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/translation-contracts/tree/v3.5.0"
+                "source": "https://github.com/symfony/translation-contracts/tree/v3.5.1"
             },
             "funding": [
                 {
@@ -4435,7 +4380,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:32:20+00:00"
+            "time": "2024-09-25T14:20:29+00:00"
         },
         {
             "name": "symfony/var-dumper",
@@ -4684,16 +4629,16 @@
     "packages-dev": [
         {
             "name": "fakerphp/faker",
-            "version": "v1.24.0",
+            "version": "v1.24.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FakerPHP/Faker.git",
-                "reference": "a136842a532bac9ecd8a1c723852b09915d7db50"
+                "reference": "e0ee18eb1e6dc3cda3ce9fd97e5a0689a88a64b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/a136842a532bac9ecd8a1c723852b09915d7db50",
-                "reference": "a136842a532bac9ecd8a1c723852b09915d7db50",
+                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/e0ee18eb1e6dc3cda3ce9fd97e5a0689a88a64b5",
+                "reference": "e0ee18eb1e6dc3cda3ce9fd97e5a0689a88a64b5",
                 "shasum": ""
             },
             "require": {
@@ -4741,9 +4686,9 @@
             ],
             "support": {
                 "issues": "https://github.com/FakerPHP/Faker/issues",
-                "source": "https://github.com/FakerPHP/Faker/tree/v1.24.0"
+                "source": "https://github.com/FakerPHP/Faker/tree/v1.24.1"
             },
-            "time": "2024-11-07T15:11:20+00:00"
+            "time": "2024-11-21T13:46:39+00:00"
         }
     ],
     "aliases": [],
