@@ -1,28 +1,75 @@
-document.getElementById('exportTableToCsv').addEventListener('click', function() {
-    var csv = [];
-    var rows = document.querySelectorAll('table tr');
-    for (var i = 0; i < rows.length; i++) {
-        var row = [], cols = rows[i].querySelectorAll('td, th');
-        for (var j = 0; j < cols.length; j++) {
-            row.push(cols[j].innerText);
-        }
-        csv.push(row.join(','));
+const extraInputs = [
+    {
+        "type": "text",
+        "name": "id",
+        "title": "ID",
+        "inputType": "number"
+    },
+    {
+        "type": "text",
+        "name": "review",
+        "title": "Review"
+    },
+];
+
+const surveyJson = JSON.parse(`{!! json_encode($form->content) !!}`);
+surveyJson.pages[0].elements = extraInputs.concat(surveyJson.pages[0].elements); // Ensure 'id' is the first element
+
+const surveyResults = JSON.parse(`{!! json_encode($submissions) !!}`);
+
+const survey = new Survey.Model(surveyJson);
+
+// Define the column order explicitly
+const tabulatorColumns = [
+    { title: "ID", field: "id" }, // Set 'id' as the first column
+    { title: "Review", field: "review"},
+    ...survey.pages[0].elements.map((el) => ({
+        title: el.title,
+        field: el.name,
+        width: 150,
+    })),
+];
+
+const surveyDataTable = new SurveyAnalyticsTabulator.Tabulator(
+    survey,
+    surveyResults,
+    {
+        columns: tabulatorColumns, // Pass the reordered columns to Tabulator
     }
+);
 
-    // form title _ datatime.csv
-    var documentName = '{{ $form->title }}' + '_' + new Date().toISOString().slice(0, 10) + '.csv';
-    downloadCSV(csv.join('\n'), documentName);
+document.addEventListener("DOMContentLoaded", function() {
+    surveyDataTable.render(document.getElementById("surveyDataTable"));
+
+    // onclick event listener, .tabulator-cell
+    /*document.getElementById("surveyDataTable").addEventListener("click", function(event) {
+        const target = event.target;
+        if (target.classList.contains("tabulator-cell")) {
+            const row = target.closest(".tabulator-row");
+            console.log("Row ID:", row.getAttribute("tabulator-row"));
+        }
+    });*/
+
+    // [tabulator-field="id"]')
+    document.getElementById("surveyDataTable").addEventListener("click", function(event) {
+        const target = event.target;
+        if (target.hasAttribute("tabulator-field")) {
+            // get value of the tabulator-field attribute
+            const field = target.getAttribute("tabulator-field");
+            if(field === "id"){
+                let value = target.getAttribute("title");
+                location.href = `@route('collections.show', ':id')`.replace(':id', value);
+                return;
+            }
+
+            if(field === "review"){
+                // get the title value of the sibling element with tabulator-field="id"
+                let id = target.closest(".tabulator-row").querySelector('[tabulator-field="id"]').getAttribute("title");
+                let value = target.getAttribute("title");
+                location.href = `@route('collections.show', ':id')`.replace(':id', id);
+                return;
+            }
+        }
+    });
+
 });
-
-function downloadCSV(csv, filename) {
-    var csvFile;
-    var downloadLink;
-
-    csvFile = new Blob([csv], {type: 'text/csv'});
-    downloadLink = document.createElement('a');
-    downloadLink.download = filename;
-    downloadLink.href = window.URL.createObjectURL(csvFile);
-    downloadLink.style.display = 'none';
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-}

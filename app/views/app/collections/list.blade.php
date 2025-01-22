@@ -1,15 +1,16 @@
 @extends('layouts.app.main')
 @section('content')
+    <style>
+        [tabulator-field="id"], [tabulator-field="review"] {
+            cursor: pointer;
+        }
+    </style>
     <div class="content pb-0">
         <div class="row">
             <div class="col-12 mb-4 position-relative">
                 <h3 class="fs-7">{{ $form->title }}</h3>
 
                 <div class="position-absolute end-5 top-0">
-                    <!-- export to csv -->
-                    <a href="javascript:void(0)" class="btn btn-primary btn-sm" id="exportTableToCsv" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Export to CSV">
-                        <i class="fa-solid fa-download"></i>
-                    </a>
 
                     <a href="@route('forms.visualize', $form->id)" class="btn btn-primary btn-sm">
                         <i class="fa-solid fa-chart d-inline d-md-none"></i>
@@ -20,62 +21,10 @@
         </div>
 
 
-        @if($collections->count())
+        @if($submissions->count())
             <div class="mt-4 mb-0 mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis pt-3 pb-3 border-y h-100" style="min-height: calc(100vh - 168px);">
-                <div style="overflow-x: auto;">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Review</th>
-                                @foreach($questions as $key => $question)
-                                    <th style="max-width: 300px; overflow-x:auto;">
-                                        <div class="">
-                                            <span class="" data-bs-toggle="tooltip" title="{{$question}}">
-                                                {{ $key }}
-                                            </span>
-                                        </div>
-                                    </th>
-                                @endforeach
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- $collections -->
-                            @foreach($collections as $collection)
-                                <tr>
-                                    <td>
-                                        <div class="ps-1" style="max-width:200px">
-                                            <a href="{{ route('collections.show', $collection->id) }}" class="fw-bold" data-bs-toggle="tooltip" title="View Submission">
-                                                <i class="fa-solid fa-eye"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td>{{ ucfirst($collection->review) }}</td>
-                                    @foreach($questions as $key => $question)
-                                        <td>
-                                            <div class="ps-1" style="max-width:200px">
-                                                @if(isset($collection->submission[$key]))
-                                                    @php
-                                                        $currentValue = $collection->submission[$key];
+                <div style="overflow-x: auto;" id="surveyDataTable">
 
-                                                        // Loop until we find a non-array value
-                                                        while (is_array($currentValue)) {
-                                                            $currentValue = reset($currentValue); // If it's an array, get the first element
-                                                        }
-                                                    @endphp
-
-                                                    {{-- Display the final value --}}
-                                                    <div>{!! is_array($currentValue) ? '-' : strip_tags($currentValue) !!}</div>
-                                                @else
-                                                    -
-                                                @endif
-                                            </div>
-                                        </td>
-                                    @endforeach
-                                </tr>
-                            @endforeach                                        
-                        </tbody>
-                    </table>
                 </div>
             </div>
         @else
@@ -88,4 +37,18 @@
         @endif
     </div>
 @endsection
+
+@style('/vendor/tabulator/tabulator.min.css', 'src')
+@script('/vendor/tabulator/tabulator.min.js', 'src')
+
+@script('/vendor/sheetjs/xlsx.full.min.js', 'src')
+
+@style('/vendor/surveyjs/defaultV2.min.css','src')
+@style('/vendor/surveyjs/survey.analytics.min.css','src')
+@script('/vendor/surveyjs/survey.core.min.js','src')
+@script('/vendor/surveyjs/survey-js-ui.min.js','src')
+
+@style('/vendor/surveyjs/plugins/survey.analytics.tabulator.min.css','src')
+@script('/vendor/surveyjs/plugins/survey.analytics.tabulator.min.js','src')
+
 @script('app.collections.scripts.list')
