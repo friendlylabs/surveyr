@@ -13,7 +13,7 @@
                 </p>
 
                 <div class="position-absolute end-5 top-0">
-                    @if(SurveyrConfig('ai_form_generator'))
+                    @if(SurveyrConfig('form.generator'))
                         <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#aiFormModal">
                             <i class="fa-solid fa-robot"></i>
                         </button>
@@ -62,7 +62,7 @@
         </div>
     </div>
 
-    @if(SurveyrConfig('ai_form_generator'))
+    @if(SurveyrConfig('form.generator'))
         @include('app.forms.partials.generator')
     @endif
 @endsection
