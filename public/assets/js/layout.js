@@ -37,20 +37,30 @@ if (navbarVerticalStyle === 'darker') {
 }
 
 // add active to current page
-var currentUrl = window.location.href;
-var navLinks = document.querySelectorAll('.navbar-nav a');
-navLinks.forEach(function (navLink) {
-    if (navLink.href === currentUrl) {
-        navLink.classList.add('active');
+try {
+    var currentUrl = window.location.href;
+    var navLinks = document.querySelectorAll('.navbar-nav a');
 
-        // check if navLink is in a dropdown
-        var dropdown = navLink.closest('.dropdown');
-        if (dropdown) {
-            // add to dropdown-toggle
-            dropdown.querySelector('.dropdown-toggle').classList.add('active');
+    navLinks.forEach(function (navLink) {
+        if (navLink.href === currentUrl) {
+            navLink.classList.add('active');
+
+            // Check if navLink is in a dropdown
+            var dropdown = navLink.closest('.dropdown');
+            if (dropdown) {
+                var dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+                if (dropdownToggle) {
+                    dropdownToggle.classList.add('active');
+                } else {
+                    console.warn('Dropdown found, but no .dropdown-toggle element exists.');
+                }
+            }
         }
-    }
-});
+    });
+} catch (error) {
+    console.error('An error occurred while processing navigation links:', error);
+}
+
 
 function menuToOffcanvas() {
     // check if offCanvas #mobileMenu exists, if not create it
