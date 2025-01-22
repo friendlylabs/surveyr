@@ -226,12 +226,33 @@ class CollectionController extends Controller
         return $tabs;
     }
 
+    /**
+     * Clear all submissions for a form
+     * 
+     * @param int $formId
+     * @return void
+     */
+    public function clear($formId)
+    {
+        $form = Form::find($formId);
+        if(!$form) return $this->errorPage(404);
+
+        # validate user access
+        if(!$this->formInstance->formOwnerShipCheck($form->id)){
+            return $this->errorPage(403);
+        }
+
+        Collection::where('form_id', $formId)->delete();
+        return redirect(route('forms.submissions', $formId));    
+    }
+
     # TODO: Review Scales
     public static function routes(){
         app()::get('/visualize/{form}', ['name'=>'forms.visualize', 'CollectionController@visualize']);
 
         app()::get('/submissions/show/{form}', ['name'=>'collections.show', 'CollectionController@show']);
         app()::get('/submissions/all/{form}', ['name'=>'forms.submissions', 'CollectionController@list']);
+        app()::get('/submissions/clear/{form}', ['name'=>'collections.clear', 'CollectionController@clear']);
 
         app()::post('/submissions/review/{id}', ['name'=>'collections.review', 'CollectionController@review']);
     }
