@@ -40,9 +40,19 @@ class Collection extends Model
     }
 
     # form collections
-    public static function formCollections(int $form_id) : object
+    public static function formCollections(int $form_id, $remap = false) : object
     {
-        return static::where('form_id', $form_id)->get();
+        $collection = static::where('form_id', $form_id)->get();
+        if($remap) {
+            return $collection->lazy()->map(function ($item) {
+                $submission = is_array($item->submission) ? $item->submission : json_decode($item->submission, true);
+                $submission['id'] = $item->id;
+                $submission['review'] = $item->review;
+                return $submission;
+            });
+        }
+
+        return $collection;
     }
     
     # recent submissions
