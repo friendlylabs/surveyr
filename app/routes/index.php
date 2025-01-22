@@ -32,7 +32,7 @@ app()->set404(function() {
 | you set here will be called when a 500 error is encountered
 |
 */
-if(_env('app_debug') === 'false'){
+if(_env('APP_DEBUG') === 'false'){
     app()->setErrorHandler(function() {
         
         # api and ajax 500 handler
