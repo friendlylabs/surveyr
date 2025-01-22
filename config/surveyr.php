@@ -26,5 +26,19 @@ return [
     | feature.
     |
     */
-    'ai_form_generator' => true
+    'form.generator' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Surveyr API Config
+    |--------------------------------------------------------------------------
+    |
+    | This is the configuration for the Surveyr API. You can enable or disable
+    | the API
+    |
+    */
+    'api.enabled' => function() {
+        return class_exists('App\Controllers\Api\BaseController');
+    },
+
 ];
