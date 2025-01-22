@@ -77,11 +77,11 @@ class CollectionController extends Controller
         if(!$this->formInstance->formOwnerShipCheck($form->id) && !$this->formInstance->hasAccessbySpace($form->spaces)){
             return $this->errorPage(403);
         }
+        
 
         # data allocation
         $this->form = $form;
-        $this->collections = Collection::formCollections($formId);
-        $this->questions = $this->extractQuestions($form->questions ?? []);
+        $this->submissions = Collection::formCollections($formId, true);
 
         $this->renderPage("Submissions for $form->title", "app.collections.list");
     }
