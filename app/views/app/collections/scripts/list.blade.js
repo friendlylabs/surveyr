@@ -65,11 +65,25 @@ document.addEventListener("DOMContentLoaded", function() {
             if(field === "review"){
                 // get the title value of the sibling element with tabulator-field="id"
                 let id = target.closest(".tabulator-row").querySelector('[tabulator-field="id"]').getAttribute("title");
-                let value = target.getAttribute("title");
                 location.href = `@route('collections.show', ':id')`.replace(':id', id);
                 return;
             }
         }
     });
 
+    document.getElementById('purgeFormSubmissions').addEventListener('click', function() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This action will delete all submissions for this form. This action cannot be undone!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete all data!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `@route('collections.clear', $form->id)`;
+            }
+        });
+    });
 });

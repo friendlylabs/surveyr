@@ -12,6 +12,10 @@
 
                 <div class="position-absolute end-5 top-0">
 
+                    <a href="javascript:void(0)" class="btn btn-primary btn-sm" id="purgeFormSubmissions" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Clear all Data">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+
                     <a href="@route('forms.visualize', $form->id)" class="btn btn-primary btn-sm">
                         <i class="fa-solid fa-chart d-inline d-md-none"></i>
                         <span class="d-none d-md-inline">Visualize</span>
