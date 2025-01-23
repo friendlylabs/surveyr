@@ -86,7 +86,7 @@ function require_files(){
 | This function is used to get a substring from a string.
 |
 */
-function substring($string, $length, $end = '...'){
+function substring($string, $length, $end = ' ...'){
 
     if(strlen($string) > $length)
         return substr($string, 0, $length) . $end;
