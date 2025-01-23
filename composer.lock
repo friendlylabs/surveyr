@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f3730d16bf06dda22f5650c991f22d5",
+    "content-hash": "2dc11426e1bf99a7662fa133b2770a8a",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -2422,16 +2422,16 @@
         },
         {
             "name": "leafs/session",
-            "version": "v2.3.1",
+            "version": "v2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/session.git",
-                "reference": "eb7d9a4884cbe9c3aaa003066d010d05ccf02ce7"
+                "reference": "7d9358b3832504490896f59c998c877119b9fe69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/session/zipball/eb7d9a4884cbe9c3aaa003066d010d05ccf02ce7",
-                "reference": "eb7d9a4884cbe9c3aaa003066d010d05ccf02ce7",
+                "url": "https://api.github.com/repos/leafsphp/session/zipball/7d9358b3832504490896f59c998c877119b9fe69",
+                "reference": "7d9358b3832504490896f59c998c877119b9fe69",
                 "shasum": ""
             },
             "require": {
@@ -2474,7 +2474,7 @@
             ],
             "support": {
                 "issues": "https://github.com/leafsphp/session/issues",
-                "source": "https://github.com/leafsphp/session/tree/v2.3.1"
+                "source": "https://github.com/leafsphp/session/tree/v2.3.2"
             },
             "funding": [
                 {
@@ -2486,7 +2486,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-11-08T23:41:45+00:00"
+            "time": "2025-01-20T18:48:05+00:00"
         },
         {
             "name": "leafs/vite",
