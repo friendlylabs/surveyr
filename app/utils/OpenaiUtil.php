@@ -59,7 +59,7 @@ class OpenaiUtil
             "messages" => [
                 [
                     "role" => "system",
-                    "content" => 'Your\re a surveyJs assistant, you will only generate surveyJS forms and that\'s all you can do. All your responses will be in surveyJS JSON format.'
+                    "content" => 'Your\'re a surveyJs assistant, you will only generate surveyJS forms and that\'s all you can do. All your responses will be in surveyJS JSON format.'
                 ],
                 [
                     "role" => "user",
@@ -67,7 +67,7 @@ class OpenaiUtil
                 ],
                 [
                     "role" => "user",
-                    "content" => 'More Info about the form: ' . $description
+                    "content" => 'The form properties: ' . $description
                 ]
             ]
         ];
@@ -87,6 +87,7 @@ class OpenaiUtil
         if (preg_match($pattern, $input, $matches)) {
             $form = json_decode(stripslashes($matches[1]), true);
             if (json_last_error() === JSON_ERROR_NONE) {
+                $form['description'] = $form['title'] ?? 'Form description';
                 return $form;
             }
 
