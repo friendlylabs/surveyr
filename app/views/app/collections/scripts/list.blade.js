@@ -1,15 +1,6 @@
 const extraInputs = [
-    {
-        "type": "text",
-        "name": "id",
-        "title": "ID",
-        "inputType": "number"
-    },
-    {
-        "type": "text",
-        "name": "review",
-        "title": "Review"
-    },
+    {"type":"text","name":"id","title":"ID","inputType":"number"},
+    {"type":"text","name":"review","title":"Review"},
 ];
 
 const surveyJson = JSON.parse(`{!! json_encode($form->content) !!}`);
