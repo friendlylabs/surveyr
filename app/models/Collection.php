@@ -58,8 +58,6 @@ class Collection extends Model
     # recent submissions
     public static function recentSubmissions(int $userId, int $limit=5) : object
     {
-
-        # refactor: recent form submissions
         # cols: formId, formName, submission:int, pending_review:int, last_submission
         $spaces = Space::absoluteUserSpaces($userId);
         return self::where(function ($query) use ($userId, $spaces) {
