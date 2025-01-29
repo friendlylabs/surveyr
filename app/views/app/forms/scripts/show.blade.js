@@ -56,6 +56,7 @@ function sendAjaxRequest(url, data, includeCsrf = false) {
 
 // Add event listener to handle survey completion
 survey.onComplete.add(function (result) {
+
     const submissionUrl = `{{ route('forms.collect', md5($form->id), $form->slug) }}`;
     const webhook = `{{ $form->webhook_url ?? null }}`;
 
@@ -76,6 +77,7 @@ survey.onComplete.add(function (result) {
             // Handle response from your main server
             if (mainResponse.status) {
                 toast.success({ message: mainResponse.message });
+                document.querySelector('.sd-completedpage').innerHTML = `<h3>Thank you for completing the Form 🎉</h3>`;
             } else {
                 toast.error({ message: mainResponse.message ?? 'An unknown error occurred' });
             }
