@@ -53,6 +53,8 @@ The project is still in the early stages of development, while I am doing my bes
 
 We welcome contributions from the community. If you have ideas for new features, bug fixes, or enhancements, feel free to submit a pull request. For major changes, please open an issue first to discuss the proposed changes.
 
+We also accept cash contributions, we'll soon be launching on codecanyon, stay tuned
+
 ## License
 
 Surveyr is open-source software licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](https://www.gnu.org/licenses/agpl-3.0.html). You are free to use, modify, and distribute the software under the terms of this license.
