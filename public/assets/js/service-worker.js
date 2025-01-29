@@ -1,4 +1,4 @@
-const CACHE_NAME = 'surveyr-cache-v1'; // Update this when your files change
+const CACHE_NAME = 'surveyr-cache-v2';
 const CACHE_ASSETS = [
     "/assets/css/app.css",
     "/assets/css/theme-rtl.css",
@@ -36,7 +36,6 @@ const CACHE_ASSETS = [
     "/assets/fonts/fontawesome/fa-thin-100.ttf",
     "/assets/fonts/fontawesome/fa-thin-100.woff2",
     "/assets/fonts/fontawesome.css",
-    "/assets/fonts/fontawesome.zip",
     "/assets/fonts/inter/Inter-italic.var32a8.woff2",
     "/assets/fonts/inter/Inter-roman.var32a8.woff2",
     "/assets/fonts/inter/inter.css",
@@ -165,7 +164,15 @@ const CACHE_ASSETS = [
     "/vendor/surveyjs/survey.analytics.min.js",
     "/vendor/surveyjs/survey.core.min.js",
     "/vendor/surveyjs/surveyjs-widgets.min.js",
+    "/vendor/surveyjs/themes/index.min.js",
+    "/vendor/surveyjs/plugins/survey.analytics.tabulator.min.css",
+    "/vendor/surveyjs/plugins/survey.analytics.tabulator.min.js",
     "/vendor/swal/sweetalert.min.js",
+    "/vendor/tabulator/tabulator.min.css",
+    "/vendor/tabulator/tabulator.min.js",
+    "/vendor/sheetjs/xlsx.full.min.js",
+    "/vendor/simplemde/simplemde.min.css",
+    "/vendor/simplemde/simplemde.min.js",
     "/assets/css/splash.css",
     "/offline.html"
 ];
