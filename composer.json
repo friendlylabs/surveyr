@@ -70,8 +70,7 @@
     },
     "scripts": {
         "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "@php -r \"if (file_exists('README2.MD')) {unlink('README.MD'); rename('README2.MD', 'README.MD');}\""
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
             "@php leaf key:generate",
