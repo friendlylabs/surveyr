@@ -1,5 +1,5 @@
 <div class="modal fade" id="aiFormModal" tabindex="-1" aria-labelledby="aiFormModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="aiFormModalLabel">AI Form Generator</h5>
@@ -9,14 +9,18 @@
                 <form action="@route('forms.generate')" method="POST" onsubmit="submitForm(event)">
                     @csrf
                     <div class="mb-3">
-                        <label for="formTitle" class="form-label">Form Title</label>
-                        <input type="text" class="form-control" id="formTitle" name="title" placeholder="i.e Student Registration Form" required>
+                        <input type="text" class="form-control" id="formTitle" name="title" placeholder="Title i.e Student Registration Form" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="formDescription" class="form-label">Form Description</label>
-                        <textarea class="form-control" id="formDescription" name="description" rows="5" placeholder="Your Form description" required></textarea>
+                    <div class="position-relative mb-3">
+                        <textarea class="form-control" id="formDescription" name="description" rows="25" placeholder="Your Form description" required></textarea>
+
+                        <div class="position-absolute" style="bottom:-1.4rem;">
+                            <a href="javascript:void(0)" class="fs-9 text-info" onclick="generateSampleDescription(1)">sampe 1</a> | 
+                            <a href="javascript:void(0)" class="fs-9 text-info" onclick="generateSampleDescription(2)">sampe 2</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary position-absolute" style="bottom:0.5rem; right:0.4rem; z-index:1">Generate</button>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Generate</button>
                 </form>
             </div>
         </div>
