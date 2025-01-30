@@ -15,4 +15,6 @@ app()::group('app', ['namespace'=>'\App\Controllers\Base', function() {
     app()::group('forms', fn() => \App\Controllers\Base\FormsController::routes());
     app()::group('spaces', fn() => \App\Controllers\Base\SpacesController::routes());
     app()::group('forms', fn() => \App\Controllers\Base\CollectionController::routes());
+
+    app()::group('intergrations', fn() => \App\Controllers\Base\IntergrationController::routes());
 }]);
