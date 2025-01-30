@@ -78,7 +78,6 @@ class CollectionController extends Controller
             return $this->errorPage(403);
         }
         
-
         # data allocation
         $this->form = $form;
         $this->submissions = Collection::formCollections($formId, true);
