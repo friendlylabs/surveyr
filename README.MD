@@ -49,6 +49,8 @@ The project is still in the early stages of development, while I am doing my bes
   php leaf serve
   ```
 
+  The API documentation can be found [here](https://documenter.getpostman.com/view/14546504/2sAYQiBo9h)
+
 ## Contributing
 
 We welcome contributions from the community. If you have ideas for new features, bug fixes, or enhancements, feel free to submit a pull request. For major changes, please open an issue first to discuss the proposed changes.
