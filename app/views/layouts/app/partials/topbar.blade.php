@@ -46,12 +46,24 @@
 					<div class="card-body p-1">
                         <div class="overflow-auto scrollbar" style="max-height: 10rem;">
                             <ul class="nav d-flex flex-column">
+
+                                <!-- Profile -->
                                 <li class="nav-item">
                                     <a class="nav-link px-3 d-block" href="@route('app.profile')">
                                         <span class="me-2 text-body align-bottom" data-feather="user"></span>
                                         <span>Profile</span>
                                     </a>
                                 </li>
+
+                                <!-- Intergration -->
+                                @if(SurveyrConfig('api.enabled') && $loggedUser->role == 'admin')
+                                    <li class="nav-item">
+                                        <a class="nav-link px-3 d-block" href="@route('intergration.setup')">
+                                            <span class="me-2 text-body align-bottom" data-feather="link"></span>
+                                            <span>Integrations</span>
+                                        </a>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
 					</div>
