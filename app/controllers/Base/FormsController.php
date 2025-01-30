@@ -47,12 +47,12 @@ class FormsController extends Controller
         $title = $faker->words(3, true);
         $data = [
             'title' => $title,
-            'slug' => slugify($title) . '-' . uniqid(),
-            'description' => $faker->sentence(10),
+            'slug' => 'Untitled Form',
+            'description' => 'Untitled Form',
             'user_id' => auth()->id(),
             'content' => [
                 "title" => $title,
-                "description" => $faker->sentence(10)
+                "description" => 'Untitled Form'
             ],
             'start_date' => now()->addDays(7),
             'end_date' => now()->addDays(14)
@@ -477,7 +477,7 @@ class FormsController extends Controller
             $form = Form::create([
                 'title' => $data['title'],
                 'slug' => slugify($data['title']) . '-' . uniqid(),
-                'description' => $data['description'],
+                'description' => $data['title'],
                 'user_id' => auth()->id(),
                 'content' => $formData,
                 'start_date' => now()->addDays(7),
