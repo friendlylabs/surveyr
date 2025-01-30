@@ -88,7 +88,7 @@ function require_files(){
 */
 function substring($string, $length, $end = ' ...'){
 
-    if(strlen($string) > $length)
+    if(strlen($string ?? '') > $length)
         return substr($string, 0, $length) . $end;
 
     return $string;
