@@ -21,31 +21,22 @@ function createLogoElement() {
 
     // Create an anchor element
     const logoLink = document.createElement('a');
-    logoLink.href = '/'; // Set the homepage URL here
-    logoLink.style.display = 'flex'; // Use flex to align items if needed
-    logoLink.style.alignItems = 'center'; // Center align the logo vertically
+    logoLink.href = '/'; 
+    logoLink.style.display = 'flex';
+    logoLink.style.alignItems = 'center'; 
 
+    // Create an image element (logo)
     const logo = document.createElement('img');
-    logo.src = '/assets/images/brand/logo-dark.png'; // Set your logo path here
+    logo.src = '/assets/images/brand/logo-dark.png';
     logo.alt = 'Logo';
-    logo.style.height = '40px'; // Adjust size as necessary
-    logo.style.margin = '0 10px'; // Adjust margin as necessary
-    logo.style.marginTop = '10px'; // Adjust margin as necessary
+    logo.style.height = '40px'; 
+    logo.style.margin = '0 10px';
+    logo.style.marginTop = '10px';
     
     logoLink.appendChild(logo); // Append logo to the anchor link
     logoContainer.appendChild(logoLink); // Append anchor link to the logo container
     
     return logoContainer;
-}
-
-// Function to create the save status element
-function createSaveStatusElement() {
-    
-}
-
-// Function to update save status
-function updateSaveStatus(status) {
-    
 }
 
 // Observer to modify the menu after rendering
