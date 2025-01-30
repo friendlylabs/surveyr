@@ -20,6 +20,12 @@ class MailTool
         );
     }
 
+    private function sendAsync(callable $callback)
+    {
+        $fiber = new \Fiber($callback);
+        $fiber->start();
+    }
+
     /**
      * Send email
      * 
@@ -33,13 +39,15 @@ class MailTool
      */
     public function send($subject, $body, $recipientEmail, $recipientName, $senderName = null)
     {
-        $mail = new Nette\Mail\Message;
-        $mail->setFrom($senderName ?? _env('MAIL_USERNAME'))
-            ->addTo($recipientEmail, $recipientName)
-            ->setSubject($subject)
-            ->setBody($body);
+        $this->sendAsync(function () use ($subject, $body, $recipientEmail, $recipientName, $senderName) {
+            $mail = new Nette\Mail\Message;
+            $mail->setFrom($senderName ?? _env('MAIL_USERNAME'))
+                ->addTo($recipientEmail, $recipientName)
+                ->setSubject($subject)
+                ->setBody($body);
 
-        $this->mailer->send($mail);
+            $this->mailer->send($mail);
+        });
     }
 
     /**
@@ -54,18 +62,20 @@ class MailTool
      */
     public function sendToAll($subject, $body, $recipients, $senderName = null)
     {
-        $mail = new Nette\Mail\Message;
-        $mail->setFrom($senderName ?? _env('MAIL_USERNAME'))
-            ->setSubject($subject)
-            ->setBody($body);
+        $this->sendAsync(function () use ($subject, $body, $recipients, $senderName) {
+            $mail = new Nette\Mail\Message;
+            $mail->setFrom($senderName ?? _env('MAIL_USERNAME'))
+                ->setSubject($subject)
+                ->setBody($body);
 
-        foreach ($recipients as $recipient) {
-            $mail->addTo($recipient['email'], $recipient['name']);
-        }
+            foreach ($recipients as $recipient) {
+                $mail->addTo($recipient['email'], $recipient['name']);
+            }
 
-        $this->mailer->send($mail);
+            $this->mailer->send($mail);
+        });
     }
-
+    
     /**
      * HTML email
      * 
@@ -77,12 +87,14 @@ class MailTool
      */
     public function sendHtml($subject, $body, $recipientEmail, $recipientName, $senderName = null)
     {
-        $mail = new Nette\Mail\Message;
-        $mail->setFrom($senderName ?? _env('MAIL_USERNAME'))
-            ->addTo($recipientEmail, $recipientName)
-            ->setSubject($subject)
-            ->setHtmlBody($body);
+        $this->sendAsync(function () use ($subject, $body, $recipientEmail, $recipientName, $senderName) {
+            $mail = new Nette\Mail\Message;
+            $mail->setFrom($senderName ?? _env('MAIL_USERNAME'))
+                ->addTo($recipientEmail, $recipientName)
+                ->setSubject($subject)
+                ->setHtmlBody($body);
 
-        $this->mailer->send($mail);
+            $this->mailer->send($mail);
+        });
     }
 }
