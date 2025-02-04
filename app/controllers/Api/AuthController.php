@@ -40,6 +40,7 @@ class AuthController extends BaseController
             if(!$token) return self::jsonError("Failed to sign in", 401);
 
             $this->token = $token;
+            $this->projectId = md5(_env('APP_KEY'));
             $this->user = [
                 'fullname' => static::$user->fullname,
                 'email' => static::$user->email,
