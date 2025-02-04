@@ -1,5 +1,5 @@
-const surveyJson = `{!! json_encode($formContent) !!}`;
-const surveyResponse = JSON.parse(`{!! json_encode($collection->submission) !!}`);
+const surveyJson = (`{!! json_encode($formContent) !!}`).replace(/^\s+|\s+$/gm, '').split('\n').join('');
+const surveyResponse = JSON.parse((`{!! json_encode($collection->submission) !!}`).replace(/^\s+|\s+$/gm, '').split('\n').join(''));
 var currentTheme = localStorage.getItem('phoenixTheme') ?? 'light';
 
 const survey = new Survey.Model(surveyJson);

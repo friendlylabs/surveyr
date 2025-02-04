@@ -1,4 +1,4 @@
-const defaultJson = `{!! json_encode($form->content) !!}`;
+const defaultJson = (`{!! json_encode($form->content) !!}`).replace(/^\s+|\s+$/gm, '').split('\n').join('');
 var currentTheme = localStorage.getItem('phoenixTheme') ?? 'light';
 
 var formTheme = "{{ $form->theme }}";
