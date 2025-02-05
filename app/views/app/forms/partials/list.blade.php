@@ -41,7 +41,7 @@
                                     @endforeach
                                     @if($collaborators->count() > 3)
                                         <div class="avatar avatar-s rounded-circle">
-                                            <img class="rounded-circle" src="/assets/images/users/avatar-plus.png" alt="More collaborators">
+                                            <img class="rounded-circle" src="/assets/images/users/avatar-plus.png" alt="More collaborators" style="filter: grayscale(1) contrast(0.5)">
                                         </div>
                                     @endif
                                 @endif
