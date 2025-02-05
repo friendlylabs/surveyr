@@ -18,22 +18,32 @@
                         <input type="checkbox" class="formChecklist d-none" name="formsChecklist[]">
                     </td>
                     <td class="p-1">
-                        <a class="fw-bold" href="@route('forms.customize', $form->id, $form->slug)">{{ $form->title }}</a> <br>
-                        <span class="text-body-tertiary fs-9">{{ !$form->description ? $form->title :substring($form->description, 100) }}</span>
+                        <a class="fw-bold" href="@route('forms.submissions', $form->id, $form->slug)">{{ $form->title }}</a> <br>
+                        <span class="text-body-tertiary fs-9">
+                            {{ !$form->description ? $form->title : substring($form->description, 100) }}
+                        </span>
                     </td>
                     @if($collabCol)
                         <td class="text-center">
                             <div class="avatar-group avatar-group-dense d-block mx-auto">
                                 <div class="avatar avatar-s rounded-circle">
-                                    <img class="rounded-circle " src="{{ urlPath($form->user->avatar) }}" alt="{{ $form->user->fullname }}">
+                                    <img class="rounded-circle" src="{{ urlPath($form->user->avatar) }}" alt="{{ $form->user->fullname }}">
                                 </div>
-                                @if (count($form->collaborators) > 0)
-                                    @php $collaborators = \App\Models\User::whereIn('id', $form->collaborators)->get(); @endphp
-                                    @foreach($collaborators as $collaborator)
+                                @if(count($form->collaborators) > 0)
+                                    @php 
+                                        $collaborators = \App\Models\User::whereIn('id', $form->collaborators)->get();
+                                        $shownCollaborators = $collaborators->take(2); 
+                                    @endphp
+                                    @foreach($shownCollaborators as $collaborator)
                                         <div class="avatar avatar-s rounded-circle">
-                                            <img class="rounded-circle " src="{{ urlPath($collaborator->avatar) }}" alt="{{ $collaborator->fullname }}">
+                                            <img class="rounded-circle" src="{{ urlPath($collaborator->avatar) }}" alt="{{ $collaborator->fullname }}">
                                         </div>
                                     @endforeach
+                                    @if($collaborators->count() > 3)
+                                        <div class="avatar avatar-s rounded-circle">
+                                            <img class="rounded-circle" src="/assets/images/users/avatar-plus.png" alt="More collaborators">
+                                        </div>
+                                    @endif
                                 @endif
                             </div>
                         </td>
@@ -92,5 +102,6 @@
                 </tr>
             @endforeach
         </tbody>
+
     </table>
 </div>
