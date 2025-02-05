@@ -104,7 +104,7 @@ class CollectionController extends Controller
 
         # data allocation
         $this->form = $form;
-        $this->tabsInfo = $this->tabifyInfo($form->content);
+        $this->tabsInfo = null;
         $this->questions = $this->extractQuestions($form->content);
         $this->collections = Collection::formCollections($formId)->pluck('submission')->toArray();
 
