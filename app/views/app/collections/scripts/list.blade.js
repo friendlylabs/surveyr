@@ -3,10 +3,20 @@ const extraInputs = [
     {"type":"text","name":"review","title":"Review"},
 ];
 
-const surveyJson = JSON.parse(`{!! json_encode($form->content) !!}`);
-surveyJson.pages[0].elements = extraInputs.concat(surveyJson.pages[0].elements); // Ensure 'id' is the first element
+const surveyJson = JSON.parse((`{!! json_encode($form->content) !!}`).replace(/^\s+|\s+$/gm, '').split('\n').join(''));
+// surveyJson.pages[0].elements = extraInputs.concat(surveyJson.pages[0].elements); // Ensure 'id' is the first element
 
-const surveyResults = JSON.parse(`{!! json_encode($submissions) !!}`);
+try{
+    const page = surveyJson.pages.find((page) => page.elements);
+    page.elements = extraInputs.concat(page.elements);
+}catch(e){
+    surveyJson.pages.push({
+        name: "notapage",
+        elements: extraInputs
+    });
+}
+
+const surveyResults = JSON.parse((`{!! json_encode($submissions) !!}`).replace(/^\s+|\s+$/gm, '').split('\n').join(''));
 
 const survey = new Survey.Model(surveyJson);
 
@@ -31,15 +41,6 @@ const surveyDataTable = new SurveyAnalyticsTabulator.Tabulator(
 
 document.addEventListener("DOMContentLoaded", function() {
     surveyDataTable.render(document.getElementById("surveyDataTable"));
-
-    // onclick event listener, .tabulator-cell
-    /*document.getElementById("surveyDataTable").addEventListener("click", function(event) {
-        const target = event.target;
-        if (target.classList.contains("tabulator-cell")) {
-            const row = target.closest(".tabulator-row");
-            console.log("Row ID:", row.getAttribute("tabulator-row"));
-        }
-    });*/
 
     // [tabulator-field="id"]')
     document.getElementById("surveyDataTable").addEventListener("click", function(event) {
