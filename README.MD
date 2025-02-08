@@ -21,11 +21,14 @@ The project is still in the early stages of development, while I am doing my bes
 - 📊 **Insightful Analytics:** Gain valuable insights from your data with built-in analytics. Track form performance, response rates, and user behavior. Visualize your data with charts and graphs to make informed decisions and optimize your surveys for better results.
 - 📤 **Flexible Data Export:** Easily export your form data in multiple formats, such as CSV, Excel, or JSON. This flexibility ensures that you can analyze your data offline or import it into other tools for deeper analysis.
 - 📶 **Offline Data Collection (Coming Soon):** Collect responses even when there's no internet connection. Once the device is back online, the data automatically syncs to ensure you never miss any submissions. This feature is perfect for field surveys, remote areas, or on-the-go data collection.
+- 🤖 **AI Generated Forms:** Let AI generate forms based on your requirements. This feature can help you create complex forms quickly and efficiently, saving time and effort. The AI engine analyzes your input and generates a form structure that you can further customize to meet your needs.
 
-## System dependencies
+## Tech Stack & Requirements
+
+Surveyr is built using modern technologies and follows best practices to deliver a robust and scalable form builder solution. Here's an overview of the tech stack used in the project:
 
 - PHP 8+
-- MySQL 5.7+
+- MySQL 5.7+, MySQL 8.0+
 
 ## Getting started
 
