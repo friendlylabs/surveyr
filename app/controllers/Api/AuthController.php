@@ -106,10 +106,10 @@ class AuthController extends BaseController
     private static function extractToken(): string
     {
         $headers = getallheaders();
-        $token = str_replace('Bearer ', '', $headers['Authorization'] ?? null);
+        $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
 
         if (!$token) {
-            die(self::jsonError("Invalid token", 401));
+            die(self::jsonError("No auth token provided", 401));
         }
 
         return $token;
