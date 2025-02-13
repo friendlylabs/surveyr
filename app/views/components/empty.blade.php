@@ -2,8 +2,8 @@
     <div class="d-grid align-items-center justify-content-center">
         <div class="text-center empty-icon">
             {!! (isset($emptyIcon)) ? null : '<i class="fa-regular fa-folder-open mb-3" style="font-size:4rem"></i>' !!}
-            <h2>{{ $emptyTitle ?? null }}</h2>
-            <p>{!! $emptyText ?? __('No records found') !!}</p>
+            <h2>{{ $alertTitle ?? null }}</h2>
+            <p>{!! $alertMessage ?? __('No records found') !!}</p>
         </div>
     </div>
 </div>
