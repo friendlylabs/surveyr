@@ -1,6 +1,5 @@
 @extends('layouts.app.main')
 
-@style('/vendor/splide/splide.min.css','src')
 @section('content')
     <div class="content" style="padding-bottom: 0 !important;">
         <div class="row">
@@ -14,15 +13,15 @@
 
                 <div class="position-absolute end-5 top-0">
                     @if(SurveyrConfig('form.generator'))
-                        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#aiFormModal">
+                        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#formGeneratorCanvas">
                             <i class="fa-solid fa-robot"></i>
                         </button>
                     @endif
 
-                    <a href="@route('forms.build')" class="btn btn-primary btn-sm">
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createFormModal">
                         <i class="fa-solid fa-plus me-2 d-inline d-md-none"></i>
                         <span class="d-none d-md-inline">New Form</span>
-                    </a>
+                    </button>
                 </div>
 
                 <div id="splideCarousel" class="splide">
@@ -52,8 +51,8 @@
                     @else
                         <div class="text-center">
                             @include('components.empty', [
-                                'title' => 'No forms yet',
-                                'message' => 'Create a form and start collecting data'
+                                'alertTitle' => 'No forms yet',
+                                'alertMessage' => 'Create a form and start collecting data'
                             ])
                         </div>
                     @endif
@@ -65,6 +64,26 @@
     @if(SurveyrConfig('form.generator'))
         @include('app.forms.partials.generator')
     @endif
+
+    @include('app.forms.partials.create')
+
+    <script type="importmap">
+		{
+			"imports": {
+				"ckeditor5": "/vendor/ckeditor5/ckeditor5.js",
+				"ckeditor5/": "/vendor/ckeditor5/"
+			}
+		}
+	</script>
 @endsection
+
+@style('/vendor/flatpickr/flatpickr.min.css','src')
+@script('/vendor/flatpickr/flatpickr.min.js','src')
+
+@style('/vendor/splide/splide.min.css','src')
 @script('/vendor/splide/splide.min.js','src')
+
+@style('/vendor/ckeditor5/ckeditor5.css','src')
+@script('/vendor/ckeditor5/main.js','srcmodule')
+
 @script('app.forms.scripts.index')
