@@ -4,10 +4,10 @@ namespace App\Controllers\Base;
 use App\Controllers\Controller;
 
 use App\Models\ApiKey;
-use Leaf\Helpers\Password;
+use App\Models\DeviceCode;
 
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
+use Leaf\Helpers\Password;
 
 class IntergrationController extends Controller {
 
@@ -127,11 +127,42 @@ class IntergrationController extends Controller {
         return redirect(route('intergration.setup'));
     }
 
+    /**
+     * Generate a device code
+     *
+     * @return void
+     */
+    public function deviceCode() {
+        try{
+            DeviceCode::reset(static::$user->id);
+
+            $code = md5(bin2hex(random_bytes(5)));
+            $deviceCode = DeviceCode::create([
+                'code' => $code,
+                'user_id' => static::$user->id
+            ]);
+
+            if(!$deviceCode) 
+                return $this->jsonError("Failed to generate device code");
+            
+            $this->code = $code;
+            return $this->jsonSuccess("Device code generated successfully");
+        }
+
+        catch(\Exception $e){
+            return $this->jsonException($e);
+        }
+    }
+
+    
+
     public static function routes() {
         app()->get('', ['name'=>'intergration.setup', 'IntergrationController@index']);
         app()->get('key/show/{id}', ['name'=>'keys.show', 'IntergrationController@show']);
         app()->get('key/revoke/{id}', ['name'=>'keys.revoke', 'IntergrationController@revoke']);
 
         app()->post('key/create', ['name'=>'keys.create', 'IntergrationController@create']);
+
+        app()::get('device/code', ['name'=>'device.code', 'IntergrationController@deviceCode']);
     }
 }
