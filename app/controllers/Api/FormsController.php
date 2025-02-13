@@ -26,9 +26,11 @@ class FormsController extends BaseController
 
         // remap to form id to md5
         $forms = $forms->map(function ($form) {
+            $unset = ['user', 'reviews', 'spaces', 'collaborators', 'user_id', 'content', 'questions'];
+            foreach($unset as $key) unset($form->$key);
+
             return array_merge($form->toArray(), ['id' => md5($form->id)]);
-        });        
-        
+        });
 
         $this->forms = $forms;
         return self::jsonSuccess("Forms fetched successfully");
@@ -63,9 +65,7 @@ class FormsController extends BaseController
                     $formContent['mode'] = 'display';             // read-only mode
                     $surveyMode = 'restricted';
                 }else{
-                    return response()->markup(view('app.forms.closed',[
-                        'formId' => $form->id,
-                    ]), 418);
+                    return self::jsonError("Form is not yet open", 403);
                 }
             }
 
@@ -86,9 +86,41 @@ class FormsController extends BaseController
         }
     }
 
+    /**
+     * Fetch Multiple Forms
+     * 
+     * @param array $formIds
+     * @return void
+     */
+    public function fetchMultiple()
+    {   try{
+            $formIds = request()->params('formId');
+            if(!$formIds)
+                return self::jsonError("No form IDs provided", 400);
+
+            $forms = Form::whereIn(DB::$capsule::raw("MD5(id)"), $formIds)->get();
+            if(!$forms->count()) return self::jsonError("No forms found", 200);
+
+            $forms = $forms->map(function ($form) {
+                $unset = ['user', 'reviews', 'spaces', 'collaborators', 'user_id', 'questions'];
+                foreach($unset as $key) unset($form->$key);
+
+                return array_merge($form->toArray(), ['id' => md5($form->id)]);
+            });
+
+            $this->forms = $forms;
+            return self::jsonSuccess("Forms fetched successfully");
+        }
+
+        catch(\Exception $e){
+            return self::jsonException($e);
+        }
+    }
+
     public static function routes()
     {
         app()::get('', ['name'=>'api.forms.list', 'FormsController@index']);
+        app()::post('', ['name'=>'api.forms.multiple', 'FormsController@fetchMultiple']);
         app()::get('fetch/{formId}', ['name'=>'api.forms.fetch', 'FormsController@fetch']);
     }
 }
