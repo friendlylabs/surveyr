@@ -81,13 +81,6 @@
     </script>
 @endsection
 
-@style('/vendor/codemirror/codemirror.min.css','src')
-@script('/vendor/codemirror/codemirror.min.js','src')
-@script('/vendor/codemirror/search.js','src')
-
-@style('/vendor/codemirror/dialog.css','src')
-@script('/vendor/codemirror/dialog.js','src')
-
 @style('/vendor/tabulator/tabulator@6.min.css','src')
 @script('/vendor/tabulator/tabulator@6.min.js','src')
 
