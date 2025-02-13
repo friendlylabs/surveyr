@@ -11,7 +11,6 @@ $('.togglePassword').click(function() {
 
 // Global Functions
 function buttonState(button, state, initialText=null) {
-
     button = $(button);
 
     if (state === 'loading') {
@@ -36,7 +35,6 @@ function underDevelopment(){
     });
 }
 
-
 // Styles and Scripts Injection
 function injectStylesheet(url) {
     var link = document.createElement('link');
@@ -57,8 +55,16 @@ function injectScript(url) {
 }
 
 function copyToClipboard(text) {
+    let value;
+
+    if (text instanceof HTMLElement) {
+        value = text.innerText || text.value;
+    } else {
+        value = text;
+    }
+
     var input = document.createElement('input');
-    input.value = text;
+    input.value = value;
     document.body.appendChild(input);
     input.select();
     document.execCommand('copy');
