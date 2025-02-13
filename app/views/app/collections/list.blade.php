@@ -34,8 +34,8 @@
         @else
             <div class="py-5">
                 @include('components.empty', [
-                    'emptyTitle' => 'No records Found',
-                    'emptyText' => 'No submissions have been made to this form yet.'
+                    'alertTitle' => 'No records Found',
+                    'alertMessage' => 'No submissions have been made to this form yet.'
                 ])
             </div>
         @endif

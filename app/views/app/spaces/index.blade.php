@@ -82,8 +82,8 @@
             @else
                 <div class="col-12">
                     @include('components.empty', [
-                        'emptyTitle' => 'No Records found',
-                        'emptyText' => 'No spaces found, create a new space to get started.'
+                        'alertTitle' => 'No Records found',
+                        'alertMessage' => 'No spaces found, create a new space to get started.'
                     ])
                 </div>
             @endif
