@@ -18,7 +18,9 @@
                         <input type="checkbox" class="formChecklist d-none" name="formsChecklist[]">
                     </td>
                     <td class="p-1">
-                        <a class="fw-bold" href="@route('forms.submissions', $form->id, $form->slug)">{{ $form->title }}</a> <br>
+                        <a class="fw-bold" href="@route('forms.submissions', $form->id, $form->slug)">
+                            {{ ucfirst(strtolower($form->title)) }}
+                        </a> <br>
                         <span class="text-body-tertiary fs-9">
                             {{ !$form->description ? $form->title : substring($form->description, 100) }}
                         </span>
