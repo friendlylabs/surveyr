@@ -2,7 +2,10 @@
 
 namespace App\Controllers\Api;
 
+use App\Models\User;
 use App\Models\ApiKey;
+use App\Models\DeviceCode;
+
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Leaf\Helpers\Password;
@@ -53,6 +56,42 @@ class AuthController extends BaseController
             return self::jsonException($e);
         }
             
+    }
+
+    /**
+     * Verify a device code
+     * 
+     * @param string $code
+     * @return void
+     */
+    function loginByScan($code){
+        try{
+            $code = DeviceCode::where('code', $code)->first();
+            if(!$code) return self::jsonError("The code provided is invalid or Expired", 401);
+
+            $userId = $code->user_id;
+            DeviceCode::reset($userId);
+
+            // get user
+            static::$user = User::find($userId);
+
+            // issue token
+            $token = $this->signinToken();
+            if(!$token) return self::jsonError("Failed to sign in", 401);
+            
+            $this->token = $token;
+            $this->projectId = md5(_env('APP_KEY'));
+            $this->user = [
+                'fullname' => static::$user->fullname,
+                'email' => static::$user->email,
+            ];
+
+            return self::jsonSuccess("Signed in successfully");
+        }
+
+        catch(\Exception $e){
+            return self::jsonException($e);
+        }
     }
 
     /**
@@ -185,6 +224,7 @@ class AuthController extends BaseController
     public static function routes() :void
     {
         app()::post('/token', ['name'=>'auth.signin', 'AuthController@signin']);
+        app()::get('/qr/{code}', ['name'=>'auth.scan', 'AuthController@loginByScan']);
     }
 
 }
