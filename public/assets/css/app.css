@@ -47,7 +47,7 @@
 /*.content *:not(label):not(input):not(textarea){
 	font-family: "Inter var", sans-serif;
 	font-size: 14px;
-}*/
+}
 
 .content h1,
 .content h2,
@@ -59,6 +59,12 @@
 .content span {
 	font-family: "Inter var", sans-serif;
 	font-size: 14px;
+}*/
+
+.content :not(.exclusionZone) h1,
+h2, h3, h4, h5, h6, p, span {
+    font-family: "Inter var", sans-serif;
+    font-size: 14px;
 }
 
 a, a:hover {
@@ -249,6 +255,12 @@ a, a:hover {
 	color: #a9b0c2 !important;
 }
 
+.min-w-90 { min-width: 90vw; }
+.min-w-75 { min-width: 75vw; }
+.min-w-60 { min-width: 60vw; }
+.min-w-50 { min-width: 50vw; }
+.min-w-25 { min-width: 25vw; }
+
 /* Mobile and Small Screen */
 @media (max-width: 767px) {
 
@@ -288,9 +300,42 @@ a, a:hover {
 
 }
 
+/* Default Offcanvas Size (Bootstrap Default) */
+.offcanvas {
+    width: 400px; /* Default width */
+}
+
+/* Small Screens (sm) */
+@media (min-width: 576px) {
+    .offcanvas-sm {
+        width: 300px;
+    }
+}
+
+/* Medium Screens (md) */
+@media (min-width: 768px) {
+    .offcanvas-md {
+        width: 450px;
+    }
+}
+
+/* Large Screens (xl) */
+@media (min-width: 1200px) {
+    .offcanvas-xl {
+        width: 600px;
+    }
+}
+
+/* Extra Large Screens (xxl) */
+@media (min-width: 1400px) {
+    .offcanvas-xxl {
+        width: 800px;
+    }
+}
+
 ::-webkit-scrollbar {
   width: 7px;
-	height: 3px;
+  height: 7px;
 }
 
 /* Track */
