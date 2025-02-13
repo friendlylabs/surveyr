@@ -1,0 +1,21 @@
+.ck.ck-button.ck-off.ck-block-toolbar-button,
+.ck.ck-balloon-panel.ck-balloon-panel_visible,
+.ck.ck-toolbar.ck-toolbar_floating.ck-toolbar_grouping{
+    z-index: 1060 !important;
+}
+
+.ck.ck-editor__editable{
+    border: none !important;
+    border-radius: 0.25rem;
+    height:87vh;
+    overflow-y: auto;
+    box-shadow: none !important
+}
+
+.ck.ck-editor__editable_inline>:first-child{
+    margin-top: 1rem;
+}
+
+.ck-powered-by-balloon {
+    display: none !important;
+}

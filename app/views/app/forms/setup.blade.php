@@ -1,6 +1,5 @@
 @extends('layouts.app.main')
 
-@style('/vendor/flatpickr/flatpickr.min.css','src')
 <style>
     #qrcode {
         margin: 1rem auto;
@@ -64,6 +63,7 @@
         </div>
     </div>
 @endsection
+
+@style('/vendor/flatpickr/flatpickr.min.css','src')
 @script('/vendor/flatpickr/flatpickr.min.js','src')
-@script('/vendor/qrcode/qrcode.min.js','src')
 @script('app.forms.scripts.setup')
