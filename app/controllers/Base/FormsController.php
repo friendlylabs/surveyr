@@ -43,25 +43,34 @@ class FormsController extends Controller
      */
     public function build()
     {
-        $faker = Faker::create();
-        $title = $faker->words(3, true);
-        $data = [
-            'title' => $title,
-            'slug' => 'Untitled Form',
-            'description' => 'Untitled Form',
-            'user_id' => auth()->id(),
-            'content' => [
-                "title" => $title,
-                "description" => 'Untitled Form'
-            ],
-            'start_date' => now()->addDays(7),
-            'end_date' => now()->addDays(14)
-        ];
+        try{
+            $data = [
+                'title' => request()->params('title'),
+                'slug' => slugify(request()->params('title')) . '-' . uniqid(),
+                'description' => request()->params('description'),
+                'user_id' => auth()->id(),
+                'start_date' => request()->params('start_date', now()),
+                'end_date' => request()->params('end_date', now()->addDays(7))
+            ];
 
-        $form = Form::create($data);
-        if($form) return redirect(route('forms.setup', $form->id, $form->slug));
-        
-        throw new \Exception("Unknown error occurred, failed to create form");
+            if(in_array('', $data) && strlen($data['title']) < 3 && strlen($data['description']) < 10)
+                return $this->jsonError("Name and description must be at least 3 and 10 characters, respectively");
+
+            $data['content'] = [
+                'title' => $data['title'],
+                'description' => $data['description']
+            ];
+
+            $form = Form::create($data);
+            if(!$form) return $this->jsonError("An unknown error occured, failed to create form");
+
+            $this->redirect = route('forms.setup', $form->id, $form->slug);
+            return $this->jsonSuccess("Form created successfully", ['form' => $form]);
+        }
+
+        catch(\Exception $e){
+            return $this->jsonException($e);
+        }
     }
 
     /**
@@ -521,9 +530,10 @@ class FormsController extends Controller
     public static function routes()
     {
         app()::get('', ['name'=>'forms.list', 'FormsController@index']);
-        app()::get('build', ['name'=>'forms.build', 'FormsController@build']);
+        // app()::get('build', ['name'=>'forms.build', 'FormsController@build']);
         app()::get('search', ['name'=>'forms.search', 'FormsController@search']);
 
+        app()::post('build', ['name'=>'forms.build', 'FormsController@build']);
         app()::get('delete/{id}', ['name'=>'forms.delete', 'FormsController@delete']);
         app()::get('preview/{id}', ['name'=>'forms.preview', 'FormsController@preview']);
         app()::get('setup/{id}/{slug}', ['name'=>'forms.setup', 'FormsController@setup']);
