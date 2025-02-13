@@ -79,6 +79,7 @@
         <script src="/assets/js/toast.min.js"></script>
         <script src="/vendor/select/bootstrap-select.min.js"></script>
         <script src="/vendor/swal/sweetalert.min.js"></script>
+        <script src="/vendor/qrcode/qrcode.min.js"></script>
 
         <script src="/assets/js/layout.js"></script>
 		<script src="/assets/js/app.js"></script>

@@ -45,31 +45,54 @@
 				<div class="card position-relative border-0">
 					<div class="card-body p-1">
                         <div class="overflow-auto scrollbar" style="max-height: 10rem;">
-                            <ul class="nav d-flex flex-column">
+                            <ul class="nav d-flex flex-column pt-3">
 
                                 <!-- Profile -->
                                 <li class="nav-item">
                                     <a class="nav-link px-3 d-block" href="@route('app.profile')">
-                                        <span class="me-2 text-body align-bottom" data-feather="user"></span>
-                                        <span>Profile</span>
+                                        <i class="fa-solid fa-gear me-2 fs-10"></i>
+                                        <span>Account</span>
                                     </a>
                                 </li>
+
+                                <!-- Link Device -->
+                                @if(SurveyrConfig('api.enabled') && $loggedUser->role == 'admin')
+                                    <li class="nav-item">
+                                        <a class="nav-link px-3 d-block" href="javascript:void(0)" id="linkDeviceBtn">
+                                            <i class="fa-solid fa-qrcode me-2 fs-10"></i>
+                                            <span>Link Device</span>
+                                        </a>
+                                    </li>
+                                @endif
+
+                                <hr class="p-0">
 
                                 <!-- Intergration -->
                                 @if(SurveyrConfig('api.enabled') && $loggedUser->role == 'admin')
                                     <li class="nav-item">
                                         <a class="nav-link px-3 d-block" href="@route('intergration.setup')">
-                                            <span class="me-2 text-body align-bottom" data-feather="link"></span>
+                                            <i class="fa-solid fa-plug me-2 fs-10"></i>
                                             <span>Integrations</span>
                                         </a>
                                     </li>
                                 @endif
+
+                                <!-- User Management -->
+                                @if(in_array($loggedUser->role, ['admin', 'moderator']))
+                                    <li class="nav-item">
+                                        <a class="nav-link px-3 d-block" href="@route('users.index')">
+                                            <i class="fa-solid fa-users me-2 fs-10"></i>
+                                            User Management
+                                        </a>
+                                    </li>
+                                @endif
+                                
                             </ul>
                         </div>
 					</div>
-					<div class="card-footer p-0 border-top border-translucent pt-3">
+					<div class="card-footer border-0 p-0 pt-3">
 						<div class="px-3">
-                            <a class="btn btn-phoenix-secondary d-flex flex-center w-100" href="@route('logout')">
+                            <a class="btn btn-phoenix-danger d-flex flex-center w-100" href="@route('logout')">
                                 <span class="me-2" data-feather="log-out"> </span>Sign out
                             </a>
                         </div>
@@ -84,3 +107,64 @@
 		</li>
 	</ul>
 </nav>
+
+<!-- link device modal -->
+<div class="modal fade" id="linkDeviceModal" tabindex="-1" aria-labelledby="linkDeviceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="linkDeviceModalLabel">Link Device</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pb-5">
+                <div id="linkDeviceQrCode" class="text-center mx-auto rounded-4 p-3"
+                    style="border: 4px solid #368d7b; width: fit-content;"><i class="fa fa-spinner fa-spin"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let qrCodeInterval;
+    document.getElementById('linkDeviceBtn').addEventListener('click', async function() {
+        var QrCodeContainer = document.getElementById('linkDeviceQrCode');
+        if (QrCodeContainer.innerHTML == '<i class="fa fa-spinner fa-spin"></i>') {
+            generateAuthQrcode();
+        }
+
+        $('#linkDeviceModal').modal('show');
+
+        // Register interval only if it hasn't been set
+        if (!qrCodeInterval) {
+            qrCodeInterval = setInterval(function() {
+                generateAuthQrcode();
+            }, 15000);
+        }
+    });
+
+    async function generateAuthQrcode() {
+        let authQrcodeUrl = "{{ request()->getUrl() }}{{ route('auth.scan', ':code') }}"
+        $.ajax({
+            url: '@route('device.code')',
+            type: 'GET',
+            success: function(response) {
+                if(response.status) {
+                    document.getElementById('linkDeviceQrCode').innerHTML = '';
+                    authQrcodeUrl = authQrcodeUrl.replace(':code', response.code);
+                    var qrcode = new QRCode(document.getElementById("linkDeviceQrCode"), {
+                        width : 200,
+                        height : 200,    
+                        colorDark : "#1e6b5b",
+                        colorLight : "#ffffff",
+                    });
+
+                    qrcode.makeCode(authQrcodeUrl);
+                }else{
+                    toast.error({message: response.message ?? 'Could not generate QR code'});
+                }
+            },error: function() {
+                toast.error({message: 'Could not generate QR code'});
+            }
+        });
+    }
+</script>
