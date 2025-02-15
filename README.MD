@@ -13,7 +13,7 @@ The project is still in the early stages of development, while I am doing my bes
 - pass: password
 
 <p align="center">
-  <img src="https://surveyr.saasify.io/assets/pwa/screenshots/1.jpg" alt="Surveyr Screenshot" />
+  <img src="https://surveyr.saasify.io/assets/pwa/demo.gif" alt="Surveyr Demo" />
 </p>
 
 ## Features
@@ -24,7 +24,7 @@ The project is still in the early stages of development, while I am doing my bes
 - 🖼️ **Tailored Templates:** Get started quickly with a variety of pre-designed templates tailored for different use cases like customer feedback, event registrations, quizzes, and more. Customize these templates to fit your brand's look and feel.
 - 📊 **Insightful Analytics:** Gain valuable insights from your data with built-in analytics. Track form performance, response rates, and user behavior. Visualize your data with charts and graphs to make informed decisions and optimize your surveys for better results.
 - 📤 **Flexible Data Export:** Easily export your form data in multiple formats, such as CSV, Excel, or JSON. This flexibility ensures that you can analyze your data offline or import it into other tools for deeper analysis.
-- 📶 **Offline Data Collection (Coming Soon):** Collect responses even when there's no internet connection. Once the device is back online, the data automatically syncs to ensure you never miss any submissions. This feature is perfect for field surveys, remote areas, or on-the-go data collection.
+- 📶 **[Offline Data Collection](https://github.com/friendlylabs/surveyr-app):** Collect responses even when there's no internet connection. Once the device is back online, the data automatically syncs to ensure you never miss any submissions. This feature is perfect for field surveys, remote areas, or on-the-go data collection. 
 - 🤖 **AI Generated Forms:** Let AI generate forms based on your requirements. This feature can help you create complex forms quickly and efficiently, saving time and effort. The AI engine analyzes your input and generates a form structure that you can further customize to meet your needs.
 
 ## Tech Stack & Requirements
