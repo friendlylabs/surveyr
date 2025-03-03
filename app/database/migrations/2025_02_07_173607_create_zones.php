@@ -17,6 +17,7 @@ class CreateZones extends Database
                 $table->increments('id');
                 $table->string('name', 50);
                 $table->string('description', 50);
+                $table->json('sheet')->nullable();
                 $table->json('content')->nullable();
                 $table->integer('user_id');
                 $table->json('editors')->nullable();
