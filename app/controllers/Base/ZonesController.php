@@ -99,7 +99,9 @@ class ZonesController extends Controller
         $data = [
             'name' => request()->params('name', $zone->name),
             'description' => request()->params('description', $zone->description),
-            'content' => !$_REQUEST['content'] ? $zone->content :$_REQUEST['content']
+
+            'sheet' => !$_REQUEST['data'] ? $zone->data :$_REQUEST['data'],
+            'content' => !$_REQUEST['content'] ? $zone->content : json_decode($_REQUEST['content']),
         ];
 
         if(in_array(null, $data))
