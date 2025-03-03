@@ -5,13 +5,14 @@ namespace App\Models;
 class Zone extends Model
 {
     protected $table = 'zones';
-    protected $fillable = ['name', 'description', 'content', 'user_id', 'editors'];
+    protected $fillable = ['name', 'description', 'sheet', 'content', 'user_id', 'editors'];
     protected $casts = [
         'content' => 'json',
         'editors' => 'json'
     ];
 
     protected $attributes = [
+        'data' => '[]',
         'content' => '[]',
         'editors' => '[]'
     ];
