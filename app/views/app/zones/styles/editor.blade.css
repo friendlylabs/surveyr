@@ -1,0 +1,35 @@
+.tabulatorEditToolbar {
+}
+
+.btn-tabulator {
+    padding-top: 2px;
+    background-color: var(--phoenix-btn-bg);
+    border: 1px solid #d1d1d1;
+    border-radius: 5px;
+}
+
+.tcm-menu {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.tcm-menu:hover {
+    background-color: #f1f1f1;
+    border-radius: 4px;
+}
+
+.x-spreadsheet-print{
+    padding-top: 4rem !important;
+}
+
+.x-spreadsheet-toolbar {
+    width: 100% !important;
+}
+
+.x-spreadsheet-bottombar {
+    position: fixed !important;
+    border-top: 1px solid #e0e2e4;
+    bottom: 0px;
+    width: 100%;
+    z-index: 10;
+}
