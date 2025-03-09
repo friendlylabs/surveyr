@@ -7,12 +7,13 @@ class Zone extends Model
     protected $table = 'zones';
     protected $fillable = ['name', 'description', 'sheet', 'content', 'user_id', 'editors'];
     protected $casts = [
+		'sheet' => 'json',
         'content' => 'json',
         'editors' => 'json'
     ];
 
     protected $attributes = [
-        'data' => '[]',
+        'sheet' => '[]',
         'content' => '[]',
         'editors' => '[]'
     ];
