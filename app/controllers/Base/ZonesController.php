@@ -100,7 +100,7 @@ class ZonesController extends Controller
             'name' => request()->params('name', $zone->name),
             'description' => request()->params('description', $zone->description),
 
-            'sheet' => !$_REQUEST['data'] ? $zone->data :$_REQUEST['data'],
+            'sheet' => !$_REQUEST['data'] ? $zone->data : json_decode($_REQUEST['data']),
             'content' => !$_REQUEST['content'] ? $zone->content : json_decode($_REQUEST['content']),
         ];
 
@@ -121,7 +121,13 @@ class ZonesController extends Controller
         $zone = Zone::where(DB::$capsule::raw("MD5(id)"), $code)->first();
         if(!$zone) return $this->jsonError("Zone not found", 404);
 
-        return response()->json($zone->content);
+        if(isset($_REQUEST['sheet'])){
+            $data = $zone->content[0][$_REQUEST['sheet']] ?? null;
+        }else{
+            $data = $zone->content;
+        }
+
+        return response()->json($data);
     }
 
     public static function routes()
