@@ -9,69 +9,96 @@ sheet = new x_spreadsheet("#xspreadsheet", {
     },
 });
 
-sheet.loadData(JSON.parse(zoneDataContent));
+// sheet.loadData(JSON.parse(zoneDataContent));
+sheet.loadData(zoneDataContent);
 
-sheet.change((data) => {
-    if (!spreadsheetTimeoutId) {
-        spreadsheetTimeoutId = setTimeout( async () => {
-            var sheetData = await sheet.getData();
-            var parsedData = await reformatXSpreadsheetData(sheetData);
+async function requestSaveSheetData() {
 
-            $.ajax({
-                url: "@route('zones.update', $zone->id)",
-                method: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    data: JSON.stringify(sheetData),
-                    content: JSON.stringify(parsedData)
-                },
-                success: function(response) {},
-                error: function(error) {
-                    toast.error({ message: error.responseJSON?.message ?? "An error occurred while saving data" });
-                },
-                complete: function() {
-                    spreadsheetTimeoutId = null;
-                }
-            });
-        }, 5000);
+    let loader = document.getElementById("sheetSaveLoader");
+    loader.style.display = "block";
+
+    var sheetData = await sheet.getData();
+    var parsedData = await reformatXSpreadsheetData(sheetData);
+
+    $.ajax({
+        url: "@route('zones.update', $zone->id)",
+        method: "POST",
+        data: {
+            _token: "{{ csrf_token() }}",
+            data: JSON.stringify(sheetData),
+            content: JSON.stringify(parsedData)
+        },
+        success: function(response) {},
+        error: function(error) {
+            toast.error({ message: error.responseJSON?.message ?? "An error occurred while saving data" });
+        },
+        complete: function() {
+            loader.style.display = "none";
+        }
+    });
+}
+
+// Listen to sheet changes with debounce
+sheet.change(() => {
+    if (spreadsheetTimeoutId) {
+        clearTimeout(spreadsheetTimeoutId);
+    }
+    spreadsheetTimeoutId = setTimeout(() => {
+        requestSaveSheetData();
+        spreadsheetTimeoutId = null;
+    }, 5000);
+});
+
+// Listen to Ctrl+S / Cmd+S for immediate save
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        if (spreadsheetTimeoutId) {
+            clearTimeout(spreadsheetTimeoutId);
+            spreadsheetTimeoutId = null;
+        }
+        requestSaveSheetData();
     }
 });
 
-async function reformatXSpreadsheetData(data) {
-    if (!data || !Array.isArray(data)) {
-        throw new Error("Invalid x-spreadsheet data");
+async function reformatXSpreadsheetData(sheets) {
+  const result = [];
+
+  for (const sheetKey in sheets) {
+    const sheet = sheets[sheetKey];
+    const sheetName = sheet.name || sheetKey;
+    const rows = sheet.rows || {};
+
+    const headerRow = rows[0]?.cells || {};
+    const headers = [];
+
+    // Build headers array from header row (row 0)
+    for (const colKey in headerRow) {
+      headers[colKey] = headerRow[colKey].text || `Column ${colKey}`;
     }
 
-    const formattedData = {};
-    let rowDatas = [];
+    const sheetData = [];
 
-    data.forEach(sheet => {
-        if (sheet.name && sheet.rows) {
-            const headers = [];
-            const rows = [];
+    for (const rowIndex in rows) {
+      if (rowIndex == 0) continue; // Skip header
 
-            // Extract column headers from the first row (assumed to be at index 0)
-            const firstRow = sheet.rows[0];
-            Object.entries(firstRow.cells || {}).forEach(([colIndex, cell]) => {
-                headers.push(cell.text || `Column${colIndex}`);
-            });
+      const row = rows[rowIndex];
+      const rowCells = row?.cells || {};
+      const rowData = {};
 
-            // Map rows to column-based data using the headers
-            Object.values(sheet.rows).forEach((row, rowIndex) => {
-                // Skip the first row since it's used as headers
-                if (rowIndex === 0) return;
+      for (const colKey in headers) {
+        const key = headers[colKey];
+        const cell = rowCells[colKey];
+        rowData[key] = cell ? cell.text : null;
+      }
 
-                const rowData = {};
-                Object.entries(row.cells || {}).forEach(([colIndex, cell]) => {
-                    // rowData[headers[colIndex]] = cell.text || "";
-                    rowDatas.push({[headers[colIndex]]: cell.text || ""});
-                });
-                rows.push(rowData);
-            });
+      sheetData.push(rowData);
+    }
 
-            formattedData[sheet.name] = rows;
-        }
+    result.push({
+      [sheetName]: sheetData
     });
+  }
 
-    return formattedData;
+  return result;
 }
