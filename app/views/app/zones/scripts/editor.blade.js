@@ -9,8 +9,21 @@ sheet = new x_spreadsheet("#xspreadsheet", {
     },
 });
 
-// sheet.loadData(JSON.parse(zoneDataContent));
-sheet.loadData(zoneDataContent);
+// migration of old data format to new x-spreadsheet format
+if(zoneDataContent == '' || zoneDataContent == null) {
+    console.warn("Deprication Warning: The zone data format is deprecated. Please migrate your data to the new x-spreadsheet format.");
+
+    let migrationData = @json($zone->content);
+
+    if (migrationData && migrationData.length > 0) {
+        // Convert migration data to x-spreadsheet format
+        let xSpreadsheetData = convertJsonToXSpreadsheetData("Zone Data", migrationData);
+        sheet.loadData(xSpreadsheetData);
+    }
+}else {
+    // sheet.loadData(JSON.parse(zoneDataContent));
+    sheet.loadData(zoneDataContent);
+}
 
 async function requestSaveSheetData() {
 
@@ -101,4 +114,40 @@ async function reformatXSpreadsheetData(sheets) {
   }
 
   return result;
+}
+
+function convertJsonToXSpreadsheetData(sheetName, dataArray) {
+  const rows = {};
+  
+  if (!Array.isArray(dataArray) || dataArray.length === 0) {
+    return {
+      name: sheetName,
+      rows
+    };
+  }
+
+  // Extract headers from keys of the first object
+  const headers = Object.keys(dataArray[0]);
+
+  // Add header row (row index 0)
+  rows[0] = {
+    cells: headers.reduce((acc, key, colIndex) => {
+      acc[colIndex] = { text: key };
+      return acc;
+    }, {})
+  };
+
+  // Add data rows starting from index 1
+  dataArray.forEach((item, rowIndex) => {
+    const cells = {};
+    headers.forEach((key, colIndex) => {
+      cells[colIndex] = { text: item[key] ?? "" };
+    });
+    rows[rowIndex + 1] = { cells };
+  });
+
+  return {
+    name: sheetName,
+    rows
+  };
 }
