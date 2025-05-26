@@ -13,7 +13,8 @@ class Zone extends Model
     ];
 
     protected $attributes = [
-        'sheet' => '[]',
+        'sheet' => 
+            '[{"cols": {"len": 26}, "name": "sheet1", "rows": {"0": {"cells": {"0": {"text": ""}}}, "len": 1000}, "freeze": "A1", "merges": [], "styles": [], "autofilter": {}, "validations": []}]',
         'content' => '[]',
         'editors' => '[]'
     ];
