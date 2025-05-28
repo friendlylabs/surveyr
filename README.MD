@@ -6,7 +6,7 @@
 
 Surveyr is an open-source form builder that allows anyone to create engaging forms for surveys, questionnaires, quizzes, and polls.
 
-The project is still in the early stages of development, while I am doing my best to make it as stable as possible, there are still a numberof features that need to be implemented and improvements to be made, for more information on the current state of the project, please refer to the [project board](https://github.com/orgs/friendlylabs/projects/3/views/1).
+The project is still in the early stages of development, while I am doing my best to make it as stable as possible, there are still a numberof features that need to be implemented and improvements to be made, for more information on the current state of the project, please refer to the [project board](https://github.com/orgs/friendlylabs/projects/3?pane=issue&itemId=112757991).
 
 - demo: [https://surveyr.saasify.io](https://surveyr.saasify.io)
 - user: admin@admin.com
