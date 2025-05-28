@@ -44,7 +44,7 @@
 			<div class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border" aria-labelledby="navbarDropdownUser">
 				<div class="card position-relative border-0">
 					<div class="card-body p-1">
-                        <div class="overflow-auto scrollbar" style="max-height: 10rem;">
+                        <div class="overflow-auto scrollbar">
                             <ul class="nav d-flex flex-column pt-3">
 
                                 <!-- Profile -->
@@ -56,7 +56,7 @@
                                 </li>
 
                                 <!-- Link Device -->
-                                @if(SurveyrConfig('api.enabled') && $loggedUser->role == 'admin')
+                                @if(SurveyrConfig('api.enabled'))
                                     <li class="nav-item">
                                         <a class="nav-link px-3 d-block" href="javascript:void(0)" id="linkDeviceBtn">
                                             <i class="fa-solid fa-qrcode me-2 fs-10"></i>
@@ -68,7 +68,7 @@
                                 <hr class="p-0">
 
                                 <!-- Intergration -->
-                                @if(SurveyrConfig('api.enabled') && $loggedUser->role == 'admin')
+                                @if(SurveyrConfig('api.enabled') && in_array($loggedUser->role, ['admin', 'moderator']))
                                     <li class="nav-item">
                                         <a class="nav-link px-3 d-block" href="@route('intergration.setup')">
                                             <i class="fa-solid fa-plug me-2 fs-10"></i>
@@ -82,7 +82,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link px-3 d-block" href="@route('users.index')">
                                             <i class="fa-solid fa-users me-2 fs-10"></i>
-                                            User Management
+                                            <span>User Management</span>
                                         </a>
                                     </li>
                                 @endif
