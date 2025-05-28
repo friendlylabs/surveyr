@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Controllers\Base;
+
+#TODO: Refactor this controller to use the new API module
+
 use App\Controllers\Controller;
 
 use App\Models\ApiKey;
@@ -19,12 +22,6 @@ class IntergrationController extends Controller {
         if(!SurveyrConfig('api.enabled')) {
             die( $this->jsonError("Please set up the API Module First", 403) );
         }
-
-        # verify user has access to the resource
-        static::$user = auth()->user();
-        if(static::$user->role != 'admin') {
-            die( $this->jsonError("You don't have access to this resource", 403) );
-        }
         
         parent::__construct();
     }
@@ -35,6 +32,8 @@ class IntergrationController extends Controller {
      * @return void
      */
     public function index() {
+        $this->authenticate();
+
         $this->apiKeys = ApiKey::by(static::$user->id);
         return $this->renderPage('Api Keys', 'app.api.index');
     }
@@ -46,6 +45,8 @@ class IntergrationController extends Controller {
      */
     public function create() 
     {
+        $this->authenticate();
+
         try{
             $name = request()->params('name');
             $passphrase = request()->params('passphrase');
@@ -154,7 +155,13 @@ class IntergrationController extends Controller {
         }
     }
 
-    
+    public function authenticate(){
+        # verify user has access to the resource
+        static::$user = auth()->user();
+        if(static::$user->role != 'admin') {
+            die( $this->jsonError("You don't have access to this resource", 403) );
+        }
+    }    
 
     public static function routes() {
         app()->get('', ['name'=>'intergration.setup', 'IntergrationController@index']);
