@@ -4,7 +4,7 @@ const creatorOptions = {
 };
 
 const creator = new SurveyCreator.SurveyCreator(creatorOptions);
-creator.text = `{!! json_encode($form->content) !!}`;
+creator.text = JSON.stringify(@json($form->content), null, 2);
 
 creator.render("surveyCreator");
 
