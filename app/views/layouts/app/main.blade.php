@@ -63,6 +63,19 @@
         </main>
 
         @include('layouts.app.partials.search')
+
+        @if(!_env('SURVEYJS_LICENSE_KEY'))
+            <div class="toast show position-fixed" role="alert" aria-live="assertive" aria-atomic="true" style="bottom: 1rem;right: 0.5rem;">
+                <div class="toast-header">
+                    <img src="https://surveyjs.io/Content/Images/V2/index-page/logo.png" class="rounded me-2" width="30" alt="">
+                    <strong class="me-auto">SurveyJS License</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    <p class="mb-0">You are using Surveyr without SurveyJS without a license key. Please <a href="https://surveyjs.io/licensing" target="_blank">read this article</a> to learn how to obtain a license key.</p>
+                </div>
+            </div>
+        @endif
         
 		<script src="/assets/vendors/popper/popper.min.js"></script>
 		<script src="/assets/vendors/bootstrap/bootstrap.min.js"></script>
