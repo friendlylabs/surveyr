@@ -54,9 +54,13 @@
                             Create beautiful, functional forms for any purpose—contact, registration, surveys, and more. No coding needed. Build and embed forms in minutes
                         </p>
 
-                        <p class="text-danger fw-semibold mt-4">Disclaimer</p>
+                        <p>
+                            Surveyr also comes with <a href="" class="fw-bold">Surveyr Collect</a>, a mobile application that allows you to collect data offline and sync it with your Surveyr account when you are back online, Download the app from <a href="https://play.google.com/store/apps/details?id=co.surveyr.collect" class="fw-bold" target="_blank">Google Play Store</a>
+                        </p>
+
+                        <p class="text-danger fw-semibold mt-4 fs-7">Disclaimer</p>
                         <p class="text-body-tertiary">
-                            While Surveyr is an open tool, it leverages <span class="text-info fw-bold">SurveyJS</span> for its form-building capabilities. With that being said Surveyr must strictly be used for non-commercial purposes unless you obtain a developer license from SurveyJS. For more information, please review the <a href="https://surveyjs.io/licensing" class="fw-bold text-info" target="_blank">SurveyJS License.</a>
+                            Surveyr is <a href="#" class="fw-bold text-info">open-source</a> software that leverages proprietary <span class="text-info fw-bold">SurveyJS</span> components for its form-building and survey data analysis capabilities. Regardless of the use case, you are required to obtain a developer license from SurveyJS to use the Surveyr platform in your application. For more information on licensing, please refer to the <a href="https://surveyjs.io/licensing" class="fw-bold text-info" target="_blank">SurveyJS License.</a> and the <a href="https://surveyjs.io/Developer-License-Agreement.pdf" class="fw-bold text-info" target="_blank">License Agreement</a>.
                         </p>
                     </div>
                     <div class="card-footer border-0 py-0 px-5 z-1">
