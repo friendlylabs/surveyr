@@ -79,7 +79,7 @@ use App\Models\Space;
             'message' => 'An unexpected error occurred',
         ];
 
-        if (filter_var(env('APP_DEBUG', false), FILTER_VALIDATE_BOOL)) {
+        if (filter_var(_env('APP_DEBUG', false), FILTER_VALIDATE_BOOL)) {
             $response['debug'] = [
                 'message' => $e->getMessage(),
                 'line' => $e->getLine(),
