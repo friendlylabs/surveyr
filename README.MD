@@ -64,7 +64,7 @@ We welcome contributions from the community. If you have ideas for new features,
 
 ## License
 
-Surveyr is open-source software licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](https://www.gnu.org/licenses/agpl-3.0.html). You are free to use, modify, and distribute the software under the terms of this license.
+Surveyr is open-source software that leverages proprietary SurveyJS components for its form-building and survey data analysis capabilities. Regardless of the use case, you are required to obtain a developer license from SurveyJS to use the Surveyr platform in your application. For more information on licensing, please refer to the[SurveyJS licensing page](https://surveyjs.io/licensing)and the* [EULA](https://surveyjs.io/Developer-License-Agreement.pdf).*
 
 ## Credits
 
@@ -77,5 +77,5 @@ Surveyr is developed and maintained by [Friendly Labs](https://friendlylabs.io/)
 
 **Disclaimer:**
 
-1. This project is not affiliated with or endorsed by the surveyjs, leafphp, bootstrap, or fontawesome projects. The names and logos are trademarks of their respective owners.
-2. Surveyr leverages **SurveyJS** for its form-building capabilities. With that being said Surveyr must strictly be used for non-commercial purposes unless you obtain a developer license from SurveyJS. For more information, please review the [SurveyJS License.](https://surveyjs.io/licensing)  Also [read](https://surveyjs.answerdesk.io/ticket/details/t20848/is-developer-license-required-for-opensource-tools) this QA thread
+1. This project is not affiliated with or endorsed by SurveyJS, LeafPHP, Bootstrap, or FontAwesome. The names and logos are trademarks of their respective owners.
+2. Surveyr leverages **SurveyJS** for its form-building capabilities, Regardless of the use case, you are required to obtain a developer license from SurveyJS to use the Surveyr platform in your application. For more information on licensing, please refer to the [SurveyJS licensing page](https://surveyjs.io/licensing) and the [EULA](https://surveyjs.io/Developer-License-Agreement.pdf).
