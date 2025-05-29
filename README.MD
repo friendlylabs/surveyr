@@ -64,7 +64,7 @@ We welcome contributions from the community. If you have ideas for new features,
 
 ## License
 
-Surveyr is open-source software that leverages proprietary SurveyJS components for its form-building and survey data analysis capabilities. Regardless of the use case, you are required to obtain a developer license from SurveyJS to use the Surveyr platform in your application. For more information on licensing, please refer to the[SurveyJS licensing page](https://surveyjs.io/licensing)and the* [EULA](https://surveyjs.io/Developer-License-Agreement.pdf).*
+Surveyr is open-source software that leverages proprietary SurveyJS components for its form-building and survey data analysis capabilities. Regardless of the use case, you are required to obtain a developer license from SurveyJS to use the Surveyr platform in your application. For more information on licensing, please refer to the[SurveyJS licensing page](https://surveyjs.io/licensing) and the [EULA](https://surveyjs.io/Developer-License-Agreement.pdf).
 
 ## Credits
 
