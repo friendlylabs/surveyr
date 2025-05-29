@@ -17,7 +17,9 @@ class IntergrationController extends Controller {
     private static $user;
 
     public function __construct() {
-
+        
+        static::$user = auth()->user();
+        
         # verify the existence of the API module
         if(!SurveyrConfig('api.enabled')) {
             die( $this->jsonError("Please set up the API Module First", 403) );
@@ -157,7 +159,6 @@ class IntergrationController extends Controller {
 
     public function authenticate(){
         # verify user has access to the resource
-        static::$user = auth()->user();
         if(static::$user->role != 'admin') {
             die( $this->jsonError("You don't have access to this resource", 403) );
         }
