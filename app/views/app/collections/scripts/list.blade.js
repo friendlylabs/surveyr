@@ -3,9 +3,7 @@ const extraInputs = [
     {"type":"text","name":"review","title":"Review"},
 ];
 
-const surveyJson = JSON.parse((`{!! json_encode($form->content) !!}`).replace(/^\s+|\s+$/gm, '').split('\n').join(''));
-// surveyJson.pages[0].elements = extraInputs.concat(surveyJson.pages[0].elements); // Ensure 'id' is the first element
-
+const surveyJson = @json($form->content) || {};
 try{
     const page = surveyJson.pages.find((page) => page.elements);
     page.elements = extraInputs.concat(page.elements);
@@ -16,8 +14,7 @@ try{
     });
 }
 
-const surveyResults = JSON.parse((`{!! json_encode($submissions) !!}`).replace(/^\s+|\s+$/gm, '').split('\n').join(''));
-
+const surveyResults = @json($submissions) || [];
 const survey = new Survey.Model(surveyJson);
 
 // Define the column order explicitly
