@@ -518,8 +518,10 @@ class FormsController extends Controller
     public function hasAccessbySpace(array $spaces) : bool
     {
         $spaces = Space::whereIn('id', $spaces)
-            ->where('user_id', auth()->id())
-            ->orWhereJsonContains('members', (string) auth()->id())
+            ->where(function ($query) {
+                $query->where('user_id', auth()->id())
+                    ->orWhereJsonContains('members', (string) auth()->id());
+            })
             ->get();
 
         if($spaces->count()) return true;
