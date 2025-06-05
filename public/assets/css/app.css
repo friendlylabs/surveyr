@@ -218,9 +218,18 @@ a, a:hover {
 	margin: 0 !important;
 }
 
+.dropdown.bootstrap-select.show-tick.form-select {
+    border: none;
+    padding: 0;
+}
+
 /* bootrap select */
 .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
 	width: 100% !important;
+}
+
+.bootstrap-select .dropdown-menu {
+	max-width: 100% !important;
 }
 
 .bootstrap-select>.dropdown-toggle, .bootstrap-select>.dropdown-toggle.bs-placeholder, .bootstrap-select>.dropdown-toggle.bs-placeholder:active, .bootstrap-select>.dropdown-toggle.bs-placeholder:focus, .bootstrap-select>.dropdown-toggle.bs-placeholder:hover {
@@ -239,6 +248,19 @@ a, a:hover {
 	background-color: #e9e9e9 !important
 }
 
+
+.flatpickr-innerContainer, span.flatpickr-weekday, .flatpickr-weekdaycontainer, .flatpickr-months .flatpickr-month {
+	background: #fff !important;
+}
+
+[data-bs-theme=dark] .flatpickr-innerContainer, [data-bs-theme=dark] span.flatpickr-weekday, [data-bs-theme=dark] .flatpickr-weekdaycontainer, [data-bs-theme=dark] .flatpickr-months .flatpickr-month {
+	background: #152533 !important;
+}
+
+[data-bs-theme=dark] .flatpickr-day {
+	color: #a9b0c2 !important;
+}
+
 /* flatpickr */
 .flatpickr-months .flatpickr-prev-month.flatpickr-prev-month, .flatpickr-months .flatpickr-next-month.flatpickr-prev-month{
 	left: 0 !important;
@@ -253,6 +275,25 @@ a, a:hover {
 .flatpickr-current-month .flatpickr-monthDropdown-months {
 	margin-bottom: 10px !important;
 	color: #a9b0c2 !important;
+}
+
+/* grid js */
+.gridjs-wrapper{
+	margin-top: 0.5rem;
+}
+
+td.gridjs-td {
+	font-size: small;
+}
+
+[data-bs-theme=dark] th.gridjs-th,
+[data-bs-theme=dark] td.gridjs-td {
+	background: #141824 !important;
+	color: #a9b0c2 !important;
+}
+
+[data-bs-theme=dark] .gridjs-wrapper {
+	border: 1px solid #a9b0c2 !important;
 }
 
 .min-w-90 { min-width: 90vw; }
