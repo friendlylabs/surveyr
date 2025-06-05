@@ -178,3 +178,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+
+function slugToWords(str) {
+    // Replace underscores and hyphens with spaces, then handle camelCase
+    let spaced = str
+        .replace(/[_-]+/g, ' ')           // snake_case or kebab-case to spaces
+        .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase to spaces
+        .trim();
+    return spaced.charAt(0).toUpperCase() + spaced.slice(1);
+}
