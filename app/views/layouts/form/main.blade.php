@@ -8,12 +8,15 @@
     <title>{{ $title ?? 'App' }}</title>
 
     <link href="/assets/css/toast.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/vendor/surveyjs/defaultV2.min.css">
+    <link rel="stylesheet" href="/vendor/surveyjs/survey-core.min.css">
     <script src="/vendor/surveyjs/survey.core.min.js"></script>
     <script src="/vendor/surveyjs/survey-js-ui.min.js"></script>
 
     <script src="/vendor/surveyjs/themes/index.min.js"></script>
     <link href="/assets/fonts/fontawesome/all.css" rel="stylesheet"/>
+    
+    <link href="/vendor/leaflet/leaflet.css" rel="stylesheet">
+    <link href="/vendor/leaflet/leaflet.draw.css" rel="stylesheet">
 
     @stack('styles')
     <style>
@@ -45,6 +48,8 @@
     @yield('content')
 
     <script> const csrf_token = "{{ csrf_token() }}"; </script>
+    <script src="/vendor/leaflet/leaflet.js"></script>
+    <script src="/vendor/leaflet/leaflet.draw.js"></script>
     <script src="/assets/js/jquery-3.7.1.min.js"></script>
     <script src="/assets/js/toast.min.js"></script>
 
