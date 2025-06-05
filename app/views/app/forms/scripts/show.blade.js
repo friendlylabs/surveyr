@@ -5,7 +5,7 @@
  */
 
 const surveyMode = `{{ $surveyMode }}`;
-const surveyJson = (`{!! json_encode($formContent) !!}`).replace(/^\s+|\s+$/gm, '').split('\n').join('');
+const surveyJson = @json($form->content);
 
 var formTheme = "{{ $form->theme }}";
 const SurveyThemeLight = SurveyTheme[formTheme + 'LightPanelless'];
