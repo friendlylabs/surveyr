@@ -13,7 +13,7 @@ The project is still in the early stages of development, while I am doing my bes
 - pass: password
 
 <p align="center">
-  <img src="https://surveyr.saasify.io/assets/pwa/demo.gif" alt="Surveyr Demo" />
+  <img src="https://i.ibb.co/QjK5PQB7/ezgif-6ebc5c4b2085b3.gif" alt="Surveyr Demo" />
 </p>
 
 ## Features
