@@ -1,6 +1,6 @@
 @extends('layouts.app.main')
 
-@style('/vendor/surveyjs/defaultV2.min.css','src')
+@style('/vendor/surveyjs/survey-core.min.css','src')
 
 @section('content')
     <div class="content">

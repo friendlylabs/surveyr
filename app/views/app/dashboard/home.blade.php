@@ -58,10 +58,10 @@
                             Surveyr also comes with <a href="" class="fw-bold">Surveyr Collect</a>, a mobile application that allows you to collect data offline and sync it with your Surveyr account when you are back online, Download the app from <a href="https://play.google.com/store/apps/details?id=co.surveyr.collect" class="fw-bold" target="_blank">Google Play Store</a>
                         </p>
 
-                        <p class="text-danger fw-semibold mt-4 fs-7">Disclaimer</p>
-                        <p class="text-body-tertiary">
-                            Surveyr is <a href="#" class="fw-bold text-info">open-source</a> software that leverages proprietary <span class="text-info fw-bold">SurveyJS</span> components for its form-building and survey data analysis capabilities. Regardless of the use case, you are required to obtain a developer license from SurveyJS to use the Surveyr platform in your application. For more information on licensing, please refer to the <a href="https://surveyjs.io/licensing" class="fw-bold text-info" target="_blank">SurveyJS License.</a> and the <a href="https://surveyjs.io/Developer-License-Agreement.pdf" class="fw-bold text-info" target="_blank">License Agreement</a>.
-                        </p>
+                        <p class="text-danger fw-semibold mt-4">Disclaimer</p>
+                        <blockquote>
+                            <p><em>Surveyr is open-source software that leverages proprietary SurveyJS components for its form-building and survey data analysis capabilities. Regardless of the use case, you are required to obtain a developer license from SurveyJS to use the Surveyr platform in your application. For more information on licensing, please refer to the <a href="https://surveyjs.io/licensing" rel="nofollow">SurveyJS licensing page</a> and the <a href="https://surveyjs.io/Developer-License-Agreement.pdf" rel="nofollow">EULA</a>.</em></p>
+                        </blockquote>
                     </div>
                     <div class="card-footer border-0 py-0 px-5 z-1">
                         <p class="text-body-tertiary fw-semibold">Follow <a href="https://github.com/ibnsultan">ibnsultan </a> on Github</p>
