@@ -19,3 +19,7 @@
 .ck-powered-by-balloon {
     display: none !important;
 }
+
+#editor {
+    overflow-y: auto;
+}
