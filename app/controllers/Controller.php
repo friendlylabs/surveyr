@@ -20,12 +20,20 @@ class Controller extends \Leaf\Controller
             $this->active = null;
             $this->title = null;
         }
-
     }
 
     public function __set($name, $value)
     {
         $this->data[$name] = $value;
+    }
+
+    public function __get(string $name): mixed
+    {
+        property_exists($this, $name) ? 
+            $data = $this->$name :
+            $data = $this->data[$name] ?? null;
+
+        return $data;
     }
 
     public function setupLogedUser()
