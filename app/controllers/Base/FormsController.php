@@ -53,9 +53,14 @@ class FormsController extends Controller
                 'end_date' => request()->params('end_date', now()->addDays(7))
             ];
 
-            if(in_array('', $data) && strlen($data['title']) < 3 && strlen($data['description']) < 10)
+            if(
+                in_array('', $data) ||
+                strlen($data['title']) < 3 ||
+                strlen($data['description']) < 10
+            ){
                 return $this->jsonError("Name and description must be at least 3 and 10 characters, respectively");
-
+            }
+            
             $data['content'] = [
                 'title' => $data['title'],
                 'description' => $data['description']
