@@ -286,10 +286,14 @@ td.gridjs-td {
 	font-size: small;
 }
 
+[data-bs-theme=dark] .gridjs-wrapper,
+[data-bs-theme=dark] .gridjs-search input,
+[data-bs-theme=dark] .gridjs-table,
 [data-bs-theme=dark] th.gridjs-th,
 [data-bs-theme=dark] td.gridjs-td {
 	background: #141824 !important;
 	color: #a9b0c2 !important;
+	border: 1px solid #2f2f2f !important;
 }
 
 [data-bs-theme=dark] .gridjs-wrapper {
