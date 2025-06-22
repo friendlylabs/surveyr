@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2dc11426e1bf99a7662fa133b2770a8a",
+    "content-hash": "733eb3d176edc9a203ac99dcfb40920b",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -1886,16 +1886,16 @@
         },
         {
             "name": "leafs/exception",
-            "version": "v3.6",
+            "version": "v3.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafsphp/exceptions.git",
-                "reference": "dea2feb7f179c6d6a6e4cae45c97d353ae1f57cb"
+                "reference": "1a8cf4b1733668525aa2b7da8b0698a4408d4175"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafsphp/exceptions/zipball/dea2feb7f179c6d6a6e4cae45c97d353ae1f57cb",
-                "reference": "dea2feb7f179c6d6a6e4cae45c97d353ae1f57cb",
+                "url": "https://api.github.com/repos/leafsphp/exceptions/zipball/1a8cf4b1733668525aa2b7da8b0698a4408d4175",
+                "reference": "1a8cf4b1733668525aa2b7da8b0698a4408d4175",
                 "shasum": ""
             },
             "require": {
@@ -1945,7 +1945,7 @@
                 "whoops"
             ],
             "support": {
-                "source": "https://github.com/leafsphp/exceptions/tree/v3.6"
+                "source": "https://github.com/leafsphp/exceptions/tree/v3.6.3"
             },
             "funding": [
                 {
@@ -1953,7 +1953,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-14T11:49:35+00:00"
+            "time": "2025-02-22T07:21:01+00:00"
         },
         {
             "name": "leafs/form",
