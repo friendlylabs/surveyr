@@ -33,10 +33,16 @@ class CreateReports extends Database
                 $table->string('title', 160);
                 $table->string('description', 300)->nullable();
                 $table->json('content')->nullable();
-                $table->longText('filters')->nullable();
+                $table->json('filters')->nullable();
                 $table->unsignedInteger('form_id')->index();
+                $table->unsignedInteger('user_id')->index();
+                $table->json('collaborators')->nullable();
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+
+                # Indexes and Relationships
+                $table->foreign('form_id')->references('id')->on('forms')->onDelete('cascade');
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             });
         endif;
     }
