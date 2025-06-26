@@ -13,32 +13,9 @@
 					<div class="dropdown-menu border start-0 py-0 overflow-hidden w-100">
 						<div class="scrollbar-overlay" style="max-height: 30rem;">
 							<div class="list pb-3">
-
-								<h6 class="dropdown-header text-body-highlight fs-9 border-bottom border-translucent py-2 lh-sm">Forms</h6>
 								<div class="py-2" id="formSearchResults">
-									<!--a class="dropdown-item py-2 d-flex align-items-center" href="/form/setupId">
-										<div class="flex-1">
-											<h6 class="mb-0 text-body-highlight title">Form Name</h6>
-											<p class="fs-10 mb-0 d-flex text-body-tertiary">
-												<span class="fw-medium text-body-tertiary text-opactity-85">Form Description</span>
-											</p>
-										</div>
-									</a-->
+									<div class="text-center p-3">Start your search</div>
 								</div>
-
-								<hr class="my-0" />
-								<h6 class="dropdown-header text-body-highlight fs-9 border-bottom border-translucent py-2 lh-sm">Spaces</h6>
-								<div class="py-2" id="spaceSearchResults">
-									<!--a class="dropdown-item" href="/space/setup/id">
-										<div class="d-flex align-items-center">
-											<div class="fw-normal text-body-highlight title">
-												<span class="fa-solid fa-cycle text-body" data-fa-transform="shrink-2"></span>
-												Space Name
-											</div>
-										</div>
-									</a-->
-								</div>
-
 							</div>
 						</div>
 					</div>
@@ -62,48 +39,32 @@
 				success: function(response){
 					if(response.status){
 						let formResults = response.forms;
-						let spaceResults = response.spaces;
-
 						let formSearchResults = document.getElementById('formSearchResults');
-						let spaceSearchResults = document.getElementById('spaceSearchResults');
 
 						formSearchResults.innerHTML = '';
-						spaceSearchResults.innerHTML = '';
+						if(formResults.length === 0){
+							formSearchResults.innerHTML = '<div class="text-center p-3">No results found</div>';
+							return;
+						}
 
 						formResults.forEach(form => {
 							let formItem = document.createElement('a');
-							formItem.classList.add('dropdown-item', 'py-2', 'd-flex', 'align-items-center');
+							formItem.classList.add('p-2', 'mx-3', 'd-flex', 'search-item', 'rounded');
 							formItem.href = ('@route('forms.setup', ':id', ':slug')').replace(':id', form.id).replace(':slug', form.slug);
 
 							let formItemContent = `
-								<div class="flex-1">
-									<h6 class="mb-0 text-body-highlight title">${form.title}</h6>
-									<p class="fs-10 mb-0 d-flex text-body-tertiary">
-										<span class="fw-medium text-body-tertiary text-opactity-85">${form.description}</span>
-									</p>
+								<div class="flex-">
+									<h6 class="mb-0 fw-medium text-uppercase">${form.title}</h6>
+									<small class="fs-9 text-muted">
+										${form.description 
+											? (form.description.charAt(0).toUpperCase() + form.description.slice(1).toLowerCase()).substring(0, 50) + (form.description.length > 50 ? '...' : '')
+											: ''}
+									</small>
 								</div>
 							`;
 
 							formItem.innerHTML = formItemContent;
 							formSearchResults.appendChild(formItem);
-						});
-
-						spaceResults.forEach(space => {
-							let spaceItem = document.createElement('a');
-							spaceItem.classList.add('dropdown-item');
-							spaceItem.href = ('@route('spaces.show', ':id')').replace(':id', space.id);
-
-							let spaceItemContent = `
-								<div class="d-flex align-items-center">
-									<div class="fw-normal text-body-highlight title">
-										<span class="fa-solid fa-cycle text-body" data-fa-transform="shrink-2"></span>
-										${space.name}
-									</div>
-								</div>
-							`;
-
-							spaceItem.innerHTML = spaceItemContent;
-							spaceSearchResults.appendChild(spaceItem);
 						});
 					}
 				}

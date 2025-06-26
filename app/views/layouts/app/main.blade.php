@@ -34,6 +34,8 @@
 
         @stack('styles')
 
+        <script> csrf_token = '{{ csrf_token() }}'; </script>
+
         <link rel="manifest" href="/manifest.json">
         <script>
             if ('serviceWorker' in navigator) {
