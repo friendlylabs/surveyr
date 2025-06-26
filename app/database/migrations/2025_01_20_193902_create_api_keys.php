@@ -21,6 +21,9 @@ class CreateApiKeys extends Database
                 $table->text('secret');
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent()->nullable();
+
+                // Indexes and Relationships
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             });
         endif;
     }

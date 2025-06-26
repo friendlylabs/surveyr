@@ -19,10 +19,13 @@ class CreateZones extends Database
                 $table->string('description', 50);
                 $table->json('sheet')->nullable();
                 $table->json('content')->nullable();
-                $table->integer('user_id');
+                $table->unsignedInteger('user_id');
                 $table->json('editors')->nullable();
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+
+                // Indexes and Relationships
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             });
         endif;
     }

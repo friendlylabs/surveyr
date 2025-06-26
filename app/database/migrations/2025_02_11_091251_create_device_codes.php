@@ -15,9 +15,12 @@ class CreateDeviceCodes extends Database
         if (!static::$capsule::schema()->hasTable('device_codes')) :
             static::$capsule::schema()->create('device_codes', function (Blueprint $table) {
                 $table->string('code', 50)->primary();
-                $table->integer('user_id');
+                $table->unsignedInteger('user_id');
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+
+                // Indexes and Relationships
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             });
         endif;
     }

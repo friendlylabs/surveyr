@@ -4,20 +4,6 @@ use Leaf\Schema;
 use Leaf\Database;
 use Illuminate\Database\Schema\Blueprint;
 
-/*
-CREATE TABLE `collections` (
-	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`form_id` INT(11) NOT NULL,
-	`data` JSON NOT NULL,
-	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`) USING BTREE
-)
-COLLATE='latin1_swedish_ci'
-ENGINE=InnoDB
-;
-*/
-
 class CreateCollections extends Database
 {
     /**
