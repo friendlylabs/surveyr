@@ -122,7 +122,15 @@ class ZonesController extends Controller
         if(!$zone) return $this->jsonError("Zone not found", 404);
 
         if(isset($_REQUEST['sheet'])){
-            $data = $zone->content[0][$_REQUEST['sheet']] ?? null;
+            $sheetName = $_REQUEST['sheet'];
+            $data = null;
+            foreach ($zone->content as $zoneContent) {
+                if (isset($zoneContent[$sheetName])) {
+                    $data = $zoneContent[$sheetName];
+                    break;
+                }
+            }
+            if (is_array($data)) { array_pop($data); }
         }else{
             $data = $zone->content;
         }
