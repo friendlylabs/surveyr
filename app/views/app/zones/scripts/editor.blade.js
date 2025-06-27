@@ -75,7 +75,7 @@ document.addEventListener('keydown', function(e) {
 });
 
 async function reformatXSpreadsheetData(sheets) {
-  const result = [];
+  const result = {};
 
   for (const sheetKey in sheets) {
     const sheet = sheets[sheetKey];
@@ -108,9 +108,19 @@ async function reformatXSpreadsheetData(sheets) {
       sheetData.push(rowData);
     }
 
-    result.push({
-      [sheetName]: sheetData
-    });
+    // pop the last row
+    // Remove the last row if all its values are empty or null
+    if (
+      sheetData.length > 0 &&
+      Object.values(sheetData[sheetData.length - 1]).every(
+      val => val === null || val === ""
+      )
+    ) {
+      sheetData.pop();
+    }
+
+    // Direct assignment to flattened structure
+    result[sheetName] = sheetData;
   }
 
   return result;

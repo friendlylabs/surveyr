@@ -9,10 +9,15 @@
             </p>
 
             <div class="position-absolute end-5 top-0">
-                <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addDatazoneModal">
+                <!-- zone data builder button -->
+                <button class="btn btn-sm border" data-bs-toggle="offcanvas" data-bs-target="#datazoneBuilderOffCanvas" aria-controls="datazoneBuilderOffCanvas">
+                    <i class="fa-solid fa-cog"></i>
+                </button>
+
+                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addDatazoneModal">
                     <i class="fa-solid fa-plus me-2 d-inline d-md-none"></i>
                     <span class="d-none d-md-inline">Add Data</span>
-                </a>
+                </button>
             </div>
         </div>
 
@@ -29,6 +34,11 @@
             @endif
         </div>
     </div>
-
+    
+    @include('app.zones.partials.builder')
     @include('app.zones.partials.add')
+
 @endsection
+
+@style('app.zones.styles.builder')
+@script('app.zones.scripts.builder')

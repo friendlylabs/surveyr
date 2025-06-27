@@ -1,0 +1,37 @@
+.zone-builder .rule-item {
+    transition: all 0.3s ease;
+}
+
+.zone-builder .form-label {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.zone-builder .badge {
+    font-size: 0.7rem;
+}
+
+#previewContainer pre {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: #495057;
+}
+
+.zone-builder .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+.offcanvas-body {
+    overflow-y: auto;
+}
+
+.rule-item .row {
+    margin: 0;
+}
+
+.rule-item .col-12,
+.rule-item .col-6,
+.rule-item .col-4 {
+    padding: 0.25rem;
+}
