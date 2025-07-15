@@ -53,10 +53,13 @@ const editorConfig = {
 };
 
 // BalloonEditor.create(document.querySelector('#formDescription'), editorConfig);
-let editorInstance;
-BalloonEditor.create(document.querySelector('#editor'), editorConfig).then(editor => {
-	editorInstance = editor;
-	window.editor = editor;
-}) .catch(error => {
-	console.error(error);
-});
+//let editorInstance;
+// BalloonEditor.create(document.querySelector('#editor'), editorConfig).then(editor => {
+//	editorInstance = editor;
+//	window.editor = editor;
+// }) .catch(error => {
+//	console.error(error);
+// });
+
+window.editorConfigs = editorConfig;
+window.BalloonEditor = BalloonEditor;
