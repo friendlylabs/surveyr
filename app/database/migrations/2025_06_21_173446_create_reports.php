@@ -33,10 +33,12 @@ class CreateReports extends Database
                 $table->string('title', 160);
                 $table->string('description', 300)->nullable();
                 $table->json('content')->nullable();
+                $table->json('draft')->nullable();
                 $table->json('filters')->nullable();
                 $table->unsignedInteger('form_id')->index();
                 $table->unsignedInteger('user_id')->index();
                 $table->json('collaborators')->nullable();
+                $table->integer('is_public')->default(0); // 0: private, 1: public
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 
