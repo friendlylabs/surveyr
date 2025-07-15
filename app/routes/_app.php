@@ -15,9 +15,17 @@ app()::group('app', ['namespace'=>'\App\Controllers\Base', function() {
     app()::group('zones', fn() => \App\Controllers\Base\ZonesController::routes());
     app()::group('spaces', fn() => \App\Controllers\Base\SpacesController::routes());
 
-    
-    app()::group('forms', fn() => \App\Controllers\Base\FormsController::routes());
-    app()::group('forms', fn() => \App\Controllers\Base\CollectionController::routes());
+    app()::group('media', fn() => \App\Controllers\Base\MediaController::routes());
+
+    // app()::group('forms', fn() => \App\Controllers\Base\FormsController::routes());
+    // app()::group('forms', fn() => \App\Controllers\Base\CollectionController::routes());    // form submissions and collections
+    // app()::group('forms', fn() => \App\Controllers\Base\ReportsController::routes());        // form reports
+
+    app()::group('forms', function() {
+        \App\Controllers\Base\FormsController::routes();
+        \App\Controllers\Base\CollectionController::routes();
+        \App\Controllers\Base\ReportsController::routes();
+    });
 
     app()::group('intergrations', fn() => \App\Controllers\Base\IntergrationController::routes());
 }]);
