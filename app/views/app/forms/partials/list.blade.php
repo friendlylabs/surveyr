@@ -4,6 +4,7 @@
             <tr>
                 <th></th>
                 <th>Form Name</th>
+                <th>Reports</th>
                 @if($collabCol)<th class="text-center">Collaborators</th>@endif
                 <th class="text-center">Status</th>
                 <th>Modified</th>
@@ -18,12 +19,19 @@
                         <input type="checkbox" class="formChecklist d-none" name="formsChecklist[]">
                     </td>
                     <td class="p-1">
-                        <a class="fw-bold" href="@route('forms.submissions', $form->id, $form->slug)">
-                            {{ ucfirst(strtolower($form->title)) }}
-                        </a> <br>
-                        <span class="text-body-tertiary fs-9">
-                            {{ !$form->description ? $form->title : substring($form->description, 100) }}
-                        </span>
+                        <div style="max-width: 450px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            <a class="fw-bold" href="@route('forms.submissions', $form->id, $form->slug)">
+                                {{ ucfirst(strtolower($form->title)) }}
+                            </a> <br>
+                            <span class="text-body-tertiary fs-9">
+                                {{ !$form->description ? $form->title : substring($form->description, 100) }}
+                            </span>
+                        </div>
+                    </td>
+                    <td class="">
+                        <a href="@route('reports.list', $form->id)" class="fw-semibold">
+                            <b>{{ $form->reports->count() }}</b> Reports
+                        </a>
                     </td>
                     @if($collabCol)
                         <td class="text-center">
@@ -65,7 +73,6 @@
                             </span>
                         @endif
                     </td>
-                    <td>{{ $form->updated_at->diffForHumans() }}</td>
                     <td class="text-end">
                         <div class="dropdown table-dropdown">
                             <a class="btn btn-sm dropdown-toggle py-0" href="javascript:void(0)" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -84,7 +91,12 @@
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="@route('forms.setup', $form->id, $form->slug)">
-                                        <i class="fa-solid fa-cogs me-2"></i> Form Setups
+                                        <i class="fa-solid fa-cogs me-2"></i>Form Setups
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="@route('reports.list', $form->id, $form->slug)">
+                                        <i class="fa-solid fa-align-left me-2"></i> Form Reports
                                     </a>
                                 </li>
                                 <li>

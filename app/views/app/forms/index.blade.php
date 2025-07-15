@@ -12,11 +12,6 @@
                 </p>
 
                 <div class="position-absolute end-5 top-0">
-                    @if(SurveyrConfig('form.generator'))
-                        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#formGeneratorCanvas">
-                            <i class="fa-solid fa-robot"></i>
-                        </button>
-                    @endif
 
                     <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createFormModal">
                         <i class="fa-solid fa-plus me-2 d-inline d-md-none"></i>
@@ -61,10 +56,6 @@
         </div>
     </div>
 
-    @if(SurveyrConfig('form.generator'))
-        @include('app.forms.partials.generator')
-    @endif
-
     @include('app.forms.partials.create')
 
     <script type="importmap">
@@ -82,8 +73,5 @@
 
 @style('/vendor/splide/splide.min.css','src')
 @script('/vendor/splide/splide.min.js','src')
-
-@style('/vendor/ckeditor5/ckeditor5.css','src')
-@script('/vendor/ckeditor5/main.js','srcmodule')
 
 @script('app.forms.scripts.index')
