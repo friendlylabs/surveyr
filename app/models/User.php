@@ -25,4 +25,22 @@ class User extends Model
     {
         return $this->hasMany(UserToken::class, "user_id");
     }
+
+    # has many user spaces
+    public function spaces()
+    {
+        return $this->hasMany(Space::class, "user_id");
+    }
+
+    # has many forms
+    public function forms()
+    {
+        return $this->hasMany(Form::class, "user_id");
+    }
+
+    # has many reports
+    public function reports()
+    {
+        return $this->hasMany(Report::class, "user_id");
+    }
 }
