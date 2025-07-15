@@ -56,10 +56,24 @@ class Form extends Model
     public static function userForms($userId) : object
     {
         $spaces = Space::absoluteUserSpaces($userId);
-        return static::where(function ($query) use ($userId, $spaces) {
+        return static::with('reports')->where(function ($query) use ($userId, $spaces) {
             $query->where('user_id', $userId)
                 ->orWhereJsonContains('collaborators', (string) $userId)
                 ->orWhereJsonContains('spaces', array_map('strval', $spaces));
+        })->orderBy('created_at', 'desc')->get();
+    }
+
+    # search user forms
+    public static function searchUserForms($userId, $string) : object
+    {
+        $spaces = Space::absoluteUserSpaces($userId);
+        return static::where(function ($query) use ($userId, $spaces, $string) {
+            $query->where('user_id', $userId)
+                ->orWhereJsonContains('collaborators', (string) $userId)
+                ->orWhereJsonContains('spaces', array_map('strval', $spaces));
+        })->where(function($query) use ($string) {
+            $query->where('title', 'like', "%$string%")
+                ->orWhere('description', 'like', "%$string%");
         })->orderBy('created_at', 'desc')->get();
     }
 
@@ -75,9 +89,8 @@ class Form extends Model
     }
 
     # public form
-    public static function publicForm($md5Id, $slug){
+    public static function publicForm($md5Id){
         return static::where(DB::$capsule::raw("MD5(id)"), $md5Id)
-            ->where('slug', $slug)
             ->first();
     }
 
@@ -102,5 +115,11 @@ class Form extends Model
     public function collections()
     {
         return $this->hasMany(Collection::class);
+    }
+
+    # has many reports
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
     }
 }
