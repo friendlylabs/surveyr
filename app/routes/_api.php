@@ -8,3 +8,7 @@ app()::group('api', ['namespace'=>'\App\Controllers\Api', function() {
     app()::group('collection', fn() => \App\Controllers\Api\CollectionController::routes());
 
 }]);
+
+app()::group('api', ['namespace'=>'\App\Controllers\Base', function() {
+    app()::get('zones/show/{code}', ['name' => 'public.zone', 'ZonesController@public']);
+}]);
