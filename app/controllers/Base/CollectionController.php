@@ -37,7 +37,7 @@ class CollectionController extends Controller
     public function store($hash, $slug)
     {
         try{
-            $form = Form::publicForm($hash, $slug);
+            $form = Form::publicForm($hash);
             if(!$form) return $this->jsonError("Form not found");
 
             $content = request()->params('content');
@@ -70,19 +70,24 @@ class CollectionController extends Controller
     public function list($formId)
     {
         # request validation
-        $form = Form::find($formId);
-        if(!$form) return $this->errorPage(404);
+        $this->form = Form::find($formId);        
+        if(!$this->form) return $this->errorPage(404);
 
         # validate user access
-        if(!$this->formInstance->formOwnerShipCheck($form->id) && !$this->formInstance->hasAccessbySpace($form->spaces)){
+        if(
+            !$this->formInstance->formOwnerShipCheck($this->form->id) && 
+            !$this->formInstance->hasAccessbySpace($this->form->spaces)
+        ){
             return $this->errorPage(403);
         }
         
         # data allocation
-        $this->form = $form;
-        $this->submissions = Collection::formCollections($formId, true);
+        $filters = json_decode(urldecode(base64_decode(request()->params('filters') ?? '')), true);
+        $filters = is_array($filters) ? $filters : null;
 
-        $this->renderPage("Submissions for $form->title", "app.collections.list");
+        $this->submissions = Collection::formCollections($formId, true, $filters);
+
+        $this->renderPage($this->form->title, "app.collections.list");
     }
 
     /**
@@ -94,52 +99,82 @@ class CollectionController extends Controller
     public function visualize($formId)
     {
         # request validation
-        $form = Form::find($formId);
-        if(!$form) return $this->errorPage(404);
+        $this->form = Form::find($formId);
+        if(!$this->form) return $this->errorPage(404);
 
         # validate user access
-        if(!$this->formInstance->formOwnerShipCheck($form->id) && !$this->formInstance->hasAccessbySpace($form->spaces)){
+        if(
+            !$this->formInstance->formOwnerShipCheck($this->form->id) && 
+            !$this->formInstance->hasAccessbySpace($this->form->spaces)
+        ){
             return $this->errorPage(403);
         }
 
         # data allocation
-        $this->form = $form;
-        $this->tabsInfo = null;
-        $this->questions = $this->extractQuestions($form->content);
-        $this->collections = Collection::formCollections($formId)->pluck('submission')->toArray();
+        // $this->tabsInfo = null;
+        // $this->questions = $this->extractQuestions($form->content);
 
-        $this->renderPage("Visualize Submissions for $form->title", "app.collections.visualize");
+        # data allocation
+        $filters = json_decode(urldecode(base64_decode(request()->params('filters') ?? '')), true);
+        $filters = is_array($filters) ? $filters : null;
+
+        $this->collections = 
+            Collection::formCollections($formId, false, $filters)
+            ->pluck('submission')->toArray();
+
+        return $this->renderPage($this->form->title, "app.collections.visualize");
     }
 
     /**
-     * Show Submission
+     * Show Submission (AJAX)
      * 
      * @param int $id
-     * @return void
+     * @return \Leaf\Http\JsonResponse
      */
     public function show($id)
     {
-        # fetch the collection and form data
-        $collection = Collection::find($id);
-        if(!$collection) return $this->errorPage(404);
+        try {
+            # fetch the collection and form data
+            $collection = Collection::find($id);
+            if(!$collection) {
+                return $this->jsonError("Submission not found");
+            }
 
-        $form = Form::find($collection->form_id);
-        if(!$form) return $this->errorPage(404);
+            $form = Form::find($collection->form_id);
+            if(!$form) {
+                return $this->jsonError("Form not found");
+            }
 
-        $formContent = $form->content;
-        $formContent['mode'] = 'display';
+            $formContent = $form->content;
+            $formContent['mode'] = 'display';
 
-        # validate user access
-        if(!$this->formInstance->formOwnerShipCheck($form->id) && !$this->formInstance->hasAccessbySpace($form->spaces)){
-            return $this->errorPage(403);
+            # validate user access
+            if(
+                !$this->formInstance->formOwnerShipCheck($form->id) && 
+                !$this->formInstance->hasAccessbySpace($form->spaces)
+            ){
+                return response()->json([
+                    'status' => false,
+                    'message' => "You don't have access to this form",
+                    'html' => null
+                ]);
+            }
+
+            # data allocation
+            $this->form = $form;
+            $this->collection = $collection;
+            $this->formContent = $formContent;
+
+            // $html = view('app.collections.show', $this->data);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Submission loaded successfully',
+                'submission' => $collection->submission,
+            ]);
+        } catch (\Exception $e) {
+            return $this->jsonException($e);
         }
-
-        # data allocation
-        $this->form = $form;
-        $this->collection = $collection;
-        $this->formContent = $formContent;
-
-        $this->renderPage($form->title, "app.collections.show");
     }
 
     /**
@@ -248,7 +283,7 @@ class CollectionController extends Controller
     # TODO: Review Scales
     public static function routes(){
         app()::get('/visualize/{form}', ['name'=>'forms.visualize', 'CollectionController@visualize']);
-
+        
         app()::get('/submissions/show/{form}', ['name'=>'collections.show', 'CollectionController@show']);
         app()::get('/submissions/all/{form}', ['name'=>'forms.submissions', 'CollectionController@list']);
         app()::get('/submissions/clear/{form}', ['name'=>'collections.clear', 'CollectionController@clear']);

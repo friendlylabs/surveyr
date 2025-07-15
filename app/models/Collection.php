@@ -39,13 +39,153 @@ class Collection extends Model
             ->get();
     }
 
-    # form collections
-    public static function formCollections(int $form_id, $remap = false) : object
+    public static function formCollections(int $form_id, bool $remap = false, ?array $filters = null): object
     {
-        $collection = static::where('form_id', $form_id)->get();
-        if($remap) {
+        $query = static::where('form_id', $form_id);
+
+        if ($filters) {
+            // Handle core filters first (direct structure)
+            if (isset($filters['from_date'])) {
+                $query->whereDate('created_at', '>=', $filters['from_date']);
+                unset($filters['from_date']);
+            }
+            
+            if (isset($filters['to_date'])) {
+                $query->whereDate('created_at', '<=', $filters['to_date']);
+                unset($filters['to_date']);
+            }
+            
+            if (isset($filters['review_type']) && is_array($filters['review_type']) && !empty($filters['review_type'])) {
+                $query->whereIn('review', $filters['review_type']);
+                unset($filters['review_type']);
+            }
+
+            // Handle dynamic survey question filters (array structure)
+            // Core filters have been removed, so we only process dynamic filters
+            foreach ($filters as $question => $rules) {
+                $query->where(function ($group) use ($question, $rules) {
+                    foreach ($rules as $rule) {
+                        $group->orWhere(function ($q) use ($question, $rule) {
+                            $key = "JSON_UNQUOTE(JSON_EXTRACT(submission, '$.\"$question\"'))";
+                            $val = $rule['value'] ?? null;
+
+                            switch ($rule['type']) {
+                                case 'text':
+                                case 'fuzzy':
+                                    if ($rule['operator'] === 'contains' && is_array($val)) {
+                                        $q->where(function ($subQ) use ($key, $val) {
+                                            foreach ($val as $v) {
+                                                $pattern = '%' . strtolower($v) . '%';
+                                                $subQ->orWhereRaw("LOWER($key) LIKE ?", [$pattern]);
+                                            }
+                                        });
+                                    } else {
+                                        $pattern = match ($rule['operator']) {
+                                            'contains' => '%' . strtolower($val) . '%',
+                                            'startsWith' => strtolower($val) . '%',
+                                            'endsWith' => '%' . strtolower($val),
+                                            default => strtolower($val),
+                                        };
+                                        $q->whereRaw("LOWER($key) LIKE ?", [$pattern]);
+                                    }
+                                    break;
+
+                                case 'numeric':
+                                    if ($rule['operator'] === 'range' && is_array($val)) {
+                                        if (!empty($val['min'])) {
+                                            $q->whereRaw("CAST($key AS DECIMAL) >= ?", [$val['min']]);
+                                        }
+                                        if (!empty($val['max'])) {
+                                            $q->whereRaw("CAST($key AS DECIMAL) <= ?", [$val['max']]);
+                                        }
+                                    } else {
+                                        $numericOp = match ($rule['operator']) {
+                                            'equals' => '=',
+                                            'notEquals' => '!=',
+                                            'gt' => '>',
+                                            'gte' => '>=',
+                                            'lt' => '<',
+                                            'lte' => '<=',
+                                            default => '=',
+                                        };
+                                        $q->whereRaw("CAST($key AS DECIMAL) $numericOp ?", [$val]);
+                                    }
+                                    break;
+
+                                case 'check':
+                                    if ($rule['operator'] === 'empty') {
+                                        $q->whereRaw("($key IS NULL OR $key = '')");
+                                    } else {
+                                        $q->whereRaw("($key IS NOT NULL AND $key != '')");
+                                    }
+                                    break;
+
+                                case 'choice':
+                                    switch ($rule['operator']) {
+                                        case 'equals':
+                                            if (is_array($val)) {
+                                                $q->where(function ($subQ) use ($key, $val) {
+                                                    foreach ($val as $v) {
+                                                        $subQ->orWhereRaw("LOWER($key) = ?", [strtolower($v)]);
+                                                    }
+                                                });
+                                            } else {
+                                                $q->whereRaw("LOWER($key) = ?", [strtolower($val)]);
+                                            }
+                                            break;
+                                        
+                                        case 'notEqual':
+                                            if (is_array($val)) {
+                                                foreach ($val as $v) {
+                                                    $q->whereRaw("LOWER($key) != ?", [strtolower($v)]);
+                                                }
+                                            } else {
+                                                $q->whereRaw("LOWER($key) != ?", [strtolower($val)]);
+                                            }
+                                            break;
+                                        
+                                        case 'contains':
+                                            if (is_array($val)) {
+                                                $q->where(function ($subQ) use ($key, $val) {
+                                                    foreach ($val as $v) {
+                                                        $pattern = '%' . strtolower($v) . '%';
+                                                        $subQ->orWhereRaw("LOWER($key) LIKE ?", [$pattern]);
+                                                    }
+                                                });
+                                            } else {
+                                                $pattern = '%' . strtolower($val) . '%';
+                                                $q->whereRaw("LOWER($key) LIKE ?", [$pattern]);
+                                            }
+                                            break;
+                                        
+                                        default:
+                                            // Fallback to equals for backward compatibility
+                                            if (is_array($val)) {
+                                                $q->where(function ($subQ) use ($key, $val) {
+                                                    foreach ($val as $v) {
+                                                        $subQ->orWhereRaw("LOWER($key) = ?", [strtolower($v)]);
+                                                    }
+                                                });
+                                            } else {
+                                                $q->whereRaw("LOWER($key) = ?", [strtolower($val)]);
+                                            }
+                                            break;
+                                    }
+                                    break;
+                            }
+                        });
+                    }
+                });
+            }
+        }
+
+        $collection = $query->get();
+
+        if ($remap) {
             return $collection->lazy()->map(function ($item) {
-                $submission = is_array($item->submission) ? $item->submission : json_decode($item->submission, true);
+                $submission = is_array($item->submission)
+                    ? $item->submission
+                    : json_decode($item->submission, true);
                 $submission['id'] = $item->id;
                 $submission['review'] = $item->review;
                 return $submission;
@@ -54,7 +194,7 @@ class Collection extends Model
 
         return $collection;
     }
-    
+
     # recent submissions
     public static function recentSubmissions(int $userId, int $limit=5) : object
     {
