@@ -394,17 +394,7 @@ class FormsController extends Controller
         if(!$search) return;
 
         # get only id, title/name & description
-        $this->forms = Form::select('id', 'title', 'description', 'slug')
-            ->where('title', 'like', "%$search%")
-            ->orWhere('description', 'like', "%$search%")
-            ->limit(10)
-            ->get();
-
-        $this->spaces = Space::select('id', 'name', 'description', 'color')
-            ->where('name', 'like', "%$search%")
-            ->orWhere('description', 'like', "%$search%")
-            ->limit(5)
-            ->get();
+        $this->forms = Form::searchUserForms(auth()->id(), $search);
 
         return $this->jsonSuccess("Search results");
     }
@@ -417,7 +407,7 @@ class FormsController extends Controller
      * @return void
      */
     public function show($hash, $slug){
-        $form = Form::publicForm($hash, $slug);
+        $form = Form::publicForm($hash);
         if(!$form) return $this->errorPage(404);
 
         $surveyMode = 'allowed';
@@ -480,7 +470,7 @@ class FormsController extends Controller
             ];
 
             if(in_array(null, $data) && strlen($data['title']) < 10)
-                return $this->jsonError("All fields are required and the title must be at least 10 characters");
+                return $this->jsonError("The title must be at least 10 characters");
 
             if(strlen($data['description']) < 50)
                 return $this->jsonError("Please provide a detailed description of the form for better generation");
@@ -488,20 +478,8 @@ class FormsController extends Controller
             $formData = OpenaiUtil::formGenerator($data['title'], $data['description']);
             if(!$formData) return $this->jsonError("An unknown error occured, failed to generate form");
 
-            $form = Form::create([
-                'title' => $data['title'],
-                'slug' => slugify($data['title']) . '-' . uniqid(),
-                'description' => $data['title'],
-                'user_id' => auth()->id(),
-                'content' => $formData,
-                'start_date' => now()->addDays(7),
-                'end_date' => now()->addDays(14)
-            ]);
-
-            $this->redirect = route('forms.setup', $form->id, $form->slug);
-            if($form) return $this->jsonSuccess("Form generated successfully", ['form' => $form]);
-
-            return $this->jsonError("An unknown error occured, failed to generate form");
+            $this->survey = $formData;
+            return $this->jsonSuccess("Form generated successfully");
         }
 
         catch(\Exception $e){
