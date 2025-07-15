@@ -4,7 +4,7 @@ const vizPanelOptions = {
 
 const surveyJson = @json($form->content);
 const surveyResults = @json($collections);
-const tabsInfo = JSON.parse(`{!! json_encode($tabsInfo) !!}`);
+const tabsInfo = null
 
 const survey = new Survey.Model(surveyJson);
 const vizPanel = new SurveyAnalytics.VisualizationPanel(
