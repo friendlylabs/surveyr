@@ -92,6 +92,35 @@ survey.onComplete.add(function (result) {
         });
 });
 
+
+survey.onUploadFiles.add((_, options) => {
+    const formData = new FormData();
+    options.files.forEach((file) => {
+        formData.append('attachment', file);
+        formData.append('_token', csrf_token);
+    });
+    fetch("@route('media.store')", {
+        method: "POST",
+        body: formData
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data)
+            options.callback(
+                options.files.map((file) => {
+                    return {
+                        file: file,
+                        content: data.path
+                    };
+                })
+            );
+        })
+        .catch((error) => {
+            console.error("Error: ", error);
+            options.callback([], [ 'An error occurred during file upload.' ]);
+        });
+});
+
 // Initialize and render survey when DOM is ready
 document.addEventListener("DOMContentLoaded", function() {
     survey.render(document.getElementById("surveyContainer"));
