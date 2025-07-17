@@ -26,6 +26,9 @@ return [
     'auth/register' => [ 'session' => false, 'access' => 'guest'],
     
     'app' => [ 'session' => true, 'access' => 'all' ],
-    'app/{wild}' => [ 'session' => true, 'access' => 'all' ]
+    'app/{wild}' => [ 'session' => true, 'access' => 'all' ],
 
+    // 'api/auth/{any}' => [ 'session' => false, 'access' => 'guest' ],
+    // 'api/{wild}' => [ 'session' => true, 'access' => 'all' ],
+    // 'api/zone/show/{wild}' => [ 'session' => false, 'access' => 'all' ],
 ];
