@@ -50,6 +50,10 @@
             left: 0;
             z-index: 3;
         }
+
+        .sd-root-modern.sd-root-modern--full-container{
+            background: transparent !important;
+        }
         
     </style>
     <div class="content pb-0">
