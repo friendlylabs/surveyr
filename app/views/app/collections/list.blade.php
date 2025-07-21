@@ -76,8 +76,7 @@
                             </li>
                             @if($form->user_id == auth()->id())
                                 <li><a class="dropdown-item text-danger" href="@route('collections.clear', $form->id)"  onclick="confirmDelete(event)" data-delete-msg="Are you sure you want to clear all submissions? This action cannot be undone.">
-                                    <i class="fa-solid fa-trash me-2"></i>
-                                    <span class="">Purge Submissions</span>
+                                    Purge Submissions
                                 </a></li>
                             @endif
 
