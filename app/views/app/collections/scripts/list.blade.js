@@ -31,7 +31,7 @@ columns = [
                     </button>
                 </div>
                 
-                <select class="review-select form-select" name="review" data-id="${row.cells[0].data}">
+                <select class="review-select form-select" name="review" data-id="${row.cells[0].data}" onchange="changeSubmissionReviewStatus(this)">
                     ${reviewJson.map(option =>
                         `<option value="${option}" ${option === currentValue ? 'selected' : ''}>${option}</option>`
                     ).join('')}
@@ -129,9 +129,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-
-//renderSurveyFilterForm(questions);
-
 if (surveyResults.length > 0) {
     document.getElementById("exportExcel").addEventListener("click", function () {
         const headerRow = columns.map(col => col.name);
@@ -164,7 +161,7 @@ async function viewSubmissionCanvas(submissionId, element) {
         return toast.error({message: data.message || "An error occurred while fetching submission data."});
     }
 
-    showSingleCollection(surveyJson, data.submission);
+    showSingleCollection(data.submission);
 
     // show the canvas #surveySubmissionOffcanvas
     const surveySubmissionOffcanvas = new bootstrap.Offcanvas(document.getElementById("surveySubmissionOffcanvas"));
@@ -173,9 +170,9 @@ async function viewSubmissionCanvas(submissionId, element) {
 
 function showSingleCollection(surveyResponse) {
     var currentTheme = localStorage.getItem('phoenixTheme') ?? 'light';
-    survey.data = surveyResponse;
 
-    // console.log(survey.data);
+    //let submission = new Survey.Model(surveyJson);
+    survey.data = surveyResponse || {};
 
     survey.render(document.getElementById("surveySubmissionBlock"));
     if(currentTheme === 'light'){
@@ -206,3 +203,29 @@ document.addEventListener('phoenixThemeChanged', () => {
         survey.applyTheme(SurveyTheme.SolidDarkPanelless);
     }
 });
+
+
+function changeSubmissionReviewStatus(element) {
+    const review = element.value;
+    const submissionId = element.getAttribute('data-id');
+
+    $.ajax({
+        url: `@route('collections.review', $form->id)`,
+        method: 'POST',
+        data: {
+            _token: `{{ csrf_token() }}`,
+            review: review,
+            submission_id: submissionId
+        },
+        success: function(response) {
+            if(response.status){
+                return toast.success({message: response.message});
+            }
+
+            return toast.error({message: response.message ?? 'An error occurred'});
+        },
+        error: function(error) {
+            return toast.error({message: error.responseJSON.message ?? 'An error occurred'});
+        }
+    });
+}
