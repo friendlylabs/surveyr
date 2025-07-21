@@ -56,7 +56,9 @@ function renderReport(json, containerId) {
 
     const descDiv = document.createElement("div");
     descDiv.className = "report-description";
-    descDiv.innerHTML = `<h2>${section.title}</h2><p>${section.description}</p>`;
+    // Convert newlines in description to <br> for display
+    const descriptionHtml = (section.description || "").replace(/\n/g, '<br>');
+    descDiv.innerHTML = `<h2>${section.title}</h2><p>${descriptionHtml}</p>`;
 
     const attsDiv = document.createElement("div");
     attsDiv.className = "report-attachements";

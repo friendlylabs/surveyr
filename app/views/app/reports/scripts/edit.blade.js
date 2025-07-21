@@ -89,9 +89,11 @@ function renderFromJson(store) {
 
         const desc = document.createElement("div");
         desc.className = "report-description";
+        // Convert newlines in description to <br> for display
+        const descriptionHtml = (section.description || "").replace(/\n/g, '<br>');
         desc.innerHTML = `
             <h2 class="editable" data-key="${id}.title">${section.title}</h2>
-            <p class="editable" data-key="${id}.description">${section.description}</p>
+            <p class="editable" data-key="${id}.description">${descriptionHtml}</p>
         `;
 
         const attsWrapper = document.createElement("div");
@@ -140,7 +142,18 @@ function makeEditable() {
                 .then(editor => {
                     editor.model.document.on('change:data', () => {
                         const key = el.dataset.key;
-                        const value = editor.getData().replace(/<\/?[^>]+(>|$)/g, "").trim();
+                        let value = editor.getData();
+                        // For description, convert <br> and <p> to newlines for storage
+                        if (key.endsWith('.description')) {
+                            value = value
+                                .replace(/<br\s*\/?>(\r?\n)?/gi, '\n')
+                                .replace(/<p>(.*?)<\/p>/gi, (m, p1) => p1 + '\n')
+                                .replace(/<[^>]+>/g, '') // Remove any other tags
+                                .replace(/\n+$/, '') // Remove trailing newlines
+                                .trim();
+                        } else {
+                            value = value.replace(/<\/?[^>]+(>|$)/g, "").trim();
+                        }
                         const [sectionId, field] = key.split(".");
                         reportData[sectionId][field] = value;
                     });
