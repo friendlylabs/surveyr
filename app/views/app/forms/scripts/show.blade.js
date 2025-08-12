@@ -34,12 +34,6 @@ if (surveyMode === 'restricted') {
 
 // Function to send AJAX requests
 function sendAjaxRequest(url, data, includeCsrf = false) {
-
-    /**
-     * TODO: CSRF token handling
-     * Observe more why the CSRF token is not accepted when
-     * sent through the headers.
-     */
     // const headers = includeCsrf ? { 'X-CSRF-TOKEN': csrf_token } : {};    
     const token = includeCsrf ? csrf_token : null;
     
