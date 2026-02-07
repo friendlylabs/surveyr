@@ -181,11 +181,10 @@ function showSingleCollection(surveyResponse) {
     survey.currentPageNo = 0;
 
     survey.render(document.getElementById("surveySubmissionBlock"));
-    if(currentTheme === 'light'){
-        survey.applyTheme(SurveyTheme.SolidLightPanelless);
-    }else{
-        survey.applyTheme(SurveyTheme.SolidDarkPanelless);
-    }
+    survey.applyTheme(currentTheme === 'light' 
+        ? SurveyTheme.SolidLightPanelless 
+        : SurveyTheme.SolidDarkPanelless
+    );
 }
 
 // Patch localStorage.setItem to dispatch a custom event
