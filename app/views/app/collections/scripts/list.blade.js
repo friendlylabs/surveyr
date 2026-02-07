@@ -173,6 +173,12 @@ function showSingleCollection(surveyResponse) {
 
     //let submission = new Survey.Model(surveyJson);
     survey.data = surveyResponse || {};
+    
+    // Ensure survey is in read-only mode for single collection display
+    survey.mode = "display";
+    
+    // Reset survey to start from the first page/question
+    survey.currentPageNo = 0;
 
     survey.render(document.getElementById("surveySubmissionBlock"));
     if(currentTheme === 'light'){
