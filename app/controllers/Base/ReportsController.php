@@ -114,8 +114,8 @@ class ReportsController extends Controller
 
         $this->accessRole = $this->reportAccessRole($this->report);            
         $this->collections = Collection::formCollections(
-                $this->report->form->id, false, $filters
-            )->pluck('submission')->toArray();
+                $this->report->form->id, true, $filters
+            )->toArray();
         
         return $this->renderPage(
             "Report: {$this->report->title}",

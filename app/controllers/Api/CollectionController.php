@@ -37,12 +37,23 @@ class CollectionController extends BaseController
             if(!$content) return self::jsonError("Submission data is required");
 
             $data =[
-                'form_id' => $form->id,
-                'submission' => $content
+                'form_id' => $form->id
             ];
 
             $collection = Collection::create($data);
             if(!$collection) return self::jsonError("Failed to save submission");
+
+            # Create the payload
+            $payloadData = [
+                'collection_id' => $collection->id,
+                'submission' => $content
+            ];
+            
+            $payload = \App\Models\CollectionPayload::create($payloadData);
+            if(!$payload) {
+                $collection->delete(); // Clean up if payload creation fails
+                return self::jsonError("Failed to save submission data");
+            }
 
             return self::jsonSuccess("Submission saved successfully");
         }
@@ -73,14 +84,30 @@ class CollectionController extends BaseController
             if(!$content) return self::jsonError("Submission data field is empty or contains invalid data", 400);
             if(count($content) < 2) return self::jsonError("Submission must contain at least 2 items", 400);
 
-            # prepare data for insertion
-            $data = array_map(fn($submission) => [
-                'form_id' => $form->id,
-                'submission' => json_encode($submission)
-            ], $content);
-
-            $collection = Collection::insert($data);
-            if(!$collection) return self::jsonError("Failed to save submissions", 500);
+            $collections = [];
+            $payloads = [];
+            
+            # Create collections first
+            foreach($content as $submission) {
+                $collection = Collection::create(['form_id' => $form->id]);
+                if(!$collection) return self::jsonError("Failed to save submissions", 500);
+                
+                $collections[] = $collection;
+                $payloads[] = [
+                    'collection_id' => $collection->id,
+                    'submission' => $submission
+                ];
+            }
+            
+            # Bulk insert payloads
+            $result = \App\Models\CollectionPayload::insert($payloads);
+            if(!$result) {
+                # Clean up collections if payload insertion fails
+                foreach($collections as $collection) {
+                    $collection->delete();
+                }
+                return self::jsonError("Failed to save submission data", 500);
+            }
 
             return self::jsonSuccess("Submissions saved successfully");
         }
