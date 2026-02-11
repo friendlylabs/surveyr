@@ -96,7 +96,7 @@
                                                         {{ $submission->form->title }}
                                                     </a>
                                                 </td>
-                                                <td class="align-middle text-center">{{ $submission->submission }}</td>
+                                                <td class="align-middle text-center">{{ $submission->submission_count }}</td>
                                                 <td class="align-middle text-center">{{ $submission->pending_review }}</td>
                                                 <td class="align-middle text-end pe-1">{{ carbon()::parse($submission->latest_submission)->diffForHumans() }}</td>
                                             </tr>
