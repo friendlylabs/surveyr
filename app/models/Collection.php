@@ -8,13 +8,11 @@ class Collection extends Model
     protected $table = 'collections';
     protected $fillable = [
         "form_id",
-        "submission",
         'review'
     ];
 
     public $timestamps = true;
     protected $casts = [
-        "submission" => "json",
         "created_at" => "datetime",
         "updated_at" => "datetime",
     ];
@@ -65,7 +63,7 @@ class Collection extends Model
             foreach ($filters as $question => $rules) {
                 $query->where(function ($group) use ($question, $rules) {
                     foreach ($rules as $rule) {
-                        $group->orWhere(function ($q) use ($question, $rule) {
+                        $group->orWhereHas('payload', function ($q) use ($question, $rule) {
                             $key = "JSON_UNQUOTE(JSON_EXTRACT(submission, '$.\"$question\"'))";
                             $val = $rule['value'] ?? null;
 
@@ -179,13 +177,15 @@ class Collection extends Model
             }
         }
 
-        $collection = $query->get();
+        $collection = $query->with('payload')->get();
 
         if ($remap) {
             return $collection->lazy()->map(function ($item) {
-                $submission = is_array($item->submission)
-                    ? $item->submission
-                    : json_decode($item->submission, true);
+                $submission = $item->payload && $item->payload->submission
+                    ? (is_array($item->payload->submission)
+                        ? $item->payload->submission
+                        : json_decode($item->payload->submission, true))
+                    : [];
                 $submission['id'] = $item->id;
                 $submission['review'] = $item->review;
                 return $submission;
@@ -211,7 +211,7 @@ class Collection extends Model
         # calculate submission count, pending review count, latest submission
         ->select(
             'form_id',
-            DB::$capsule::raw('COUNT(id) as submission'),
+            DB::$capsule::raw('COUNT(id) as submission_count'),
             DB::$capsule::raw('SUM(review = "pending") as pending_review'),
             DB::$capsule::raw('MAX(created_at) as latest_submission'))
         
@@ -257,9 +257,21 @@ class Collection extends Model
     }
 
 
+    # has one payload
+    public function payload()
+    {
+        return $this->hasOne(CollectionPayload::class, 'collection_id');
+    }
+
     # belongs to form
     public function form()
     {
         return $this->belongsTo(Form::class, 'form_id');
+    }
+
+    # accessor for submission data
+    public function getSubmissionAttribute()
+    {
+        return $this->payload ? $this->payload->submission : null;
     }
 }
