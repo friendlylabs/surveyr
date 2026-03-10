@@ -15,6 +15,7 @@ use App\Controllers\Controller;
 use App\Controllers\Base\FormsController;
 
 use App\Models\Collection;
+use App\Models\CollectionPayload;
 use App\Models\Form;
 
 class CollectionController extends Controller
@@ -44,12 +45,23 @@ class CollectionController extends Controller
             if(!$content) return $this->jsonError("Submission data is required");
 
             $data =[
-                'form_id' => $form->id,
-                'submission' => $content
+                'form_id' => $form->id
             ];
 
             $collection = Collection::create($data);
             if(!$collection) return $this->jsonError("Failed to save submission");
+
+            # Create the payload
+            $payloadData = [
+                'collection_id' => $collection->id,
+                'submission' => $content
+            ];
+            
+            $payload = CollectionPayload::create($payloadData);
+            if(!$payload) {
+                $collection->delete(); // Clean up if payload creation fails
+                return $this->jsonError("Failed to save submission data");
+            }
 
             # TODO: Hooks and notifications
 
@@ -276,7 +288,15 @@ class CollectionController extends Controller
             return $this->errorPage(403);
         }
 
+        # Get all collection IDs for this form
+        $collectionIds = Collection::where('form_id', $formId)->pluck('id');
+        
+        # Delete payloads first
+        CollectionPayload::whereIn('collection_id', $collectionIds)->delete();
+        
+        # Then delete collections
         Collection::where('form_id', $formId)->delete();
+        
         return redirect(route('forms.submissions', $formId));    
     }
 

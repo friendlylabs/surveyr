@@ -5,6 +5,7 @@ use App\Controllers\Api\BaseController;
 
 use App\Models\Form;
 use App\Models\Collection;
+use App\Models\CollectionPayload;
 
 use Leaf\Database as DB;
 
@@ -49,7 +50,7 @@ class CollectionController extends BaseController
                 'submission' => $content
             ];
             
-            $payload = \App\Models\CollectionPayload::create($payloadData);
+            $payload = CollectionPayload::create($payloadData);
             if(!$payload) {
                 $collection->delete(); // Clean up if payload creation fails
                 return self::jsonError("Failed to save submission data");
