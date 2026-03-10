@@ -12,6 +12,11 @@ const SurveyThemeLight = SurveyTheme[formTheme + 'LightPanelless'];
 
 const survey = new Survey.Model(surveyJson);
 
+// Set survey to read-only mode if restricted
+if (surveyMode === 'restricted') {
+    survey.mode = 'display';
+}
+
 // Check if survey is in restricted mode
 if (surveyMode === 'restricted') {
     const banner = document.createElement('div');
@@ -48,72 +53,75 @@ function sendAjaxRequest(url, data, includeCsrf = false) {
     });
 }
 
-// Add event listener to handle survey completion
-survey.onComplete.add(function (result) {
+// Add event listeners only if form is not restricted
+if (surveyMode !== 'restricted') {
+    // Add event listener to handle survey completion
+    survey.onComplete.add(function (result) {
 
-    const submissionUrl = `{{ route('forms.collect', md5($form->id), $form->slug) }}`;
-    const webhook = `{{ $form->webhook_url ?? null }}`;
+        const submissionUrl = `{{ route('forms.collect', md5($form->id), $form->slug) }}`;
+        const webhook = `{{ $form->webhook_url ?? null }}`;
 
-    // Prepare requests
-    const requests = [
-        // Send data to your main server (with CSRF token)
-        sendAjaxRequest(submissionUrl, result.data, true)
-    ];
+        // Prepare requests
+        const requests = [
+            // Send data to your main server (with CSRF token)
+            sendAjaxRequest(submissionUrl, result.data, true)
+        ];
 
-    // If webhook URL is defined, send data to it (without CSRF token)
-    if (webhook) {
-        requests.push(sendAjaxRequest(webhook, result.data, false));
-    }
+        // If webhook URL is defined, send data to it (without CSRF token)
+        if (webhook) {
+            requests.push(sendAjaxRequest(webhook, result.data, false));
+        }
 
-    // Use Promise.all to handle both requests
-    Promise.all(requests)
-        .then(([mainResponse, webhookResponse]) => {
-            // Handle response from your main server
-            if (mainResponse.status) {
-                toast.success({ message: mainResponse.message });
-                document.querySelector('.sd-completedpage').innerHTML = `<h3>Thank you for completing the Form 🎉</h3>`;
-            } else {
-                toast.error({ message: mainResponse.message ?? 'An unknown error occurred' });
-            }
+        // Use Promise.all to handle both requests
+        Promise.all(requests)
+            .then(([mainResponse, webhookResponse]) => {
+                // Handle response from your main server
+                if (mainResponse.status) {
+                    toast.success({ message: mainResponse.message });
+                    document.querySelector('.sd-completedpage').innerHTML = `<h3>Thank you for completing the Form 🎉</h3>`;
+                } else {
+                    toast.error({ message: mainResponse.message ?? 'An unknown error occurred' });
+                }
 
-            // Optionally handle webhook response if needed
-            if (webhook && webhookResponse) {
-                console.log('Webhook Response:', webhookResponse);
-            }
-        })
-        .catch(() => {
-            toast.error({ message: 'An error occurred while submitting the form' });
-        });
-});
-
-
-survey.onUploadFiles.add((_, options) => {
-    const formData = new FormData();
-    options.files.forEach((file) => {
-        formData.append('attachment', file);
-        formData.append('_token', csrf_token);
+                // Optionally handle webhook response if needed
+                if (webhook && webhookResponse) {
+                    console.log('Webhook Response:', webhookResponse);
+                }
+            })
+            .catch(() => {
+                toast.error({ message: 'An error occurred while submitting the form' });
+            });
     });
-    fetch("@route('media.store')", {
-        method: "POST",
-        body: formData
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data)
-            options.callback(
-                options.files.map((file) => {
-                    return {
-                        file: file,
-                        content: data.path
-                    };
-                })
-            );
-        })
-        .catch((error) => {
-            console.error("Error: ", error);
-            options.callback([], [ 'An error occurred during file upload.' ]);
+
+
+    survey.onUploadFiles.add((_, options) => {
+        const formData = new FormData();
+        options.files.forEach((file) => {
+            formData.append('attachment', file);
+            formData.append('_token', csrf_token);
         });
-});
+        fetch("@route('media.store')", {
+            method: "POST",
+            body: formData
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data)
+                options.callback(
+                    options.files.map((file) => {
+                        return {
+                            file: file,
+                            content: data.path
+                        };
+                    })
+                );
+            })
+            .catch((error) => {
+                console.error("Error: ", error);
+                options.callback([], [ 'An error occurred during file upload.' ]);
+            });
+    });
+}
 
 // Initialize and render survey when DOM is ready
 document.addEventListener("DOMContentLoaded", function() {
