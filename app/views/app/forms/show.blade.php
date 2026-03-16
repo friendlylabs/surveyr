@@ -4,5 +4,6 @@
     <div id="surveyContainer" style="height: 100vh;"></div>
 @endsection
 
+@script('/vendor/surveyjs/surveyjs-widgets.min.js','src')
 @script('/vendor/surveyjs/themes/index.min.js','src')
 @script('app.forms.scripts.show')
