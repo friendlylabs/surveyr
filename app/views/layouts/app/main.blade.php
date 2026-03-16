@@ -27,9 +27,9 @@
         <link href="/assets/css/toast.min.css" rel="stylesheet">
         <link href="/assets/css/app.css" rel="stylesheet">
 
-        <link href="/assets/vendors/leaflet/leaflet.css" rel="stylesheet">
-        <link href="/assets/vendors/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
-        <link href="/assets/vendors/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet">
+        <link href="/vendor/leaflet/leaflet.css" rel="stylesheet">
+        <link href="/vendor/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
+        <link href="/vendor/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet">
         <link href="/vendor/select/bootstrap-select.min.css" rel="stylesheet">
 
         @stack('styles')
@@ -73,9 +73,9 @@
 		<script src="/assets/vendors/lodash/lodash.min.js"></script>
 		<script src="/assets/vendors/list.js/list.min.js"></script>
 		<script src="/assets/vendors/dayjs/dayjs.min.js"></script>        
-        <script src="/assets/vendors/leaflet/leaflet.js"></script>
-        <script src="/assets/vendors/leaflet.markercluster/leaflet.markercluster.js"></script>
-        <script src="/assets/vendors/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js"></script>
+        <script src="/vendor/leaflet/leaflet.js"></script>
+        <script src="/vendor/leaflet.markercluster/leaflet.markercluster.js"></script>
+        <script src="/vendor/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js"></script>
 		<script src="/assets/js/phoenix.js"></script>
         <script src="/assets/js/jquery-3.7.1.min.js"></script>
         <script src="/assets/js/toast.min.js"></script>
