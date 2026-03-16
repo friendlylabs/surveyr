@@ -41,6 +41,7 @@
 @script('/vendor/surveyjs/survey-js-ui.min.js','src')
 @script('/vendor/surveyjs/plotly.min.js','src')
 @script('/vendor/surveyjs/survey.analytics.min.js','src')
+@script('/vendor/surveyjs/surveyjs-widgets.min.js','src')
 
 @script('app.collections.scripts.utils')
 @script('app.collections.scripts.visualize')

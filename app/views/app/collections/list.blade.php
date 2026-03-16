@@ -154,6 +154,7 @@
 @script('/vendor/surveyjs/survey.core.min.js','src')
 @script('/vendor/surveyjs/survey-js-ui.min.js','src')
 @script('/vendor/surveyjs/themes/index.min.js','src')
+@script('/vendor/surveyjs/surveyjs-widgets.min.js','src')
 
 @style('/vendor/flatpickr/flatpickr.min.css','src')
 @script('/vendor/flatpickr/flatpickr.min.js','src')
