@@ -44,7 +44,7 @@ class Controller extends \Leaf\Controller
         }
     }
 
-    protected function renderPage($title, $view, $data = [])
+    protected function renderPage($title, $view, array $data = [])
     {
         $this->title = $title;
         return render($view, array_merge($this->data, $data));
