@@ -181,7 +181,7 @@ class ZonesController extends Controller
             case 'csv':
                 return $this->formatAsCSV($data, $sheetName);
             case 'summary':
-                return response()->json($this->getDataSummary($data));
+                return response()->json($this->getDataSummary($zone->name, $data));
             case 'meta':                
                 return response()->json([
                     'data' => $data,
@@ -425,12 +425,15 @@ class ZonesController extends Controller
     /**
      * Get data summary
      * 
+     * @param string $zoneName
      * @param array $data
+     * 
      * @return array
      */
-    private function getDataSummary(array $data): array
+    private function getDataSummary(string $zoneName, array $data): array
     {
         $summary = [
+            'name' => $zoneName,
             'total_sheets' => count($data),
             'sheets' => []
         ];
@@ -445,7 +448,7 @@ class ZonesController extends Controller
                 'row_count' => $rowCount,
                 'column_count' => count($columns),
                 'columns' => $columns,
-                'sample_data' => array_slice($sheetData, 0, 3) // First 3 rows as sample
+                // 'sample_data' => array_slice($sheetData, 0, 3) // First 3 rows as sample
             ];
         }
         
