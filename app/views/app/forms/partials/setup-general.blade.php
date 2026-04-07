@@ -19,6 +19,9 @@
             <div class="mb-3">
                 <label for="collaborators" class="form-label">Collaborators</label>
                 <select class="form-selector" id="collaborators" name="collaborators[]" multiple style="visibility: hidden;">
+                    @if(in_array((string) auth()->id(), $form->collaborators))
+                        <option value="{{ auth()->id() }}" selected>{{ auth()->user()->fullname }} (You)</option>
+                    @endif
                     @foreach ($users as $user)
                         <option value="{{ $user->id }}" {{ in_array($user->id, $form->collaborators) ? 'selected' : '' }}>{{ $user->fullname }}</option>
                     @endforeach
