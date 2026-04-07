@@ -47,7 +47,7 @@ class CollectionController extends BaseController
             # Create the payload
             $payloadData = [
                 'collection_id' => $collection->id,
-                'submission' => $content
+                'submission' => json_encode($content)
             ];
             
             $payload = CollectionPayload::create($payloadData);
@@ -96,12 +96,12 @@ class CollectionController extends BaseController
                 $collections[] = $collection;
                 $payloads[] = [
                     'collection_id' => $collection->id,
-                    'submission' => $submission
+                    'submission' => json_encode($submission)
                 ];
             }
             
             # Bulk insert payloads
-            $result = \App\Models\CollectionPayload::insert($payloads);
+            $result = CollectionPayload::insert($payloads);
             if(!$result) {
                 # Clean up collections if payload insertion fails
                 foreach($collections as $collection) {
