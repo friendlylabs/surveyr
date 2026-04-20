@@ -118,9 +118,29 @@ class CollectionController extends BaseController
         }
     }
 
+    public function fetch($formId)
+    {
+        try{
+            $form = Form::where(DB::$capsule::raw("MD5(id)"), $formId)->first();
+            if(!$form) return self::jsonError("Form not found", 404);
+
+            $this->form = $form->content;
+            $this->collections = Collection::with('payload')
+                ->where('form_id', $form->id)
+                ->get();
+
+            return self::jsonSuccess("Collections fetched successfully");          
+        }
+
+        catch(\Exception $e){
+            return self::jsonException($e);
+        }
+    }
 
     public static function routes()
     {
+        app()::get('/fetch/{formId}', ['name'=>'api.collection.fetch', 'CollectionController@fetch']);
+        
         app()::post('/store', ['name'=>'api.collection.store', 'CollectionController@store']);
         app()::post('/store/multiple', ['name'=>'api.collection.mstore', 'CollectionController@multiple']);
     }
