@@ -22,7 +22,7 @@ class Controller extends \Leaf\Controller
         }
     }
 
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value)
     {
         $this->data[$name] = $value;
     }
@@ -44,18 +44,18 @@ class Controller extends \Leaf\Controller
         }
     }
 
-    protected function renderPage($title, $view, array $data = [])
+    protected function renderPage(string $title, string $view, array $data = [])
     {
         $this->title = $title;
         return render($view, array_merge($this->data, $data));
     }
 
-    protected function errorPage($code = 404)
+    protected function errorPage(int $code = 404)
     {
         return response()->markup(view("errors.$code"), $code);
     }
 
-    protected function jsonResponse($state, $successMsg, $errorMsg, $redirect = null)
+    protected function jsonResponse(bool $state, string $successMsg, string $errorMsg, string $redirect = null)
     {
         if ($state) {
             $this->status = true;
@@ -68,21 +68,21 @@ class Controller extends \Leaf\Controller
         return response()->json($this->data);
     }
 
-    protected function jsonSuccess($message)
+    protected function jsonSuccess(string $message)
     {
         $this->status = true;
         $this->message = $message;
         return response()->json($this->data);
     }
 
-    protected function jsonError($message)
+    protected function jsonError(string $message)
     {
         $this->status = false;
         $this->message = $message;
         return response()->json($this->data);
     }
 
-    protected function jsonException($e)
+    protected function jsonException(\Exception $e)
     {
         $this->status = false;
         $this->message = "An unexpected error occurred";
