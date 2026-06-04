@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Base;
 
-use Faker\Factory as Faker;
 use App\Controllers\Controller;
 
 use App\Models\Form;
@@ -14,6 +13,7 @@ use App\Models\Collection;
 use App\Models\ReviewType;
 
 use App\Utils\OpenaiUtil;
+use App\Utils\DocumentExtractor;
 
 class FormsController extends Controller
 {
@@ -70,7 +70,7 @@ class FormsController extends Controller
             if(!$form) return $this->jsonError("An unknown error occured, failed to create form");
 
             $this->redirect = route('forms.setup', $form->id, $form->slug);
-            return $this->jsonSuccess("Form created successfully", ['form' => $form]);
+            return $this->jsonSuccess("Form created successfully");
         }
 
         catch(\Exception $e){
@@ -464,6 +464,12 @@ class FormsController extends Controller
     public function generate(){
 
         try{
+            $mode = request()->params('mode', 'generate');
+
+            if ($mode === 'edit') {
+                return $this->generateEdit();
+            }
+
             $data = [
                 'title' => request()->params('title'),
                 'description' => request()->params('description')
@@ -484,10 +490,88 @@ class FormsController extends Controller
 
         catch(\Exception $e){
             return $this->jsonException($e);
-        }        
+        }
+    }
+
+    /**
+     * AI-assisted edit of an existing form. Receives the in-memory schema from
+     * the client, derives a compact outline, runs the OpenAI tool-calling loop,
+     * and returns the list of operations for the client to apply via the
+     * SurveyJS Creator API.
+     *
+     * @return void
+     */
+    protected function generateEdit()
+    {
+        $survey = request()->params('survey');
+        if (is_string($survey)) $survey = json_decode($survey, true);
+        if (!is_array($survey) || empty($survey['pages']) || !is_array($survey['pages']))
+            return $this->jsonError("Invalid form schema");
+
+        $title = trim((string) request()->params('title', ''));
+        $description = trim((string) request()->params('description', ''));
+        $instruction = $title !== '' ? ($title . "\n\n" . $description) : $description;
+        $instruction = trim($instruction);
+
+        if (strlen($instruction) < 3)
+            return $this->jsonError("Please describe what you want to change");
+
+        $outline = OpenaiUtil::buildOutline($survey);
+        $result = OpenaiUtil::formEditor($outline, $instruction, $survey);
+
+        $this->operations = $result['operations'];
+        $this->meta = [
+            'iterations' => $result['iterations'],
+            'truncated' => $result['truncated'],
+            'note' => $result['note'],
+            'cached_tokens' => $result['usage']['prompt_tokens_details']['cached_tokens'] ?? null,
+            'prompt_tokens' => $result['usage']['prompt_tokens'] ?? null,
+            'completion_tokens' => $result['usage']['completion_tokens'] ?? null,
+        ];
+
+        if (empty($result['operations']))
+            return $this->jsonError($result['note'] ?: "The assistant could not produce any edits for that instruction");
+
+        return $this->jsonSuccess("Edit plan generated");
     }
 
     
+    /**
+     * Extract plain text from an uploaded document (pdf/doc/docx).
+     * Used by the AI editor to pre-fill the prompt from a document.
+     *
+     * @return void
+     */
+    public function extract()
+    {
+        try {
+            $file = $_FILES['document'] ?? null;
+            if (!$file || ($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+                return $this->jsonError('No file uploaded');
+            }
+
+            if ($file['size'] > 10 * 1024 * 1024) {
+                return $this->jsonError('File is too large (10 MB max)');
+            }
+
+            $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            if (!in_array($ext, ['pdf', 'doc', 'docx'], true)) {
+                return $this->jsonError('Only PDF, DOC, and DOCX files are supported');
+            }
+
+            $text = DocumentExtractor::extract($file['tmp_name'], $ext);
+            if (trim($text) === '') {
+                return $this->jsonError('The document appears to be empty');
+            }
+
+            $this->text = $text;
+            $this->suggested_title = pathinfo($file['name'], PATHINFO_FILENAME);
+            return $this->jsonSuccess('Text extracted successfully');
+        } catch (\Exception $e) {
+            return $this->jsonException($e);
+        }
+    }
+
     # check form ownership
     public function formOwnerShipCheck($id) : bool
     {
@@ -526,6 +610,7 @@ class FormsController extends Controller
         
         app()::post('edit/{id}', ['name'=>'forms.update', 'FormsController@update']);
         app()::post('generate', ['name'=>'forms.generate', 'FormsController@generate']);
+        app()::post('extract', ['name'=>'forms.extract', 'FormsController@extract']);
         app()::post('setup/{setting}/{id}', ['name'=>'forms.setup.update', 'FormsController@setting']);
 
         app()::get('template/{id}', ['name'=>'forms.template', 'FormsController@template']);
