@@ -75,11 +75,11 @@ class Controller extends \Leaf\Controller
         return response()->json($this->data);
     }
 
-    protected function jsonError(string $message)
+    protected function jsonError(string $message, int $code = 400)
     {
         $this->status = false;
         $this->message = $message;
-        return response()->json($this->data);
+        return response()->json($this->data, $code);
     }
 
     protected function jsonException(\Exception $e)
