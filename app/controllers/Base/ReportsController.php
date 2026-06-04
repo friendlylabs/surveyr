@@ -8,10 +8,11 @@ use App\Models\Form;
 use App\Models\Report;
 use App\Models\User;
 use App\Models\Collection;
+use App\Models\ReportLink;
 
 class ReportsController extends Controller
 {
-    protected $formInstance;
+    protected FormsController $formInstance;
 
     public function __construct()
     {
@@ -19,7 +20,7 @@ class ReportsController extends Controller
         $this->formInstance = new FormsController();
     }
 
-    public function index($form)
+    public function index(int $form)
     {
         $this->form = Form::find($form);
         if(!$this->form) return $this->errorPage();
@@ -33,7 +34,7 @@ class ReportsController extends Controller
         }
 
         # data allocation
-        $this->reports = Report::forForm($this->form->id);
+        $this->reports = Report::with('link')->where('form_id', $this->form->id)->get();
         $this->users = User::where('id', '!=', auth()->id())->get();
         
         return $this->renderPage(
@@ -89,7 +90,7 @@ class ReportsController extends Controller
         }
     }
 
-    public function show($report)
+    public function show(int $report)
     {
         $this->report = Report::find($report);
         if(!$this->report) return $this->errorPage(404);
@@ -123,7 +124,7 @@ class ReportsController extends Controller
         );
     }
 
-    public function edit($report)
+    public function edit(int $report)
     {
         $this->report = Report::find($report);
         if(!$this->report) return $this->errorPage(404);
@@ -148,7 +149,7 @@ class ReportsController extends Controller
         );
     }
 
-    public function build($id)
+    public function build(int $id)
     {
         $report = Report::find($id);
         if(!$report) return $this->jsonError("Report not found");
@@ -188,12 +189,93 @@ class ReportsController extends Controller
         }
     }
 
-    public function update($report)
+    public function public(string $hash)
+    {
+        $reportLink = ReportLink::where('hash', $hash)->first();
+        if(!$reportLink) return $this->errorPage(404);
+
+        $this->report = $reportLink->report;
+        if(!$this->report) return $this->errorPage(404);
+
+        # data allocation
+        $this->reportContent = $this->report->content;
+        
+        $filters = is_array($this->report->filters ?? []) || count($this->report->filters) 
+            ? $this->report->filters : null;
+
+        $this->collections = Collection::formCollections(
+                $this->report->form->id, true, $filters
+            )->toArray();
+        
+        return $this->renderPage(
+            "Report: {$this->report->title}",
+            "app.reports.public"
+        );
+    }
+
+    public function update(int $report)
     {
         return $this->jsonSuccess("This feature is not implemented yet");
     }
 
-    public function reportAccessRole($report)
+    public function generateLink(int $report)
+    {
+        try {
+            $report = Report::find($report);
+            if(!$report) return $this->jsonError("Report not found", 404);
+
+            # access check
+            $accessRole = $this->reportAccessRole($report);
+            if($accessRole === 'viewer'){
+                return $this->jsonError("You do not have permission to generate links for this report", 403);
+            }
+
+            # check if link already exists
+            $existingLink = ReportLink::where('report_id', $report->id)->first();
+            if($existingLink){
+                $this->hash = $existingLink->hash;
+                $this->url = request()->getUrl() . route('reports.public', $existingLink->hash);
+                return $this->jsonSuccess("Link already exists");
+            }
+
+            # create new link
+            $reportLink = ReportLink::create(['report_id' => $report->id]);
+            if(!$reportLink) return $this->jsonError("Failed to generate link");
+
+            $this->hash = $reportLink->hash;
+            $this->url = request()->getUrl() . route('reports.public', $reportLink->hash);
+            route('reports.public', $reportLink->hash);
+            return $this->jsonSuccess("Link generated successfully");
+        }
+        catch (\Exception $e) {
+            return $this->jsonException($e);
+        }
+    }
+
+    public function deleteLink(int $report)
+    {
+        try {
+            $report = Report::find($report);
+            if(!$report) return $this->jsonError("Report not found", 404);
+
+            # access check
+            $accessRole = $this->reportAccessRole($report);
+            if($accessRole === 'viewer'){
+                return $this->jsonError("You do not have permission to delete links for this report", 403);
+            }
+
+            $reportLink = ReportLink::where('report_id', $report->id)->first();
+            if(!$reportLink) return $this->jsonError("No link found for this report", 404);
+
+            $reportLink->delete();
+            return $this->jsonSuccess("Link deleted successfully");
+        }
+        catch (\Exception $e) {
+            return $this->jsonException($e);
+        }
+    }
+
+    public function reportAccessRole(Report $report)
     {
         if(auth()->user()->role === 'admin'){
             return 'owner';
@@ -225,6 +307,8 @@ class ReportsController extends Controller
             app()::post('build/{report}', ['name'=>'reports.build', 'ReportsController@build']);
             app()::post('update/{report}', ['name'=>'reports.update', 'ReportsController@update']);
             app()::post('delete/{report}', ['name'=>'reports.delete', 'ReportsController@delete']);
+            app()::post('generate-link/{report}', ['name'=>'reports.generateLink', 'ReportsController@generateLink']);
+            app()::post('delete-link/{report}', ['name'=>'reports.deleteLink', 'ReportsController@deleteLink']);
         });
     }
 }
