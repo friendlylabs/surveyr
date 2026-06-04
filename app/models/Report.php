@@ -54,4 +54,10 @@ class Report extends Model
     {
         return $this->belongsTo(Form::class, 'form_id');
     }
+
+    # has one report link
+    public function link()
+    {
+        return $this->hasOne(ReportLink::class, 'report_id');
+    }
 }
