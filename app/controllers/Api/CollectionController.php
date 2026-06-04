@@ -31,7 +31,7 @@ class CollectionController extends BaseController
     {
         try{
             $formId = request()->params('formId');
-            $form = Form::where(DB::$capsule::raw("MD5(id)"), $formId)->first();
+            $form = Form::whereRaw('MD5(id) = ?', [$formId])->first();
             if(!$form) return self::jsonError("Form not found", 404);
 
             $content = json_decode($_REQUEST['content']) ?? null;
@@ -77,7 +77,7 @@ class CollectionController extends BaseController
 
             # validate form
             $formId = request()->params('formId');
-            $form = Form::where(DB::$capsule::raw("MD5(id)"), $formId)->first();
+            $form = Form::whereRaw('MD5(id) = ?', [$formId])->first();
             if(!$form) return self::jsonError("Form not found", 404);
 
             # validate content
@@ -118,16 +118,22 @@ class CollectionController extends BaseController
         }
     }
 
-    public function fetch($formId)
+    public function fetch(string $formId)
     {
         try{
-            $form = Form::where(DB::$capsule::raw("MD5(id)"), $formId)->first();
+            $form = Form::whereRaw('MD5(id) = ?', [$formId])->first();
             if(!$form) return self::jsonError("Form not found", 404);
 
             $this->form = $form->content;
-            $this->collections = Collection::with('payload')
+            $collections = Collection::with('payload')
                 ->where('form_id', $form->id)
                 ->get();
+
+            // todo: optimize this by only selecting the submission field from the payloads and making a more efficient query
+            // make a serializable array of collections with only payloads
+            $this->submissions = $collections->map(function($collection) {
+                return $collection->submission;
+            });
 
             return self::jsonSuccess("Collections fetched successfully");          
         }
