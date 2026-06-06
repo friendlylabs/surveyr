@@ -8,13 +8,17 @@ class Collection extends Model
     protected $table = 'collections';
     protected $fillable = [
         "form_id",
-        'review'
+        'review',
+        'is_archived',
+        'is_optimized'
     ];
 
     public $timestamps = true;
     protected $casts = [
         "created_at" => "datetime",
         "updated_at" => "datetime",
+        "is_archived" => "boolean",
+        "is_optimized" => "boolean",
     ];
 
     # filtered review
