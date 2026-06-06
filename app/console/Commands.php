@@ -11,10 +11,11 @@ class Commands
      * @return void
      * 
      */
-    public static function register($console): void
+    public static function register(mixed $console): void
     {
         $console->register([
             ExampleCommand::class,
+            OptimizeCollection::class
         ]);
     }
 }
