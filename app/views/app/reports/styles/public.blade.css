@@ -1,0 +1,179 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    scroll-behavior: smooth;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+body {
+    background: white;
+    min-height: 100vh;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #141824;
+        color: #e4e4e7;
+    }
+}
+
+.content {
+    background: white !important;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    .content {
+        background: #141824;
+    }
+}
+
+/* Base layout */
+.doc-layout {
+    display: flex;
+    gap: 2rem;
+    margin: auto;
+    padding: 2rem 0;
+    max-width: 1440px;
+}
+
+/* Menu */
+.doc-menu {
+    width: 220px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 1rem;
+    align-self: flex-start;
+}
+
+.doc-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.doc-menu-list a {
+    display: block;
+    padding: 0.5rem 0;
+    text-decoration: none;
+    font-weight: 700;
+    color: #0066cc;
+}
+
+.doc-menu-list a:hover {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* Content */
+.doc-content {
+    flex: 1;
+}
+
+.report-row {
+    position: relative;
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    margin-bottom: 3rem;
+}
+
+/* Sticky .report-attachements */
+.report-attachements {
+    flex: 1;
+    min-width: 250px;
+    border-radius: 6px;
+    overflow-x: auto;
+    position: sticky;
+    top: 1rem;
+    align-self: start;
+    max-height: fit-content;
+    overflow: hidden;
+    width: 100%;
+}
+
+.report-description {
+    flex: 0.65;
+    min-width: 250px;
+    padding-top: 1.5rem;
+}
+
+.report-description h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.report-description p {
+    color: #666;
+}
+
+@media (prefers-color-scheme: dark) {
+    .report-description p {
+        color: #a1a1aa;
+    }
+}
+
+.sa-question {
+    display: inline !important;
+}
+
+.sa-question-layouted {
+    position: relative;
+}
+
+.report-detail {
+    text-align: left;
+    margin-bottom: 2rem;
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.report-detail h3 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.report-detail p {
+    color: #666;
+    font-size: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    .report-detail p {
+        color: #a1a1aa;
+    }
+}
+
+/* Responsive styles */
+@media (max-width: 1023px) {
+    .doc-layout {
+        flex-direction: column;
+    }
+
+    .report-row {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 1224px) {
+    .doc-menu {
+        display: none;
+    }
+}
+
+h1, h2, h3 {
+    color: #222;
+}
+
+a {
+    color: #19b394;
+}
