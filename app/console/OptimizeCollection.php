@@ -33,7 +33,7 @@ class OptimizeCollection extends Command
     {
         
         $service = new OptimizeService();
-        $service->optimizeAll(dryRun: true);
+        $service->optimizeAll();
 
         if ($service->hasErrors()) {
             foreach ($service->getErrors() as $error) {
