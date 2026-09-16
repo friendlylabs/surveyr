@@ -493,6 +493,35 @@ class FormsController extends Controller
         }
     }
 
+    # register Form Rules
+    public function rules(int $id){
+        try{
+
+            // todo: json input handling and validation
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            $form = Form::find($id);
+            if(!$form) return $this->jsonError("Form not found");
+
+            if(!$this->formOwnerShipCheck($id) && !$this->hasAccessbySpace($form->spaces))
+                return $this->jsonError("You do not have permission to update this form");
+
+            $rules = $data['viz_rules'] ?? null;
+            if(!$rules || !is_array($rules)) return $this->jsonError("Invalid rules format");
+
+            $form->viz_rules = $rules;
+            if($form->save()){
+                return $this->jsonSuccess("Form visualization rules updated successfully");
+            }
+
+            return $this->jsonError("An unknown error occured, failed to update form visualization rules");
+        }
+
+        catch(\Exception $e){
+            return $this->jsonException($e);
+        }
+    }
+
     /**
      * AI-assisted edit of an existing form. Receives the in-memory schema from
      * the client, derives a compact outline, runs the OpenAI tool-calling loop,
@@ -599,7 +628,6 @@ class FormsController extends Controller
     public static function routes()
     {
         app()::get('', ['name'=>'forms.list', 'FormsController@index']);
-        // app()::get('build', ['name'=>'forms.build', 'FormsController@build']);
         app()::get('search', ['name'=>'forms.search', 'FormsController@search']);
 
         app()::post('build', ['name'=>'forms.build', 'FormsController@build']);
@@ -612,6 +640,7 @@ class FormsController extends Controller
         app()::post('generate', ['name'=>'forms.generate', 'FormsController@generate']);
         app()::post('extract', ['name'=>'forms.extract', 'FormsController@extract']);
         app()::post('setup/{setting}/{id}', ['name'=>'forms.setup.update', 'FormsController@setting']);
+        app()::post('rules/{id}', ['name'=>'forms.rules', 'FormsController@rules']);
 
         app()::get('template/{id}', ['name'=>'forms.template', 'FormsController@template']);
     }
