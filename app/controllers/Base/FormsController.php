@@ -12,7 +12,7 @@ use App\Models\Template;
 use App\Models\Collection;
 use App\Models\ReviewType;
 
-use App\Utils\OpenaiUtil;
+use App\Services\CopilotEditor;
 use App\Utils\DocumentExtractor;
 
 class FormsController extends Controller
@@ -456,43 +456,6 @@ class FormsController extends Controller
         return redirect(route('forms.list'));
     }
 
-    /**
-     * Generate form
-     * 
-     * @return void
-     */
-    public function generate(){
-
-        try{
-            $mode = request()->params('mode', 'generate');
-
-            if ($mode === 'edit') {
-                return $this->generateEdit();
-            }
-
-            $data = [
-                'title' => request()->params('title'),
-                'description' => request()->params('description')
-            ];
-
-            if(in_array(null, $data) && strlen($data['title']) < 10)
-                return $this->jsonError("The title must be at least 10 characters");
-
-            if(strlen($data['description']) < 50)
-                return $this->jsonError("Please provide a detailed description of the form for better generation");
-
-            $formData = OpenaiUtil::formGenerator($data['title'], $data['description']);
-            if(!$formData) return $this->jsonError("An unknown error occured, failed to generate form");
-
-            $this->survey = $formData;
-            return $this->jsonSuccess("Form generated successfully");
-        }
-
-        catch(\Exception $e){
-            return $this->jsonException($e);
-        }
-    }
-
     # register Form Rules
     public function rules(int $id){
         try{
@@ -523,48 +486,63 @@ class FormsController extends Controller
     }
 
     /**
-     * AI-assisted edit of an existing form. Receives the in-memory schema from
-     * the client, derives a compact outline, runs the OpenAI tool-calling loop,
-     * and returns the list of operations for the client to apply via the
-     * SurveyJS Creator API.
+     * Copilot chat turn. Receives the in-memory survey JSON, the user's
+     * instruction and the earlier turns of the same conversation, runs the
+     * OpenAI tool-calling loop (CopilotEditor) and returns the list of
+     * operations for the client to apply via the SurveyJS Creator API.
+     *
+     * Reads the raw JSON body directly: the survey carries HTML and
+     * expressions that request() sanitising would mangle.
      *
      * @return void
      */
-    protected function generateEdit()
+    public function copilot()
     {
-        $survey = request()->params('survey');
-        if (is_string($survey)) $survey = json_decode($survey, true);
-        if (!is_array($survey) || empty($survey['pages']) || !is_array($survey['pages']))
-            return $this->jsonError("Invalid form schema");
+        try {
+            $body = json_decode(file_get_contents('php://input'), true);
+            if (!is_array($body))
+                return $this->jsonError("Invalid request body");
 
-        $title = trim((string) request()->params('title', ''));
-        $description = trim((string) request()->params('description', ''));
-        $instruction = $title !== '' ? ($title . "\n\n" . $description) : $description;
-        $instruction = trim($instruction);
+            // A brand-new form has no pages yet — that's a valid starting point
+            $document = $body['document'] ?? null;
+            if (is_string($document)) $document = json_decode($document, true);
+            if (!is_array($document))
+                return $this->jsonError("Invalid form schema");
+            if (!is_array($document['pages'] ?? null)) $document['pages'] = [];
 
-        if (strlen($instruction) < 3)
-            return $this->jsonError("Please describe what you want to change");
+            $instruction = trim((string) ($body['instruction'] ?? ''));
+            if (strlen($instruction) < 2)
+                return $this->jsonError("Please describe what you want to change");
 
-        $outline = OpenaiUtil::buildOutline($survey);
-        $result = OpenaiUtil::formEditor($outline, $instruction, $survey);
+            // Optional earlier turns; malformed entries are dropped, not fatal
+            $history = [];
+            foreach ((is_array($body['history'] ?? null) ? $body['history'] : []) as $turn) {
+                if (is_array($turn) && in_array($turn['role'] ?? null, ['user', 'assistant'], true) && is_string($turn['text'] ?? null)) {
+                    $history[] = ['role' => $turn['role'], 'text' => $turn['text']];
+                }
+            }
 
-        $this->operations = $result['operations'];
-        $this->meta = [
-            'iterations' => $result['iterations'],
-            'truncated' => $result['truncated'],
-            'note' => $result['note'],
-            'cached_tokens' => $result['usage']['prompt_tokens_details']['cached_tokens'] ?? null,
-            'prompt_tokens' => $result['usage']['prompt_tokens'] ?? null,
-            'completion_tokens' => $result['usage']['completion_tokens'] ?? null,
-        ];
+            $schema = is_array($body['schema'] ?? null) ? $body['schema'] : [];
+            $result = (new CopilotEditor())->run($document, $instruction, $history, $schema);
 
-        if (empty($result['operations']))
-            return $this->jsonError($result['note'] ?: "The assistant could not produce any edits for that instruction");
+            $this->operations = $result['operations'];
+            $this->note = $result['note'];
+            $this->meta = [
+                'iterations' => $result['iterations'],
+                'truncated' => $result['truncated'],
+                'cached_tokens' => $result['usage']['prompt_tokens_details']['cached_tokens'] ?? null,
+                'prompt_tokens' => $result['usage']['prompt_tokens'] ?? null,
+                'completion_tokens' => $result['usage']['completion_tokens'] ?? null,
+            ];
 
-        return $this->jsonSuccess("Edit plan generated");
+            return $this->jsonSuccess($result['note'] ?: (empty($result['operations']) ? "No changes proposed for that instruction" : "Edit plan generated"));
+        }
+
+        catch(\Exception $e){
+            return $this->jsonException($e);
+        }
     }
 
-    
     /**
      * Extract plain text from an uploaded document (pdf/doc/docx).
      * Used by the AI editor to pre-fill the prompt from a document.
@@ -637,7 +615,7 @@ class FormsController extends Controller
         app()::get('customize/{id}/{slug}', ['name'=>'forms.customize', 'FormsController@customize']);
         
         app()::post('edit/{id}', ['name'=>'forms.update', 'FormsController@update']);
-        app()::post('generate', ['name'=>'forms.generate', 'FormsController@generate']);
+        app()::post('copilot', ['name'=>'forms.copilot', 'FormsController@copilot']);
         app()::post('extract', ['name'=>'forms.extract', 'FormsController@extract']);
         app()::post('setup/{setting}/{id}', ['name'=>'forms.setup.update', 'FormsController@setting']);
         app()::post('rules/{id}', ['name'=>'forms.rules', 'FormsController@rules']);
