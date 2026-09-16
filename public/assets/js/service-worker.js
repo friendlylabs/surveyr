@@ -1,4 +1,4 @@
-const CACHE_NAME = 'surveyr-cache-v2';
+const CACHE_NAME = 'surveyr-cache-v3';
 const CACHE_ASSETS = [
     "/assets/css/app.css",
     "/assets/css/theme-rtl.css",
@@ -108,6 +108,7 @@ const CACHE_ASSETS = [
     "/assets/images/vector/gbg.jpg",
     "/assets/images/vector/teapot.svg",
     "/assets/images/vector/welcome_bg.png",
+    "/assets/media/notification.mp3",
     "/assets/js/app.js",
     "/assets/js/calendar.js",
     "/assets/js/config.js",
@@ -140,6 +141,7 @@ const CACHE_ASSETS = [
     "/assets/vendors/popper/popper.min.js",
     "/assets/vendors/simplebar/simplebar.min.css",
     "/assets/vendors/simplebar/simplebar.min.js",
+    "/vendor/wireblob/wire.min.js",
     "/vendor/ace/ace.min.js",
     "/vendor/ace/ext-language_tools.js",
     "/vendor/ace/ext-searchbox.min.js",
