@@ -9,7 +9,7 @@
 		<meta name="msapplication-TileImage" content="/assets/img/favicons/mstile-150x150.png">
 
         <link rel="shortcut icon" href="/favicon.ico">
-		<title>{{ _env('APP_NAME') }} {{ $title ?? 'App' }}</title>
+		<title>{{ _env('APP_NAME') }} : {{ $title ?? 'Dashboard' }}</title>
         
 		<script src="/assets/vendors/simplebar/simplebar.min.js"></script>
 		<script src="/assets/js/config.js"></script>
@@ -66,6 +66,7 @@
 
         @include('layouts.app.partials.search')
         
+        <script src="/vendor/wireblob/wire.min.js"></script>
 		<script src="/assets/vendors/popper/popper.min.js"></script>
 		<script src="/assets/vendors/bootstrap/bootstrap.min.js"></script>
 		<script src="/assets/vendors/anchorjs/anchor.min.js"></script>
@@ -94,6 +95,20 @@
                 setTimeout(() => {
                     $('#preloader').fadeOut('slow');
                 }, 500);
+
+                // Join the Socket Room for real-time updates
+                const wire = new Wire(`{{ _env('WIRE_APP_KEY') }}`, {
+                    host: 'eu-central-1.wireblob.com'
+                });
+
+                const channel = wire.subscribe('notification');
+                channel.bind('new-submission', function(data) {
+                    // notification sound: /assets/media/notification.mp3
+                    var audio = new Audio('/assets/media/notification.mp3');
+                    audio.play();
+
+                    toast.success({message: data.message })
+                });
             });
         </script>
 
