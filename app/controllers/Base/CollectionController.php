@@ -11,6 +11,7 @@ namespace App\Controllers\Base;
  * and related functionalities.
  */
 
+use Wireblob\Wire;
 use App\Controllers\Controller;
 use App\Controllers\Base\FormsController;
 
@@ -20,7 +21,7 @@ use App\Models\Form;
 
 class CollectionController extends Controller
 {
-    protected $formInstance;
+    protected FormsController $formInstance;
 
     public function __construct()
     {
@@ -64,6 +65,7 @@ class CollectionController extends Controller
             }
 
             # TODO: Hooks and notifications
+            $this->triggerNotifications($form);
 
             return $this->jsonSuccess("Submission saved successfully");
         }
@@ -184,7 +186,9 @@ class CollectionController extends Controller
                 'message' => 'Submission loaded successfully',
                 'submission' => $collection->submission,
             ]);
-        } catch (\Exception $e) {
+        }
+        
+        catch (\Exception $e) {
             return $this->jsonException($e);
         }
     }
@@ -231,7 +235,7 @@ class CollectionController extends Controller
     /**
      * Extract questions from form content
      * 
-     * @param array $formContent
+     * @param array $formQuestions
      * @return array
      */
     protected function extractQuestions(array $formQuestions) : array
@@ -300,7 +304,27 @@ class CollectionController extends Controller
         return redirect(route('forms.submissions', $formId));    
     }
 
-    # TODO: Review Scales
+    protected function triggerNotifications(Form $form)
+    {
+        // check if Wire is configured
+        if(!_env('WIRE_APP_KEY') || !_env('WIRE_APP_SECRET') || !_env('WIRE_APP_ID')) {
+            return; // Wire is not configured, skip notification
+        }
+
+        $wire = new Wire(
+            _env('WIRE_APP_KEY'),
+            _env('WIRE_APP_SECRET'),
+            _env('WIRE_APP_ID'),
+            [ 'host' => 'eu-central-1.wireblob.com' ]
+        );
+
+        $wire->trigger('notification', 'new-submission', [
+            'form_id' => $form->id,
+            'form_title' => $form->title,
+            'message' => "New submission received for form: {$form->title}"
+        ]);
+    }
+
     public static function routes(){
         app()::get('/visualize/{form}', ['name'=>'forms.visualize', 'CollectionController@visualize']);
         
