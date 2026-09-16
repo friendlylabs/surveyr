@@ -25,7 +25,7 @@
         "leafs/vite": "*",
         "leafs/csrf": "^0.5.4",
         "nette/mail": "^4.0",
-        "leafs/session": "^2.3"
+        "wireblob/wire": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.16"
