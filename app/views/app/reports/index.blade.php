@@ -25,6 +25,7 @@
                                     <th>Title</th>
                                     <th>Created By</th>
                                     <th>Last Updated</th>
+                                    <th>Status</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -36,6 +37,16 @@
                                         </td>
                                         <td>{{ $report->user->fullname }}</td>
                                         <td>{{ $report->updated_at->diffForHumans() }}</td>
+                                        <td>
+                                            @if($report->link)
+                                                <span class="badge bg-success">
+                                                    <i class="fa fa-share-nodes me-1"></i>
+                                                    Public
+                                                </span>
+                                            @else
+                                                <span class="badge bg-secondary">Private</span>
+                                            @endif
+                                        </td>
                                         <td class="text-end">
                                             <!-- dropdown -->
                                             <div class="dropdown">
