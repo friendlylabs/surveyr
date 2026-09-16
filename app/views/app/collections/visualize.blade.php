@@ -13,16 +13,24 @@
                 </p>
 
                 <div class="position-absolute end-5 top-0">
+                    <button class="btn btn-outline-primary btn-sm" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasFormRules" aria-controls="offcanvasFormRules">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span class="d-none d-md-inline ms-1">Visualization Rules</span>
+                    </button>
+
                     <a href="@route('forms.submissions', $form->id)" class="btn btn-primary btn-sm">
                         <i class="fa-solid fa-table-tree d-md-none"></i>
                         <span class="d-none d-md-inline">Compiled View</span>
-                    </a>                    
+                    </a>
                 </div>
             </div>
         </div>
 
         <div id="surveyVizPanel" class="py-0"></div>
     </div>
+
+    @include('app.collections.partials.visualization-rules')
 
     @if(!_env('SURVEYJS_LICENSE_KEY'))
         <div class="card position-fixed" role="alert" 
@@ -44,4 +52,6 @@
 @script('/vendor/surveyjs/surveyjs-widgets.min.js','src')
 
 @script('app.collections.scripts.utils')
+@script('app.collections.scripts.viz-engine')
 @script('app.collections.scripts.visualize')
+@script('app.collections.scripts.visualization-rules')
