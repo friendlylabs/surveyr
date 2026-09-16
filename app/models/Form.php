@@ -24,7 +24,8 @@ class Form extends Model
         'access_code',
         'theme',
         'start_date',
-        'end_date'
+        'end_date',
+        'viz_rules'
     ];
 
     public $timestamp = true;
@@ -34,6 +35,7 @@ class Form extends Model
         'content' => 'json',
         'questions' => 'json',
         'collaborators' => 'json',
+        'viz_rules' => 'json',
         'spaces' => 'json',
         'reviews' => 'json',
         'is_locked' => 'boolean',
