@@ -1,71 +1,74 @@
 @extends('layouts.app.main')
 
 @section('content')
-    <div class="content" style="padding-bottom: 0 !important;">
-        <div class="row">
+    <div class="content">
 
-            <div class="col-12 mb-4 position-relative">
-                <h3 class="fs-7">Form Templates</h3>
-                <p class="text-body-tertiary">
-                    Choose from a variety of form templates,
-                    <a href="#" class="text-phoenix-primary"></a>
+        {{-- page header --}}
+        <div class="row align-items-center mb-4">
+            <div class="col">
+                <h3 class="fs-7 mb-1">My Forms</h3>
+                <p class="text-body-tertiary mb-0">
+                    Create, share and manage your forms in one place.
                 </p>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createFormModal">
+                    <i class="fa-solid fa-plus me-md-2"></i>
+                    <span class="d-none d-md-inline">New Form</span>
+                </button>
+            </div>
+        </div>
 
-                <div class="position-absolute end-5 top-0">
-
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createFormModal">
-                        <i class="fa-solid fa-plus me-2 d-inline d-md-none"></i>
-                        <span class="d-none d-md-inline">New Form</span>
-                    </button>
+        {{-- template shelf --}}
+        @if(count($templates))
+            <div class="mb-5">
+                <div class="d-flex align-items-baseline justify-content-between mb-2">
+                    <h5 class="fs-9 text-uppercase text-body-tertiary fw-bold mb-0">Start from a template</h5>
                 </div>
 
-                <div id="splideCarousel" class="splide">
+                <div id="splideCarousel" class="splide" aria-label="Form templates">
                     <div class="splide__track">
                         <ul class="splide__list">
                             @foreach ($templates as $template)
                                 <li class="splide__slide">
-                                    <a href="@route('forms.template', $template['id'])" class="text-primary">
-                                        <div class="border border-dark rounded" style="background: url('{{ $template['preview'] }}') top center / cover no-repeat; height: 150px;" class="rounded"></div>
-                                        <div class="p-0 pt-3 ps-1">
-                                            <h5 class="card-title text-primary">{{ $template['title'] }}</h5>
+                                    <a href="@route('forms.template', $template['id'])" class="template-card d-block text-decoration-none">
+                                        <div class="border rounded-2 overflow-hidden" style="background: url('{{ $template['preview'] }}') top center / cover no-repeat; height: 150px;"></div>
+                                        <div class="pt-2 px-1">
+                                            <h6 class="mb-0 text-body-emphasis text-truncate">{{ $template['title'] }}</h6>
+                                            @if(!empty($template['category']))
+                                                <span class="text-body-tertiary fs-10">{{ $template['category'] }}</span>
+                                            @endif
                                         </div>
                                     </a>
                                 </li>
                             @endforeach
                         </ul>
                     </div>
-                </div>         
-            </div>
-        </div>
-
-        <div class="mt-4 mb-0 mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis pt-3 pb-3 border-y" style="min-height: 400px;">
-            <div class="card border-0 p-0">
-                <div class="card-body p-0">
-                    @if($forms->count() > 0)
-                        @include('app.forms.partials.list')
-                    @else
-                        <div class="text-center">
-                            @include('components.empty', [
-                                'alertTitle' => 'No forms yet',
-                                'alertMessage' => 'Create a form and start collecting data'
-                            ])
-                        </div>
-                    @endif
                 </div>
+            </div>
+        @endif
+
+        {{-- forms list --}}
+        <div class="card">
+            <div class="card-body">
+                @if($forms->count() > 0)
+                    @include('app.forms.partials.list')
+                @else
+                    <div class="text-center">
+                        @include('components.empty', [
+                            'alertTitle' => 'No forms yet',
+                            'alertMessage' => 'Create a form or pick a template above to start collecting data'
+                        ])
+                        <button class="btn btn-primary btn-sm mb-4" data-bs-toggle="modal" data-bs-target="#createFormModal">
+                            <i class="fa-solid fa-plus me-2"></i> New Form
+                        </button>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
 
     @include('app.forms.partials.create')
-
-    <script type="importmap">
-		{
-			"imports": {
-				"ckeditor5": "/vendor/ckeditor5/ckeditor5.js",
-				"ckeditor5/": "/vendor/ckeditor5/"
-			}
-		}
-	</script>
 @endsection
 
 @style('/vendor/flatpickr/flatpickr.min.css','src')
