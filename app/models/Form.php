@@ -58,7 +58,7 @@ class Form extends Model
     public static function userForms($userId) : object
     {
         $spaces = Space::absoluteUserSpaces($userId);
-        return static::with('reports')->where(function ($query) use ($userId, $spaces) {
+        return static::withCount(['reports', 'collections'])->where(function ($query) use ($userId, $spaces) {
             $query->where('user_id', $userId)
                 ->orWhereJsonContains('collaborators', (string) $userId)
                 ->orWhereJsonContains('spaces', array_map('strval', $spaces));
@@ -94,6 +94,13 @@ class Form extends Model
     public static function publicForm($md5Id){
         return static::where(DB::$capsule::raw("MD5(id)"), $md5Id)
             ->first();
+    }
+
+    # users collaborating on any of the given forms, keyed by id (single query)
+    public static function collaboratorsOf($forms) : object
+    {
+        $ids = collect($forms)->pluck('collaborators')->flatten()->filter()->unique();
+        return $ids->isEmpty() ? collect() : User::whereIn('id', $ids)->get()->keyBy('id');
     }
 
     # remove a space id form multiple forms
