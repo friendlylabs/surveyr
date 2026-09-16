@@ -1,18 +1,34 @@
+# Environment
 .env
 .env.backup
 .env.production
+
+# Dependencies
+vendor/
+node_modules/
+
+# Build output
 build
 dist
 compiled
-.idea
 hot
-changes.php
-/changes/
-check.cmd
-/vendor/
-node_modules
+/public/storage
+
+# Logs
 npm-debug.log
 yarn-error.log
-/public/storage
+
+# Editors & OS
+.idea
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local scratch files
 test/
+changes/
+changes.php
+check.cmd
+
 pwa.php
+scratchpad.txt
