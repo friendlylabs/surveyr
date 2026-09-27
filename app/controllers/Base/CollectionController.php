@@ -288,7 +288,7 @@ class CollectionController extends Controller
         if(!$form) return $this->errorPage(404);
 
         # validate user access
-        if(!$this->formInstance->formOwnerShipCheck($form->id)){
+        if(!$form->canBePurgedBy((int) auth()->id())){
             return $this->errorPage(403);
         }
 
