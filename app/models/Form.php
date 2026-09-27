@@ -54,26 +54,42 @@ class Form extends Model
         'reviews' => '["reviewed", "pending"]'
     ];
 
+    /**
+     * Forms a user may work with: their own, ones they collaborate on, and
+     * ones shared into any of their spaces. One JSON_CONTAINS per space —
+     * passing the whole array would require the form to sit in *every* space.
+     */
+    public static function accessibleQuery(int $userId)
+    {
+        $spaces = Space::absoluteUserSpaces($userId);
+
+        return static::where(function ($query) use ($userId, $spaces) {
+            $query->where('user_id', $userId)
+                ->orWhereJsonContains('collaborators', (string) $userId);
+
+            foreach ($spaces as $space) {
+                $query->orWhereJsonContains('spaces', (string) $space);
+            }
+        });
+    }
+
+    public static function accessibleIds(int $userId): array
+    {
+        return static::accessibleQuery($userId)->pluck('id')->map(fn ($id) => (int) $id)->all();
+    }
+
     # user forms
     public static function userForms($userId) : object
     {
-        $spaces = Space::absoluteUserSpaces($userId);
-        return static::withCount(['reports', 'collections'])->where(function ($query) use ($userId, $spaces) {
-            $query->where('user_id', $userId)
-                ->orWhereJsonContains('collaborators', (string) $userId)
-                ->orWhereJsonContains('spaces', array_map('strval', $spaces));
-        })->orderBy('created_at', 'desc')->get();
+        return static::accessibleQuery((int) $userId)
+            ->withCount('collections')->withReportsCount()
+            ->orderBy('created_at', 'desc')->get();
     }
 
     # search user forms
     public static function searchUserForms($userId, $string) : object
     {
-        $spaces = Space::absoluteUserSpaces($userId);
-        return static::where(function ($query) use ($userId, $spaces, $string) {
-            $query->where('user_id', $userId)
-                ->orWhereJsonContains('collaborators', (string) $userId)
-                ->orWhereJsonContains('spaces', array_map('strval', $spaces));
-        })->where(function($query) use ($string) {
+        return static::accessibleQuery((int) $userId)->where(function($query) use ($string) {
             $query->where('title', 'like', "%$string%")
                 ->orWhere('description', 'like', "%$string%");
         })->orderBy('created_at', 'desc')->get();
@@ -103,6 +119,14 @@ class Form extends Model
         return $ids->isEmpty() ? collect() : User::whereIn('id', $ids)->get()->keyBy('id');
     }
 
+    # only the super admin (user 1), the author or a direct collaborator may purge submissions
+    public function canBePurgedBy(int $userId) : bool
+    {
+        return $userId === 1
+            || (int) $this->user_id === $userId
+            || in_array((string) $userId, array_map('strval', $this->collaborators ?? []), true);
+    }
+
     # remove a space id form multiple forms
     public static function removeSpaceId($space_id) : void
     {
@@ -126,9 +150,18 @@ class Form extends Model
         return $this->hasMany(Collection::class);
     }
 
-    # has many reports
+    # reports drawing on this form (ids live in reports.forms, so this is a query, not a relation)
     public function reports()
     {
-        return $this->hasMany(Report::class);
+        return Report::forForm((int) $this->id);
+    }
+
+    # adds `reports_count`, the withCount() equivalent for the JSON link
+    public function scopeWithReportsCount($query)
+    {
+        return $query->addSelect([
+            'reports_count' => Report::selectRaw('COUNT(*)')
+                ->whereRaw('JSON_CONTAINS(reports.forms, CAST(forms.id AS JSON))'),
+        ]);
     }
 }
