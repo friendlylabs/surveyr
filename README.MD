@@ -36,7 +36,7 @@ Surveyr is built using modern technologies and follows best practices to deliver
 
 ## Getting started
 
-- Fork the repository or install from composer
+- Install from composer, do not directlty fork the project from git as it may contains non standardized changes that may break the app.
 
   ```
   composer create-project friendlylabs/surveyr
