@@ -43,7 +43,7 @@ class Space extends Model
 
     public static function spaceForms($space_id) : object
     {
-        return Form::withCount(['reports', 'collections'])
+        return Form::withCount('collections')->withReportsCount()
             ->whereJsonContains('spaces', (string) $space_id)
             ->orderBy('created_at', 'desc')->get();
     }
