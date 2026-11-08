@@ -18,7 +18,18 @@ class SpacesController extends Controller
     # List all spaces
     public function index()
     {
-        $this->spaces = Space::userSpaces(auth()->id());
+        $spaces = Space::userSpaces(auth()->id());
+
+        // one pass over the forms for every space's count, one user query for every member
+        $formSpaces = Form::whereNotNull('spaces')->get(['id', 'spaces'])->pluck('spaces');
+        $members = User::whereIn('id', $spaces->pluck('members')->flatten()->unique())->get()->keyBy('id');
+
+        $spaces->each(function ($space) use ($formSpaces, $members) {
+            $space->forms_count = $formSpaces->filter(fn ($ids) => in_array((string) $space->id, (array) $ids))->count();
+            $space->member_users = collect($space->members)->map(fn ($id) => $members->get($id))->filter()->values();
+        });
+
+        $this->spaces = $spaces;
         $this->users = User::where('id', '!=', auth()->id())->get(); // TODO: to array
 
         return $this->renderPage("Spaces", "app.spaces.index");

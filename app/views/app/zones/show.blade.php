@@ -1,8 +1,9 @@
 @extends('layouts.app.main')
 
 @section('content')
-    <div class="content pb-5" style="padding-top: 4rem; padding-left: 0; margin-left: -1rem;">
-        <div class="ps-3" style="width: 100vw; height: calc(100vh - 75px); overflow: hidden;">
+    <div class="content pb-0 px-0" style="padding-top: var(--phoenix-navbar-top-height);">
+        <div id="xspreadsheetWrap" class="w-100" style="height: calc(100vh - var(--phoenix-navbar-top-height)); overflow: hidden; 
+            border-left: 0.5px dashed var(--phoenix-border-color);">
             <div id="xspreadsheet" class="w-100"></div>
         </div>
     </div>

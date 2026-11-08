@@ -1,8 +1,14 @@
 let sheet;
 let spreadsheetTimeoutId = null;
+const sheetWrap = document.getElementById("xspreadsheetWrap");
 sheet = new x_spreadsheet("#xspreadsheet", { 
     showToolbar: false, 
     showGrid: true,
+    // size to the content column (not the viewport) so the sheet sits beside the sidebar
+    view: {
+        width: () => sheetWrap.clientWidth,
+        height: () => sheetWrap.clientHeight,
+    },
     row : {
         len: 1000,
         height: 25
