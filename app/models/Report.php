@@ -2,6 +2,35 @@
 
 namespace App\Models;
 
+/**
+ * SvQL expressions or surveyQL expressions are a way to express a query
+ * against a survey's data in a structured format.
+ * 
+ * {
+ *      "sources": [
+ *          {"name": "formSource", "form": 40},
+ *          {"name": "hubSurvey", "form": 120}
+ *      ],
+ *      "expressions": [
+ *          {"name": "adults", "svql": "formSource | filter age >= 18"},
+ *          {"name": "avgIncomeAdults", "svql": "adults | avg(income)"}
+ *      ]
+ * }
+ * 
+ * The data will be used in the report using short queries i.e 
+ * """
+ *  The number of people that participated in the survey is query:{formSource | count}
+ *  The average income of adults is query:{avgIncomeAdults}
+ * """
+ * 
+ * The querys will be processed and the results will be replaced in the report content during
+ * rendering.
+ *
+ * Only single-line answers are inlined: a scalar, or a table with one row. Queries run in the
+ * browser (public/vendor/surveyql) over the same filtered rows the report's charts use; see
+ * ReportSchema::normalizeSvql() and views/app/reports/scripts/query.blade.js.
+ */
+
 class Report extends Model
 {
     protected $table = 'reports';
@@ -18,7 +47,8 @@ class Report extends Model
         "forms",
         "user_id",
         "collaborators",
-        "is_public"
+        "is_public",
+        "svql_expressions",
     ];
 
     public $timestamps = true;
@@ -28,6 +58,7 @@ class Report extends Model
         "filters" => "json",
         "forms" => "json",
         "collaborators" => "json",
+        "svql_expressions" => "json",
         "created_at" => "datetime",
         "updated_at" => "datetime",
     ];
@@ -38,6 +69,7 @@ class Report extends Model
         "filters" => "{}",
         "forms" => "[]",
         "collaborators" => "[]",
+        "svql_expressions" => '{"sources":[],"expressions":[]}',
     ];
 
     /** Reports drawing on a given form. */
@@ -82,6 +114,12 @@ class Report extends Model
     {
         $this->forms = array_values(array_unique(array_map('intval', $formIds)));
         $this->sourceFormsCache = null;
+    }
+
+    /** SurveyQL sources and expressions, limited to the forms still attached. */
+    public function svql(): array
+    {
+        return \App\Services\ReportSchema::normalizeSvql($this->svql_expressions, $this->formIds());
     }
 
     # belongs to user

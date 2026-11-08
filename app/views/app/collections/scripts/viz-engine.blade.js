@@ -360,6 +360,14 @@ window.VizEngine = (function (global) {
             this.refreshContent();
         }
 
+        setSort(value) {
+            if (!SORTS.some(s => s.value === value) || this._rule.sort === value) return;
+
+            this._rule.sort = value;
+            this._calculationsCache = undefined;
+            this.refreshContent();
+        }
+
         getState() {
             return { chartType: this._chartType, aggregate: this._rule.aggregate };
         }
@@ -626,8 +634,17 @@ window.VizEngine = (function (global) {
 
     /** Point a question at the visualizer and chart type its rule asked for. */
     function applyRule(panel, question, rule) {
-        let visualizer = panel.getVisualizer(question.name);
-        if (!visualizer) return;
+        applyRuleTo(panel.getVisualizer(question.name), rule);
+    }
+
+    /**
+     * Same as applyRule, for a visualizer created outside a panel (e.g. via
+     * VisualizerFactory.createVisualizer). Returns the visualizer that ends up
+     * drawing, unwrapped from the alternatives selector when there is one.
+     */
+    function applyRuleTo(visualizer, rule) {
+        if (!visualizer) return null;
+        rule = rule || {};
 
         // questions with more than one visualizer come wrapped in a selector
         if (typeof visualizer.getVisualizers === 'function') {
@@ -644,6 +661,8 @@ window.VizEngine = (function (global) {
             && visualizer.chartTypes.indexOf(rule.chart_type) !== -1) {
             visualizer.chartType = rule.chart_type;
         }
+
+        return visualizer;
     }
 
     register();
@@ -666,6 +685,7 @@ window.VizEngine = (function (global) {
         defaultRule: defaultRule,
         normalize:   normalize,
         buildPanel:  buildPanel,
+        applyRuleTo: applyRuleTo,
     };
 
 })(window);

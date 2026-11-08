@@ -15,7 +15,8 @@ class Commands
     {
         $console->register([
             ExampleCommand::class,
-            OptimizeCollection::class
+            OptimizeCollection::class,
+            MigrateReportSchema::class
         ]);
     }
 }

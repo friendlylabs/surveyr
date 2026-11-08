@@ -4,21 +4,6 @@ use Leaf\Schema;
 use Leaf\Database;
 use Illuminate\Database\Schema\Blueprint;
 
-/*
-CREATE TABLE `reports` (
-	`id` INT(10) NOT NULL AUTO_INCREMENT,
-	`title` VARCHAR(160) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`description` VARCHAR(300) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`content` JSON NULL DEFAULT NULL,
-	`filters` LONGTEXT NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	PRIMARY KEY (`id`) USING BTREE
-)
-ENGINE=InnoDB
-;
-*/
-
 class CreateReports extends Database
 {
     /**

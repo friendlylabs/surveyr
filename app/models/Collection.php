@@ -8,7 +8,7 @@ class Collection extends Model
     protected $table = 'collections';
     protected $fillable = [
         "form_id",
-        'review',
+        'flag',
         'is_archived',
         'is_optimized'
     ];
@@ -21,27 +21,12 @@ class Collection extends Model
         "is_optimized" => "boolean",
     ];
 
-    # filtered review
-    # where users is author or collaborator or belongs to space with which a form belongs
-    public static function ofReview(string $review, int $userId) : object
-    {
-        $spaces = Space::where('user_id', $userId)
-            ->orWhereJsonContains('members', (string) $userId)->get()->pluck('id')->toArray();
-        if(!$spaces || !count($spaces)) $spaces = [0];
-
-        return static::where('review', $review)
-            ->where(function ($query) use ($userId, $spaces) {
-                $query->whereHas('form', function ($query) use ($userId, $spaces) {
-                    $query->where('user_id', $userId)
-                        ->orWhereJsonContains('collaborators', (string) $userId)
-                        ->orWhereJsonContains('spaces', array_map('strval', $spaces));
-                });
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
-    }
-
-    public static function formCollections(int $form_id, bool $remap = false, ?array $filters = null): object
+    /**
+     * A form's submissions narrowed by a filter object
+     * ({ from_date, to_date, flag: [], "<question>": [rules] }), as a query
+     * so callers can count, page or load it.
+     */
+    public static function filteredQuery(int $form_id, ?array $filters = null)
     {
         $query = static::where('form_id', $form_id);
 
@@ -57,10 +42,17 @@ class Collection extends Model
                 unset($filters['to_date']);
             }
             
-            if (isset($filters['review_type']) && is_array($filters['review_type']) && !empty($filters['review_type'])) {
-                $query->whereIn('review', $filters['review_type']);
-                unset($filters['review_type']);
+            if (isset($filters['flag']) && is_array($filters['flag']) && !empty($filters['flag'])) {
+                // `__none` stands for unflagged submissions
+                $flags = array_values(array_diff($filters['flag'], ['__none']));
+                $unflagged = in_array('__none', $filters['flag'], true);
+
+                $query->where(function ($q) use ($flags, $unflagged) {
+                    if ($flags) $q->whereIn('flag', $flags);
+                    if ($unflagged) $q->orWhereNull('flag');
+                });
             }
+            unset($filters['flag'], $filters['review_type']);
 
             // Handle dynamic survey question filters (array structure)
             // Core filters have been removed, so we only process dynamic filters
@@ -136,6 +128,7 @@ class Collection extends Model
                                             }
                                             break;
                                         
+                                        case 'notEquals':
                                         case 'notEqual':
                                             if (is_array($val)) {
                                                 foreach ($val as $v) {
@@ -181,7 +174,12 @@ class Collection extends Model
             }
         }
 
-        $collection = $query->with('payload')->get();
+        return $query;
+    }
+
+    public static function formCollections(int $form_id, bool $remap = false, ?array $filters = null): object
+    {
+        $collection = static::filteredQuery($form_id, $filters)->with('payload')->orderByDesc('id')->get();
 
         if ($remap) {
             return $collection->lazy()->map(function ($item) {
@@ -191,7 +189,8 @@ class Collection extends Model
                         : json_decode($item->payload->submission, true))
                     : [];
                 $submission['id'] = $item->id;
-                $submission['review'] = $item->review;
+                $submission['flag'] = $item->flag;
+                $submission['created_at'] = $item->created_at?->toIso8601String();
                 return $submission;
             });
         }
@@ -202,7 +201,7 @@ class Collection extends Model
     # recent submissions
     public static function recentSubmissions(int $userId, int $limit=5) : object
     {
-        # cols: formId, formName, submission:int, pending_review:int, last_submission
+        # cols: formId, formName, submission:int, unflagged:int, last_submission
         $spaces = Space::absoluteUserSpaces($userId);
         return self::where(function ($query) use ($userId, $spaces) {
             $query->whereHas('form', function ($query) use ($userId, $spaces) {
@@ -212,11 +211,11 @@ class Collection extends Model
             });
         })
 
-        # calculate submission count, pending review count, latest submission
+        # calculate submission count, unflagged count, latest submission
         ->select(
             'form_id',
             DB::$capsule::raw('COUNT(id) as submission_count'),
-            DB::$capsule::raw('SUM(review = "pending") as pending_review'),
+            DB::$capsule::raw('SUM(flag IS NULL) as unflagged'),
             DB::$capsule::raw('MAX(created_at) as latest_submission'))
         
         // form name, slug

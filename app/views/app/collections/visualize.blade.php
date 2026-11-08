@@ -19,7 +19,7 @@
                         <span class="d-none d-md-inline ms-1">Visualization Rules</span>
                     </button>
 
-                    <a href="@route('forms.submissions', $form->id)" class="btn btn-primary btn-sm">
+                    <a href="@route('forms.submissions', $form->id){{ isset($_GET['filters']) ? '?filters=' . urlencode($_GET['filters']) : (!empty($activeFilter) ? '?view=' . $activeFilter->id : '') }}" class="btn btn-primary btn-sm">
                         <i class="fa-solid fa-table-tree d-md-none"></i>
                         <span class="d-none d-md-inline">Compiled View</span>
                     </a>
