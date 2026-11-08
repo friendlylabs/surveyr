@@ -1,40 +1,26 @@
 @extends('layouts.app.main')
+
 @section('content')
     <div class="content">
 
-        <div class="container-fluid">
-            <h3 class="fs-7">API Keys</h3>
-            <p class="text-body-tertiary">
-                Manage your API keys for external integrations.
-            </p>
-
-            <div class="position-absolute end-5 top-0">
-                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createApiKeyModal">
-                    <i class="fa-solid fa-plus d-inline d-md-none"></i>
-                    <span class="d-none d-md-inline">Issue Key</span>
-                </button>
-            </div>
-        </div>
-
-        <div class="container-fluid mt-5">
-            <div class="card d-grid" style="min-height: calc(100vh - 240px)">
+        <div class="card">
+            <div class="card-body">
                 @if($apiKeys->count())
-                    <div class="card-body">
-                        @include('app.api.partials.list')
-                    </div>
+                    @include('app.api.partials.list')
                 @else
-                    <div class="d-flex justify-content-center align-items-center">
+                    <div class="text-center">
                         @include('components.empty', [
-                            'title' => 'No API keys yet',
-                            'message' => 'Create an API key to start integrating with other services'
+                            'alertTitle' => 'No API keys yet',
+                            'alertMessage' => 'Issue a key to let external services talk to the Surveyr API on your behalf.'
                         ])
+                        <button class="btn btn-primary btn-sm mb-4" data-bs-toggle="modal" data-bs-target="#createApiKeyModal">
+                            <i class="fa-solid fa-key me-2"></i> Issue key
+                        </button>
                     </div>
                 @endif
             </div>
         </div>
     </div>
-    
-    @if(SurveyrConfig('api.enabled') && $loggedUser->role == 'admin')
-        @include('app.api.partials.add')
-    @endif
+
+    @include('app.api.partials.add')
 @endsection
