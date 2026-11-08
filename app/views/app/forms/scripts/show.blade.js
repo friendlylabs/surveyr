@@ -94,28 +94,24 @@ if (surveyMode !== 'restricted') {
     });
 
 
+    // one request per file: the media endpoint stores a single `attachment`, so
+    // batching several under the same key kept only one and pointed every answer at it
     survey.onUploadFiles.add((_, options) => {
-        const formData = new FormData();
-        options.files.forEach((file) => {
+        const upload = (file) => {
+            const formData = new FormData();
             formData.append('attachment', file);
             formData.append('_token', csrf_token);
-        });
-        fetch("@route('media.store')", {
-            method: "POST",
-            body: formData
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data)
-                options.callback(
-                    options.files.map((file) => {
-                        return {
-                            file: file,
-                            content: data.path
-                        };
-                    })
-                );
-            })
+
+            return fetch("@route('media.store')", { method: "POST", body: formData })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (!data.status || !data.path) throw new Error(data.message || 'Upload failed');
+                    return { file: file, content: data.path };
+                });
+        };
+
+        Promise.all(options.files.map(upload))
+            .then((results) => options.callback(results))
             .catch((error) => {
                 console.error("Error: ", error);
                 options.callback([], [ 'An error occurred during file upload.' ]);
