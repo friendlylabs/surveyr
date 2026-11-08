@@ -10,7 +10,7 @@
 |
 */
 if(!function_exists('SurveyrConfig')){
-    function SurveyrConfig($key){
+    function SurveyrConfig(string $key){
         $configs = \Leaf\Config::getStatic('mvc.config.surveyr');
         return $configs[$key] ?? null;
     }
@@ -24,7 +24,7 @@ if(!function_exists('SurveyrConfig')){
 | and its subdirectories into the application recursively.
 | 
 */
-function load_dir_files($directory) {
+function load_dir_files(string $directory) {
 	if(is_dir($directory)){
 
 		$scan = scandir($directory); unset($scan[0], $scan[1]);
@@ -46,7 +46,7 @@ function load_dir_files($directory) {
 | This function is used to delete a directory and its contents
 | 
 */
-function delete_dir($dirPath) {
+function delete_dir(string $dirPath) {
     if (is_dir($dirPath)) {
         $files = scandir($dirPath);
         foreach ($files as $file) {
@@ -86,7 +86,7 @@ function require_files(){
 | This function is used to get a substring from a string.
 |
 */
-function substring($string, $length, $end = ' ...'){
+function substring(string $string, int $length, ?string $end = ' ...'){
 
     if(strlen($string ?? '') > $length)
         return substr($string, 0, $length) . $end;
@@ -192,13 +192,14 @@ if(!function_exists('now')){
 
 if(!function_exists('active')){
 
-    function active($string) {
+    function active(string $string) {
         
         $converted = str_replace('.', '/', $string) . '/';
         $currentUri = trim(strtok($_SERVER['REQUEST_URI'], '?'), '/') . '/';
     
-        // Check if the first part of the current URI matches the converted string
-        if (strpos(trim($currentUri, '/'), $converted) === 0) {
+        // the URI keeps its trailing slash, so an index page (app/reports/)
+        // matches its own prefix just like a subpage (app/reports/edit/1/)
+        if (strpos($currentUri, $converted) === 0) {
             return 'active';
         }
     
@@ -217,7 +218,7 @@ if(!function_exists('active')){
 */
 if(!function_exists('slugify')){
 
-    function slugify($string){
+    function slugify(string $string){
         
         $string = preg_replace('/[^A-Za-z0-9-]+/', '-', $string);
         return strtolower(trim($string, '-'));
@@ -233,11 +234,11 @@ if(!function_exists('slugify')){
 | This function is used to get the public storage path.
 |
 | TODO: This function is here for future compatibility when there are
-| multiple storage engines. For now, it just returns the
+| multiple storage disks. For now, it just returns the
 | public path.
 |
 */
-function urlPath($file, $engine = 'local'){
+function urlPath(string $file, string $disk = 'local'){
 
     if(strpos($file, '/assets/') === 0) return $file;
     if(strpos($file, '/storage/') === 0) return $file;
@@ -255,7 +256,7 @@ function urlPath($file, $engine = 'local'){
 | expected return: http(s)://domain.com/route
 |
 */
-function routeUrl($route, $params = [], $domain = null){
+function routeUrl(string $route, array $params = [], ?string $domain = null){
     
     is_null($domain) ? $domain = $_SERVER['HTTP_HOST'] : $domain = $domain;
     return (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$domain" . route($route, $params);
@@ -272,7 +273,7 @@ function routeUrl($route, $params = [], $domain = null){
 */
 if(!function_exists('xml_encode')){
 
-    function xml_encode($data, $rootNodeName = 'data', $xml = null) {
+    function xml_encode(mixed $data, string $rootNodeName = 'data', $xml = null) {
         if ($xml === null) {
             $xml = new SimpleXMLElement("<?xml version='1.0' encoding='utf-8'?><$rootNodeName></$rootNodeName>");
         }
@@ -288,6 +289,6 @@ if(!function_exists('xml_encode')){
 
 }
 
-function __($string){
+function __(string$string){
     return $string;
 }
