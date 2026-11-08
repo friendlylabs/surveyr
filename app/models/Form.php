@@ -19,7 +19,7 @@ class Form extends Model
         'is_locked',
         'current_editor',
         'is_indefinite',
-        'reviews',
+        'flag_group_id',
         'webhook_url',
         'access_code',
         'theme',
@@ -37,7 +37,6 @@ class Form extends Model
         'collaborators' => 'json',
         'viz_rules' => 'json',
         'spaces' => 'json',
-        'reviews' => 'json',
         'is_locked' => 'boolean',
         'is_indefinite' => 'boolean',
         'start_date' => 'datetime',
@@ -50,8 +49,7 @@ class Form extends Model
         'is_indefinite' => 0,
         'collaborators' => '[]',
         'spaces' => '[]',
-        'content' => '[]',
-        'reviews' => '["reviewed", "pending"]'
+        'content' => '[]'
     ];
 
     /**
@@ -127,6 +125,25 @@ class Form extends Model
             || in_array((string) $userId, array_map('strval', $this->collaborators ?? []), true);
     }
 
+    /**
+     * Where the form is in its schedule: [label, badge tone, "when" note].
+     * Indefinite forms stay open; otherwise start/end dates decide.
+     */
+    public function statusInfo() : array
+    {
+        if ($this->is_indefinite || !$this->end_date) return ['Indefinite', 'success', null];
+        if ($this->end_date->isPast()) return ['Closed', 'secondary', 'Ended ' . $this->end_date->diffForHumans()];
+        if ($this->start_date?->isFuture()) return ['Scheduled', 'info', 'Opens ' . $this->start_date->diffForHumans()];
+
+        return ['Open', 'success', 'Closes ' . $this->end_date->diffForHumans()];
+    }
+
+    # the public link respondents open
+    public function publicUrl() : string
+    {
+        return request()->getUrl() . route('forms.show', md5($this->id), $this->slug);
+    }
+
     # remove a space id form multiple forms
     public static function removeSpaceId($space_id) : void
     {
@@ -142,6 +159,12 @@ class Form extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    # flag group the form opted into (null = no flag column)
+    public function flagGroup()
+    {
+        return $this->belongsTo(FlagGroup::class, 'flag_group_id');
     }
 
     # has many collections

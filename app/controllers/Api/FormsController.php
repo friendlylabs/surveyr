@@ -26,7 +26,7 @@ class FormsController extends BaseController
 
         // remap to form id to md5
         $forms = $forms->map(function ($form) {
-            $unset = ['user', 'reviews', 'spaces', 'collaborators', 'user_id', 'content', 'questions'];
+            $unset = ['user', 'flag_group_id', 'spaces', 'collaborators', 'user_id', 'content', 'questions'];
             foreach($unset as $key) unset($form->$key);
 
             return array_merge($form->toArray(), ['id' => md5($form->id)]);
@@ -102,7 +102,7 @@ class FormsController extends BaseController
             if(!$forms->count()) return self::jsonError("No forms found", 200);
 
             $forms = $forms->map(function ($form) {
-                $unset = ['user', 'reviews', 'spaces', 'collaborators', 'user_id', 'questions'];
+                $unset = ['user', 'flag_group_id', 'spaces', 'collaborators', 'user_id', 'questions'];
                 foreach($unset as $key) unset($form->$key);
 
                 return array_merge($form->toArray(), ['id' => md5($form->id)]);
