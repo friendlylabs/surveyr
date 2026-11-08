@@ -18,7 +18,7 @@
       phoenixTheme: "light",
       phoenixNavbarTopStyle: "default",
       phoenixNavbarVerticalStyle: "default",
-      phoenixNavbarPosition: "horizontal",
+      phoenixNavbarPosition: "vertical",
       phoenixNavbarTopShape: "default",
       phoenixIsRTL: !1,
       phoenixSupportChat: 0
@@ -52,7 +52,7 @@
         [e]: localStorage.getItem(e)
       });
     }
-  })), JSON.parse(localStorage.getItem("phoenixIsNavbarVerticalCollapsed")) && document.documentElement.classList.add("navbar-vertical-collapsed"), "dark" === localStorage.getItem("phoenixTheme") ? document.documentElement.setAttribute("data-bs-theme", "dark") : "auto" === localStorage.getItem("phoenixTheme") && document.documentElement.setAttribute("data-bs-theme", window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"), "horizontal" === localStorage.getItem("phoenixNavbarPosition") && document.documentElement.setAttribute("data-navigation-type", "horizontal"), "combo" === localStorage.getItem("phoenixNavbarPosition") && document.documentElement.setAttribute("data-navigation-type", "combo");
+  })), JSON.parse(localStorage.getItem("phoenixIsNavbarVerticalCollapsed")) && document.documentElement.classList.add("navbar-vertical-collapsed"), "dark" === localStorage.getItem("phoenixTheme") ? document.documentElement.setAttribute("data-bs-theme", "dark") : "auto" === localStorage.getItem("phoenixTheme") && document.documentElement.setAttribute("data-bs-theme", window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"), "vertical" !== localStorage.getItem("phoenixNavbarPosition") && setConfig({ phoenixNavbarPosition: "vertical" }), document.documentElement.setAttribute("data-navigation-type", "vertical");
   var config = {
     config: CONFIG,
     reset: resetConfig,

@@ -1,119 +1,133 @@
-var navbarTopShape = window.config.config.phoenixNavbarTopShape;
-var navbarPosition = window.config.config.phoenixNavbarPosition;
-var body = document.querySelector('body');
-var navbarDefault = document.querySelector('#navbarDefault');
-var navbarTop = document.querySelector('#navbarTop');
-var topNavSlim = document.querySelector('#topNavSlim');
-var navbarTopSlim = document.querySelector('#navbarTopSlim');
-var navbarCombo = document.querySelector('#navbarCombo');
-var navbarComboSlim = document.querySelector('#navbarComboSlim');
-var dualNav = document.querySelector('#dualNav');
-
-var documentElement = document.documentElement;
-var navbarVertical = document.querySelector('.navbar-vertical');
-
-if (navbarTopShape === 'default' && navbarPosition === 'horizontal') {
-    navbarDefault?.remove();
-    topNavSlim?.remove();
-    navbarVertical?.remove();
-    navbarTopSlim?.remove();
-    navbarCombo?.remove();
-    navbarComboSlim?.remove();
-    dualNav?.remove();
-    navbarTop.removeAttribute('style');
-    document.documentElement.setAttribute('data-navigation-type', 'horizontal');
-}
+/*
+ * Layout glue for the vertical (sidebar) navigation.
+ *
+ * Phoenix handles the desktop sidebar itself: `.navbar-vertical` is fixed
+ * beside `.content`, and `.navbar-vertical-toggle` flips the html class
+ * `navbar-vertical-collapsed` (persisted as phoenixIsNavbarVerticalCollapsed).
+ * What lives here is the bits Phoenix does not do for us: the mobile
+ * off-canvas menu, the ⌘K search hotkey and a resize nudge on collapse.
+ */
 
 var navbarTopStyle = window.config.config.phoenixNavbarTopStyle;
 var navbarTop = document.querySelector('.navbar-top');
-if (navbarTopStyle === 'darker') {
+if (navbarTopStyle === 'darker' && navbarTop) {
     navbarTop.setAttribute('data-navbar-appearance', 'darker');
 }
 
 var navbarVerticalStyle = window.config.config.phoenixNavbarVerticalStyle;
 var navbarVertical = document.querySelector('.navbar-vertical');
-if (navbarVerticalStyle === 'darker') {
+if (navbarVerticalStyle === 'darker' && navbarVertical) {
     navbarVertical.setAttribute('data-navbar-appearance', 'darker');
 }
 
-// add active to current page
+// pages that start collapsed (data-nav-collapsed="page", e.g. the zone editor)
+// keep the toggle local to that page: Phoenix's own handler would persist the
+// flip as the user's global preference, so it is bypassed here
+if (document.documentElement.dataset.navCollapsed === 'page') {
+    document.addEventListener('click', function (event) {
+        var toggle = event.target.closest('.navbar-vertical-toggle');
+        if (!toggle) return;
+
+        event.stopPropagation();
+        toggle.blur();
+        document.documentElement.classList.toggle('navbar-vertical-collapsed');
+        toggle.dispatchEvent(new CustomEvent('navbar.vertical.toggle'));
+    }, true);
+}
+
+// add active to current page (blade's @active covers section prefixes; this
+// catches exact matches for links that live outside those sections)
 try {
-    var currentUrl = window.location.href;
-    var navLinks = document.querySelectorAll('.navbar-nav a');
+    var currentUrl = window.location.href.split('#')[0];
+    var navLinks = document.querySelectorAll('.navbar-vertical a.nav-link');
 
     navLinks.forEach(function (navLink) {
         if (navLink.href === currentUrl) {
             navLink.classList.add('active');
-
-            // Check if navLink is in a dropdown
-            var dropdown = navLink.closest('.dropdown');
-            if (dropdown) {
-                var dropdownToggle = dropdown.querySelector('.dropdown-toggle');
-                if (dropdownToggle) {
-                    dropdownToggle.classList.add('active');
-                } else {
-                    console.warn('Dropdown found, but no .dropdown-toggle element exists.');
-                }
-            }
         }
     });
 } catch (error) {
     console.error('An error occurred while processing navigation links:', error);
 }
 
-
+/**
+ * Mobile navigation: clones the sidebar's nav list (plus the Settings link
+ * from its footer) into a Bootstrap offcanvas the first time it is opened,
+ * then toggles it on subsequent taps.
+ */
 function menuToOffcanvas() {
-    // check if offCanvas #mobileMenu exists, if not create it
-    var offCanvas = document.querySelector('#mobileMenu');
-    var sideBarContent = document.getElementById('navbarTopCollapse')
+    var offCanvas = document.getElementById('mobileMenu');
 
     if (!offCanvas) {
-        var offCanvas = document.createElement('div');
+        var navList = document.getElementById('navbarVerticalNav');
+        var footerLink = document.querySelector('.navbar-vertical-footer .navbar-vertical-footer-link');
+
+        offCanvas = document.createElement('div');
         offCanvas.id = 'mobileMenu';
-        offCanvas.classList.add('offcanvas', 'offcanvas-start');
-        offCanvas.style.maxWidth = '320px';
+        offCanvas.classList.add('offcanvas', 'offcanvas-start', 'navbar-vertical-offcanvas');
+        offCanvas.setAttribute('tabindex', '-1');
         offCanvas.innerHTML = `
-            <div class="offcanvas-header border-bottom" style="height: 65px;">
-                <img id="mobileMenuLogo" src="/assets/images/brand/logo-dark.png" alt="logo" height="40" />
+            <div class="offcanvas-header border-bottom">
+                <img id="mobileMenuLogo" src="/assets/images/brand/logo-dark.png" alt="logo" height="34" />
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <div class="offcanvas-body navbar-mobile">
-                ${sideBarContent.innerHTML}
+            <div class="offcanvas-body navbar-mobile p-0">
+                <div class="navbar-vertical-content">
+                    <ul class="navbar-nav flex-column">${navList ? navList.innerHTML : ''}</ul>
+                </div>
+                ${footerLink ? `
+                    <div class="navbar-mobile-footer border-top">
+                        ${footerLink.outerHTML}
+                    </div>` : ''}
             </div>
         `;
+
+        // tooltips only make sense on the collapsed desktop rail
+        offCanvas.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+            el.removeAttribute('data-bs-toggle');
+            el.removeAttribute('data-bs-title');
+        });
+
         document.body.appendChild(offCanvas);
-        console.log('offCanvas created');
-
-        //menuToOffcanvas();
-        setTimeout(() => { menuToOffcanvas(); }, 100);
-    }else{
-
-        var appTheme = localStorage.getItem('phoenixTheme');
-        var logo = document.getElementById('mobileMenuLogo');
-        if (appTheme === 'dark') {
-            logo.src = '/assets/images/brand/logo-light.png';
-        } else {
-            logo.src = '/assets/images/brand/logo-dark.png';
-        }
-
-        var offCanvas = document.getElementById('mobileMenu');
-        var mobileMenuCanvas = new bootstrap.Offcanvas(offCanvas);
-
-        // check if offCanvas has .show class
-        if (offCanvas.classList.contains('show')) {
-
-            if(bootstrap.Offcanvas.getInstance(offCanvas).isShown){
-                mobileMenuCanvas.hide();
-            }else{
-                // overide the default offcanvas hide method
-                offCanvas.classList.remove('show');
-                var backdrop = document.querySelector('.offcanvas-backdrop');
-                backdrop.remove();
-            }
-
-        } else {
-            mobileMenuCanvas.show();
-        }
     }
 
+    var logo = document.getElementById('mobileMenuLogo');
+    if (logo) {
+        logo.src = localStorage.getItem('phoenixTheme') === 'dark'
+            ? '/assets/images/brand/logo-light.png'
+            : '/assets/images/brand/logo-dark.png';
+    }
+
+    bootstrap.Offcanvas.getOrCreateInstance(offCanvas).toggle();
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    // content width changes when the sidebar collapses/expands; let
+    // viewport-aware widgets (spreadsheet, leaflet, charts) re-measure
+    var verticalToggle = document.querySelector('.navbar-vertical-toggle');
+    if (verticalToggle) {
+        verticalToggle.addEventListener('navbar.vertical.toggle', function () {
+            setTimeout(function () { window.dispatchEvent(new Event('resize')); }, 250);
+        });
+    }
+
+    // ⌘K / Ctrl+K opens the global search
+    document.addEventListener('keydown', function (e) {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+            var searchModal = document.getElementById('searchBoxModal');
+            if (!searchModal) return;
+            e.preventDefault();
+            bootstrap.Modal.getOrCreateInstance(searchModal).show();
+        }
+    });
+
+    // focus the search input once the modal is visible
+    var searchModal = document.getElementById('searchBoxModal');
+    if (searchModal) {
+        searchModal.addEventListener('shown.bs.modal', function () {
+            var input = searchModal.querySelector('#globalSearch');
+            if (input) input.focus();
+        });
+    }
+});

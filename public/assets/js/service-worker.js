@@ -1,4 +1,4 @@
-const CACHE_NAME = 'surveyr-cache-v3';
+const CACHE_NAME = 'surveyr-cache-v4';
 const CACHE_ASSETS = [
     "/assets/css/app.css",
     "/assets/css/theme-rtl.css",
