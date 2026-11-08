@@ -5,6 +5,9 @@ const creatorOptions = {
     isAutoSave: true
 };
 
+// Tab labels
+SurveyCreator.localization.getLocale('').tabs.json = 'Code';
+
 const creator = new SurveyCreator.SurveyCreator(creatorOptions);
 creator.text = JSON.stringify(@json($form->content), null, 2);
 
@@ -40,14 +43,14 @@ function createLogoElement() {
 
 //Observer to modify the menu after rendering
 const observer = new MutationObserver((mutations, obs) => {
-    const svcMenuTab = document.querySelector('.svc-tabbed-menu');
-    if (svcMenuTab) {
+    const svcTopBar = document.querySelector('.svc-top-bar');
+    if (svcTopBar) {
         setTimeout(() => {
-            // Inject logo
+            // Inject logo as the first column of the top bar (layout in styles/creator.blade.css)
             const logoElement = createLogoElement();
 
             if(logoElement) {
-                svcMenuTab.prepend(logoElement);
+                svcTopBar.prepend(logoElement);
             }
 
             obs.disconnect(); // Stop observing once modifications are made
