@@ -3,6 +3,7 @@
 namespace App\Controllers\Base;
 
 use App\Controllers\Controller;
+use Leaf\Database as DB;
 
 use App\Models\Form;
 use App\Models\User;
@@ -10,9 +11,11 @@ use App\Models\Space;
 use App\Models\Theme;
 use App\Models\Template;
 use App\Models\Collection;
-use App\Models\ReviewType;
+use App\Models\FlagGroup;
+use App\Models\CollectionFilter;
 
-use App\Utils\OpenaiUtil;
+use App\Services\CopilotEditor;
+use App\Services\ReportSchema;
 use App\Utils\DocumentExtractor;
 
 class FormsController extends Controller
@@ -49,8 +52,9 @@ class FormsController extends Controller
                 'slug' => slugify(request()->params('title')) . '-' . uniqid(),
                 'description' => request()->params('description'),
                 'user_id' => auth()->id(),
-                'start_date' => request()->params('start_date', now()),
-                'end_date' => request()->params('end_date', now()->addDays(7))
+                // default schedule; the owner adjusts it on the setup page
+                'start_date' => now(),
+                'end_date' => now()->addDays(7)
             ];
 
             if(
@@ -128,12 +132,61 @@ class FormsController extends Controller
             return $this->errorPage(403);
 
         $this->themes = Theme::all();
-        $this->reviewTypes = ReviewType::all();
+        $this->flagGroups = FlagGroup::orderBy('name')->get();
         $this->spaces = Space::userSpaces(auth()->id());
         $this->users = User::where('id', '!=', auth()->id())->get();
 
+        $tab = request()->params('tab');
+        $this->tab = in_array($tab, ['overview', 'submissions', 'settings', 'theme'], true) ? $tab : 'overview';
+
+        $this->canEdit = $this->formOwnerShipCheck($id);   // customize is owner / collaborator only
+        $this->overview = $this->overviewStats($form);
+        $this->savedFilters = CollectionFilter::ofForm((int) $form->id, true);
+
         $this->form = $form;
-        return $this->renderPage("Setup Form: $form->title", "app.forms.setup");
+        return $this->renderPage("Form Overview", "app.forms.setup");
+    }
+
+    /**
+     * What the overview tab shows. Only submission dates and flags are
+     * recorded, so everything here is derived from `collections`.
+     */
+    protected function overviewStats(Form $form) : array
+    {
+        $base = fn () => Collection::where('form_id', $form->id);
+        $since = fn (int $days) => now()->subDays($days)->startOfDay();
+
+        $total = $base()->count();
+        $last7 = $base()->where('created_at', '>=', $since(6))->count();
+        $prev7 = $base()->whereBetween('created_at', [$since(13), $since(6)])->count();
+
+        // { 'YYYY-MM-DD': n } for the last 30 days; the chart fills the gaps
+        $series = $base()->where('created_at', '>=', $since(29))
+            ->select(DB::$capsule::raw('DATE(created_at) as day'), DB::$capsule::raw('COUNT(id) as n'))
+            ->groupBy('day')->pluck('n', 'day')->map(fn ($n) => (int) $n)->all();
+
+        $flags = null;
+        if ($group = $form->flagGroup) {
+            $counts = $base()->whereNotNull('flag')->select('flag', DB::$capsule::raw('COUNT(id) as n'))
+                ->groupBy('flag')->pluck('n', 'flag')->all();
+
+            $flags = [
+                'items' => array_map(fn ($flag) => $flag + ['count' => (int) ($counts[$flag['key']] ?? 0)], $group->flags ?? []),
+                'unflagged' => $base()->whereNull('flag')->count(),
+                'oldestUnflagged' => $base()->whereNull('flag')->min('created_at'),
+            ];
+        }
+
+        $last = $base()->max('created_at');
+
+        return [
+            'total' => $total,
+            'last7' => $last7,
+            'prev7' => $prev7,
+            'lastAt' => $last ? \Carbon\Carbon::parse($last) : null,
+            'series' => $series,
+            'flags' => $flags,
+        ];
     }
 
     /**
@@ -150,18 +203,9 @@ class FormsController extends Controller
 
         if(!$this->formOwnerShipCheck($id))return $this->errorPage(403);
 
-        // alert user if form has submissions
-        $collections = Collection::where('form_id', $id)->count();
-        if($collections){
-            echo <<<HTML
-            <script>
-                if(!confirm('This form already has submissions, editing the form may affect the submissions and even break out your form. Do you want to continue?')){
-                    window.location.href = '/app/forms';
-                }
-            </script>
-            HTML;
-        }
-        
+        // the view warns the user before editing a form that already has submissions
+        $this->submissions = Collection::where('form_id', $id)->exists();
+
         $this->form = $form;
         return $this->renderPage("Edit Form: $form->title", "app.forms.edit");
     }
@@ -332,11 +376,10 @@ class FormsController extends Controller
     {
         $formContent = $form->content;
 
-        $submission_url = request()->params('submission_url');
-        if($submission_url && !filter_var($submission_url, FILTER_VALIDATE_URL))
-            return $this->jsonError("Invalid submission URL");
-
-        if(!$submission_url) $submission_url = null;
+        $flagGroupId = request()->params('flag_group_id');
+        $flagGroupId = $flagGroupId ? (int) $flagGroupId : null;
+        if($flagGroupId && !FlagGroup::find($flagGroupId))
+            return $this->jsonError("Flag group not found");
 
         $redirection_url = request()->params('redirection_url');
         if($redirection_url && !filter_var($redirection_url, FILTER_VALIDATE_URL))
@@ -353,7 +396,11 @@ class FormsController extends Controller
 
         if(!$webhook_url) $webhook_url = null;
 
-        $form->submission_url = $submission_url;
+        // another group's keys mean nothing here, so switching groups clears the old flags
+        if((int) $form->flag_group_id !== (int) $flagGroupId)
+            Collection::where('form_id', $form->id)->update(['flag' => null]);
+
+        $form->flag_group_id = $flagGroupId;
         $form->webhook_url = $webhook_url;
         $form->content = $formContent;
 
@@ -456,36 +503,29 @@ class FormsController extends Controller
         return redirect(route('forms.list'));
     }
 
-    /**
-     * Generate form
-     * 
-     * @return void
-     */
-    public function generate(){
-
+    # register Form Rules
+    public function rules(int $id){
         try{
-            $mode = request()->params('mode', 'generate');
 
-            if ($mode === 'edit') {
-                return $this->generateEdit();
+            $data = json_decode(file_get_contents('php://input'), true);
+            if(json_last_error() !== JSON_ERROR_NONE || !is_array($data))
+                return $this->jsonError("Request body must be valid JSON", 400);
+
+            $form = Form::find($id);
+            if(!$form) return $this->jsonError("Form not found");
+
+            if(!$this->formOwnerShipCheck($id) && !$this->hasAccessbySpace($form->spaces))
+                return $this->jsonError("You do not have permission to update this form");
+
+            $rules = $data['viz_rules'] ?? null;
+            if(!is_array($rules)) return $this->jsonError("Invalid rules format");
+
+            $form->viz_rules = $this->sanitizeVizRules($rules, ReportSchema::questionNames($form->content));
+            if($form->save()){
+                return $this->jsonSuccess("Form visualization rules updated successfully");
             }
 
-            $data = [
-                'title' => request()->params('title'),
-                'description' => request()->params('description')
-            ];
-
-            if(in_array(null, $data) && strlen($data['title']) < 10)
-                return $this->jsonError("The title must be at least 10 characters");
-
-            if(strlen($data['description']) < 50)
-                return $this->jsonError("Please provide a detailed description of the form for better generation");
-
-            $formData = OpenaiUtil::formGenerator($data['title'], $data['description']);
-            if(!$formData) return $this->jsonError("An unknown error occured, failed to generate form");
-
-            $this->survey = $formData;
-            return $this->jsonSuccess("Form generated successfully");
+            return $this->jsonError("An unknown error occured, failed to update form visualization rules");
         }
 
         catch(\Exception $e){
@@ -494,48 +534,120 @@ class FormsController extends Controller
     }
 
     /**
-     * AI-assisted edit of an existing form. Receives the in-memory schema from
-     * the client, derives a compact outline, runs the OpenAI tool-calling loop,
-     * and returns the list of operations for the client to apply via the
-     * SurveyJS Creator API.
+     * Server-side mirror of VizEngine.normalizeRule: keeps only rules for questions
+     * that exist in the form, only the known fields, and only values from the same
+     * vocabulary the rules editor offers. Anything else is dropped rather than stored.
+     */
+    protected function sanitizeVizRules(array $rules, array $questionNames): array
+    {
+        $charts = [
+            'number'     => ['gauge', 'bullet'],
+            'histogram'  => ['vbar', 'bar'],
+            'selectBase' => ['bar', 'vbar', 'pie', 'doughnut'],
+            'choices'    => [],
+            'wordcloud'  => [],
+            'text'       => [],
+            'boolean'    => ['pie', 'bar', 'doughnut'],
+            'matrix'     => ['bar', 'stackedbar', 'pie', 'doughnut'],
+            'bound'      => ['bar', 'vbar', 'line', 'pie', 'doughnut'],
+        ];
+        $aggregates = ['sum', 'avg', 'count', 'min', 'max'];
+        $sorts      = ['value_desc', 'value_asc', 'label', 'none'];
+        $known      = array_flip($questionNames);
+
+        $clean = [];
+        foreach ($rules as $name => $rule) {
+            if(!is_string($name) || !isset($known[$name]) || !is_array($rule)) continue;
+
+            // visualizers SurveyJS registers but VizEngine doesn't list still render, without a chart choice
+            $visualizer = is_string($rule['visualizer'] ?? null) && preg_match('/^[A-Za-z][A-Za-z0-9_]{0,39}$/', $rule['visualizer'])
+                ? $rule['visualizer'] : null;
+            $allowedCharts = $charts[$visualizer] ?? [];
+            $chartType = in_array($rule['chart_type'] ?? null, $allowedCharts, true) ? $rule['chart_type'] : ($allowedCharts[0] ?? null);
+
+            $label = $rule['bind_label_to'] ?? null;
+            $label = is_string($label) && isset($known[$label]) && $label !== $name ? $label : null;
+
+            $series = array_values(array_unique(array_filter(
+                is_array($rule['series'] ?? null) ? $rule['series'] : [],
+                fn ($s) => is_string($s) && isset($known[$s]) && $s !== $name
+            )));
+
+            $limit = filter_var($rule['limit'] ?? 0, FILTER_VALIDATE_INT);
+
+            $clean[$name] = [
+                'visible'       => ($rule['visible'] ?? true) !== false,
+                'visualizer'    => $visualizer,
+                'chart_type'    => $chartType,
+                'bind_label_to' => $label,
+                'series'        => $series,
+                'aggregate'     => in_array($rule['aggregate'] ?? null, $aggregates, true) ? $rule['aggregate'] : 'sum',
+                'sort'          => in_array($rule['sort'] ?? null, $sorts, true) ? $rule['sort'] : 'value_desc',
+                'limit'         => $limit !== false && $limit > 0 ? $limit : 0,
+            ];
+        }
+
+        return $clean;
+    }
+
+    /**
+     * Copilot chat turn. Receives the in-memory survey JSON, the user's
+     * instruction and the earlier turns of the same conversation, runs the
+     * OpenAI tool-calling loop (CopilotEditor) and returns the list of
+     * operations for the client to apply via the SurveyJS Creator API.
+     *
+     * Reads the raw JSON body directly: the survey carries HTML and
+     * expressions that request() sanitising would mangle.
      *
      * @return void
      */
-    protected function generateEdit()
+    public function copilot()
     {
-        $survey = request()->params('survey');
-        if (is_string($survey)) $survey = json_decode($survey, true);
-        if (!is_array($survey) || empty($survey['pages']) || !is_array($survey['pages']))
-            return $this->jsonError("Invalid form schema");
+        try {
+            $body = json_decode(file_get_contents('php://input'), true);
+            if (!is_array($body))
+                return $this->jsonError("Invalid request body");
 
-        $title = trim((string) request()->params('title', ''));
-        $description = trim((string) request()->params('description', ''));
-        $instruction = $title !== '' ? ($title . "\n\n" . $description) : $description;
-        $instruction = trim($instruction);
+            // A brand-new form has no pages yet — that's a valid starting point
+            $document = $body['document'] ?? null;
+            if (is_string($document)) $document = json_decode($document, true);
+            if (!is_array($document))
+                return $this->jsonError("Invalid form schema");
+            if (!is_array($document['pages'] ?? null)) $document['pages'] = [];
 
-        if (strlen($instruction) < 3)
-            return $this->jsonError("Please describe what you want to change");
+            $instruction = trim((string) ($body['instruction'] ?? ''));
+            if (strlen($instruction) < 2)
+                return $this->jsonError("Please describe what you want to change");
 
-        $outline = OpenaiUtil::buildOutline($survey);
-        $result = OpenaiUtil::formEditor($outline, $instruction, $survey);
+            // Optional earlier turns; malformed entries are dropped, not fatal
+            $history = [];
+            foreach ((is_array($body['history'] ?? null) ? $body['history'] : []) as $turn) {
+                if (is_array($turn) && in_array($turn['role'] ?? null, ['user', 'assistant'], true) && is_string($turn['text'] ?? null)) {
+                    $history[] = ['role' => $turn['role'], 'text' => $turn['text']];
+                }
+            }
 
-        $this->operations = $result['operations'];
-        $this->meta = [
-            'iterations' => $result['iterations'],
-            'truncated' => $result['truncated'],
-            'note' => $result['note'],
-            'cached_tokens' => $result['usage']['prompt_tokens_details']['cached_tokens'] ?? null,
-            'prompt_tokens' => $result['usage']['prompt_tokens'] ?? null,
-            'completion_tokens' => $result['usage']['completion_tokens'] ?? null,
-        ];
+            $schema = is_array($body['schema'] ?? null) ? $body['schema'] : [];
+            $result = (new CopilotEditor())->run($document, $instruction, $history, $schema);
 
-        if (empty($result['operations']))
-            return $this->jsonError($result['note'] ?: "The assistant could not produce any edits for that instruction");
+            $this->operations = $result['operations'];
+            $this->note = $result['note'];
+            $this->meta = [
+                'iterations' => $result['iterations'],
+                'truncated' => $result['truncated'],
+                'cached_tokens' => $result['usage']['prompt_tokens_details']['cached_tokens'] ?? null,
+                'prompt_tokens' => $result['usage']['prompt_tokens'] ?? null,
+                'completion_tokens' => $result['usage']['completion_tokens'] ?? null,
+            ];
 
-        return $this->jsonSuccess("Edit plan generated");
+            return $this->jsonSuccess($result['note'] ?: (empty($result['operations']) ? "No changes proposed for that instruction" : "Edit plan generated"));
+        }
+
+        catch(\Exception $e){
+            return $this->jsonException($e);
+        }
     }
 
-    
     /**
      * Extract plain text from an uploaded document (pdf/doc/docx).
      * Used by the AI editor to pre-fill the prompt from a document.
@@ -599,7 +711,6 @@ class FormsController extends Controller
     public static function routes()
     {
         app()::get('', ['name'=>'forms.list', 'FormsController@index']);
-        // app()::get('build', ['name'=>'forms.build', 'FormsController@build']);
         app()::get('search', ['name'=>'forms.search', 'FormsController@search']);
 
         app()::post('build', ['name'=>'forms.build', 'FormsController@build']);
@@ -609,9 +720,10 @@ class FormsController extends Controller
         app()::get('customize/{id}/{slug}', ['name'=>'forms.customize', 'FormsController@customize']);
         
         app()::post('edit/{id}', ['name'=>'forms.update', 'FormsController@update']);
-        app()::post('generate', ['name'=>'forms.generate', 'FormsController@generate']);
+        app()::post('copilot', ['name'=>'forms.copilot', 'FormsController@copilot']);
         app()::post('extract', ['name'=>'forms.extract', 'FormsController@extract']);
         app()::post('setup/{setting}/{id}', ['name'=>'forms.setup.update', 'FormsController@setting']);
+        app()::post('rules/{id}', ['name'=>'forms.rules', 'FormsController@rules']);
 
         app()::get('template/{id}', ['name'=>'forms.template', 'FormsController@template']);
     }

@@ -18,6 +18,8 @@ class CreateCollections extends Database
                 $table->unsignedInteger('form_id');
                 $table->json('submission');
                 $table->char('review', 50)->default('pending');
+                $table->boolean('is_archived')->default(false);
+                $table->boolean('is_optimized')->default(false);
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 

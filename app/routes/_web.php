@@ -24,6 +24,8 @@ app()::group('p', ['namespace' => '\App\Controllers\Base', function() {
     app()::get('forms/{hash}/{slug}', ['name' => 'forms.show', 'FormsController@show']);
     app()::post('forms/{hash}/{slug}', ['name' => 'forms.collect', 'CollectionController@store']);
 
+    app()::get('reports/{hash}', ['name' => 'reports.public', 'ReportsController@public']);
+
     app()::get('zones/show/{code}', function($code){
         header("Location: ".route('public.zone', $code));
     });

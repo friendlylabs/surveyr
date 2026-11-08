@@ -14,6 +14,7 @@ app()::group('app', ['namespace'=>'\App\Controllers\Base', function() {
     app()::group('users', fn() => \App\Controllers\Base\UsersController::routes());
     app()::group('zones', fn() => \App\Controllers\Base\ZonesController::routes());
     app()::group('spaces', fn() => \App\Controllers\Base\SpacesController::routes());
+    app()::group('flags', fn() => \App\Controllers\Base\FlagsController::routes());
 
     app()::group('media', fn() => \App\Controllers\Base\MediaController::routes());
 
@@ -24,8 +25,10 @@ app()::group('app', ['namespace'=>'\App\Controllers\Base', function() {
     app()::group('forms', function() {
         \App\Controllers\Base\FormsController::routes();
         \App\Controllers\Base\CollectionController::routes();
-        \App\Controllers\Base\ReportsController::routes();
+        \App\Controllers\Base\CollectionFilterController::routes();   // saved submission filters
     });
+
+    app()::group('reports', fn() => \App\Controllers\Base\ReportsController::routes());
 
     app()::group('intergrations', fn() => \App\Controllers\Base\IntergrationController::routes());
 }]);

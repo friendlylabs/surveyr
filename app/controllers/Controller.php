@@ -47,7 +47,23 @@ class Controller extends \Leaf\Controller
     protected function renderPage(string $title, string $view, array $data = [])
     {
         $this->title = $title;
+        $this->quickCreate = $this->quickCreateData();
         return render($view, array_merge($this->data, $data));
+    }
+
+    /**
+     * Data for the layout's global "+ New" modals (form, report, space):
+     * the forms a report may draw from and the users a space/report may share with.
+     */
+    protected function quickCreateData(): array
+    {
+        $userId = auth()->id();
+        if (!$userId) return ['forms' => collect(), 'users' => collect()];
+
+        return [
+            'forms' => \App\Models\Form::accessibleQuery((int) $userId)->orderBy('title')->get(['id', 'title']),
+            'users' => \App\Models\User::where('id', '!=', $userId)->get(),
+        ];
     }
 
     protected function errorPage(int $code = 404)

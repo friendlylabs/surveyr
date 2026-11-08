@@ -1,0 +1,375 @@
+/* Report document styles: shared by the editor canvas, the viewer and the public page.
+   Colours come from the Phoenix theme; the public page overrides the tokens. */
+
+:root {
+    --rp-bg:          var(--phoenix-body-bg, #f5f7fa);
+    --rp-panel:       var(--phoenix-emphasis-bg, #ffffff);
+    --rp-raise:       var(--phoenix-body-highlight-bg, #eff2f6);
+    --rp-line:        var(--phoenix-border-color, #cbd0dd);
+    --rp-text:        var(--phoenix-emphasis-color, #141824);
+    --rp-text2:       var(--phoenix-body-color, #31374a);
+    --rp-muted:       var(--phoenix-tertiary-color, #6e7891);
+    --rp-faint:       var(--phoenix-quaternary-color, #8a94ad);
+    --rp-accent:      var(--phoenix-primary, #19b394);
+    --rp-accent-fg:   #ffffff;
+    --rp-accent-soft: rgba(var(--phoenix-primary-rgb, 25, 179, 148), .12);
+    --rp-danger:      var(--phoenix-danger, #d9484a);
+    --rp-mono:        ui-monospace, Menlo, Consolas, monospace;
+}
+
+/* ------------------------------------------------------------------ *
+ |  Frame: full-height panel under the app navbar with a compact top   |
+ |  bar (editor and viewer share it)                                   |
+ * ------------------------------------------------------------------ */
+
+.rp-frame {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - var(--phoenix-navbar-top-height, 4rem));
+    margin-top: var(--phoenix-navbar-top-height, 4rem);
+    background: var(--rp-bg);
+    color: var(--rp-text);
+    font-size: 13px;
+    overflow: hidden;
+}
+.rp-frame button { font: inherit; }
+
+.rp-topbar {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 0;
+}
+.rp-topbar-title { flex: 1; min-width: 0; }
+.rp-topbar-title .rp-name-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.rp-topbar-title span.rp-name { font-size: 14px; font-weight: 800; letter-spacing: -.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--rp-text); }
+.rp-topbar-title span.rp-meta { display: block; margin-top: 2px; font-size: 11px; color: var(--rp-faint); font-family: var(--rp-mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rp-topbar-title span.rp-meta.is-text { font-family: inherit; font-size: 12px; color: var(--rp-muted); }
+
+span.rp-status {
+    flex: none;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--rp-raise);
+    color: var(--rp-muted);
+}
+span.rp-status.is-published { background: var(--rp-accent-soft); color: var(--rp-accent); }
+span.rp-status.is-preview { background: var(--phoenix-warning-bg-subtle, rgba(185, 143, 60, .16)); color: var(--phoenix-warning-text-emphasis, #a1710a); }
+
+.rp-frame .rp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 11px;
+    border-radius: 7px;
+    border: 1px solid var(--rp-line);
+    background: var(--rp-panel);
+    color: var(--rp-text2);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+}
+.rp-frame .rp-btn:hover { border-color: var(--rp-accent); color: var(--rp-accent); }
+.rp-frame .rp-btn.is-primary { background: var(--rp-accent); border-color: var(--rp-accent); color: var(--rp-accent-fg); }
+.rp-frame .rp-btn.is-primary:hover { filter: brightness(.95); color: var(--rp-accent-fg); }
+.rp-frame .rp-btn.is-icon { width: 30px; height: 30px; padding: 0; justify-content: center; }
+.rp-frame .rp-btn.is-on { border-color: var(--rp-accent); color: var(--rp-accent); background: var(--rp-accent-soft); }
+.rp-frame .rp-btn.is-dashed { border-style: dashed; color: var(--rp-muted); }
+.rp-frame .rp-btn:disabled { opacity: .55; cursor: default; }
+
+/* the scrolling document area of the viewer */
+.rp-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 22px 0 44px;
+    scrollbar-width: thin;
+}
+
+/* scrollbars in the report panes stay invisible until the pointer is over
+   the pane; the gutter is always reserved so nothing shifts on hover */
+.rp-scroll,
+.rp-canvas,
+.rp-rail,
+.rp-inspector {
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color .25s ease;
+}
+.rp-scroll:hover,
+.rp-canvas:hover,
+.rp-rail:hover,
+.rp-inspector:hover {
+    scrollbar-color: rgba(128, 128, 128, .45) transparent;
+}
+.rp-scroll::-webkit-scrollbar,
+.rp-canvas::-webkit-scrollbar,
+.rp-rail::-webkit-scrollbar,
+.rp-inspector::-webkit-scrollbar { width: 7px; height: 7px; }
+.rp-scroll::-webkit-scrollbar-track,
+.rp-canvas::-webkit-scrollbar-track,
+.rp-rail::-webkit-scrollbar-track,
+.rp-inspector::-webkit-scrollbar-track { background: transparent; }
+.rp-scroll::-webkit-scrollbar-thumb,
+.rp-canvas::-webkit-scrollbar-thumb,
+.rp-rail::-webkit-scrollbar-thumb,
+.rp-inspector::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 4px;
+    transition: background-color .25s ease;
+}
+.rp-scroll:hover::-webkit-scrollbar-thumb,
+.rp-canvas:hover::-webkit-scrollbar-thumb,
+.rp-rail:hover::-webkit-scrollbar-thumb,
+.rp-inspector:hover::-webkit-scrollbar-thumb { background: rgba(128, 128, 128, .45); }
+.rp-scroll::-webkit-scrollbar-thumb:hover,
+.rp-canvas::-webkit-scrollbar-thumb:hover,
+.rp-rail::-webkit-scrollbar-thumb:hover,
+.rp-inspector::-webkit-scrollbar-thumb:hover { background: rgba(128, 128, 128, .7); }
+
+@media (max-width: 767px) {
+    .rp-frame .rp-btn span.rp-btn-label { display: none; }
+    .rp-scroll { padding: 16px 14px 40px; }
+}
+
+/* ------------------------------------------------------------------ *
+ |  Section grid (the four layouts)                                    |
+ * ------------------------------------------------------------------ */
+
+.rp-grid {
+    display: grid;
+    gap: 20px;
+    min-width: 0;
+    align-items: start;
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.rp-l-side,
+.rp-l-mixed { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+
+.rp-atts-rest {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.rp-text { min-width: 0; }
+.rp-l-text .rp-text,
+.rp-l-stack .rp-text { max-width: 78ch; }
+
+@media (max-width: 899px) {
+    .rp-l-side,
+    .rp-l-mixed { grid-template-columns: minmax(0, 1fr); }
+    .rp-atts-rest { grid-template-columns: minmax(0, 1fr); }
+    .rp-text { max-width: none; }
+}
+
+/* ------------------------------------------------------------------ *
+ |  Narrative                                                          |
+ * ------------------------------------------------------------------ */
+
+p.rp-p {
+    margin: 0 0 .7rem;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--rp-text2);
+    text-wrap: pretty;
+}
+p.rp-p:last-child { margin-bottom: 0; }
+
+.rp-p-empty { color: var(--rp-faint); font-style: italic; }
+
+/* inline SurveyQL answers: query:{…} tokens */
+.rp-q {
+    display: inline; padding: 0 .3em; border-radius: 4px;
+    background: var(--rp-accent-soft); color: var(--rp-text);
+    font-weight: 700; font-variant-numeric: tabular-nums;
+    box-decoration-break: clone; -webkit-box-decoration-break: clone;
+}
+.rp-q.is-pending, .rp-q.is-empty { background: var(--rp-raise); color: var(--rp-faint); font-weight: 600; }
+.rp-q.is-error { background: rgba(217, 72, 74, .1); color: var(--rp-danger, #d9484a); font-weight: 600; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; }
+@media print { .rp-q { background: none; padding: 0; } }
+
+/* ------------------------------------------------------------------ *
+ |  Attachment card                                                    |
+ * ------------------------------------------------------------------ */
+
+.rp-att {
+    min-width: 0;
+    border: 1px solid var(--rp-line);
+    border-radius: 12px;
+    background: var(--rp-panel);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    break-inside: avoid;
+}
+
+.rp-att-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 0;
+}
+
+span.rp-att-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--rp-text);
+    text-wrap: pretty;
+}
+
+span.rp-att-foot {
+    font-size: 11px;
+    color: var(--rp-faint);
+    font-family: var(--rp-mono);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rp-att-slot { min-width: 0; min-height: 120px; }
+
+.rp-att-notice {
+    padding: 1.5rem 1rem;
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--rp-muted);
+    border: 1px dashed var(--rp-line);
+    border-radius: 8px;
+}
+
+/* SurveyJS Analytics inside a slot: flat, no chrome, no toolbars */
+.rp-att-slot .sa-visualizer__toolbar,
+.rp-att-slot .sa-toolbar { display: none !important; }
+.rp-att-slot .sa-visualizer__content { background: transparent; }
+.rp-att-slot .sa-visualizer__footer { display: none; }   /* "other" answer tables do not belong in a report */
+.rp-att-slot .sa-text-table,
+.rp-att-slot .sa-table { font-size: 12.5px; color: var(--rp-text2); }
+.rp-att-slot .sa-table__cell { border-color: var(--rp-line); }
+.rp-att-slot .js-plotly-plot .plotly .main-svg { background: transparent !important; }
+.rp-att-slot .sa-bound__empty { color: var(--rp-muted); }
+
+/* ------------------------------------------------------------------ *
+ |  Viewer document                                                    |
+ * ------------------------------------------------------------------ */
+
+.rp-doc {
+    display: grid;
+    grid-template-columns: minmax(0, 190px) minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+}
+
+.rp-toc {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+span.rp-kicker {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--rp-faint);
+}
+
+.rp-toc a {
+    display: flex;
+    gap: 7px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--rp-accent);
+    line-height: 1.35;
+    text-align: left;
+}
+.rp-toc a:hover { color: var(--rp-text); }
+.rp-toc a span.rp-toc-n { flex: none; font-family: var(--rp-mono); font-size: 12px; color: var(--rp-faint); }
+
+.rp-body {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+h1.rp-h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    color: var(--rp-text);
+    text-wrap: pretty;
+}
+
+.rp-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+    padding: 0;                     /* the theme pads bare <section> elements */
+    scroll-margin-top: 8px;
+}
+
+h2.rp-h2 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -.01em;
+    color: var(--rp-text);
+    text-wrap: pretty;
+}
+h2.rp-h2 span.rp-h2-n { color: var(--rp-faint); font-family: var(--rp-mono); font-weight: 600; margin-right: 6px; }
+
+@media (max-width: 1059px) {
+    .rp-doc { grid-template-columns: minmax(0, 1fr); }
+    .rp-toc { display: none; }
+}
+
+/* ------------------------------------------------------------------ *
+ |  Print                                                              |
+ * ------------------------------------------------------------------ */
+
+@media print {
+    @page { margin: 12mm; }
+
+    .navbar, .rp-toc, .rp-no-print { display: none !important; }
+    .rp-frame { height: auto; margin-top: 0; overflow: visible; }
+    .rp-scroll { overflow: visible; padding: 0; }
+    .rp-doc { grid-template-columns: minmax(0, 1fr); max-width: none; }
+    .content { padding: 0 !important; min-height: 0 !important; }
+
+    /* keep the on-screen layout: the page width is narrower than the mobile
+       breakpoint, so the side-by-side grids must be restated here */
+    .rp-l-side,
+    .rp-l-mixed { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+    .rp-atts-rest { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .rp-grid { gap: 14px; }
+    .rp-text { max-width: none; }
+    .rp-body { gap: 20px; }
+
+    h1.rp-h1 { font-size: 20px; }
+    p.rp-p { font-size: 12px; }
+    .rp-att { padding: 10px 12px; gap: 8px; box-shadow: none; break-inside: avoid; }
+    .rp-att-slot { min-height: 0; }
+    .rp-att-slot .js-plotly-plot,
+    .rp-att-slot .svg-container { max-width: 100% !important; overflow: hidden; }
+    .rp-section { break-inside: avoid; }
+    h2.rp-h2 { break-after: avoid; }
+}

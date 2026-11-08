@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en-US" dir="ltr" data-navigation-type="default" data-navbar-horizontal-shape="default">
+{{-- $collapseNav (set by a controller) starts the page with the sidebar collapsed for wide workspaces such as the zone editor --}}
+<html lang="en-US" dir="ltr" data-navigation-type="vertical"{!! !empty($collapseNav) ? ' class="navbar-vertical-collapsed" data-nav-collapsed="page"' : '' !!}>
 	<head>
 		<meta charset="utf-8">
 		<meta name="theme-color" content="#ffffff">
@@ -9,7 +10,7 @@
 		<meta name="msapplication-TileImage" content="/assets/img/favicons/mstile-150x150.png">
 
         <link rel="shortcut icon" href="/favicon.ico">
-		<title>{{ _env('APP_NAME') }} {{ $title ?? 'App' }}</title>
+		<title>{{ _env('APP_NAME') }} : {{ $title ?? 'Dashboard' }}</title>
         
 		<script src="/assets/vendors/simplebar/simplebar.min.js"></script>
 		<script src="/assets/js/config.js"></script>
@@ -31,6 +32,7 @@
         <link href="/vendor/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
         <link href="/vendor/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet">
         <link href="/vendor/select/bootstrap-select.min.css" rel="stylesheet">
+        <link href="/vendor/flatpickr/flatpickr.min.css" rel="stylesheet">
 
         @stack('styles')
 
@@ -60,12 +62,17 @@
         </div>
 
         <main class="main" id="top">
+            {{-- order matters: the theme positions .content relative to
+                 .navbar-vertical ~ .navbar-top ~ .content --}}
+            @include('layouts.app.partials.sidebar')
             @include('layouts.app.partials.topbar')
 		    @yield('content')
         </main>
 
         @include('layouts.app.partials.search')
+        @include('layouts.app.partials.create')
         
+        <script src="/vendor/wireblob/wire.min.js"></script>
 		<script src="/assets/vendors/popper/popper.min.js"></script>
 		<script src="/assets/vendors/bootstrap/bootstrap.min.js"></script>
 		<script src="/assets/vendors/anchorjs/anchor.min.js"></script>
@@ -80,6 +87,7 @@
         <script src="/assets/js/jquery-3.7.1.min.js"></script>
         <script src="/assets/js/toast.min.js"></script>
         <script src="/vendor/select/bootstrap-select.min.js"></script>
+        <script src="/vendor/flatpickr/flatpickr.min.js"></script>
         <script src="/vendor/swal/sweetalert.min.js"></script>
         <script src="/vendor/qrcode/qrcode.min.js"></script>
 
@@ -94,6 +102,20 @@
                 setTimeout(() => {
                     $('#preloader').fadeOut('slow');
                 }, 500);
+
+                // Join the Socket Room for real-time updates
+                const wire = new Wire(`{{ _env('WIRE_APP_KEY') }}`, {
+                    host: 'eu-central-1.wireblob.com'
+                });
+
+                const channel = wire.subscribe('notification');
+                channel.bind('new-submission', function(data) {
+                    // notification sound: /assets/media/notification.mp3
+                    var audio = new Audio('/assets/media/notification.mp3');
+                    audio.play();
+
+                    toast.success({message: data.message })
+                });
             });
         </script>
 

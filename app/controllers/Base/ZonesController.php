@@ -4,6 +4,7 @@ namespace App\Controllers\Base;
 
 use App\Controllers\Controller;
 use App\Models\Zone;
+use App\Models\User;
 use Leaf\Database as DB;
 
 class ZonesController extends Controller
@@ -20,7 +21,18 @@ class ZonesController extends Controller
      */
     public function index()
     {
-        $this->zones = Zone::all();
+        $zones = Zone::with('user')->orderByDesc('updated_at')->get();
+
+        // dataset / record counts from the content map, editors in one user query
+        $editors = User::whereIn('id', $zones->pluck('editors')->flatten()->unique())->get()->keyBy('id');
+        $zones->each(function ($zone) use ($editors) {
+            $content = is_array($zone->content) ? $zone->content : [];
+            $zone->datasets_count = count($content);
+            $zone->records_count = array_sum(array_map(fn ($rows) => is_array($rows) ? count($rows) : 0, $content));
+            $zone->editor_users = collect($zone->editors)->map(fn ($id) => $editors->get($id))->filter()->values();
+        });
+
+        $this->zones = $zones;
         return $this->renderPage('Data Zones', 'app.zones.index');
     }
 
@@ -36,6 +48,7 @@ class ZonesController extends Controller
         if(!$zone) return $this->jsonError("Zone not found");
 
         $this->zone = $zone;
+        $this->collapseNav = true;      // the sheet needs the width
         return $this->renderPage($zone->name, 'app.zones.show');
     }
 

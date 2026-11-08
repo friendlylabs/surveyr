@@ -1,6 +1,6 @@
-<div class="card d-none setup-card" id="submissionSettings">
+<div class="card fo-settings-card" id="submissionSettings">
     <div class="card-header py-3">
-        <h5 class="card-title mb-0">Submission Settings</h5>
+        <h5 class="card-title mb-0">Submission</h5>
     </div>
     <div class="card-body">
         <form action="{{ route('forms.setup.update', 'submission', $form->id) }}" method="POST" id="submissionSetupForm" onsubmit="submitForm(event)">
@@ -8,17 +8,22 @@
 
             <div class="row">
                 <div class="col-12 mb-3">
-                    <label for="reviewFormat" class="form-label d-block">Review Format</label>
-                    <small class="text-muted fs-10 ms-3 d-block">Select the review format for this form</small>
-                    <select class="form-selector" id="reviewFormat" name="reviews" data-placeholder="Select Review Format">
-                        @foreach ($reviewTypes as $review)
-                            <option
-                                value="{!! json_encode($review->properties) !!}"
-                                {{ array_diff($review->properties, $form->reviews)  ? '' : 'selected' }}>
-                                {{ $review->name }} ({{ implode(', ', $review->properties) }})
+                    <label for="flagGroup" class="form-label d-block">Flag group</label>
+                    <small class="text-muted fs-10 ms-3 d-block">
+                        Adds a flag column to the submissions table.
+                        <a href="@route('flags.list')" target="_blank">Manage flags</a>
+                    </small>
+                    <select class="form-selector" id="flagGroup" name="flag_group_id" data-placeholder="Select a flag group">
+                        <option value="">None (no flag column)</option>
+                        @foreach ($flagGroups as $group)
+                            <option value="{{ $group->id }}" {{ (int) $form->flag_group_id === (int) $group->id ? 'selected' : '' }}>
+                                {{ $group->name }} ({{ implode(', ', array_column($group->flags ?? [], 'label')) }})
                             </option>
                         @endforeach
                     </select>
+                    @if($form->flag_group_id)
+                        <small class="text-warning fs-10 ms-3 d-block mt-1">Changing the group clears the flags already set on this form's submissions.</small>
+                    @endif
                 </div>
 
                 <div class="col-12 mb-3">

@@ -32,6 +32,7 @@ class CreateForms extends Database
                 $table->char('theme')->default('Solid');
                 $table->timestamp('start_date')->useCurrent();
                 $table->timestamp('end_date')->nullable();
+                $table->json('viz_rules')->nullable();
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 

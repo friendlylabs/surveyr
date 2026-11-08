@@ -133,8 +133,10 @@ function submitForm(event, responseHandler = null){
 // anchor tag click event
 function confirmDelete(event){
     event.preventDefault();
-    const buttonHref = event.target.href;
-    var text = event.target.getAttribute('data-delete-msg') ?? 'You will not be able to recover this record!';
+    // currentTarget is the anchor even when the click lands on the icon inside it
+    const trigger = event.currentTarget ?? event.target.closest('a');
+    const buttonHref = trigger.href;
+    var text = trigger.getAttribute('data-delete-msg') ?? 'You will not be able to recover this record!';
 
     Swal.fire({
         title: 'Are you sure?',

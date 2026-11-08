@@ -1,6 +1,6 @@
-<div class="card setup-card h-100" id="generalSettings">
+<div class="card fo-settings-card" id="generalSettings">
     <div class="card-header py-3">
-            <h5 class="card-title mb-0">General Settings</h5>
+            <h5 class="card-title mb-0">General</h5>
     </div>
     <div class="card-body">
         <form action="{{ route('forms.setup.update', 'general', $form->id) }}" method="POST" id="generalSetupForm" onsubmit="submitForm(event)">

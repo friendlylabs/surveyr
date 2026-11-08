@@ -125,6 +125,7 @@ class CollectionController extends BaseController
             if(!$form) return self::jsonError("Form not found", 404);
 
             $this->form = $form->content;
+            $this->visualization_rules = $form->viz_rules;
             $collections = Collection::with('payload')
                 ->where('form_id', $form->id)
                 ->get();

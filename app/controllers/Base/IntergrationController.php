@@ -2,11 +2,10 @@
 
 namespace App\Controllers\Base;
 
-#TODO: Refactor this controller to use the new API module
-
 use App\Controllers\Controller;
 
 use App\Models\ApiKey;
+use App\Models\ApiActivity;
 use App\Models\DeviceCode;
 
 use Firebase\JWT\JWT;
@@ -37,7 +36,7 @@ class IntergrationController extends Controller {
         $this->authenticate();
 
         $this->apiKeys = ApiKey::by(static::$user->id);
-        return $this->renderPage('Api Keys', 'app.api.index');
+        return $this->renderPage('API Keys', 'app.api.index');
     }
 
     /**
@@ -50,11 +49,19 @@ class IntergrationController extends Controller {
         $this->authenticate();
 
         try{
-            $name = request()->params('name');
-            $passphrase = request()->params('passphrase');
+            $name = trim((string) request()->params('name'));
+            $passphrase = (string) request()->params('passphrase');
 
             if(!$name || !$passphrase) {
                 return $this->jsonError("Name and Passphrase are required");
+            }
+
+            if(strlen($name) > 50) {
+                return $this->jsonError("Name must be 50 characters or fewer");
+            }
+
+            if(strlen($passphrase) < 8) {
+                return $this->jsonError("Passphrase must be at least 8 characters");
             }
 
             # generate and save the token
@@ -70,7 +77,14 @@ class IntergrationController extends Controller {
                 return $this->jsonError("Failed to generate API Key");
             }
 
-            $this->redirect = route('intergration.setup');
+            # the modal reveals the token once; the list only shows a prefix
+            $this->key = [
+                'id' => $apiKey->id,
+                'name' => $apiKey->name,
+                'token' => $token,
+                'expires_at' => $apiKey->expiresAt()?->format('M j, Y'),
+            ];
+
             return $this->jsonSuccess("API Key generated successfully");
         }
 
@@ -98,17 +112,49 @@ class IntergrationController extends Controller {
             ]
         ];
 
-        return JWT::encode($payload, $passphrase, 'HS256');
+        return JWT::encode($payload, ApiKey::signingKey($passphrase), 'HS256');
     }
 
     /**
-     * Show an API Key
+     * Show an API Key with its usage and activity log
      *
      * @param string $id
      * @return void
      */
     public function show(string $id) {
-        return $this->errorPage(418);
+        $this->authenticate();
+
+        $apiKey = ApiKey::with('user')->find($id);
+        if(!$apiKey || !$apiKey->manageableBy(static::$user)) return $this->errorPage(404);
+
+        $activities = $apiKey->activities()->orderByDesc('id')->limit(500)->get();
+
+        $this->apiKey = $apiKey;
+        $this->activities = $activities;
+        $this->stats = [
+            'total' => $apiKey->activities()->count(),
+            'week' => $apiKey->activities()->where('created_at', '>=', now()->subDays(7))->count(),
+            'errors' => $apiKey->activities()->where('status', '>=', 400)->count(),
+            'last_used' => $activities->first()?->created_at,
+        ];
+
+        return $this->renderPage($apiKey->name, 'app.api.show');
+    }
+
+    /**
+     * Clear the activity log of an API Key
+     *
+     * @param string $id
+     * @return void
+     */
+    public function clearActivity(string $id) {
+        $this->authenticate();
+
+        $apiKey = ApiKey::find($id);
+        if(!$apiKey || !$apiKey->manageableBy(static::$user)) return $this->errorPage(404);
+
+        $apiKey->activities()->delete();
+        return redirect(route('keys.show', $id));
     }
 
     /**
@@ -118,11 +164,13 @@ class IntergrationController extends Controller {
      * @return void
      */
     public function revoke(string $id) {
+        $this->authenticate();
+
         $apiKey = ApiKey::find($id);
         if(!$apiKey) return $this->errorPage(404);
 
         // check if the user has access to the key
-        if($apiKey->user_id != static::$user->id && static::$user->role != 'admin') {
+        if(!$apiKey->manageableBy(static::$user)) {
             return $this->jsonError("You don't have access to this resource", 403);
         }
 
@@ -168,6 +216,7 @@ class IntergrationController extends Controller {
         app()->get('', ['name'=>'intergration.setup', 'IntergrationController@index']);
         app()->get('key/show/{id}', ['name'=>'keys.show', 'IntergrationController@show']);
         app()->get('key/revoke/{id}', ['name'=>'keys.revoke', 'IntergrationController@revoke']);
+        app()->get('key/activity/clear/{id}', ['name'=>'keys.activity.clear', 'IntergrationController@clearActivity']);
 
         app()->post('key/create', ['name'=>'keys.create', 'IntergrationController@create']);
 

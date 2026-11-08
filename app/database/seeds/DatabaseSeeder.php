@@ -13,7 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         return [
             UsersSeeder::class,
-            ReviewTypesSeeder::class,
             TemplatesSeeder::class,
             ThemesSeeder::class,
             UserRolesSeeder::class,

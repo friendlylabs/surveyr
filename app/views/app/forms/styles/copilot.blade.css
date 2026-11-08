@@ -1,0 +1,241 @@
+/* Copilot sidebar page */
+.svc-copilot {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    align-self: stretch;
+    box-sizing: border-box;
+    font-family: var(--ctr-font-family, var(--sjs-font-family, var(--font-family)));
+    font-size: var(--sjs-font-size-x2, 14px);
+    color: var(--sjs-layer-1-foreground-100, rgba(0, 0, 0, 0.9));
+}
+
+.svc-copilot__spark {
+    display: inline-flex;
+    flex: none;
+    width: 16px;
+    height: 16px;
+    color: var(--sjs-primary-background-500, #19b394);
+}
+.svc-copilot__spark svg { width: 100%; height: 100%; }
+.svc-copilot__spark use { fill: currentColor; }
+.svc-copilot__spark--error { color: var(--sjs-semantic-red-background-500, #e60a3e); }
+.svc-copilot__spark--large { width: 32px; height: 32px; }
+.svc-copilot__spark--pulse { animation: svc-copilot-pulse 1.1s ease-in-out infinite; }
+@keyframes svc-copilot-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* Thread */
+.svc-copilot__thread {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: var(--sjs-spacing-x2, 16px);
+}
+
+.svc-copilot__empty {
+    margin: auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    padding: 24px 8px;
+    color: var(--sjs-layer-1-foreground-50, rgba(0, 0, 0, 0.5));
+}
+.svc-copilot__empty-title {
+    font-weight: 600;
+    color: var(--sjs-layer-1-foreground-100, rgba(0, 0, 0, 0.9));
+}
+.svc-copilot__empty-hint { font-size: 12.5px; line-height: 1.5; }
+
+.svc-copilot__message {
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+.svc-copilot__message--user {
+    align-self: flex-end;
+    max-width: 85%;
+    padding: 7px 11px;
+    border-radius: 12px 12px 3px 12px;
+    background: var(--sjs-primary-background-10, rgba(25, 179, 148, 0.1));
+}
+.svc-copilot__message--ai {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+}
+.svc-copilot__message--ai .svc-copilot__spark { margin-top: 2px; }
+.svc-copilot__message--error .svc-copilot__message-text { color: var(--sjs-semantic-red-background-500, #e60a3e); }
+.svc-copilot__message-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+.svc-copilot__message-actions { display: flex; align-items: center; gap: 6px; }
+
+.svc-copilot__btn {
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--sjs-layer-1-foreground-50, rgba(0, 0, 0, 0.5));
+    cursor: pointer;
+}
+.svc-copilot__btn:hover { background: var(--sjs-layer-1-background-400, whitesmoke); }
+.svc-copilot__btn--primary {
+    background: var(--sjs-primary-background-500, #19b394);
+    color: var(--sjs-primary-foreground-100, #fff);
+}
+.svc-copilot__btn--primary:hover { background: var(--sjs-primary-background-500, #19b394); opacity: 0.85; }
+
+.svc-copilot__applied {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--sjs-primary-background-500, #19b394);
+}
+.svc-copilot__applied::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 6px;
+    border-radius: 999px;
+    background: currentColor;
+    vertical-align: middle;
+}
+.svc-copilot__discarded {
+    font-size: 11.5px;
+    color: var(--sjs-layer-1-foreground-50, rgba(0, 0, 0, 0.5));
+}
+
+.svc-copilot__thinking {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 12.5px;
+    color: var(--sjs-layer-1-foreground-50, rgba(0, 0, 0, 0.5));
+}
+
+/* Settings (replaces the thread while open) */
+.svc-copilot__settings {
+    flex: 1 1 auto;
+    padding: var(--sjs-spacing-x2, 16px);
+}
+.svc-copilot__settings-title {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    color: var(--sjs-layer-1-foreground-50, rgba(0, 0, 0, 0.5));
+    padding: 2px 6px 6px;
+}
+.svc-copilot__settings-item {
+    width: 100%;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    padding: 8px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    cursor: pointer;
+}
+.svc-copilot__settings-item:hover { background: var(--sjs-layer-1-background-400, whitesmoke); }
+
+/* Composer */
+.svc-copilot__composer {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0 var(--sjs-spacing-x150, 12px) var(--sjs-spacing-x150, 12px);
+    padding: 8px;
+    border: 1px solid var(--sjs-border-25, #d4d4d4);
+    border-radius: 11px;
+    background: var(--sjs-layer-1-background-500, #fff);
+}
+.svc-copilot__composer:focus-within {
+    border-color: var(--sjs-primary-background-500, #19b394);
+}
+.svc-copilot__input {
+    width: 100%;
+    box-sizing: border-box;
+    font: inherit;
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 3px 2px;
+    border: none;
+    outline: none;
+    resize: none;
+    overflow-y: auto;
+    background: transparent;
+    color: inherit;
+}
+.svc-copilot__composer-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.svc-copilot__composer-spacer { flex: 1; }
+
+.svc-copilot__icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    cursor: pointer;
+}
+.svc-copilot__icon-btn:hover,
+.svc-copilot__icon-btn--active { background: var(--sjs-primary-background-10, rgba(25, 179, 148, 0.1)); }
+
+.svc-copilot__mode {
+    font: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .02em;
+    padding: 5px 9px;
+    border: 1px solid var(--sjs-border-25, #d4d4d4);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--sjs-layer-1-foreground-50, rgba(0, 0, 0, 0.5));
+    cursor: pointer;
+}
+.svc-copilot__mode--auto {
+    background: var(--sjs-primary-background-10, rgba(25, 179, 148, 0.1));
+    border-color: transparent;
+    color: var(--sjs-primary-background-500, #19b394);
+}
+
+.svc-copilot__send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: var(--sjs-primary-background-500, #19b394);
+    color: var(--sjs-primary-foreground-100, #fff);
+    cursor: pointer;
+}
+.svc-copilot__send svg { width: 14px; height: 14px; fill: currentColor; }
+.svc-copilot__send:disabled { opacity: 0.5; cursor: default; }

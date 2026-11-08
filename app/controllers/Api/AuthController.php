@@ -4,6 +4,7 @@ namespace App\Controllers\Api;
 
 use App\Models\User;
 use App\Models\ApiKey;
+use App\Models\ApiActivity;
 use App\Models\DeviceCode;
 
 use Firebase\JWT\JWT;
@@ -97,7 +98,7 @@ class AuthController extends BaseController
     /**
      * Sigin Token
      *
-     * @return void
+     * @return string
      */
     protected function signinToken() : string
     {
@@ -119,14 +120,23 @@ class AuthController extends BaseController
     /**
      * Authorize the request.
      *
+     * Two kinds of bearer tokens are accepted: sign-in tokens issued to the
+     * app (signed with APP_KEY) and API keys issued from the integrations
+     * page (signed with their passphrase). Only requests made with an issued
+     * API key are recorded as activity.
+     *
      * @return void
      */
     public static function authorize()
     {
         try {
             $token = self::extractToken();
-            self::verifyPassphrase($token);         // if passphrase is provided
-            $userId = self::validateToken($token);
+            $apiKey = ApiKey::where('token', $token)->first();
+
+            if ($apiKey) ApiActivity::track($apiKey->id);
+
+            self::verifyPassphrase($apiKey);         // if passphrase is provided
+            $userId = self::validateToken($token, $apiKey);
             self::authenticateUser($userId);
             return true;
         }
@@ -157,15 +167,14 @@ class AuthController extends BaseController
     /**
      * Verify the passphrase signature if provided.
      *
-     * @param string $token
+     * @param ApiKey|null $apiKey  the issued key matching the bearer token, if any
      * @return void
      * @throws Exception
      */
-    private static function verifyPassphrase(string $token): void
+    private static function verifyPassphrase(?ApiKey $apiKey): void
     {
         $passphrase = request()->params('passphrase');
         if ($passphrase) {
-            $apiKey = ApiKey::where('token', $token)->first();
             if (!$apiKey) {
                 die(self::jsonError("Token could not be found from pre-Issued Tokens", 401));
             }
@@ -180,20 +189,21 @@ class AuthController extends BaseController
      * Validate the JWT token and extract the user ID.
      *
      * @param string $token
+     * @param ApiKey|null $apiKey
      * @return int
      * @throws Exception
      */
-    private static function validateToken(string $token): int
+    private static function validateToken(string $token, ?ApiKey $apiKey): int
     {
         try{
-            $key = str_replace('base64:', '', _env('APP_KEY'));
-            $passphrase = request()->params('passphrase') ?? $key;
+            $passphrase = request()->params('passphrase');
 
-            $tokenData = JWT::decode($token, new Key($passphrase, 'HS256'));
+            $tokenData = $passphrase
+                ? self::decodeIssuedKey($token, $passphrase)
+                : JWT::decode($token, new Key(str_replace('base64:', '', _env('APP_KEY')), 'HS256'));
             $userId = $tokenData->data->user_id ?? null;
 
-            $apiKey = ApiKey::where('token', $token)->first();
-            if (!$userId || (request()->params('passphrase') && $userId != $apiKey->user_id ?? null)) {
+            if (!$userId || (request()->params('passphrase') && $userId != ($apiKey->user_id ?? null))) {
                 die(self::jsonError("Could not verify the Token signature", 401));
             }
 
@@ -202,6 +212,27 @@ class AuthController extends BaseController
 
         catch(\Exception $e){
             die(self::jsonError("Token Signature verification failed", 401));
+        }
+    }
+
+    /**
+     * Decode an issued API key with its passphrase.
+     *
+     * Keys are signed with a digest of the passphrase (php-jwt requires
+     * 32+ byte HMAC keys); keys issued before that were signed with the
+     * raw passphrase, so fall back to it.
+     *
+     * @param string $token
+     * @param string $passphrase
+     * @return object
+     * @throws \Exception
+     */
+    private static function decodeIssuedKey(string $token, string $passphrase): object
+    {
+        try {
+            return JWT::decode($token, new Key(ApiKey::signingKey($passphrase), 'HS256'));
+        } catch (\Exception $e) {
+            return JWT::decode($token, new Key($passphrase, 'HS256'));
         }
     }
 

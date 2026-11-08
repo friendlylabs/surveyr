@@ -1,0 +1,167 @@
+/* Creator top bar: logo | centered pill tabs | toolbar */
+.svc-top-bar {
+    display: grid;
+    /* Equal-minimum side columns keep the tabs centered. The tablist itself
+       must keep a real width (not fit-content): SurveyJS's responsivity
+       manager measures .svc-tabbed-menu and would lock the tabs in icon mode
+       if the element were sized by its own (shrinking) content. */
+    grid-template-columns: minmax(180px, auto) minmax(0, 1fr) minmax(180px, auto);
+    align-items: center;
+    padding: 0 var(--sjs-spacing-x2, 16px);
+    box-sizing: border-box;
+}
+
+.svc-top-bar #svcLogo {
+    grid-column: 1;
+    justify-self: start;
+}
+
+.svc-top-bar .svc-tabbed-menu-wrapper {
+    grid-column: 2;
+    justify-self: stretch;
+    padding: var(--sjs-spacing-x1, 8px) 0;
+}
+
+.svc-top-bar .svc-toolbar-wrapper {
+    grid-column: 3;
+    justify-self: end;
+}
+
+.svc-top-bar .svc-tabbed-menu {
+    justify-content: center;
+}
+
+/* Pill track: drawn on the item containers so the tablist keeps its width */
+.svc-top-bar .svc-tabbed-menu-item-container {
+    display: block;
+    padding: 3px 1px;
+    background: var(--ctr-menu-item-background-color-hovered, var(--sjs-layer-1-background-400, whitesmoke));
+}
+
+.svc-top-bar .svc-tabbed-menu-item-container:first-of-type {
+    padding-left: 3px;
+    border-radius: 8px 0 0 8px;
+}
+
+/* Last tab (the overflow "more" container is always the final child) */
+.svc-top-bar .svc-tabbed-menu-item-container:nth-last-of-type(2),
+.svc-top-bar .svc-tabbed-menu-dots:not(.sv-action--hidden) {
+    padding-right: 3px;
+    border-radius: 0 8px 8px 0;
+}
+
+/* Individual pills */
+.svc-top-bar .svc-tabbed-menu-item {
+    min-height: 0;
+    padding: 5px 12px;
+    border-radius: 6px;
+    background: transparent;
+    box-shadow: none;
+}
+
+.svc-top-bar .svc-tabbed-menu-item--icon {
+    padding: 5px 8px;
+}
+
+.svc-top-bar .svc-tabbed-menu-item__text {
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 600;
+    color: var(--sjs-layer-1-foreground-75, rgba(0, 0, 0, 0.75));
+}
+
+.svc-top-bar .svc-tabbed-menu-item:hover,
+.svc-top-bar .svc-tabbed-menu-item:focus {
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: none;
+}
+
+.svc-top-bar .svc-tabbed-menu-item--selected,
+.svc-top-bar .svc-tabbed-menu-item--selected:hover,
+.svc-top-bar .svc-tabbed-menu-item--selected:focus {
+    background: var(--ctr-menu-item-background-color, var(--sjs-layer-1-background-500, white));
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+.svc-top-bar .svc-tabbed-menu-item--selected .svc-tabbed-menu-item__text {
+    font-weight: 600;
+    color: var(--sjs-primary-background-500, #19b394);
+}
+
+.svc-top-bar .svc-tabbed-menu-item--selected .svc-tabbed-menu-item__icon {
+    fill: var(--sjs-primary-background-500, #19b394);
+}
+
+.svc-top-bar .svc-tabbed-menu-dots__item {
+    border-radius: 6px;
+}
+
+/* Blocking notice shown over the creator (e.g. "form already has submissions"),
+   styled after the creator's own popups */
+.svc-notice {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.35);
+    font-family: var(--ctr-font-family, var(--sjs-font-family, var(--font-family)));
+}
+
+.svc-notice__dialog {
+    width: 100%;
+    max-width: 440px;
+    padding: 24px;
+    box-sizing: border-box;
+    text-align: left;
+    background: var(--ctr-popup-background-color, var(--sjs-layer-1-background-500, white));
+    border-radius: var(--ctr-popup-corner-radius, var(--sjs-corner-radius-x2, 8px));
+    box-shadow: 0 2px 8px var(--sjs-special-glow, rgba(0, 76, 68, 0.1)),
+                0 16px 32px var(--sjs-special-glow, rgba(0, 76, 68, 0.1)),
+                0 32px 64px var(--sjs-special-glow, rgba(0, 76, 68, 0.1));
+}
+
+.svc-notice__title {
+    margin: 0 0 8px;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24px;
+    color: var(--sjs-layer-1-foreground-100, rgba(0, 0, 0, 0.9));
+}
+
+.svc-notice__text {
+    margin: 0 0 24px;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--sjs-layer-1-foreground-75, rgba(0, 0, 0, 0.75));
+}
+
+.svc-notice__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.svc-notice__btn {
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    background: var(--sjs-layer-1-background-400, whitesmoke);
+    color: var(--sjs-layer-1-foreground-75, rgba(0, 0, 0, 0.75));
+    text-decoration: none;
+    cursor: pointer;
+}
+.svc-notice__btn:hover { background: var(--sjs-layer-1-background-300, #ededed); }
+.svc-notice__btn:focus-visible { outline: 2px solid var(--sjs-primary-background-500, #19b394); outline-offset: 2px; }
+.svc-notice__btn--danger {
+    background: var(--sjs-special-red, #e60a3e);
+    color: var(--sjs-special-red-forecolor, #fff);
+}
+.svc-notice__btn--danger:hover { background: var(--sjs-special-red, #e60a3e); opacity: 0.85; }
+.svc-notice__btn--danger:focus-visible { outline-color: var(--sjs-special-red, #e60a3e); }

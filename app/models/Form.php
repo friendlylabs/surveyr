@@ -19,12 +19,13 @@ class Form extends Model
         'is_locked',
         'current_editor',
         'is_indefinite',
-        'reviews',
+        'flag_group_id',
         'webhook_url',
         'access_code',
         'theme',
         'start_date',
-        'end_date'
+        'end_date',
+        'viz_rules'
     ];
 
     public $timestamp = true;
@@ -34,8 +35,8 @@ class Form extends Model
         'content' => 'json',
         'questions' => 'json',
         'collaborators' => 'json',
+        'viz_rules' => 'json',
         'spaces' => 'json',
-        'reviews' => 'json',
         'is_locked' => 'boolean',
         'is_indefinite' => 'boolean',
         'start_date' => 'datetime',
@@ -48,30 +49,45 @@ class Form extends Model
         'is_indefinite' => 0,
         'collaborators' => '[]',
         'spaces' => '[]',
-        'content' => '[]',
-        'reviews' => '["reviewed", "pending"]'
+        'content' => '[]'
     ];
+
+    /**
+     * Forms a user may work with: their own, ones they collaborate on, and
+     * ones shared into any of their spaces. One JSON_CONTAINS per space —
+     * passing the whole array would require the form to sit in *every* space.
+     */
+    public static function accessibleQuery(int $userId)
+    {
+        $spaces = Space::absoluteUserSpaces($userId);
+
+        return static::where(function ($query) use ($userId, $spaces) {
+            $query->where('user_id', $userId)
+                ->orWhereJsonContains('collaborators', (string) $userId);
+
+            foreach ($spaces as $space) {
+                $query->orWhereJsonContains('spaces', (string) $space);
+            }
+        });
+    }
+
+    public static function accessibleIds(int $userId): array
+    {
+        return static::accessibleQuery($userId)->pluck('id')->map(fn ($id) => (int) $id)->all();
+    }
 
     # user forms
     public static function userForms($userId) : object
     {
-        $spaces = Space::absoluteUserSpaces($userId);
-        return static::with('reports')->where(function ($query) use ($userId, $spaces) {
-            $query->where('user_id', $userId)
-                ->orWhereJsonContains('collaborators', (string) $userId)
-                ->orWhereJsonContains('spaces', array_map('strval', $spaces));
-        })->orderBy('created_at', 'desc')->get();
+        return static::accessibleQuery((int) $userId)
+            ->withCount('collections')->withReportsCount()
+            ->orderBy('created_at', 'desc')->get();
     }
 
     # search user forms
     public static function searchUserForms($userId, $string) : object
     {
-        $spaces = Space::absoluteUserSpaces($userId);
-        return static::where(function ($query) use ($userId, $spaces, $string) {
-            $query->where('user_id', $userId)
-                ->orWhereJsonContains('collaborators', (string) $userId)
-                ->orWhereJsonContains('spaces', array_map('strval', $spaces));
-        })->where(function($query) use ($string) {
+        return static::accessibleQuery((int) $userId)->where(function($query) use ($string) {
             $query->where('title', 'like', "%$string%")
                 ->orWhere('description', 'like', "%$string%");
         })->orderBy('created_at', 'desc')->get();
@@ -94,6 +110,40 @@ class Form extends Model
             ->first();
     }
 
+    # users collaborating on any of the given forms, keyed by id (single query)
+    public static function collaboratorsOf($forms) : object
+    {
+        $ids = collect($forms)->pluck('collaborators')->flatten()->filter()->unique();
+        return $ids->isEmpty() ? collect() : User::whereIn('id', $ids)->get()->keyBy('id');
+    }
+
+    # only the super admin (user 1), the author or a direct collaborator may purge submissions
+    public function canBePurgedBy(int $userId) : bool
+    {
+        return $userId === 1
+            || (int) $this->user_id === $userId
+            || in_array((string) $userId, array_map('strval', $this->collaborators ?? []), true);
+    }
+
+    /**
+     * Where the form is in its schedule: [label, badge tone, "when" note].
+     * Indefinite forms stay open; otherwise start/end dates decide.
+     */
+    public function statusInfo() : array
+    {
+        if ($this->is_indefinite || !$this->end_date) return ['Indefinite', 'success', null];
+        if ($this->end_date->isPast()) return ['Closed', 'secondary', 'Ended ' . $this->end_date->diffForHumans()];
+        if ($this->start_date?->isFuture()) return ['Scheduled', 'info', 'Opens ' . $this->start_date->diffForHumans()];
+
+        return ['Open', 'success', 'Closes ' . $this->end_date->diffForHumans()];
+    }
+
+    # the public link respondents open
+    public function publicUrl() : string
+    {
+        return request()->getUrl() . route('forms.show', md5($this->id), $this->slug);
+    }
+
     # remove a space id form multiple forms
     public static function removeSpaceId($space_id) : void
     {
@@ -111,15 +161,30 @@ class Form extends Model
         return $this->belongsTo(User::class);
     }
 
+    # flag group the form opted into (null = no flag column)
+    public function flagGroup()
+    {
+        return $this->belongsTo(FlagGroup::class, 'flag_group_id');
+    }
+
     # has many collections
     public function collections()
     {
         return $this->hasMany(Collection::class);
     }
 
-    # has many reports
+    # reports drawing on this form (ids live in reports.forms, so this is a query, not a relation)
     public function reports()
     {
-        return $this->hasMany(Report::class);
+        return Report::forForm((int) $this->id);
+    }
+
+    # adds `reports_count`, the withCount() equivalent for the JSON link
+    public function scopeWithReportsCount($query)
+    {
+        return $query->addSelect([
+            'reports_count' => Report::selectRaw('COUNT(*)')
+                ->whereRaw('JSON_CONTAINS(reports.forms, CAST(forms.id AS JSON))'),
+        ]);
     }
 }
