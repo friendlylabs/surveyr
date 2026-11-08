@@ -3,22 +3,6 @@
 @section('content')
     <div class="content">
 
-        {{-- page header --}}
-        <div class="row align-items-center mb-4">
-            <div class="col">
-                <h3 class="fs-7 mb-1">My Forms</h3>
-                <p class="text-body-tertiary mb-0">
-                    Create, share and manage your forms in one place.
-                </p>
-            </div>
-            <div class="col-auto">
-                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createFormModal">
-                    <i class="fa-solid fa-plus me-md-2"></i>
-                    <span class="d-none d-md-inline">New Form</span>
-                </button>
-            </div>
-        </div>
-
         {{-- template shelf --}}
         @if(count($templates))
             <div class="mb-5">
@@ -68,11 +52,8 @@
         </div>
     </div>
 
-    @include('app.forms.partials.create')
 @endsection
 
-@style('/vendor/flatpickr/flatpickr.min.css','src')
-@script('/vendor/flatpickr/flatpickr.min.js','src')
 
 @style('/vendor/splide/splide.min.css','src')
 @script('/vendor/splide/splide.min.js','src')

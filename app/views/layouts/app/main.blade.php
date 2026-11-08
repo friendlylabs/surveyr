@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en-US" dir="ltr" data-navigation-type="default" data-navbar-horizontal-shape="default">
+{{-- $collapseNav (set by a controller) starts the page with the sidebar collapsed for wide workspaces such as the zone editor --}}
+<html lang="en-US" dir="ltr" data-navigation-type="vertical"{!! !empty($collapseNav) ? ' class="navbar-vertical-collapsed" data-nav-collapsed="page"' : '' !!}>
 	<head>
 		<meta charset="utf-8">
 		<meta name="theme-color" content="#ffffff">
@@ -31,6 +32,7 @@
         <link href="/vendor/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
         <link href="/vendor/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet">
         <link href="/vendor/select/bootstrap-select.min.css" rel="stylesheet">
+        <link href="/vendor/flatpickr/flatpickr.min.css" rel="stylesheet">
 
         @stack('styles')
 
@@ -60,11 +62,15 @@
         </div>
 
         <main class="main" id="top">
+            {{-- order matters: the theme positions .content relative to
+                 .navbar-vertical ~ .navbar-top ~ .content --}}
+            @include('layouts.app.partials.sidebar')
             @include('layouts.app.partials.topbar')
 		    @yield('content')
         </main>
 
         @include('layouts.app.partials.search')
+        @include('layouts.app.partials.create')
         
         <script src="/vendor/wireblob/wire.min.js"></script>
 		<script src="/assets/vendors/popper/popper.min.js"></script>
@@ -81,6 +87,7 @@
         <script src="/assets/js/jquery-3.7.1.min.js"></script>
         <script src="/assets/js/toast.min.js"></script>
         <script src="/vendor/select/bootstrap-select.min.js"></script>
+        <script src="/vendor/flatpickr/flatpickr.min.js"></script>
         <script src="/vendor/swal/sweetalert.min.js"></script>
         <script src="/vendor/qrcode/qrcode.min.js"></script>
 
