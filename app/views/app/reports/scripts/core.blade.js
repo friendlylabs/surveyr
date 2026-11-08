@@ -35,9 +35,9 @@ window.ReportDoc = (function (global) {
 
     /** Legacy descriptions may carry CKEditor markup and entities. */
     function legacyParagraphs(text) {
-        const box = document.createElement('textarea');
-        box.innerHTML = String(text || '').replace(/<br\s*\/?>|<\/p>/gi, '\n').replace(/<[^>]+>/g, '');
-        return textToParagraphs(box.value.replace(/\u00A0/g, ' '));
+        const box = document.createElement('div');
+        box.innerHTML = String(text || '').replace(/<br\s*\/?>|<\/p>/gi, '\n');
+        return textToParagraphs((box.textContent || '').replace(/\u00A0/g, ' '));
     }
 
     /** Paragraphs -> textarea contents. */
