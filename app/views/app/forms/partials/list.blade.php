@@ -3,7 +3,7 @@
     $collaboratorUsers = $collabCol ? \App\Models\Form::collaboratorsOf($forms) : collect();
 @endphp
 
-<div id="formsList" data-list='{"valueNames":["title","description","responses","reports","status",{"name":"modified","attr":"data-modified"}],"page":10,"pagination":true,"filter":{"key":"status"}}'>
+<div id="formsList" data-list='{"valueNames":["title","description","responses","status",{"name":"modified","attr":"data-modified"}],"page":10,"pagination":true,"filter":{"key":"status"}}'>
 
     {{-- toolbar: search + status filter --}}
     <div class="row g-2 align-items-center mb-3">
@@ -35,7 +35,6 @@
                 <tr class="text-body-tertiary text-uppercase fs-10">
                     <th class="sort ps-0" data-sort="title" style="min-width: 260px;">Form</th>
                     <th class="sort text-center" data-sort="responses">Responses</th>
-                    <th class="sort text-center" data-sort="reports">Reports</th>
                     @if($collabCol)<th class="text-center">Team</th>@endif
                     <th class="sort" data-sort="status">Status</th>
                     <th class="sort" data-sort="modified">Modified</th>
@@ -45,17 +44,8 @@
             <tbody class="list">
                 @foreach($forms as $form)
                     @php
-                        if ($form->is_indefinite) {
-                            [$status, $tone, $when] = ['Indefinite', 'success', null];
-                        } elseif ($form->end_date->isPast()) {
-                            [$status, $tone, $when] = ['Closed', 'secondary', 'Ended ' . $form->end_date->diffForHumans()];
-                        } elseif ($form->start_date->isFuture()) {
-                            [$status, $tone, $when] = ['Scheduled', 'info', 'Opens ' . $form->start_date->diffForHumans()];
-                        } else {
-                            [$status, $tone, $when] = ['Open', 'success', 'Closes ' . $form->end_date->diffForHumans()];
-                        }
+                        [$status, $tone, $when] = $form->statusInfo();
                         $responses = $form->collections_count ?? $form->collections()->count();
-                        $reports   = $form->reports_count ?? $form->reports()->count();
                     @endphp
                     <tr>
                         <td class="ps-0 py-2">
@@ -66,7 +56,7 @@
                                     </div>
                                 </div>
                                 <div class="min-w-0" style="max-width: 420px;">
-                                    <a class="fw-bold text-body-emphasis text-truncate d-block title" href="@route('forms.submissions', $form->id, $form->slug)">
+                                    <a class="fw-bold text-body-emphasis text-truncate d-block title" href="@route('forms.setup', $form->id, $form->slug)">
                                         {{ $form->title }}
                                     </a>
                                     @if($form->description)
@@ -78,10 +68,7 @@
                             </div>
                         </td>
                         <td class="text-center">
-                            <a class="fw-semibold text-body responses" href="@route('forms.submissions', $form->id, $form->slug)">{{ $responses }}</a>
-                        </td>
-                        <td class="text-center">
-                            <a class="fw-semibold text-body reports" href="@route('reports.list', $form->id)">{{ $reports }}</a>
+                            <a class="fw-semibold text-body responses" href="@route('forms.setup', $form->id, $form->slug)?tab=submissions">{{ $responses }}</a>
                         </td>
                         @if($collabCol)
                             <td class="text-center">
@@ -129,13 +116,8 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="@route('forms.submissions', $form->id, $form->slug)">
+                                        <a class="dropdown-item" href="@route('forms.setup', $form->id, $form->slug)?tab=submissions">
                                             <i class="fa-solid fa-chart-line me-2"></i> Submissions
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="@route('reports.list', $form->id, $form->slug)">
-                                            <i class="fa-solid fa-align-left me-2"></i> Reports
                                         </a>
                                     </li>
                                     <li><hr class="dropdown-divider"></li>
@@ -145,7 +127,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="@route('forms.setup', $form->id, $form->slug)">
+                                        <a class="dropdown-item" href="@route('forms.setup', $form->id, $form->slug)?tab=settings">
                                             <i class="fa-solid fa-cogs me-2"></i> Settings
                                         </a>
                                     </li>

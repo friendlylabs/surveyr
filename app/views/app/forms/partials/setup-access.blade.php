@@ -1,12 +1,10 @@
-<div class="card d-none setup-card" id="accessSettings">
+<div class="card fo-settings-card" id="accessSettings">
     <div class="card-header py-3">
-        <h5 class="card-title mb-0">Access Settings</h5>
+        <h5 class="card-title mb-0">Access</h5>
     </div>
     <div class="card-body">
         <form action="{{ route('forms.setup.update', 'access', $form->id) }}" method="POST" id="accessSetupForm" onsubmit="submitForm(event)">
             @csrf
-
-            <!-- TODO: email/mobile verification -->
 
             <!-- switch: form has no closing date -->
             <div class="mb-3">
@@ -28,27 +26,18 @@
 
             <div class="mb-3">
                 <label for="startDate" class="form-label">Opening Date</label>
-                <input type="date" class="form-control date-selector" id="startDate" name="start_date" placeholder="opening date" value="{{ substring($form->start_date, 10, null) }}">
+                <input type="date" class="form-control date-selector" id="startDate" name="start_date" placeholder="opening date" value="{{ $form->start_date?->format('Y-m-d') }}">
             </div>
 
             <div class="mb-3">
                 <label for="endDate" class="form-label">Closing Date</label>
-                <input type="date" class="form-control date-selector" id="endDate" name="end_date" placeholder="closing date" value="{{ substring($form->end_date, 10, null) }}">
+                <input type="date" class="form-control date-selector" id="endDate" name="end_date" placeholder="closing date" value="{{ $form->end_date?->format('Y-m-d') }}">
             </div>
 
             <div class="mb-3">
                 <label for="accessCode" class="form-label">Access Password</label>
                 <small class="text-muted fs-10 ms-3 d-block">Set a password to restrict access to this form (under development)</small>
                 <input type="password" placeholder="leave empty to allow public access" class="form-control" id="accessCode" name="access_code" value="{{ $form->access_code }}">
-            </div>
-
-            <div class="mb-3 position-relative">
-                <label for="publicUrl" class="form-label">Public URL</label>
-                <input type="text" class="form-control" id="publicUrl" readOnly value="{{ request()->getUrl() . route('forms.show', md5($form->id), $form->slug) }}">
-                <button type="button" class="btn btn-light btn-sm mt-2 position-absolute" style="top: 0.45rem; right: 0.1rem;"
-                    onclick="copyToClipboard('{{ request()->getUrl() . route('forms.show', md5($form->id), $form->slug) }}')">
-                    <i class="fa-regular fa-clipboard"></i>
-                </button>
             </div>
 
             <div class="mt-5">
