@@ -118,10 +118,13 @@
     background: currentColor;
     vertical-align: middle;
 }
-.svc-copilot__discarded {
+.svc-copilot__discarded,
+.svc-copilot__retry-note {
     font-size: 11.5px;
     color: var(--sjs-layer-1-foreground-50, rgba(0, 0, 0, 0.5));
 }
+.svc-copilot__message-actions .svc-copilot__retry-note { align-self: center; }
+.svc-copilot__btn:disabled { opacity: 0.5; cursor: default; }
 
 .svc-copilot__thinking {
     display: flex;

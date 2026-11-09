@@ -273,8 +273,9 @@ function primaryTargetOf(operations) {
 }
 
 // Plain {role, text} turns for the backend; a proposal's outcome is the most useful context for a follow-up correction
+// Turns whose request failed are left out: they carry no answer and would only confuse the model.
 function buildHistory(thread) {
-  return thread.map(message => {
+  return thread.filter(message => !message.failed && message.retryOf === undefined).map(message => {
     if (message.role === "user") return { role: "user", text: message.text };
     const outcome = message.applied ? " (the user applied this change)" : message.discarded ? " (the user discarded this proposal — it was not what they wanted)" : "";
     return { role: "assistant", text: message.role === "error" ? `Error: ${message.text}` : `${message.text}${outcome}` };
@@ -321,18 +322,49 @@ class CopilotStore {
     const instruction = this.input.trim();
     if (instruction === "" || this.busy) return;
 
-    const history = buildHistory(this.thread);
     this.input = "";
-    this.push({ role: "user", text: instruction });
+    const userId = this.push({ role: "user", text: instruction, attempts: 0 });
+    await this.request(userId);
+  }
+
+  /**
+   * Re-sends the user message a failed request belongs to. The error row is
+   * dropped and the same user message is reused, so the thread gains no duplicates.
+   * Only the latest failure is retryable, and only COPILOT_MAX_RETRIES times.
+   */
+  async retry(errorId) {
+    if (this.busy) return;
+    const last = this.thread[this.thread.length - 1];
+    if (!last || last.id !== errorId || last.retryOf === undefined) return;
+
+    const user = this.thread.find(m => m.id === last.retryOf);
+    if (!user || user.attempts > COPILOT_MAX_RETRIES) return;
+
+    this.thread = this.thread.filter(m => m.id !== errorId);
+    await this.request(user.id);
+  }
+
+  // One request for the given user message; failures are recorded against it so they can be retried.
+  async request(userId) {
+    const user = this.thread.find(m => m.id === userId);
+    const index = this.thread.indexOf(user);
+    const history = buildHistory(this.thread.slice(0, index));
+
+    this.update(userId, { attempts: user.attempts + 1, failed: false });
     this.busy = true;
     this.notify();
+
+    const fail = (text) => {
+      this.update(userId, { failed: true });
+      this.push({ role: "error", text, retryOf: userId });
+    };
 
     try {
       const response = await fetch(COPILOT_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          instruction,
+          instruction: user.text,
           document: this.creator.JSON,
           schema: buildTypeSchema(this.creator.survey),
           history,
@@ -342,7 +374,7 @@ class CopilotStore {
 
       const result = await response.json();
       if (!result.status) {
-        this.push({ role: "error", text: result.message || "Copilot request failed." });
+        fail(result.message || "Copilot request failed.");
       } else if (!Array.isArray(result.operations) || result.operations.length === 0) {
         this.push({ role: "ai", text: result.message || "No changes proposed for that instruction." });
       } else {
@@ -350,7 +382,7 @@ class CopilotStore {
         if (this.mode === "auto") this.applyMessage(id, result.operations, true);
       }
     } catch (error) {
-      this.push({ role: "error", text: "Copilot request failed. Please try again." });
+      fail("Copilot request failed.");
     } finally {
       this.busy = false;
       this.notify();
@@ -387,6 +419,7 @@ class CopilotStore {
 
 const h = SurveyUI.createElement;
 const COPILOT_INPUT_MAX_HEIGHT = 130;
+const COPILOT_MAX_RETRIES = 3;
 const COPILOT_THINKING_WORDS = ["Thinking", "Digging", "Cooking", "Pondering", "Sketching", "Untangling", "Assembling", "Scheming"];
 
 function CopilotSpark(props) {
@@ -412,6 +445,24 @@ function CopilotMessageRow(props) {
         h("button", { type: "button", className: "svc-copilot__btn", onClick: () => store.discard(message.id) }, "Discard")
       )
     );
+  }
+  if (message.retryOf !== undefined) {
+    const user = store.thread.find(m => m.id === message.retryOf);
+    const used = user ? user.attempts - 1 : COPILOT_MAX_RETRIES;   // first attempt isn't a retry
+    const isLatest = store.thread[store.thread.length - 1] === message;
+
+    if (used >= COPILOT_MAX_RETRIES) {
+      children.push(h("div", { className: "svc-copilot__retry-note" },
+        `Still failing after ${COPILOT_MAX_RETRIES} retries. If this keeps happening, please contact your administrator.`));
+    } else if (isLatest) {
+      const left = COPILOT_MAX_RETRIES - used;
+      children.push(
+        h("div", { className: "svc-copilot__message-actions" },
+          h("button", { type: "button", className: "svc-copilot__btn", disabled: store.busy, onClick: () => store.retry(message.id) }, "Retry"),
+          h("span", { className: "svc-copilot__retry-note" }, `${left} ${left === 1 ? "retry" : "retries"} left`)
+        )
+      );
+    }
   }
   if (message.applied) {
     children.push(h("div", { className: "svc-copilot__applied" }, (message.autoApplied ? "Applied automatically" : "Applied") + " · undo from the toolbar"));
