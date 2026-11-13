@@ -20,7 +20,7 @@
         "leafs/leaf": "^3.7",
         "leafs/logger": "*",
         "leafs/cors": "*",
-        "leafs/auth": "*",
+        "leafs/auth": "^5.0",
         "leafs/db": "*",
         "leafs/vite": "*",
         "leafs/csrf": "^0.5.4",
