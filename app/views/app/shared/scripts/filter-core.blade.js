@@ -29,11 +29,11 @@ window.FilterBuilder = (function () {
   'use strict';
 
   const TYPES = {
-    text:    ["contains", "startsWith", "endsWith"],
-    fuzzy:   ["contains"],
+    text:    ["contains", "notContains", "startsWith", "endsWith"],
+    fuzzy:   ["contains", "notContains"],
     numeric: ["equals", "notEquals", "gt", "lt", "gte", "lte", "range"],
     check:   ["empty", "notEmpty"],
-    choice:  ["equals", "notEquals", "contains"],
+    choice:  ["equals", "notEquals", "contains", "notContains"],
   };
 
   const TYPE_LABELS = {
@@ -46,6 +46,7 @@ window.FilterBuilder = (function () {
 
   const OPERATOR_LABELS = {
     contains: "Contains",
+    notContains: "Does Not Contain",
     startsWith: "Starts With",
     endsWith: "Ends With",
     equals: "Equals",

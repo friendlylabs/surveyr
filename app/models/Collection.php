@@ -79,7 +79,9 @@ class Collection extends Model
                             switch ($rule['type']) {
                                 case 'text':
                                 case 'fuzzy':
-                                    if ($rule['operator'] === 'contains' && is_array($val)) {
+                                    if ($rule['operator'] === 'notContains') {
+                                        static::whereNotContains($q, $key, $val);
+                                    } elseif ($rule['operator'] === 'contains' && is_array($val)) {
                                         $q->where(function ($subQ) use ($key, $val) {
                                             foreach ($val as $v) {
                                                 $pattern = '%' . strtolower($v) . '%';
@@ -166,6 +168,10 @@ class Collection extends Model
                                             }
                                             break;
                                         
+                                        case 'notContains':
+                                            static::whereNotContains($q, $key, $val);
+                                            break;
+
                                         default:
                                             // Fallback to equals for backward compatibility
                                             if (is_array($val)) {
@@ -188,6 +194,24 @@ class Collection extends Model
         }
 
         return $query;
+    }
+
+    /**
+     * The answer at `$key` contains none of the values (case-insensitive).
+     * A missing answer contains nothing, so it matches.
+     */
+    protected static function whereNotContains($q, string $key, $val): void
+    {
+        $values = array_filter((array) $val, fn ($v) => $v !== null && $v !== '');
+
+        $q->where(function ($subQ) use ($key, $values) {
+            $subQ->whereRaw("$key IS NULL")->orWhere(function ($none) use ($key, $values) {
+                $none->whereRaw('1 = 1');
+                foreach ($values as $v) {
+                    $none->whereRaw("LOWER($key) NOT LIKE ?", ['%' . strtolower($v) . '%']);
+                }
+            });
+        });
     }
 
     public static function formCollections(int $form_id, bool $remap = false, ?array $filters = null): object

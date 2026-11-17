@@ -205,7 +205,7 @@
      * ------------------------------------------------------------------ */
 
     const OPS = {
-        contains: 'contains', startsWith: 'starts with', endsWith: 'ends with', equals: 'is', notEquals: 'is not',
+        contains: 'contains', notContains: 'does not contain', startsWith: 'starts with', endsWith: 'ends with', equals: 'is', notEquals: 'is not',
         gt: '>', lt: '<', gte: '≥', lte: '≤', range: 'between', empty: 'is empty', notEmpty: 'is filled',
     };
     const titles = Object.fromEntries(formSurvey.getAllQuestions().map(q => [q.name, q.title || q.name]));
