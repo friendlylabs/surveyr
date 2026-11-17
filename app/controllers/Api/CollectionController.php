@@ -128,6 +128,7 @@ class CollectionController extends BaseController
             $this->visualization_rules = $form->viz_rules;
             $collections = Collection::with('payload')
                 ->where('form_id', $form->id)
+                ->live()
                 ->get();
 
             // todo: optimize this by only selecting the submission field from the payloads and making a more efficient query

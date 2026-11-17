@@ -103,6 +103,8 @@ class CollectionController extends Controller
         $this->submissions = Collection::formCollections($formId, true, $filters);
         $this->flags = $this->form->flagGroup?->flags;
         $this->hasAttachments = (bool) AttachmentExport::questions($this->form->content);
+        $this->showArchived = $this->wantsArchived();
+        $this->archivedCount = Collection::where('form_id', $formId)->where('is_archived', true)->count();
 
         $this->renderPage("Form Submissions", "app.collections.list");
     }
@@ -150,6 +152,7 @@ class CollectionController extends Controller
     /**
      * The filters a submissions page applies, and the saved filter it came from.
      * Ad-hoc `?filters=<base64>` wins; `?view=<id>` loads one of the form's saved filters.
+     * `?archived=1` switches to the archived submissions instead of the live ones.
      *
      * @return array{0: ?array, 1: ?CollectionFilter}
      */
@@ -159,9 +162,17 @@ class CollectionController extends Controller
         $saved = $view ? CollectionFilter::where('form_id', $form->id)->find((int) $view) : null;
 
         $filters = json_decode(urldecode(base64_decode(request()->params('filters') ?? '')), true);
-        if(is_array($filters)) return [$filters, $saved];
+        if(!is_array($filters)) $filters = $saved?->filters ?: null;
 
-        return [$saved?->filters ?: null, $saved];
+        if($this->wantsArchived()) $filters = ['archived' => 'only'] + ($filters ?: []);
+        elseif(is_array($filters)) unset($filters['archived']);
+
+        return [$filters ?: null, $saved];
+    }
+
+    protected function wantsArchived() : bool
+    {
+        return (bool) request()->params('archived');
     }
 
     /**
@@ -311,6 +322,37 @@ class CollectionController extends Controller
         }
     }
 
+    /**
+     * Archive or restore submissions of one form (AJAX).
+     * Takes `ids` and `archive` (1 archives, 0 restores).
+     *
+     * @param int $formId
+     * @return \Leaf\Http\JsonResponse
+     */
+    public function archive($formId)
+    {
+        try{
+            $form = Form::find($formId);
+            if(!$form) return $this->jsonError("Form not found", 200);
+
+            if(!$this->formInstance->formOwnerShipCheck($form->id) && !$this->formInstance->hasAccessbySpace($form->spaces))
+                return $this->jsonError("You don't have access to this form", 200);
+
+            $ids = array_values(array_filter(array_map('intval', (array) request()->params('ids', []))));
+            if(!$ids) return $this->jsonError("Select at least one submission", 200);
+
+            $archive = (bool) request()->params('archive', 1);
+            $count = Collection::where('form_id', $form->id)->whereIn('id', $ids)->update(['is_archived' => $archive]);
+
+            $noun = $count === 1 ? "submission" : "submissions";
+            return $this->jsonSuccess(($archive ? "Archived " : "Restored ") . "$count $noun");
+        }
+
+        catch(\Exception $e){
+            return $this->jsonException($e);
+        }
+    }
+
     /** The form, if the user may flag its submissions and it has a flag group; else an error message. */
     protected function flaggableForm($formId) : Form|string
     {
@@ -436,6 +478,7 @@ class CollectionController extends Controller
 
         app()::post('/submissions/flag/{id}', ['name'=>'collections.flag', 'CollectionController@flag']);
         app()::post('/submissions/flag-bulk/{form}', ['name'=>'collections.flagBulk', 'CollectionController@flagBulk']);
+        app()::post('/submissions/archive/{form}', ['name'=>'collections.archive', 'CollectionController@archive']);
         app()::post('/submissions/attachments/{form}', ['name'=>'collections.attachments', 'CollectionController@exportAttachments']);
     }
 }

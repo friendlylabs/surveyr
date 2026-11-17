@@ -45,7 +45,7 @@
                 @foreach($forms as $form)
                     @php
                         [$status, $tone, $when] = $form->statusInfo();
-                        $responses = $form->collections_count ?? $form->collections()->count();
+                        $responses = $form->collections_count ?? $form->collections()->live()->count();
                     @endphp
                     <tr>
                         <td class="ps-0 py-2">

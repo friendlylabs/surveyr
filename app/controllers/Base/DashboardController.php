@@ -49,7 +49,7 @@ class DashboardController extends Controller
      */
     protected function submissionSummary(array $formIds) : array
     {
-        $base = fn () => Collection::whereIn('form_id', $formIds ?: [0]);
+        $base = fn () => Collection::live()->whereIn('form_id', $formIds ?: [0]);
 
         $recent = $base()->where('created_at', '>=', now()->subDays(30))->count();
         $previous = $base()
@@ -108,7 +108,7 @@ class DashboardController extends Controller
      */
     protected function activeForms(array $formIds, int $limit = 6) : object
     {
-        $rows = Collection::whereIn('form_id', $formIds ?: [0])
+        $rows = Collection::live()->whereIn('form_id', $formIds ?: [0])
             ->select(
                 'form_id',
                 DB::$capsule::raw('COUNT(id) as submission_count'),
@@ -137,7 +137,7 @@ class DashboardController extends Controller
      */
     protected function submissionSeries(array $formIds) : array
     {
-        return Collection::whereIn('form_id', $formIds ?: [0])
+        return Collection::live()->whereIn('form_id', $formIds ?: [0])
             ->where('created_at', '>=', now()->subDays(self::SERIES_DAYS)->startOfDay())
             ->select(DB::$capsule::raw('DATE(created_at) as day'), DB::$capsule::raw('COUNT(id) as n'))
             ->groupBy('day')

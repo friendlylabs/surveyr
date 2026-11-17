@@ -18,6 +18,7 @@ const questions = survey.getAllQuestions();
 const flagByKey = new Map((flagGroup || []).map(f => [f.key, f]));
 const flagById = new Map(surveyResults.map(r => [r.id, flagByKey.has(r.flag) ? r.flag : null]));
 const selected = new Set();
+const removed = new Set();      // archived / restored here, so no longer part of this view
 
 /* ---------------------------------------------------------------------- *
  |  Formatting                                                            |
@@ -158,12 +159,17 @@ const rows = surveyResults.map((r, idx) => [
 const tableHost = document.getElementById('surveyDataTable');
 let grid = null;
 
-document.addEventListener('DOMContentLoaded', function () {
-    if (!rows.length) return;
+/**
+ * (Re)build the grid over the rows still in this view. Grid.js' updateConfig()
+ * is unreliable with these columns, so a change of rows means a fresh grid.
+ */
+function renderGrid() {
+    grid?.destroy?.();
+    tableHost.innerHTML = '';
 
     grid = new gridjs.Grid({
-        columns,
-        data: rows,
+        columns: columns.map(c => ({ ...c })),
+        data: rows.filter(row => !removed.has(row[0])),
         search: true,
         sort: true,
         resizable: true,
@@ -179,6 +185,11 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.target.closest('input, label, button, a, .gridjs-resizable')) return;
         viewSubmissionCanvas(row.cells[0].data);
     });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    if (!rows.length) return;
+    renderGrid();
 
     // Grid.js re-renders the body on every page / sort / search
     new MutationObserver(syncSelectAll).observe(tableHost, { childList: true, subtree: true });
@@ -344,6 +355,39 @@ function saveBulkFlag(key) {
 }
 
 /* ---------------------------------------------------------------------- *
+ |  Archive / restore                                                     |
+ * ---------------------------------------------------------------------- */
+
+const archivedCount = document.querySelector('[data-archived-count]');
+
+/** Archive (archive = 1) or restore (0) submissions, then drop them from this view. */
+function saveArchive(ids, archive) {
+    if (!ids.length) return Promise.reject();
+
+    return postFlag(`@route('collections.archive', $form->id)`, { ids, archive })
+        .then(response => {
+            ids.forEach(id => { removed.add(id); selected.delete(id); });
+            if (archivedCount && archive) archivedCount.textContent = Number(archivedCount.textContent) + ids.length;
+
+            if (grid) renderGrid();
+            renderBulkBar();
+            toast.success({ message: response.message });
+        });
+}
+
+document.querySelector('[data-bulk-archive]')?.addEventListener('click', e => {
+    saveArchive(Array.from(selected), Number(e.currentTarget.dataset.bulkArchive)).catch(() => {});
+});
+
+let previewId = null;
+document.getElementById('submissionArchiveBtn')?.addEventListener('click', e => {
+    if (!previewId) return;
+    saveArchive([previewId], Number(e.currentTarget.dataset.archive))
+        .then(() => bootstrap.Offcanvas.getInstance(document.getElementById('surveySubmissionOffcanvas'))?.hide())
+        .catch(() => {});
+});
+
+/* ---------------------------------------------------------------------- *
  |  Export                                                                |
  * ---------------------------------------------------------------------- */
 
@@ -351,7 +395,7 @@ function exportRows(onlySelected) {
     const header = ['Response', 'Submitted', ...questions.map(q => q.title || slugToWords(q.name)), ...(flagGroup ? ['Flag'] : [])];
     const body = surveyResults
         .map((r, idx) => ({ r, idx }))
-        .filter(({ r }) => !onlySelected || selected.has(r.id))
+        .filter(({ r }) => !removed.has(r.id) && (!onlySelected || selected.has(r.id)))
         .map(({ r, idx }) => [
             responseId(r.id),
             submittedAt(r.created_at),
@@ -381,7 +425,7 @@ async function exportAttachments(onlySelected, button) {
         selected.forEach(id => body.append('ids[]', id));
     } else {
         const params = new URLSearchParams(window.location.search);
-        ['filters', 'view'].forEach(key => params.has(key) && body.append(key, params.get(key)));
+        ['filters', 'view', 'archived'].forEach(key => params.has(key) && body.append(key, params.get(key)));
     }
 
     const original = button.innerHTML;
@@ -437,6 +481,7 @@ async function viewSubmissionCanvas(submissionId) {
     const data = await response.json();
     if (!data.status) return toast.error({ message: data.message || 'An error occurred while fetching submission data.' });
 
+    previewId = submissionId;
     showSingleCollection(data.submission);
     document.getElementById('surveySubmissionOffcanvasLabel').textContent = responseId(submissionId);
     bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('surveySubmissionOffcanvas')).show();

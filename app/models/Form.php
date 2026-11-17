@@ -80,7 +80,7 @@ class Form extends Model
     public static function userForms($userId) : object
     {
         return static::accessibleQuery((int) $userId)
-            ->withCount('collections')->withReportsCount()
+            ->withCount(['collections' => fn ($q) => $q->live()])->withReportsCount()
             ->orderBy('created_at', 'desc')->get();
     }
 

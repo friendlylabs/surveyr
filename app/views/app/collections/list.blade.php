@@ -36,6 +36,12 @@
                             <a href="@route('forms.submissions', $form->id)" class="text-reset" title="Show all submissions" aria-label="Show all submissions"><i class="fa-solid fa-xmark"></i></a>
                         </span>
                     @endif
+                    @if($showArchived)
+                        <span class="badge badge-phoenix badge-phoenix-warning d-inline-flex align-items-center gap-2 fs-10">
+                            <i class="fa-solid fa-box-archive"></i> Archived
+                            <a href="@route('forms.submissions', $form->id)" class="text-reset" title="Back to submissions" aria-label="Back to submissions"><i class="fa-solid fa-xmark"></i></a>
+                        </span>
+                    @endif
                 </div>
 
                 <div class="position-absolute end-5 top-0">
@@ -55,6 +61,15 @@
                             <li>
                                 <a class="dropdown-item" href="@route('reports.forForm', $form->id)">Form Reports</a>
                             </li>
+                            <li>
+                                @if($showArchived)
+                                    <a class="dropdown-item" href="@route('forms.submissions', $form->id)">Back to submissions</a>
+                                @else
+                                    <a class="dropdown-item" href="@route('forms.submissions', $form->id)?archived=1">
+                                        Archived submissions <span class="text-body-tertiary">(<span data-archived-count>{{ $archivedCount }}</span>)</span>
+                                    </a>
+                                @endif
+                            </li>
                             @if($form->canBePurgedBy((int) auth()->id()))
                                 <li><a class="dropdown-item text-danger" href="@route('collections.clear', $form->id)"  onclick="confirmDelete(event)" data-delete-msg="Are you sure you want to clear all submissions? This action cannot be undone.">
                                     Purge Submissions
@@ -67,6 +82,15 @@
                 </div>
             </div>
         </div>
+
+        @php
+            // the visualize link keeps the page's filter, saved view and archived switch
+            $vizQuery = http_build_query(array_filter([
+                'filters' => $_GET['filters'] ?? null,
+                'view' => isset($_GET['filters']) ? null : $activeFilter?->id,
+                'archived' => $showArchived ? 1 : null,
+            ]));
+        @endphp
 
         @if($submissions->count())
             <div class="position-relative">
@@ -81,7 +105,7 @@
                     @endif
 
                     <a class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Visualize"
-                        href="@route('forms.visualize', $form->id){{ isset($_GET['filters']) ? '?filters=' . urlencode($_GET['filters']) : ($activeFilter ? '?view=' . $activeFilter->id : '') }}">
+                        href="@route('forms.visualize', $form->id){{ $vizQuery ? '?' . $vizQuery : '' }}">
                         <i class="fa-solid fa-chart-simple"></i>
                     </a>
                 </div>
@@ -92,6 +116,13 @@
                             <i class="fa-solid fa-flag me-1"></i> Flag as&hellip;
                         </button>
                     @endif
+                    <button type="button" class="btn btn-sm btn-phoenix-secondary" data-bulk-archive="{{ $showArchived ? 0 : 1 }}">
+                        @if($showArchived)
+                            <i class="fa-solid fa-box-open me-1"></i> Restore
+                        @else
+                            <i class="fa-solid fa-box-archive me-1"></i> Archive
+                        @endif
+                    </button>
                     <button type="button" class="btn btn-sm btn-phoenix-secondary" data-bulk-export>
                         <i class="fa-solid fa-file-excel me-1"></i> Export selected
                     </button>
@@ -108,7 +139,9 @@
             <div class="py-5">
                 @include('components.empty', [
                     'alertTitle' => 'No records Found',
-                    'alertMessage' => 'No submissions have been made to this form yet.'
+                    'alertMessage' => $showArchived
+                        ? 'No archived submissions match this view.'
+                        : 'No submissions have been made to this form yet.'
                 ])
             </div>
         @endif
@@ -149,7 +182,16 @@
     <div class="offcanvas offcanvas-start" tabindex="-1" id="surveySubmissionOffcanvas" aria-labelledby="surveySubmissionOffcanvasLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="surveySubmissionOffcanvasLabel">Submission</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <div class="d-flex align-items-center gap-2">
+                <button type="button" class="btn btn-sm btn-phoenix-secondary" id="submissionArchiveBtn" data-archive="{{ $showArchived ? 0 : 1 }}">
+                    @if($showArchived)
+                        <i class="fa-solid fa-box-open me-1"></i> Restore
+                    @else
+                        <i class="fa-solid fa-box-archive me-1"></i> Archive
+                    @endif
+                </button>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
         </div>
         <div class="offcanvas-body" id="surveySubmissionBlock">
             

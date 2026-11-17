@@ -153,7 +153,7 @@ class FormsController extends Controller
      */
     protected function overviewStats(Form $form) : array
     {
-        $base = fn () => Collection::where('form_id', $form->id);
+        $base = fn () => Collection::live()->where('form_id', $form->id);
         $since = fn (int $days) => now()->subDays($days)->startOfDay();
 
         $total = $base()->count();

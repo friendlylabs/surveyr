@@ -21,14 +21,27 @@ class Collection extends Model
         "is_optimized" => "boolean",
     ];
 
+    /** Only submissions that are not archived. */
+    public function scopeLive($query)
+    {
+        return $query->where('is_archived', false);
+    }
+
     /**
      * A form's submissions narrowed by a filter object
-     * ({ from_date, to_date, flag: [], "<question>": [rules] }), as a query
+     * ({ from_date, to_date, flag: [], archived, "<question>": [rules] }), as a query
      * so callers can count, page or load it.
+     *
+     * Archived submissions are left out unless `archived` is 'only' or 'all'.
      */
     public static function filteredQuery(int $form_id, ?array $filters = null)
     {
         $query = static::where('form_id', $form_id);
+
+        $archived = $filters['archived'] ?? null;
+        if ($archived === 'only') $query->where('is_archived', true);
+        elseif ($archived !== 'all') $query->where('is_archived', false);
+        unset($filters['archived']);
 
         if ($filters) {
             // Handle core filters first (direct structure)
@@ -189,8 +202,7 @@ class Collection extends Model
                         : json_decode($item->payload->submission, true))
                     : [];
                 $submission['id'] = $item->id;
-                $submission['flag'] = $item->flag;
-                $submission['created_at'] = $item->created_at?->toIso8601String();
+                $submission['flag'] = $item->flag;                $submission['created_at'] = $item->created_at?->toIso8601String();
                 return $submission;
             });
         }
@@ -203,7 +215,7 @@ class Collection extends Model
     {
         # cols: formId, formName, submission:int, unflagged:int, last_submission
         $spaces = Space::absoluteUserSpaces($userId);
-        return self::where(function ($query) use ($userId, $spaces) {
+        return self::live()->where(function ($query) use ($userId, $spaces) {
             $query->whereHas('form', function ($query) use ($userId, $spaces) {
                 $query->where('user_id', $userId)
                       ->orWhereJsonContains('collaborators', (string) $userId)
@@ -236,7 +248,7 @@ class Collection extends Model
             ->orWhereJsonContains('members', (string) $userId)->get()->pluck('id')->toArray();
         if(!$spaces || !count($spaces)) $spaces = [0];
 
-        $statistics = static::with('form')
+        $statistics = static::with('form')->live()
             ->where(function ($query) use ($userId, $spaces) {
                 $query->whereHas('form', function ($query) use ($userId, $spaces) {
                     $query->where('user_id', $userId)
