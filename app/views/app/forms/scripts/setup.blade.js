@@ -54,8 +54,8 @@
         const get = name => getComputedStyle(document.documentElement).getPropertyValue('--phoenix-' + name).trim();
         const dark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
         return {
-            bar: dark ? '#16a085' : (get('primary') || '#19b394'),
-            line: dark ? '#e3e6ed' : '#31374a',
+            accent: dark ? '#1fc8a6' : (get('primary') || '#19b394'),
+            line: dark ? '#8a94ad' : '#6e7891',
             text: get('body-color') || (dark ? '#9fa6bc' : '#31374a'),
             muted: get('tertiary-color') || (dark ? '#8a94ad' : '#525b75'),
             grid: get('border-color-translucent') || (dark ? '#373e53' : '#e3e6ed'),
@@ -93,7 +93,7 @@
             grid: { left: 4, right: 8, top: 16, bottom: 4, containLabel: true },
             tooltip: {
                 trigger: 'axis',
-                axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(127,127,127,.08)' } },
+                axisPointer: { type: 'line', lineStyle: { color: t.muted, width: 1, type: 'solid', opacity: .5 } },
                 backgroundColor: t.surface,
                 borderColor: t.grid,
                 padding: [8, 12],
@@ -109,6 +109,7 @@
             xAxis: {
                 type: 'category',
                 data: data.map(b => `${MONTHS[b.date.getMonth()]} ${b.date.getDate()}`),
+                boundaryGap: false,
                 axisLine: { lineStyle: { color: t.grid } },
                 axisTick: { show: false },
                 axisLabel: { color: t.muted, fontSize: 11, hideOverlap: true, margin: 10 },
@@ -124,11 +125,22 @@
             series: [
                 {
                     name: 'Responses',
-                    type: 'bar',
+                    type: 'line',
                     data: data.map(b => b.value),
-                    barMaxWidth: 22,
-                    itemStyle: { color: t.bar, opacity: 0.85, borderRadius: [3, 3, 0, 0] },
-                    emphasis: { itemStyle: { opacity: 1 } },
+                    smooth: false,
+                    symbol: 'circle',
+                    symbolSize: 8,
+                    showSymbol: false,
+                    lineStyle: { width: 2, color: t.accent },
+                    itemStyle: { color: t.accent, borderColor: t.surface, borderWidth: 2 },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: echarts.color.modifyAlpha(t.accent, .25) },
+                            { offset: 1, color: echarts.color.modifyAlpha(t.accent, 0) },
+                        ]),
+                    },
+                    emphasis: { focus: 'none', scale: true },
+                    z: 3,
                 },
                 {
                     name: '7-day average',
@@ -136,9 +148,10 @@
                     data: data.map(b => b.avg),
                     smooth: 0.3,
                     showSymbol: false,
-                    lineStyle: { width: 2, color: t.line, type: 'solid' },
+                    lineStyle: { width: 1.5, color: t.line, type: [4, 4] },
                     itemStyle: { color: t.line },
-                    z: 3,
+                    emphasis: { disabled: true },
+                    z: 2,
                 },
             ],
         }, true);

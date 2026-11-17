@@ -95,8 +95,9 @@ section.fo-pane { padding: 0; }
 .fo-chart { height: 260px; }
 .fo-legend { display: flex; gap: 18px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--fo-line); font-size: 12.5px; color: var(--fo-body); }
 .fo-legend i { display: inline-block; vertical-align: middle; margin-right: 6px; }
-.fo-legend .is-bar  { width: 9px; height: 9px; border-radius: 2px; background: var(--fo-accent); }
-.fo-legend .is-line { width: 14px; height: 2px; border-radius: 2px; background: var(--fo-text); }
+.fo-legend .is-area { width: 14px; height: 9px; border-top: 2px solid var(--fo-accent); background: linear-gradient(color-mix(in srgb, var(--fo-accent) 25%, transparent), transparent); }
+[data-bs-theme=dark] .fo-legend .is-area { --fo-accent: #1fc8a6; }   /* the chart's dark-mode line, see setup.blade.js */
+.fo-legend .is-line { width: 14px; height: 0; border-top: 1.5px dashed var(--fo-muted, #6e7891); }
 
 .fo-bars { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
 .fo-bar-label { display: flex; justify-content: space-between; gap: 1rem; font-size: 13.5px; color: var(--fo-text); margin-bottom: 6px; }

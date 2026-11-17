@@ -19,7 +19,7 @@
             @if($o['total'])
                 <div id="foDailyChart" class="fo-chart"></div>
                 <div class="fo-legend">
-                    <span><i class="is-bar"></i> Responses</span>
+                    <span><i class="is-area"></i> Responses</span>
                     <span><i class="is-line"></i> 7-day average</span>
                 </div>
             @else
