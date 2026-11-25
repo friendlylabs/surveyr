@@ -33,4 +33,20 @@ return [
         'license_key' => env('SURVEYJS_LICENSE_KEY'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Avatars
+    |--------------------------------------------------------------------------
+    |
+    | Users get a generated picture (DiceBear's "lorelei" style by default).
+    | :seed is replaced by the user's random public hash, never their name,
+    | email or phone, so no personal data goes to the image service. Point it
+    | at a self-hosted DiceBear, or set it empty to show initials only.
+    |
+    */
+
+    'avatars' => [
+        'url' => env('SURVEYR_AVATAR_URL', 'https://api.dicebear.com/7.x/lorelei/svg?seed=:seed'),
+    ],
+
 ];

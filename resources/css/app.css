@@ -712,8 +712,16 @@
 
   /* ================= Avatars ================= */
   .pc-avatar {
-    @apply grid size-9 flex-none place-items-center rounded-full border-0 bg-pc-brand-soft p-0 text-[13px] leading-none
-      font-semibold text-pc-brand-ink;
+    @apply relative grid size-9 flex-none place-items-center overflow-hidden rounded-full border-0 bg-pc-brand-soft p-0
+      text-[13px] leading-none font-semibold text-pc-brand-ink;
+  }
+  /* the generated picture covers the initials once it loads */
+  .pc-avatar-img {
+    @apply absolute inset-0 size-full object-cover;
+  }
+  /* its background is transparent, so the initials behind it hide once it has loaded */
+  .pc-avatar[data-pc-loaded] {
+    @apply text-transparent;
   }
   .pc-avatar-sm {
     @apply size-7 text-[11px];
