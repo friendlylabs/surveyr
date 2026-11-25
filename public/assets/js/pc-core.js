@@ -9,6 +9,26 @@
   pc.qs = (sel, ctx) => (ctx || document).querySelector(sel);
   pc.qsa = (sel, ctx) => Array.from((ctx || document).querySelectorAll(sel));
 
+  /**
+   * The text in the page's language, the JS side of Laravel's __(): looks it up in window.pcStrings (the layout
+   * hands over lang/{locale}.json) and falls back to the text itself; `:name` placeholders are filled from `replace`.
+   *   pc.t("Choose a date")
+   *   pc.t(":count selected", { count: 3 })
+   */
+  pc.t = function (text, replace) {
+    const strings = window.pcStrings || {};
+    let out = Object.prototype.hasOwnProperty.call(strings, text) ? strings[text] : text;
+    if (replace) {
+      Object.keys(replace).forEach((key) => {
+        out = out.split(":" + key).join(String(replace[key]));
+      });
+    }
+    return out;
+  };
+
+  /** True when the page reads right to left (<html dir="rtl">). */
+  pc.rtl = () => document.documentElement.dir === "rtl";
+
   pc.escapeHtml = function (str) {
     return String(str ?? "").replace(/[&<>"']/g, (c) => ({
       "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -106,9 +126,16 @@
    * Places a `position: fixed` element next to `anchor`. placement: 'top' | 'bottom' | 'left' | 'right', optionally
    * '-start' / '-end' (e.g. 'bottom-end'). Flips when the side would overflow, then clamps to the viewport.
    * Returns the side used, so callers can point an arrow at the anchor.
+   * Placements are written for left-to-right pages; on a right-to-left page they mirror ('right' opens on the left,
+   * '-start' / '-end' align to the anchor's right / left edge), and the side returned is the physical one.
    */
   pc.place = function (floating, anchor, placement, gap) {
-    const [side0, align = "center"] = String(placement || "bottom").split("-");
+    let [side0, align = "center"] = String(placement || "bottom").split("-");
+    if (pc.rtl()) {
+      const mirror = { left: "right", right: "left", start: "end", end: "start" };
+      side0 = mirror[side0] || side0;
+      align = mirror[align] || align;
+    }
     const g = gap == null ? 8 : gap;
     const a = anchor.getBoundingClientRect();
     const f = floating.getBoundingClientRect();

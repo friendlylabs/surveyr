@@ -48,8 +48,9 @@
     const r = trigger.getBoundingClientRect();
     const w = el.offsetWidth;
     const h = el.offsetHeight;
-    const alignEnd = el.classList.contains("pc-dropdown-menu-end");
-    const left = Math.max(EDGE, Math.min(alignEnd ? r.right - w : r.left, window.innerWidth - w - EDGE));
+    // start / end are the trigger's inline edges: left / right on an LTR page, right / left on an RTL one
+    const alignRight = el.classList.contains("pc-dropdown-menu-end") !== pc.rtl();
+    const left = Math.max(EDGE, Math.min(alignRight ? r.right - w : r.left, window.innerWidth - w - EDGE));
     const below = r.bottom + GAP;
     const top = below + h > window.innerHeight - EDGE && r.top - GAP - h >= EDGE ? r.top - GAP - h : below;
     el.style.left = left + "px";

@@ -14,10 +14,10 @@
  */
 window.auth = (function () {
   const DEFAULTS = {
-    missing: "This field is required.",
-    email: "Enter a valid email address.",
-    short: "Too short.",
-    match: "Doesn't match.",
+    missing: () => pc.t("This field is required."),
+    email: () => pc.t("Enter a valid email address."),
+    short: () => pc.t("Too short."),
+    match: () => pc.t("Doesn't match."),
   };
 
   function param(name) {
@@ -45,7 +45,7 @@ window.auth = (function () {
     input.setAttribute("aria-invalid", String(!!rule));
     if (err) {
       err.hidden = !rule;
-      if (rule) err.textContent = input.dataset["authMsg" + rule[0].toUpperCase() + rule.slice(1)] || DEFAULTS[rule];
+      if (rule) err.textContent = input.dataset["authMsg" + rule[0].toUpperCase() + rule.slice(1)] || DEFAULTS[rule]();
     }
     return !rule;
   }
@@ -87,7 +87,7 @@ window.auth = (function () {
         } else if (onError) {
           onError(data, response);
         } else {
-          toast.error({ message: data.message || "Something went wrong. Try again." });
+          toast.error({ message: data.message || pc.t("Something went wrong. Try again.") });
         }
       });
     });

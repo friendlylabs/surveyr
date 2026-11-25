@@ -35,10 +35,10 @@
 
   function render(value, theme) {
     document.documentElement.dataset.pcTheme = theme;
-    const label = theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
+    const label = theme === "dark" ? pc.t("Switch to light theme") : pc.t("Switch to dark theme");
     document.querySelectorAll('[data-pc-trigger="theme-toggle"]').forEach((el) => {
       el.setAttribute("aria-label", label);
-      if (el.hasAttribute("data-pc-tooltip")) el.setAttribute("data-pc-tooltip", theme === "dark" ? "Light theme" : "Dark theme");
+      if (el.hasAttribute("data-pc-tooltip")) el.setAttribute("data-pc-tooltip", theme === "dark" ? pc.t("Light theme") : pc.t("Dark theme"));
     });
     document.dispatchEvent(new CustomEvent("pc:theme", { detail: { choice: value, theme } }));
   }

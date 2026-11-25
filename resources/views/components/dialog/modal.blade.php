@@ -7,7 +7,7 @@
     Slots: default = body, `footer` replaces the Cancel / submit buttons. size = sm | lg | xl.
     Open with data-pc-trigger="modal" data-pc-target="#id" or pcModal.open('id').
 --}}
-@props(['id', 'title', 'subtitle' => null, 'size' => null, 'action' => null, 'submit' => 'Save', 'footer' => null])
+@props(['id', 'title', 'subtitle' => null, 'size' => null, 'action' => null, 'submit' => __('Save'), 'footer' => null])
 
 @php($panelTag = $action ? 'form' : 'div')
 
@@ -20,7 +20,7 @@
                 <div id="{{ $id }}Title" class="pc-modal-title" data-title>{{ $title }}</div>
                 @if ($subtitle !== null)<div class="pc-modal-subtitle" data-subtitle>{{ $subtitle }}</div>@endif
             </div>
-            <button type="button" class="pc-close" data-pc-dismiss="modal" aria-label="Close">×</button>
+            <button type="button" class="pc-close" data-pc-dismiss="modal" aria-label="{{ __('Close') }}">×</button>
         </div>
         <div class="pc-modal-body flex flex-col gap-4">
             {{ $slot }}
@@ -29,7 +29,7 @@
             @if ($footer)
                 {{ $footer }}
             @else
-                <button type="button" class="pc-btn pc-btn-secondary" data-pc-dismiss="modal">Cancel</button>
+                <button type="button" class="pc-btn pc-btn-secondary" data-pc-dismiss="modal">{{ __('Cancel') }}</button>
                 @if ($action)<button type="submit" class="pc-btn pc-btn-primary">{{ $submit }}</button>@endif
             @endif
         </div>

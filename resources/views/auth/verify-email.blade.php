@@ -5,21 +5,21 @@
             <i class="ph ph-envelope-simple text-[22px]" aria-hidden="true"></i>
         </span>
         <div>
-            <h1 id="title" class="pc-auth-title">Confirm your email</h1>
+            <h1 id="title" class="pc-auth-title">{{ __('Confirm your email') }}</h1>
             <p class="pc-auth-sub">
-                We sent a confirmation link to<br>
+                {{ __('We sent a confirmation link to') }}<br>
                 <strong class="font-semibold break-all text-pc-text">{{ $email }}</strong>
             </p>
-            <p class="pc-auth-sub">Open it to finish setting up your account. The link expires in {{ $minutes }} minutes.</p>
+            <p class="pc-auth-sub">{{ __('Open it to finish setting up your account. The link expires in :minutes minutes.', ['minutes' => $minutes]) }}</p>
         </div>
 
         <form id="resend" class="w-full" method="POST" action="{{ route('auth.verify-email.send') }}">
             @csrf
-            <button type="submit" id="resendBtn" class="pc-btn pc-btn-secondary pc-btn-lg pc-btn-block">Resend email</button>
+            <button type="submit" id="resendBtn" class="pc-btn pc-btn-secondary pc-btn-lg pc-btn-block">{{ __('Resend email') }}</button>
         </form>
 
         <form method="POST" action="{{ route('auth.logout') }}" onsubmit="submitForm(event)" class="pc-auth-foot">
-            Wrong address? <button type="submit" class="pc-auth-link border-0 bg-transparent p-0">Sign out</button> and use another.
+            {{ __('Wrong address?') }} <button type="submit" class="pc-auth-link border-0 bg-transparent p-0">{{ __('Sign out') }}</button> {{ __('and use another.') }}
         </form>
     </section>
 
@@ -37,7 +37,7 @@
                     clearInterval(timer);
                     const tick = () => {
                         resend.disabled = left > 0;
-                        resend.textContent = left > 0 ? `Resend email in ${left}s` : "Resend email";
+                        resend.textContent = left > 0 ? pc.t("Resend email in :time", { time: left + "s" }) : pc.t("Resend email");
                         if (left-- <= 0) clearInterval(timer);
                     };
                     tick();

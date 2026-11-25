@@ -3,7 +3,7 @@
       <x-filter name="status" :options="['verified' => 'Confirmed', 'unverified' => 'Unconfirmed']" all="Any status" />
     options: [value => label]; `all` is the first option's text (empty value = no filter).
 --}}
-@props(['name', 'options' => [], 'all' => 'All'])
+@props(['name', 'options' => [], 'all' => __('All')])
 
 <form method="GET" {{ $attributes->class('w-44 max-sm:w-full') }}>
     @foreach (request()->except([$name, 'page']) as $key => $value)
@@ -11,7 +11,7 @@
             <input type="hidden" name="{{ $key }}" value="{{ $value }}">
         @endif
     @endforeach
-    <select name="{{ $name }}" class="pc-select" aria-label="{{ $all }}" onchange="this.form.submit()">
+    <select name="{{ $name }}" class="pc-select" aria-label="{{ $all }}" onchange="this.form.requestSubmit()">
         <option value="">{{ $all }}</option>
         @foreach ($options as $value => $text)
             <option value="{{ $value }}" @selected(strcasecmp((string) request($name), (string) $value) === 0)>{{ $text }}</option>

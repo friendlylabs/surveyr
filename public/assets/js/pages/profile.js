@@ -35,7 +35,7 @@
     if (res.status === 423) throw new ConfirmRequired();
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
-      const err = new Error(data.message || "Something went wrong. Try again.");
+      const err = new Error(data.message || pc.t("Something went wrong. Try again."));
       err.data = data;
       throw err;
     }
@@ -105,7 +105,7 @@
         }, button),
 
       cancel: async (button) => {
-        if (!(await confirm({ title: "Cancel the setup?", text: "You can start again whenever you like.", icon: "warning", confirmButtonText: "Cancel setup", cancelButtonText: "Keep going" }))) return;
+        if (!(await confirm({ title: pc.t("Cancel the setup?"), text: pc.t("You can start again whenever you like."), icon: "warning", confirmButtonText: pc.t("Cancel setup"), cancelButtonText: pc.t("Keep going") }))) return;
         guarded(async () => {
           await call(urls.twoFactorDisable, { method: "POST" });
           qr.innerHTML = '<span class="pc-spinner text-pc-muted"></span>';
@@ -120,20 +120,20 @@
       "copy-codes": () => copyToClipboard(codes.innerText),
 
       regenerate: async (button) => {
-        if (!(await confirm({ title: "Make new recovery codes?", text: "The old ones stop working straight away.", icon: "warning", confirmButtonText: "Make new codes" }))) return;
+        if (!(await confirm({ title: pc.t("Make new recovery codes?"), text: pc.t("The old ones stop working straight away."), icon: "warning", confirmButtonText: pc.t("Make new codes") }))) return;
         guarded(async () => {
           await call(urls.twoFactorRegenerate, { method: "POST" });
           await loadCodes();
-          toast.success({ message: "New recovery codes made. Save them somewhere safe." });
+          toast.success({ message: pc.t("New recovery codes made. Save them somewhere safe.") });
         }, button);
       },
 
       disable: async (button) => {
-        if (!(await confirm({ title: "Turn off two-factor authentication?", text: "Your account will be protected by your password alone.", icon: "danger", confirmButtonText: "Turn off" }))) return;
+        if (!(await confirm({ title: pc.t("Turn off two-factor authentication?"), text: pc.t("Your account will be protected by your password alone."), icon: "danger", confirmButtonText: pc.t("Turn off") }))) return;
         guarded(async () => {
           await call(urls.twoFactorDisable, { method: "POST" });
           show("disabled");
-          toast.success({ message: "Two-factor authentication is off" });
+          toast.success({ message: pc.t("Two-factor authentication is off") });
         }, button);
       },
     };
@@ -158,7 +158,7 @@
         }
         show("enabled");
         await loadCodes();
-        toast.success({ message: "Two-factor authentication is on. Save your recovery codes." });
+        toast.success({ message: pc.t("Two-factor authentication is on. Save your recovery codes.") });
       }, button);
     });
 
@@ -173,7 +173,7 @@
     if (!button) return;
 
     if (button.dataset.sessionAction === "others") {
-      if (!(await confirm({ title: "Log out your other devices?", text: "Every other browser signed in to your account is signed out now.", icon: "warning", confirmButtonText: "Log them out" }))) return;
+      if (!(await confirm({ title: pc.t("Log out your other devices?"), text: pc.t("Every other browser signed in to your account is signed out now."), icon: "warning", confirmButtonText: pc.t("Log them out") }))) return;
       return guarded(async () => {
         const data = await call(urls.sessionDestroyOthers, { method: "POST" });
         toast.success({ message: data.message });
@@ -181,7 +181,7 @@
       }, button);
     }
 
-    if (!(await confirm({ title: "Log out this device?", text: "It's signed out straight away.", icon: "warning", confirmButtonText: "Log out" }))) return;
+    if (!(await confirm({ title: pc.t("Log out this device?"), text: pc.t("It's signed out straight away."), icon: "warning", confirmButtonText: pc.t("Log out") }))) return;
     guarded(async () => {
       const data = await call(urls.sessionDestroy.replace("__ID__", encodeURIComponent(button.dataset.sessionId)), { method: "POST" });
       button.closest("[data-session-row]").remove();
@@ -202,39 +202,39 @@
 
     function row(passkey) {
       const li = document.createElement("li");
-      li.className = "flex items-center gap-3 border-b border-pc-border-soft px-5 py-3 last:border-b-0";
+      li.className = "pc-section-row";
       li.dataset.passkeyRow = "";
       li.innerHTML = `
         <span class="pc-empty-icon mb-0 size-9 flex-none"><i class="ph ph-fingerprint text-lg" aria-hidden="true"></i></span>
         <div class="min-w-0 flex-1">
           <div class="truncate text-[13px] font-medium">${pc.escapeHtml(passkey.name)}</div>
-          <div class="font-pc-mono text-[11px] text-pc-muted">Added just now · not used yet</div>
+          <div class="font-pc-mono text-[11px] text-pc-muted">${pc.escapeHtml(pc.t("Added just now · not used yet"))}</div>
         </div>
-        <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm text-pc-danger-strong" aria-label="Remove ${pc.escapeHtml(passkey.name)}" data-pc-tooltip="Remove" data-passkey-action="remove" data-passkey-id="${pc.escapeHtml(passkey.id)}"><i class="ph ph-trash text-base" aria-hidden="true"></i></button>`;
+        <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm text-pc-danger-strong" aria-label="${pc.escapeHtml(pc.t("Remove :name", { name: passkey.name }))}" data-pc-tooltip="${pc.escapeHtml(pc.t("Remove"))}" data-passkey-action="remove" data-passkey-id="${pc.escapeHtml(passkey.id)}"><i class="ph ph-trash text-base" aria-hidden="true"></i></button>`;
       return li;
     }
 
     passkeyForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      const name = passkeyForm.elements.name.value.trim() || "Passkey";
+      const name = passkeyForm.elements.name.value.trim() || pc.t("Passkey");
       guarded(async () => {
         const passkey = await pcWebAuthn.register(urls.passkeyOptions, urls.passkeyStore, name);
         list.insertBefore(row(passkey), empty);
         empty.hidden = true;
         passkeyForm.reset();
-        toast.success({ message: "Passkey added. You can sign in with it now." });
+        toast.success({ message: pc.t("Passkey added. You can sign in with it now.") });
       }, passkeyForm.querySelector('button[type="submit"]'));
     });
 
     list.addEventListener("click", async (e) => {
       const button = e.target.closest('[data-passkey-action="remove"]');
       if (!button) return;
-      if (!(await confirm({ title: "Remove this passkey?", text: "You won't be able to sign in with it any more.", icon: "danger", confirmButtonText: "Remove" }))) return;
+      if (!(await confirm({ title: pc.t("Remove this passkey?"), text: pc.t("You won't be able to sign in with it any more."), icon: "danger", confirmButtonText: pc.t("Remove") }))) return;
       guarded(async () => {
         await call(urls.passkeyDestroy.replace("__ID__", encodeURIComponent(button.dataset.passkeyId)), { method: "POST" });
         button.closest("[data-passkey-row]").remove();
         empty.hidden = !!list.querySelector("[data-passkey-row]");
-        toast.success({ message: "Passkey removed" });
+        toast.success({ message: pc.t("Passkey removed") });
       }, button);
     });
   }

@@ -2,7 +2,7 @@
  * pc-tooltip.js — dark hover/focus tooltips (collapsed-sidebar labels, icon buttons, truncated values).
  * Markup contract:
  *   <button data-pc-tooltip="Copy link" data-pc-placement="top">...</button>
- * data-pc-placement: top (default) | bottom | left | right, optionally -start / -end.
+ * data-pc-placement: top (default) | bottom | left | right, optionally -start / -end (mirrored on RTL pages by pc.place()).
  * data-pc-tooltip-only="collapsed": only show while the desktop sidebar rail is collapsed
  *   (used on nav items, whose labels are visible otherwise).
  * One tooltip element is shared by the whole page and positioned with pc.place(), so it is

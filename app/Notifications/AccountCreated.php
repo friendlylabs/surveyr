@@ -41,10 +41,10 @@ class AccountCreated extends Notification implements ShouldQueue
         $minutes = config('auth.passwords.users.expire');
 
         return (new MailMessage)
-            ->subject('Your '.config('app.name').' account')
-            ->greeting("Hello {$notifiable->name},")
-            ->line('An account has been created for you on '.config('app.name').'. Choose a password to sign in.')
-            ->action('Choose a password', $url)
-            ->line("The link expires in {$minutes} minutes. After that, use \"Forgot password\" on the sign-in page to get a new one.");
+            ->subject(__('Your :app account', ['app' => config('app.name')]))
+            ->greeting(__('Hello :name,', ['name' => $notifiable->name]))
+            ->line(__('An account has been created for you on :app. Choose a password to sign in.', ['app' => config('app.name')]))
+            ->action(__('Choose a password'), $url)
+            ->line(__('The link expires in :minutes minutes. After that, use "Forgot password" on the sign-in page to get a new one.', ['minutes' => $minutes]));
     }
 }

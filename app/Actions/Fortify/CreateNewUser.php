@@ -45,8 +45,8 @@ class CreateNewUser implements CreatesNewUsers
                 function (string $attribute, string $value, Closure $fail) use ($domains) {
                     if (! Registration::allowsEmail($value)) {
                         $fail(count($domains) === 1
-                            ? "Sign up with your @{$domains[0]} email address."
-                            : 'Sign up with an email address on '.collect($domains)->map(fn ($d) => "@{$d}")->join(', ', ' or ').'.');
+                            ? __('Sign up with your @:domain email address.', ['domain' => $domains[0]])
+                            : __('Sign up with an email address on :domains.', ['domains' => collect($domains)->map(fn ($d) => "@{$d}")->join(', ', ' '.__('or').' ')]));
                     }
                 },
             ],

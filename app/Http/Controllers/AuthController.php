@@ -75,12 +75,12 @@ class AuthController extends Controller
             $this->twoFactor = true;
             $this->redirect = route('auth.two-factor');
 
-            return $this->jsonSuccess('Enter the code from your authenticator app');
+            return $this->jsonSuccess(__('Enter the code from your authenticator app'));
         }
 
         $this->redirect = redirect()->intended(route('dashboard'))->getTargetUrl();
 
-        return $this->jsonSuccess('Signed in');
+        return $this->jsonSuccess(__('Signed in'));
     }
 
     /** Signs out and sends the user back to the sign-in page with their email filled in. */
@@ -94,7 +94,7 @@ class AuthController extends Controller
 
         $this->redirect = route('auth.login', ['logged-out' => 1, 'email' => $email]);
 
-        return $this->jsonSuccess('Signed out');
+        return $this->jsonSuccess(__('Signed out'));
     }
 
     /**
@@ -116,7 +116,7 @@ class AuthController extends Controller
         if (! $request->hasChallengedUser()) {
             $this->redirect = route('auth.login');
 
-            return $this->jsonError('Your sign-in timed out. Enter your password again.', 419);
+            return $this->jsonError(__('Your sign-in timed out. Enter your password again.'), 419);
         }
 
         $user = $request->challengedUser();
@@ -127,8 +127,8 @@ class AuthController extends Controller
             event(new TwoFactorAuthenticationFailed($user));
 
             [$field, $message] = $request->filled('recovery_code')
-                ? ['recovery_code', "That recovery code isn't valid."]
-                : ['code', "That code didn't match. Try the newest one in your app."];
+                ? ['recovery_code', __("That recovery code isn't valid.")]
+                : ['code', __("That code didn't match. Try the newest one in your app.")];
 
             $this->errors = [$field => [$message]];
 
@@ -142,7 +142,7 @@ class AuthController extends Controller
 
         $this->redirect = redirect()->intended(route('dashboard'))->getTargetUrl();
 
-        return $this->jsonSuccess('Signed in');
+        return $this->jsonSuccess(__('Signed in'));
     }
 
     /**
@@ -162,16 +162,16 @@ class AuthController extends Controller
         $request->validate(['password' => ['required', 'string']]);
 
         if (! Hash::check($request->input('password'), $request->user()->password)) {
-            $this->errors = ['password' => ["That password isn't right."]];
+            $this->errors = ['password' => [__("That password isn't right.")]];
 
-            return $this->jsonError("That password isn't right.", 422);
+            return $this->jsonError(__("That password isn't right."), 422);
         }
 
         $request->session()->passwordConfirmed();
 
         $this->redirect = redirect()->intended(route('profile'))->getTargetUrl();
 
-        return $this->jsonSuccess('Password confirmed');
+        return $this->jsonSuccess(__('Password confirmed'));
     }
 
     /** The sign-up page. */
@@ -197,7 +197,7 @@ class AuthController extends Controller
             ? route('auth.verify-email')
             : route('dashboard');
 
-        return $this->jsonSuccess('Account created');
+        return $this->jsonSuccess(__('Account created'));
     }
 
     /** The forgot-password page. */
@@ -223,7 +223,7 @@ class AuthController extends Controller
 
         $this->redirect = route('auth.check-email', ['type' => 'reset', 'email' => $email]);
 
-        return $this->jsonSuccess('Reset link sent');
+        return $this->jsonSuccess(__('Reset link sent'));
     }
 
     /** The reset-password page; an unknown email, a used token and an expired token all show the expired state. */
@@ -280,7 +280,7 @@ class AuthController extends Controller
 
         $this->redirect = route('auth.login', ['reset' => 1, 'email' => $request->input('email')]);
 
-        return $this->jsonSuccess('Password updated');
+        return $this->jsonSuccess(__('Password updated'));
     }
 
     /** The "check your email" page. type = reset | link; email = the address the link was sent to. */
@@ -317,7 +317,7 @@ class AuthController extends Controller
 
         $this->redirect = route('auth.check-email', ['type' => 'link', 'email' => $email]);
 
-        return $this->jsonSuccess('Sign-in link sent');
+        return $this->jsonSuccess(__('Sign-in link sent'));
     }
 
     /** Signs in from an email link. */
@@ -329,7 +329,7 @@ class AuthController extends Controller
 
         if (! $user) {
             return redirect()->route('auth.email-link')
-                ->with('error', 'That sign-in link has expired or was already used. Request a new one.');
+                ->with('error', __('That sign-in link has expired or was already used. Request a new one.'));
         }
 
         // the link reached their inbox, so the address is confirmed
@@ -371,7 +371,7 @@ class AuthController extends Controller
     {
         $request->fulfill();
 
-        return redirect()->intended(route('dashboard'))->with('toast', 'Email confirmed. Welcome aboard.');
+        return redirect()->intended(route('dashboard'))->with('toast', __('Email confirmed. Welcome aboard.'));
     }
 
     /** Sends the confirmation email again, unless the address is already confirmed. */
@@ -380,12 +380,12 @@ class AuthController extends Controller
         if ($request->user()->hasVerifiedEmail()) {
             $this->redirect = route('dashboard');
 
-            return $this->jsonSuccess('Your email is already confirmed');
+            return $this->jsonSuccess(__('Your email is already confirmed'));
         }
 
         $request->user()->sendEmailVerificationNotification();
 
-        return $this->jsonSuccess('Confirmation email sent to '.$request->user()->email);
+        return $this->jsonSuccess(__('Confirmation email sent to :email', ['email' => $request->user()->email]));
     }
 
     /** Registers the auth routes. */

@@ -80,7 +80,7 @@ class UsersController extends Controller
 
         $this->redirect = url()->previous();
 
-        return $this->jsonSuccess("{$user->name} added. An invite to choose a password is on its way.");
+        return $this->jsonSuccess(__(':name added. An invite to choose a password is on its way.', ['name' => $user->name]));
     }
 
     /** Saves a user's name, email and role; admins can't change their own role. */
@@ -89,7 +89,7 @@ class UsersController extends Controller
         $data = $this->validated($request, $user);
 
         if ($user->is($request->user()) && (int) $data['role_id'] !== $user->role_id) {
-            return $this->jsonError("You can't change your own role", 422);
+            return $this->jsonError(__("You can't change your own role"), 422);
         }
 
         $user->forceFill([
@@ -100,7 +100,7 @@ class UsersController extends Controller
 
         $this->redirect = url()->previous();
 
-        return $this->jsonSuccess("{$user->name} updated");
+        return $this->jsonSuccess(__(':name updated', ['name' => $user->name]));
     }
 
     /** Emails the user a password reset link. */
@@ -112,21 +112,21 @@ class UsersController extends Controller
             return $this->jsonError(__($status), 429);
         }
 
-        return $this->jsonSuccess("Password link sent to {$user->email}");
+        return $this->jsonSuccess(__('Password link sent to :email', ['email' => $user->email]));
     }
 
     /** Deletes a user; admins can't delete their own account. */
     public function destroy(Request $request, User $user)
     {
         if ($user->is($request->user())) {
-            return $this->jsonError("You can't delete your own account", 422);
+            return $this->jsonError(__("You can't delete your own account"), 422);
         }
 
         $user->delete();
 
         $this->redirect = url()->previous();
 
-        return $this->jsonSuccess("{$user->name} deleted");
+        return $this->jsonSuccess(__(':name deleted', ['name' => $user->name]));
     }
 
     /** Validation shared by add and edit. */
@@ -139,7 +139,7 @@ class UsersController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user)],
             'role_id' => ['required', 'integer', 'exists:roles,id'],
         ], [
-            'role_id.required' => 'Choose a role.',
+            'role_id.required' => __('Choose a role.'),
         ]);
     }
 

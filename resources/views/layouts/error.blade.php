@@ -9,7 +9,7 @@
     Kept free of anything that needs a session, the database or a signed-in user, so it renders when those are what failed.
 --}}
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ App\Support\Locales::direction() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +28,7 @@
     <main class="pc-error">
         {{-- the big number is decoration; screen readers get "Error 404: Not found" before the heading --}}
         <div class="pc-error-code" aria-hidden="true">@yield('code')</div>
-        <p class="sr-only">Error @yield('code'): @yield('title')</p>
+        <p class="sr-only">{{ __('Error') }} @yield('code'): @yield('title')</p>
 
         <h1 class="pc-error-heading">@yield('heading')</h1>
         <p class="pc-error-message">@yield('message')</p>
@@ -37,8 +37,8 @@
             @hasSection('actions')
                 @yield('actions')
             @else
-                <a href="{{ url('/') }}" class="pc-btn pc-btn-primary pc-btn-pill"><i class="ph ph-house text-base" aria-hidden="true"></i>Go home</a>
-                <button type="button" class="pc-btn pc-btn-secondary pc-btn-pill" onclick="history.length > 1 ? history.back() : (location.href = '{{ url('/') }}')"><i class="ph ph-arrow-left text-base" aria-hidden="true"></i>Go back</button>
+                <a href="{{ url('/') }}" class="pc-btn pc-btn-primary pc-btn-pill"><i class="ph ph-house text-base" aria-hidden="true"></i>{{ __('Go home') }}</a>
+                <button type="button" class="pc-btn pc-btn-secondary pc-btn-pill" onclick="history.length > 1 ? history.back() : (location.href = '{{ url('/') }}')"><i class="ph ph-arrow-left text-base rtl:-scale-x-100" aria-hidden="true"></i>{{ __('Go back') }}</button>
             @endif
         </div>
     </main>

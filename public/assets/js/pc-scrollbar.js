@@ -30,6 +30,11 @@
     return (style === "auto" || style === "scroll") && el[a.scroll] > el[a.client] + 1;
   }
 
+  /** Whether the area scrolls right to left (its own direction, normally inherited from <html dir>). */
+  function rtl(el) {
+    return getComputedStyle(el).direction === "rtl";
+  }
+
   /** Nearest scrollable ancestor per axis, so a sideways table inside a tall card gets both bars. */
   function resolve(node) {
     const found = { y: null, x: null };
@@ -65,11 +70,14 @@
     const track = el[a.client] - GAP * 2;
     const thumb = Math.max(MIN, (track * el[a.client]) / el[a.scroll]);
     const range = el[a.scroll] - el[a.client];
-    const at = range > 0 ? ((track - thumb) * el[a.offset]) / range : 0;
+    let at = range > 0 ? ((track - thumb) * el[a.offset]) / range : 0;
+    // RTL: scrollLeft runs from 0 (scrolled to the right edge) down to -range, so the thumb starts at the track's right end
+    if (axis === "x" && rtl(el)) at += track - thumb;
 
     if (axis === "y") {
       bar.style.top = rect.top + el.clientTop + GAP + "px";
-      bar.style.left = rect.left + el.clientLeft + el.clientWidth - bar.offsetWidth - GAP + "px";
+      // the vertical bar sits on the inline-end side: right on LTR pages, left on RTL ones
+      bar.style.left = (rtl(el) ? rect.left + el.clientLeft + GAP : rect.left + el.clientLeft + el.clientWidth - bar.offsetWidth - GAP) + "px";
     } else {
       bar.style.left = rect.left + el.clientLeft + GAP + "px";
       bar.style.top = rect.top + el.clientTop + el.clientHeight - bar.offsetHeight - GAP + "px";

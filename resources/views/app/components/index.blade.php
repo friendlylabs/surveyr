@@ -4,12 +4,12 @@
     components in resources/views/components. Delete this page once the team knows the kit.
 --}}
 <x-layout-app :title="__('Components')">
-    <div class="grid grid-cols-[minmax(0,1fr)] content-start gap-4 pb-6">
+    <div class="flex flex-col pb-6">
 
         {{-- ============ Buttons ============ --}}
-        <section id="buttons" class="pc-card" aria-labelledby="buttonsTitle">
-            <h2 id="buttonsTitle" class="pc-card-header text-sm">Buttons <code class="pc-badge pc-badge-mono pc-badge-neutral">.pc-btn</code></h2>
-            <div class="pc-card-body flex flex-col gap-5">
+        <section id="buttons" class="pc-section" aria-labelledby="buttonsTitle">
+            <h2 id="buttonsTitle" class="pc-section-title mb-4">Buttons <code class="pc-badge pc-badge-mono pc-badge-neutral">.pc-btn</code></h2>
+            <div class="flex flex-col gap-5">
                 <div class="flex flex-wrap items-center gap-2">
                     <button type="button" class="pc-btn pc-btn-primary">Primary</button>
                     <button type="button" class="pc-btn pc-btn-brand">Brand</button>
@@ -37,10 +37,11 @@
         </section>
 
         {{-- ============ Feedback ============ --}}
-        <section id="feedback" class="grid grid-cols-2 gap-4 max-lg:grid-cols-1" aria-label="Feedback">
-            <div class="pc-card">
-                <h2 class="pc-card-header text-sm">Badges, dots &amp; status</h2>
-                <div class="pc-card-body flex flex-col gap-4">
+        <section id="feedback" class="pc-section" aria-label="Feedback">
+            <div class="grid grid-cols-2 gap-x-12 gap-y-10 max-lg:grid-cols-1">
+            <div>
+                <h2 class="pc-section-title mb-4">Badges, dots &amp; status</h2>
+                <div class="flex flex-col gap-4">
                     <div class="flex flex-wrap items-center gap-2">
                         <span class="pc-badge pc-badge-neutral">Neutral</span>
                         <span class="pc-badge pc-badge-success">Success</span>
@@ -76,9 +77,9 @@
                 </div>
             </div>
 
-            <div class="pc-card">
-                <h2 class="pc-card-header text-sm">Alerts</h2>
-                <div class="pc-card-body flex flex-col gap-2.5">
+            <div>
+                <h2 class="pc-section-title mb-4">Alerts</h2>
+                <div class="flex flex-col gap-2.5">
                     <div class="pc-alert pc-alert-info" role="status"><strong>Heads up.</strong> Maintenance is scheduled for Sunday night.</div>
                     <div class="pc-alert pc-alert-success" role="status">Your changes were saved.</div>
                     <div class="pc-alert pc-alert-warning" role="alert">Your trial ends in 3 days.</div>
@@ -90,9 +91,9 @@
                 </div>
             </div>
 
-            <div class="pc-card">
-                <h2 class="pc-card-header text-sm">Progress, spinner &amp; skeleton</h2>
-                <div class="pc-card-body flex flex-col gap-4">
+            <div>
+                <h2 class="pc-section-title mb-4">Progress, spinner &amp; skeleton</h2>
+                <div class="flex flex-col gap-4">
                     <div class="pc-progress" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100" aria-label="Upload"><div class="pc-progress-bar" style="width:64%"></div></div>
                     <div class="pc-progress pc-progress-ink" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" aria-label="Processing"><div class="pc-progress-bar" style="width:35%"></div></div>
                     <div class="pc-progress-stack" aria-label="Storage: 45% documents, 20% media, 10% other">
@@ -107,37 +108,57 @@
                 </div>
             </div>
 
-            <div class="pc-card">
-                <h2 class="pc-card-header text-sm">Page loader <code class="pc-badge pc-badge-mono pc-badge-neutral">x-page-loader</code></h2>
-                <div class="pc-card-body flex flex-col items-center gap-4 py-8">
+            <div>
+                <h2 class="pc-section-title mb-4">Page loader <code class="pc-badge pc-badge-mono pc-badge-neutral">x-page-loader</code></h2>
+                <div class="flex flex-col items-center gap-4 py-8">
                     <x-page-loader :overlay="false" />
                     <button type="button" class="pc-btn pc-btn-secondary pc-btn-sm" onclick="pcPageLoader.show(); setTimeout(pcPageLoader.hide, 3000)">Preview full page</button>
                 </div>
             </div>
 
-            <div class="pc-card">
-                <h2 class="pc-card-header text-sm">Empty state <code class="pc-badge pc-badge-mono pc-badge-neutral">x-empty</code></h2>
+            <div>
+                <h2 class="pc-section-title mb-4">Empty state <code class="pc-badge pc-badge-mono pc-badge-neutral">x-empty</code></h2>
                 <x-empty icon="folder-open" title="No projects yet">
                     <div class="max-w-xs">Projects you create show up here.</div>
                     <button type="button" class="pc-btn pc-btn-secondary mt-2"><i class="ph ph-plus" aria-hidden="true"></i>New project</button>
                 </x-empty>
             </div>
+            </div>
         </section>
 
-        <section class="pc-stat-grid" aria-label="Stat tiles">
+        <section id="sections" class="pc-section" aria-labelledby="sectionsTitle">
+            <h2 id="sectionsTitle" class="pc-section-title">Sections &amp; cards <code class="pc-badge pc-badge-mono pc-badge-neutral">x-section · .pc-card</code></h2>
+            <p class="pc-section-desc mb-4">Parts of a page are an x-section: a title over the content, no box, a hairline between sections (split for settings pages). Keep .pc-card for things that stand alone, like gallery items and placeholders.</p>
+            <div class="grid grid-cols-3 gap-4 max-lg:grid-cols-1">
+                <div class="pc-card p-4">
+                    <div class="text-sm font-semibold text-pc-ink">Customer feedback</div>
+                    <div class="mt-1 text-xs text-pc-muted">Template · 8 questions</div>
+                </div>
+                <div class="pc-card p-4">
+                    <div class="text-sm font-semibold text-pc-ink">Event registration</div>
+                    <div class="mt-1 text-xs text-pc-muted">Template · 12 questions</div>
+                </div>
+                <div class="pc-card-dashed grid place-items-center p-4 text-xs text-pc-muted">Drop a template here</div>
+            </div>
+        </section>
+
+        <section class="pc-section" aria-label="Stat tiles">
+            <h2 class="pc-section-title mb-4">Stats <code class="pc-badge pc-badge-mono pc-badge-neutral">x-stat</code></h2>
+            <div class="pc-stat-grid">
             <x-stat icon="currency-dollar" tone="ink" label="Revenue" value="$48.2k">+12% on last month</x-stat>
             <x-stat icon="shopping-cart" tone="brand" label="Orders" value="1,204" :href="route('components')">Linked: the whole tile is a link</x-stat>
             <x-stat icon="warning" tone="danger" label="Failed payments" value="7" />
             <x-stat icon="clock" tone="warning" label="Avg. response" value="2.4h">tone = ink | brand | success | warning | danger</x-stat>
+            </div>
         </section>
 
         {{-- ============ Forms ============ --}}
-        <section id="forms" class="pc-card" aria-labelledby="formsTitle">
-            <h2 id="formsTitle" class="pc-card-header text-sm">
+        <section id="forms" class="pc-section" aria-labelledby="formsTitle">
+            <h2 id="formsTitle" class="pc-section-title mb-4">
                 Forms <span class="text-xs font-normal text-pc-muted">x-form.input · x-form.select · x-form.textarea · x-form.checklist · x-form.date</span>
             </h2>
             {{-- action="#" + a responseHandler: posts nowhere, just shows the inline-error contract --}}
-            <form id="demoForm" class="pc-card-body grid grid-cols-2 gap-x-6 gap-y-4 max-md:grid-cols-1" novalidate>
+            <form id="demoForm" class="grid grid-cols-2 gap-x-6 gap-y-4 max-md:grid-cols-1" novalidate>
                 <x-form.input id="demoName" name="name" label="Project name" placeholder="Apollo" required hint="Shown on invoices and emails." />
                 <x-form.input id="demoBudget" name="budget" type="number" label="Budget" placeholder="0.00" class="pc-input-mono" />
                 <x-form.select id="demoTeam" name="team" label="Team (single, searchable)" :options="$options" placeholder="Choose a team" required />
@@ -156,7 +177,7 @@
                 <div data-pc-pw-strength>
                     <label class="pc-label" for="demoPassword">Password with strength</label>
                     <span class="pc-input-group">
-                        <input id="demoPassword" type="password" class="pc-input pr-16" data-pc-pw-input autocomplete="off">
+                        <input id="demoPassword" type="password" class="pc-input pe-16" data-pc-pw-input autocomplete="off">
                         <button type="button" class="pc-input-addon" data-pc-pw-toggle aria-label="Show password">SHOW</button>
                     </span>
                     <div class="pc-strength" aria-hidden="true"><span data-pc-strength-bar></span><span data-pc-strength-bar></span><span data-pc-strength-bar></span></div>
@@ -179,7 +200,7 @@
                 <x-form.input id="demoDisabled" name="disabled" label="Disabled" value="Not editable" disabled />
 
                 <div class="col-span-full flex items-center justify-end gap-2 border-t border-pc-border-soft pt-4">
-                    <span class="mr-auto text-xs text-pc-muted">Submit to see the 422 inline errors that submitForm() places under each field.</span>
+                    <span class="me-auto text-xs text-pc-muted">Submit to see the 422 inline errors that submitForm() places under each field.</span>
                     <button type="reset" class="pc-btn pc-btn-secondary">Reset</button>
                     <button type="submit" class="pc-btn pc-btn-primary">Validate</button>
                 </div>
@@ -187,9 +208,9 @@
         </section>
 
         {{-- ============ Overlays ============ --}}
-        <section id="overlays" class="pc-card" aria-labelledby="overlaysTitle">
-            <h2 id="overlaysTitle" class="pc-card-header text-sm">Overlays</h2>
-            <div class="pc-card-body grid grid-cols-2 gap-6 max-lg:grid-cols-1">
+        <section id="overlays" class="pc-section" aria-labelledby="overlaysTitle">
+            <h2 id="overlaysTitle" class="pc-section-title mb-4">Overlays</h2>
+            <div class="grid grid-cols-2 gap-6 max-lg:grid-cols-1">
                 <div class="flex flex-col gap-2.5">
                     <div class="pc-eyebrow">Modal · x-dialog.modal · pc-modal.js</div>
                     <div class="flex flex-wrap gap-2">
@@ -259,9 +280,9 @@
         </section>
 
         {{-- ============ Navigation ============ --}}
-        <section id="navigation" class="pc-card" aria-labelledby="navigationTitle">
-            <h2 id="navigationTitle" class="pc-card-header text-sm">Tabs <span class="text-xs font-normal text-pc-muted">pc-tabs.js · pc:tabchange</span></h2>
-            <div class="pc-card-body flex flex-col gap-5">
+        <section id="navigation" class="pc-section" aria-labelledby="navigationTitle">
+            <h2 id="navigationTitle" class="pc-section-title mb-4">Tabs <span class="text-xs font-normal text-pc-muted">pc-tabs.js · pc:tabchange</span></h2>
+            <div class="flex flex-col gap-5">
                 <div class="flex flex-wrap items-center gap-6">
                     <div data-pc-tabs-group class="pc-tabs" role="tablist" aria-label="Pill tabs">
                         <button type="button" data-pc-trigger="tabs" data-pc-value="all" class="pc-tab pc-tab-active" role="tab" aria-selected="true">All <span class="pc-tab-count">24</span></button>
@@ -295,15 +316,15 @@
         </section>
 
         {{-- ============ Data ============ --}}
-        <section id="data" aria-label="Data">
+        <section id="data" class="pc-section" aria-label="Data">
             {{-- x-table without a paginator: the footer slot becomes the card footer --}}
             <x-table label="Invoices">
                 <x-slot:toolbar>
                     <span class="font-semibold">Table <span class="text-xs font-normal text-pc-muted">x-table · x-search · x-filter</span></span>
-                    <x-search class="ml-auto" placeholder="Search invoices" />
+                    <x-search class="ms-auto" placeholder="Search invoices" />
                 </x-slot:toolbar>
                 <x-slot:head>
-                    <th>Invoice</th><th>Customer</th><th>Status</th><th class="text-right">Amount</th><th class="w-20"><span class="sr-only">Actions</span></th>
+                    <th>Invoice</th><th>Customer</th><th>Status</th><th class="text-end">Amount</th><th class="w-20"><span class="sr-only">Actions</span></th>
                 </x-slot:head>
                 @foreach ([['INV-0042', 'Northwind', 'success', 'Paid', '1,204.50'], ['INV-0041', 'Contoso', 'warning', 'Pending', '860.00'], ['INV-0040', 'Fabrikam', 'danger', 'Overdue', '2,310.00'], ['INV-0039', 'Initech', 'success', 'Paid', '415.75']] as [$number, $customer, $tone, $status, $amount])
                     <tr>
@@ -311,7 +332,7 @@
                         <td><div class="flex items-center gap-2.5"><x-avatar :name="$customer" size="sm" />{{ $customer }}</div></td>
                         <td><span class="pc-badge pc-badge-{{ $tone }}">{{ $status }}</span></td>
                         <td class="pc-num">{{ $amount }}</td>
-                        <td class="text-right whitespace-nowrap">
+                        <td class="text-end whitespace-nowrap">
                             <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm" aria-label="Edit {{ $number }}" data-pc-tooltip="Edit" onclick="underDevelopment(event)"><i class="ph ph-pencil-simple text-base" aria-hidden="true"></i></button>
                             <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm text-pc-danger-strong" aria-label="Delete {{ $number }}" data-pc-tooltip="Delete"
                                 data-pc-confirm="Delete {{ $number }}?" data-pc-confirm-text="This can't be undone." data-pc-confirm-icon="danger" data-pc-confirm-button="Delete"><i class="ph ph-trash text-base" aria-hidden="true"></i></button>
@@ -341,7 +362,7 @@
             <div class="col-span-full"><x-form.textarea id="demoLgBio" name="bio" label="Bio" rows="4" /></div>
         </div>
         <x-slot:footer>
-            <button type="button" class="pc-btn pc-btn-ghost mr-auto" data-pc-dismiss="modal">Skip for now</button>
+            <button type="button" class="pc-btn pc-btn-ghost me-auto" data-pc-dismiss="modal">Skip for now</button>
             <button type="button" class="pc-btn pc-btn-secondary" data-pc-dismiss="modal">Cancel</button>
             <button type="button" class="pc-btn pc-btn-primary" data-pc-dismiss="modal" onclick="toast.success({ message: 'Saved' })">Save</button>
         </x-slot:footer>

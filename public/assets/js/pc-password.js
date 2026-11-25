@@ -30,8 +30,8 @@
     if (!input) return;
     const show = input.type === "password";
     input.type = show ? "text" : "password";
-    btn.textContent = show ? "HIDE" : "SHOW";
-    btn.setAttribute("aria-label", show ? "Hide password" : "Show password");
+    btn.textContent = show ? pc.t("HIDE") : pc.t("SHOW");
+    btn.setAttribute("aria-label", show ? pc.t("Hide password") : pc.t("Show password"));
   });
 
   document.addEventListener("input", (e) => {

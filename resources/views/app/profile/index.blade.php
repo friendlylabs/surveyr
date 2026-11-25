@@ -4,7 +4,7 @@
     password.confirm: a 423 opens #confirmPassword, and the action runs again once the password is confirmed.
 --}}
 <x-layout-app :title="__('Profile')">
-    <div id="profilePage" class="flex w-full max-w-3xl flex-col gap-4 pb-6"
+    <div id="profilePage" class="flex w-full max-w-5xl flex-col pb-6"
         data-confirm-url="{{ route('auth.confirm-password.store') }}"
         @if ($twoFactor)
             data-two-factor-enable="{{ route('profile.two-factor.enable') }}"
@@ -27,24 +27,27 @@
 
         @include('app.profile.partials.password')
 
-        @if ($twoFactor)
-            @include('app.profile.partials.tfa')
-        @endif
+        {{-- sign-in security: one block, no lines between its sections --}}
+        <div class="pc-section-group">
+            @if ($twoFactor)
+                @include('app.profile.partials.tfa')
+            @endif
 
-        @include('app.profile.partials.sessions')
+            @include('app.profile.partials.sessions')
 
-        @if ($passkeysEnabled)
-            @include('app.profile.partials.passkey')
-        @endif
+            @if ($passkeysEnabled)
+                @include('app.profile.partials.passkey')
+            @endif
+        </div>
     </div>
 
     {{-- sensitive actions (two-factor, passkeys, sessions) answer 423 until the password is confirmed; pages/profile.js retries them after this --}}
-    <x-dialog.modal id="confirmPassword" title="Confirm your password" subtitle="For your security, confirm it before changing sign-in settings." :action="route('auth.confirm-password.store')" submit="Confirm" size="sm" data-pc-reset>
+    <x-dialog.modal id="confirmPassword" :title="__('Confirm your password')" :subtitle="__('For your security, confirm it before changing sign-in settings.')" :action="route('auth.confirm-password.store')" :submit="__('Confirm')" size="sm" data-pc-reset>
         <div>
-            <label class="pc-label required" for="confirmPasswordInput">Password</label>
+            <label class="pc-label required" for="confirmPasswordInput">{{ __('Password') }}</label>
             <span class="pc-input-group">
-                <input id="confirmPasswordInput" name="password" type="password" class="pc-input pr-16" autocomplete="current-password" required data-pc-pw-input data-pc-autofocus aria-describedby="confirmPasswordInputError">
-                <button type="button" class="pc-input-addon" data-pc-pw-toggle aria-label="Show password">SHOW</button>
+                <input id="confirmPasswordInput" name="password" type="password" class="pc-input pe-16" autocomplete="current-password" required data-pc-pw-input data-pc-autofocus aria-describedby="confirmPasswordInputError">
+                <button type="button" class="pc-input-addon" data-pc-pw-toggle aria-label="{{ __('Show password') }}">{{ __('SHOW') }}</button>
             </span>
             <div id="confirmPasswordInputError" class="pc-field-error" hidden></div>
         </div>

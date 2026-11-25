@@ -59,7 +59,7 @@
   --color-pc-sidebar-hover: rgb(255 255 255 / 0.05);
   --color-pc-sidebar-active: rgb(255 255 255 / 0.09);
   --color-pc-sidebar-border: rgb(255 255 255 / 0.08);
-  --color-pc-sidebar-raised: #121c24; /* menus opened from the sidebar */
+  --color-pc-sidebar-raised: var(--color-pc-frame); /* menus opened from the sidebar: the sidebar's own colour */
   --color-pc-sidebar-danger: #f48270;
 
   --color-pc-scrim: rgb(15 17 26 / 0.25);
@@ -330,7 +330,7 @@
 
 @layer components {
   .pc-scrollbar {
-    @apply pointer-events-none fixed top-0 left-0 z-1000 opacity-0 transition-opacity duration-200;
+    @apply pointer-events-none fixed top-0 start-0 z-1000 opacity-0 transition-opacity duration-200;
   }
   .pc-scrollbar[data-show] {
     @apply pointer-events-auto opacity-100;
@@ -345,10 +345,10 @@
     @apply absolute rounded-full bg-pc-muted-3 transition-[background-color,width,height] duration-150;
   }
   .pc-scrollbar[data-axis="y"] .pc-scrollbar-thumb {
-    @apply top-0 right-0.5 w-1.5;
+    @apply top-0 end-0.5 w-1.5;
   }
   .pc-scrollbar[data-axis="x"] .pc-scrollbar-thumb {
-    @apply bottom-0.5 left-0 h-1.5;
+    @apply bottom-0.5 start-0 h-1.5;
   }
   .pc-scrollbar:is(:hover, [data-dragging]) .pc-scrollbar-thumb {
     @apply bg-pc-muted-2;
@@ -396,7 +396,7 @@
     @apply flex min-w-0 flex-1 flex-col p-1 max-lg:p-0;
   }
   .pc-sheet {
-    @apply relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-l-pc-sheet bg-pc-sheet max-lg:rounded-none;
+    @apply relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-s-pc-sheet bg-pc-sheet max-lg:rounded-none;
   }
   .pc-page-head {
     @apply flex flex-none items-center gap-3 px-7 pt-6 pb-5 max-sm:px-4 max-sm:pt-4 max-sm:pb-4;
@@ -427,7 +427,7 @@
      At lg+ it collapses to an icon rail (<html data-pc-sidebar="collapsed">); below lg it's a drawer. */
   .pc-sidebar {
     @apply flex w-64 flex-none flex-col overflow-hidden bg-pc-frame text-pc-sidebar-text transition-[width] duration-150
-      max-lg:fixed max-lg:inset-y-0 max-lg:left-0 max-lg:z-90 max-lg:w-[272px] max-lg:-translate-x-full
+      max-lg:fixed max-lg:inset-y-0 max-lg:start-0 max-lg:z-90 max-lg:w-[272px] max-lg:-translate-x-full max-lg:rtl:translate-x-full
       max-lg:transition-transform max-lg:duration-200;
   }
   .pc-sidebar[data-pc-open="true"] {
@@ -440,7 +440,7 @@
     @apply block animate-pc-fade;
   }
   .pc-sidebar-head {
-    @apply flex h-16 flex-none items-center gap-2 pr-3 pl-5;
+    @apply flex h-16 flex-none items-center gap-2 pe-3 ps-5;
   }
   .pc-sidebar-brand {
     @apply flex min-w-0 flex-1 items-center no-underline;
@@ -468,7 +468,7 @@
     @apply m-3.5 hidden h-px bg-pc-sidebar-border;
   }
   .pc-nav-item {
-    @apply flex h-9 w-full items-center gap-3 rounded-pc-sm border-0 bg-transparent px-3 text-left text-sm whitespace-nowrap
+    @apply flex h-9 w-full items-center gap-3 rounded-pc-sm border-0 bg-transparent px-3 text-start text-sm whitespace-nowrap
       text-pc-sidebar-text no-underline transition-colors hover:bg-pc-sidebar-hover hover:text-pc-sidebar-strong;
   }
   .pc-nav-icon {
@@ -485,10 +485,10 @@
   }
   /* the whole row highlights on hover; the theme toggle sits on top of it, at the right */
   .pc-sidebar-account-row {
-    @apply flex w-full items-center gap-1 rounded-pc-sm pr-1.5 transition-colors hover:bg-pc-sidebar-hover;
+    @apply flex w-full items-center gap-1 rounded-pc-sm pe-1.5 transition-colors hover:bg-pc-sidebar-hover;
   }
   .pc-sidebar-account {
-    @apply flex min-w-0 flex-1 items-center gap-3 rounded-pc-sm border-0 bg-transparent px-2 py-2 text-left text-sm;
+    @apply flex min-w-0 flex-1 items-center gap-3 rounded-pc-sm border-0 bg-transparent px-2 py-2 text-start text-sm;
   }
   /* avatars in the sidebar and its menu stay monochrome */
   :is(.pc-sidebar, .pc-dropdown-menu-dark) .pc-avatar {
@@ -518,7 +518,7 @@
   /* the expand button: a round button on the edge between the rail and the sheet, level with the mark. Fixed, so the
      sidebar's overflow doesn't clip the half that sits over the sheet. */
   :root[data-pc-sidebar="collapsed"] .pc-sidebar-collapse {
-    @apply lg:fixed lg:top-5 lg:left-[62px] lg:z-60 lg:size-6 lg:rounded-full lg:border lg:border-pc-sidebar-border
+    @apply lg:fixed lg:top-5 lg:start-[62px] lg:z-60 lg:size-6 lg:rounded-full lg:border lg:border-pc-sidebar-border
       lg:bg-pc-sidebar-raised lg:text-pc-sidebar-strong lg:shadow-[0_2px_8px_rgba(0,0,0,0.3)] lg:hover:bg-pc-frame
       lg:hover:text-pc-sidebar-strong;
   }
@@ -547,14 +547,14 @@
     @apply lg:block;
   }
   :root[data-pc-sidebar="collapsed"] .pc-sidebar-account-row {
-    @apply lg:flex-col-reverse lg:pr-0 lg:pt-1.5;
+    @apply lg:flex-col-reverse lg:pe-0 lg:pt-1.5;
   }
   :root[data-pc-sidebar="collapsed"] .pc-sidebar-account {
     @apply lg:justify-center lg:px-0;
   }
   /* On the rail the account menu opens beside it rather than over it. */
   :root[data-pc-sidebar="collapsed"] .pc-sidebar-foot .pc-dropdown-menu[data-pc-floating] {
-    @apply lg:left-[80px]!;
+    @apply lg:start-[80px]!;
   }
 
   /* ================= Buttons ================= */
@@ -783,7 +783,51 @@
     @apply min-h-0 flex-1;
   }
   .pc-list-toolbar {
-    @apply flex flex-none flex-wrap items-center gap-3;
+    @apply flex flex-none flex-wrap items-center gap-3 max-sm:gap-2;
+  }
+  /* Responsive toolbar (x-table search / filters slots): the search always shows, full width on phones; below sm the
+     other filters hide behind a funnel button and open as a stacked panel under the row. The funnel carries a dot
+     while a filter is set, so it isn't missed with the panel shut (app.js). */
+  .pc-toolbar-search {
+    @apply max-sm:min-w-0 max-sm:flex-1;
+  }
+  .pc-toolbar-search > form {
+    @apply max-sm:w-full;
+  }
+  .pc-toolbar-toggle {
+    @apply relative w-[34px] flex-none px-0 sm:hidden;
+  }
+  .pc-toolbar-toggle > i {
+    @apply transition-transform duration-200;
+  }
+  .pc-list-toolbar[data-pc-open="true"] .pc-toolbar-toggle {
+    @apply border-pc-fill bg-pc-fill text-pc-on-fill hover:bg-pc-fill hover:text-pc-on-fill;
+  }
+  .pc-list-toolbar[data-pc-open="true"] .pc-toolbar-toggle > i {
+    @apply rotate-180;
+  }
+  .pc-toolbar-toggle[data-pc-active]::after {
+    @apply absolute top-1 end-1 size-2 rounded-full bg-pc-brand ring-2 ring-pc-sheet content-[''];
+  }
+  .pc-toolbar-filters {
+    @apply flex flex-wrap items-center gap-3 max-sm:order-last max-sm:hidden max-sm:basis-full max-sm:flex-col
+      max-sm:items-stretch max-sm:gap-2;
+  }
+  .pc-list-toolbar[data-pc-open="true"] .pc-toolbar-filters {
+    @apply max-sm:flex max-sm:animate-pc-fade;
+  }
+  .pc-toolbar-filters > form {
+    @apply max-sm:w-full;
+  }
+  .pc-toolbar-filters .pc-tabs {
+    @apply max-sm:flex-wrap;
+  }
+  /* page actions (layout header slot): below sm a button shows only its icon; the words stay for screen readers */
+  .pc-page-head .pc-btn:has(.pc-btn-label) {
+    @apply max-sm:w-[34px] max-sm:px-0;
+  }
+  .pc-page-head .pc-btn-label {
+    @apply max-sm:sr-only;
   }
   .pc-list-card {
     @apply flex min-h-0 flex-col;
@@ -809,38 +853,75 @@
   .pc-card-dashed {
     @apply rounded-pc-card border border-dashed border-pc-border bg-pc-surface;
   }
-  /* KPI tiles (x-stat): a card, optionally linked, with a duotone
-     icon, label over value, and a faint oversized copy of the icon in the bottom-right corner. */
+  /* KPI stats (x-stat): an open grid, no boxes; a small icon, a muted label over a large value. */
   .pc-stat-grid {
-    @apply grid grid-cols-2 gap-3 xl:grid-cols-4;
+    @apply grid grid-cols-2 gap-x-8 gap-y-6 xl:grid-cols-4;
   }
   .pc-stat {
-    @apply relative block overflow-hidden rounded-pc-card border border-pc-border bg-pc-surface px-5 py-4 text-pc-text
-      no-underline transition-[border-color,translate] duration-[180ms] ease-in-out motion-reduce:transition-none;
+    @apply relative block text-pc-text no-underline;
   }
-  a.pc-stat:hover {
-    @apply -translate-y-px border-pc-brand text-pc-text;
+  a.pc-stat:hover .pc-stat-value {
+    @apply text-pc-brand-ink;
   }
   .pc-stat-icon {
-    @apply mb-3 block size-10;
+    @apply mb-2 block text-xl;
   }
   .pc-stat-label {
-    @apply m-0 text-[13px] font-semibold text-pc-muted;
+    @apply m-0 text-[13px] text-pc-muted;
   }
   .pc-stat-value {
-    @apply block text-[28px] leading-[1.15] font-extrabold tracking-[-0.02em] text-pc-text;
+    @apply block text-[26px] leading-[1.15] font-semibold tracking-[-0.02em] text-pc-ink transition-colors;
   }
   .pc-stat-hint {
     @apply mt-0.5 block text-xs text-pc-muted;
   }
-  .pc-stat-watermark {
-    @apply pointer-events-none absolute -right-[35px] -bottom-[36px] h-35 w-36 -rotate-25 text-pc-text opacity-[0.06];
-  }
   .pc-eyebrow {
     @apply font-pc-mono text-[11px] font-medium tracking-[0.06em] text-pc-muted uppercase;
   }
+  /* Page sections (x-section): no box; a title (and description, actions) over the content, a hairline between
+     consecutive sections. Split: the settings layout, title column left and content right from lg up. Lists inside are
+     rows on hairlines (pc-section-list / pc-section-row). */
+  .pc-section {
+    @apply py-7 first:pt-1;
+  }
+  .pc-section + .pc-section,
+  .pc-section + .pc-section-group,
+  .pc-section-group + .pc-section {
+    @apply border-t border-pc-border-soft;
+  }
+  /* <div class="pc-section-group">: related sections that read as one block, with no lines between them */
+  .pc-section-group > .pc-section:first-child {
+    @apply pt-7;
+  }
+  .pc-section-group > .pc-section + .pc-section {
+    @apply border-t-0 pt-2;
+  }
+  .pc-section-header {
+    @apply mb-4 flex items-start justify-between gap-4;
+  }
   .pc-section-title {
-    @apply font-semibold;
+    @apply flex flex-wrap items-center gap-2 text-base font-semibold text-pc-ink;
+  }
+  .pc-section-desc {
+    @apply mt-1 max-w-prose text-sm text-pc-muted;
+  }
+  .pc-section-actions {
+    @apply flex flex-none items-center gap-2;
+  }
+  .pc-section-split {
+    @apply lg:grid lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-x-12;
+  }
+  .pc-section-split .pc-section-header {
+    @apply lg:mb-0 lg:flex-col lg:justify-start;
+  }
+  .pc-section-split .pc-section-actions {
+    @apply lg:mt-1;
+  }
+  .pc-section-list {
+    @apply m-0 flex list-none flex-col p-0;
+  }
+  .pc-section-row {
+    @apply flex items-center gap-3 border-b border-pc-border-soft py-3 first:pt-0 last:border-b-0;
   }
   .pc-mono {
     @apply font-pc-mono tabular-nums;
@@ -1155,7 +1236,7 @@
   }
   .pc-select {
     @apply appearance-none bg-[url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='12'%20height='12'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%236b6b6b'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='m6%209%206%206%206-6'/%3E%3C/svg%3E")]
-      bg-[length:12px] bg-[right_10px_center] bg-no-repeat pr-8;
+      bg-[length:12px] bg-[right_10px_center] bg-no-repeat pe-8;
   }
   .pc-input-sm {
     @apply h-7 rounded-pc-control px-2 text-xs;
@@ -1176,13 +1257,13 @@
     @apply relative flex items-center;
   }
   .pc-input-group > :is(svg, i) {
-    @apply pointer-events-none absolute left-3 text-pc-muted;
+    @apply pointer-events-none absolute start-3 text-pc-muted;
   }
   .pc-input-group > :is(svg, i) + .pc-input {
-    @apply pl-9;
+    @apply ps-9;
   }
   .pc-input-addon {
-    @apply absolute right-1.5 h-6 rounded-pc-xs border-0 bg-transparent px-2 font-pc-mono text-[11px] font-medium text-pc-muted
+    @apply absolute end-1.5 h-6 rounded-pc-xs border-0 bg-transparent px-2 font-pc-mono text-[11px] font-medium text-pc-muted
       hover:bg-pc-surface-soft hover:text-pc-text;
   }
   .pc-check {
@@ -1202,8 +1283,8 @@
     @apply pointer-events-none absolute inset-0 size-full opacity-0;
   }
   .pc-select-trigger {
-    @apply relative flex min-h-9 w-full cursor-pointer items-center rounded-pc-control border border-pc-border bg-pc-surface py-1 pr-8 pl-3
-      text-left text-sm text-pc-text transition-colors outline-none select-none
+    @apply relative flex min-h-9 w-full cursor-pointer items-center rounded-pc-control border border-pc-border bg-pc-surface py-1 pe-8 ps-3
+      text-start text-sm text-pc-text transition-colors outline-none select-none
       focus-visible:border-pc-brand focus-visible:ring-2 focus-visible:ring-pc-brand/10;
   }
   .pc-select-trigger[aria-expanded="true"] {
@@ -1216,7 +1297,7 @@
     @apply border-pc-danger ring-pc-danger/10;
   }
   .pc-select-caret {
-    @apply pointer-events-none absolute right-2.5 text-xs text-pc-muted transition-transform;
+    @apply pointer-events-none absolute end-2.5 text-xs text-pc-muted transition-transform;
   }
   .pc-select-trigger[aria-expanded="true"] .pc-select-caret {
     @apply rotate-180;
@@ -1232,7 +1313,7 @@
     @apply truncate;
   }
   .pc-select-chip {
-    @apply inline-flex h-6 max-w-full min-w-0 items-center gap-0.5 rounded-pc-sm bg-pc-surface-soft pr-0.5 pl-2 text-xs text-pc-text;
+    @apply inline-flex h-6 max-w-full min-w-0 items-center gap-0.5 rounded-pc-sm bg-pc-surface-soft pe-0.5 ps-2 text-xs text-pc-text;
   }
   .pc-select-chip-label {
     @apply truncate;
@@ -1273,7 +1354,7 @@
     @apply border-0 bg-transparent p-0 font-medium text-pc-brand hover:text-pc-brand-ink hover:underline;
   }
   .pc-select-count {
-    @apply mr-auto text-pc-muted;
+    @apply me-auto text-pc-muted;
   }
   .pc-select-list {
     @apply m-0 min-h-0 flex-1 list-none overflow-y-auto overscroll-contain p-1.5;
@@ -1295,7 +1376,7 @@
   }
   .pc-select-flyout:not(:has(.pc-select-box)) .pc-select-option[aria-selected="true"]::after {
     content: "✓";
-    @apply ml-auto text-xs text-pc-brand;
+    @apply ms-auto text-xs text-pc-brand;
   }
   .pc-select-option[aria-disabled="true"] {
     @apply cursor-not-allowed opacity-45;
@@ -1329,8 +1410,8 @@
     @apply pointer-events-none absolute inset-0 size-full opacity-0;
   }
   .pc-date-trigger {
-    @apply relative flex h-9 w-full cursor-pointer items-center gap-2 rounded-pc-control border border-pc-border bg-pc-surface pr-8 pl-3
-      text-left text-sm text-pc-text transition-colors outline-none select-none
+    @apply relative flex h-9 w-full cursor-pointer items-center gap-2 rounded-pc-control border border-pc-border bg-pc-surface pe-8 ps-3
+      text-start text-sm text-pc-text transition-colors outline-none select-none
       focus-visible:border-pc-brand focus-visible:ring-2 focus-visible:ring-pc-brand/10;
   }
   .pc-date-trigger[aria-expanded="true"] {
@@ -1355,7 +1436,7 @@
     @apply truncate text-pc-muted-2;
   }
   .pc-date-clear {
-    @apply absolute right-2 grid size-5 place-items-center rounded-pc-xs text-sm leading-none text-pc-muted
+    @apply absolute end-2 grid size-5 place-items-center rounded-pc-xs text-sm leading-none text-pc-muted
       hover:bg-pc-surface-soft hover:text-pc-text;
   }
   .pc-date-backdrop {
@@ -1384,13 +1465,13 @@
   }
   /* range shortcuts: a column beside the calendar, a scrolling row of chips on phones */
   .pc-date-presets {
-    @apply flex w-36 flex-none flex-col gap-0.5 border-r border-pc-border-soft p-1.5;
+    @apply flex w-36 flex-none flex-col gap-0.5 border-e border-pc-border-soft p-1.5;
   }
   .pc-date-flyout[data-mode="sheet"] .pc-date-presets {
-    @apply w-auto flex-row gap-1.5 overflow-x-auto border-r-0 border-b px-4 py-2;
+    @apply w-auto flex-row gap-1.5 overflow-x-auto border-e-0 border-b px-4 py-2;
   }
   .pc-date-preset {
-    @apply rounded-pc-item border-0 bg-transparent px-2.5 py-1.5 text-left text-[13px] whitespace-nowrap text-pc-text-2
+    @apply rounded-pc-item border-0 bg-transparent px-2.5 py-1.5 text-start text-[13px] whitespace-nowrap text-pc-text-2
       hover:bg-pc-surface-soft aria-pressed:bg-pc-brand-soft aria-pressed:font-medium aria-pressed:text-pc-brand-ink;
   }
   .pc-date-flyout[data-mode="sheet"] .pc-date-preset {
@@ -1448,10 +1529,10 @@
     @apply bg-pc-brand font-medium text-pc-on-brand hover:bg-pc-brand-ink;
   }
   .pc-date-day[data-range-start] {
-    @apply rounded-r-none;
+    @apply rounded-e-none;
   }
   .pc-date-day[data-range-end] {
-    @apply rounded-l-none;
+    @apply rounded-s-none;
   }
   /* month and year pages */
   .pc-date-cells {
@@ -1472,10 +1553,10 @@
     @apply flex flex-col gap-2 p-3;
   }
   .pc-date-calendar:not([hidden]) ~ .pc-date-clock {
-    @apply border-l border-pc-border-soft;
+    @apply border-s border-pc-border-soft;
   }
   .pc-date-flyout[data-mode="sheet"] .pc-date-clock {
-    @apply border-l-0 px-4;
+    @apply border-s-0 px-4;
   }
   .pc-date-flyout[data-mode="sheet"] .pc-date-calendar:not([hidden]) ~ .pc-date-clock {
     @apply border-t;
@@ -1514,7 +1595,7 @@
     @apply sticky bottom-0 z-1 flex flex-none items-center gap-1.5 border-t border-pc-border-soft bg-pc-surface px-3 py-2;
   }
   .pc-date-summary {
-    @apply mr-auto min-w-0 truncate px-1 text-xs text-pc-muted tabular-nums;
+    @apply me-auto min-w-0 truncate px-1 text-xs text-pc-muted tabular-nums;
   }
   .pc-range {
     @apply w-full cursor-pointer accent-pc-brand;
@@ -1528,10 +1609,10 @@
     @apply bg-pc-brand;
   }
   .pc-toggle-thumb {
-    @apply absolute top-0.5 left-0.5 size-4 rounded-full bg-white shadow transition-transform duration-150;
+    @apply absolute top-0.5 start-0.5 size-4 rounded-full bg-white shadow transition-transform duration-150;
   }
   .pc-toggle[data-pc-on="true"] .pc-toggle-thumb {
-    @apply translate-x-4;
+    @apply translate-x-4 rtl:-translate-x-4;
   }
 
   /* Password strength (pc-password.js) */
@@ -1615,10 +1696,10 @@
     background-image: var(--pc-auth-art);
   }
   .pc-auth-art-side {
-    @apply min-h-dvh rounded-l-[48px] max-lg:hidden;
+    @apply min-h-dvh rounded-s-[48px] max-lg:hidden;
   }
   .pc-auth-art-banner {
-    @apply flex h-24 flex-none items-center justify-between gap-3 rounded-br-[40px] bg-[center_35%] px-6 lg:hidden;
+    @apply flex h-24 flex-none items-center justify-between gap-3 rounded-ee-[40px] bg-[center_35%] px-6 lg:hidden;
   }
   .pc-auth-art-logo {
     @apply h-11 w-auto drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)];
@@ -1652,7 +1733,7 @@
     @apply border-pc-danger;
   }
   .pc-auth .pc-input-addon {
-    @apply right-0;
+    @apply end-0;
   }
   .pc-auth .pc-btn-lg {
     @apply h-11 rounded-pc-control;
@@ -1747,7 +1828,7 @@
     @apply inline-flex overflow-hidden rounded-pc-control border border-pc-border bg-pc-surface;
   }
   .pc-segmented .pc-tab {
-    @apply h-[34px] rounded-none border-0 border-l border-pc-border px-3.5 first:border-l-0;
+    @apply h-[34px] rounded-none border-0 border-s border-pc-border px-3.5 first:border-s-0;
   }
   .pc-segmented .pc-tab-active {
     @apply bg-pc-fill text-pc-on-fill;
@@ -1790,24 +1871,24 @@
     @apply relative inline-flex;
   }
   .pc-dropdown-menu {
-    @apply absolute top-[calc(100%+8px)] left-0 z-50 hidden min-w-48 flex-col gap-0.5 rounded-pc-popover border border-pc-border
+    @apply absolute top-[calc(100%+8px)] start-0 z-50 hidden min-w-48 flex-col gap-0.5 rounded-pc-popover border border-pc-border
       bg-pc-surface p-1.5 text-sm text-pc-text whitespace-normal shadow-pc-pop animate-pc-drop;
   }
   .pc-dropdown-menu[data-pc-open="true"] {
     @apply flex;
   }
   .pc-dropdown-menu-end {
-    @apply right-0 left-auto;
+    @apply end-0 start-auto;
   }
   .pc-dropdown-menu-up {
     @apply top-auto bottom-[calc(100%+8px)];
   }
   /* set by pc-dropdown.js inside overflow containers; top/left come from the trigger's position */
   .pc-dropdown-menu[data-pc-floating="true"] {
-    @apply fixed right-auto bottom-auto;
+    @apply fixed end-auto bottom-auto;
   }
   .pc-dropdown-item {
-    @apply flex h-9 w-full items-center gap-2.5 rounded-pc-item border-0 bg-transparent px-2.5 text-left text-sm text-pc-text
+    @apply flex h-9 w-full items-center gap-2.5 rounded-pc-item border-0 bg-transparent px-2.5 text-start text-sm text-pc-text
       no-underline hover:bg-pc-surface-soft hover:text-pc-text;
   }
   .pc-dropdown-item > :is(svg, i) {
@@ -1818,7 +1899,7 @@
   }
   .pc-dropdown-item-active::after {
     content: "✓";
-    @apply ml-auto text-xs text-pc-brand;
+    @apply ms-auto text-xs text-pc-brand;
   }
   .pc-dropdown-item-danger {
     @apply text-pc-danger-strong hover:bg-pc-danger-bg hover:text-pc-danger-strong;
@@ -1905,7 +1986,7 @@
     @apply text-[17px] leading-snug font-semibold text-pc-ink;
   }
   .pc-dialog-icon {
-    @apply mt-0.5 ml-auto flex-none text-lg leading-none;
+    @apply mt-0.5 ms-auto flex-none text-lg leading-none;
   }
   .pc-dialog-icon-primary,
   .pc-dialog-icon-question {
@@ -1954,12 +2035,12 @@
     @apply absolute inset-0 bg-pc-scrim-soft animate-pc-fade;
   }
   .pc-offcanvas-panel {
-    @apply absolute inset-y-2 right-2 flex w-[calc(100%-16px)] max-w-[440px] flex-col overflow-hidden rounded-pc-modal border
+    @apply absolute inset-y-2 end-2 flex w-[calc(100%-16px)] max-w-[440px] flex-col overflow-hidden rounded-pc-modal border
       border-pc-border-soft bg-pc-surface shadow-[0_16px_48px_rgba(15,17,26,0.16)] transition-[max-width] duration-200
-      animate-pc-slide-in max-sm:inset-0 max-sm:w-full max-sm:max-w-none max-sm:rounded-none max-sm:border-0;
+      animate-pc-slide-in rtl:animate-pc-slide-in-start max-sm:inset-0 max-sm:w-full max-sm:max-w-none max-sm:rounded-none max-sm:border-0;
   }
   .pc-offcanvas-start .pc-offcanvas-panel {
-    @apply right-auto left-2 animate-pc-slide-in-start;
+    @apply end-auto start-2 animate-pc-slide-in-start rtl:animate-pc-slide-in;
   }
   .pc-offcanvas-lg .pc-offcanvas-panel {
     @apply max-w-[560px];
@@ -1971,7 +2052,7 @@
     @apply flex flex-none flex-col px-6 pt-3 pb-4;
   }
   .pc-offcanvas-tools {
-    @apply -mr-2 mb-2 flex items-center justify-end gap-0.5;
+    @apply -me-2 mb-2 flex items-center justify-end gap-0.5;
   }
   .pc-offcanvas-tools .pc-btn {
     @apply text-pc-muted hover:text-pc-ink;
@@ -2028,7 +2109,7 @@
     @apply bg-pc-toast-info;
   }
   .pc-toast-action {
-    @apply -my-1 ml-2 rounded-pc-xs border-0 bg-pc-on-ink/10 px-2 py-1 font-pc-mono text-[11px] font-medium text-pc-on-ink
+    @apply -my-1 ms-2 rounded-pc-xs border-0 bg-pc-on-ink/10 px-2 py-1 font-pc-mono text-[11px] font-medium text-pc-on-ink
       hover:bg-pc-on-ink/20;
   }
 
@@ -2043,7 +2124,7 @@
 
   /* ================= Popover (pc-popover.js) ================= */
   .pc-popover {
-    @apply fixed z-150 hidden w-[300px] flex-col gap-2.5 rounded-pc-popover border border-pc-border bg-pc-surface p-3 text-left
+    @apply fixed z-150 hidden w-[300px] flex-col gap-2.5 rounded-pc-popover border border-pc-border bg-pc-surface p-3 text-start
       whitespace-normal shadow-pc-float animate-pc-drop;
   }
   .pc-popover[data-pc-open="true"] {
@@ -2063,7 +2144,7 @@
   /* Surveyr's table: heavy uppercase headings in the text colour, roomy rows on faint dividers, no fills. */
   .pc-table thead th,
   .pc-table tbody tr.pc-table-head th {
-    @apply border-b border-pc-border-soft bg-pc-surface px-3 py-4 text-left align-middle text-[11px] font-extrabold
+    @apply border-b border-pc-border-soft bg-pc-surface px-3 py-4 text-start align-middle text-[11px] font-extrabold
       tracking-[0.02em] whitespace-nowrap text-pc-text uppercase;
   }
   .pc-table-sticky-head thead th,
@@ -2088,22 +2169,62 @@
   .pc-table-hover tbody tr:hover td {
     @apply bg-pc-surface-alt;
   }
+  /* Phones: <th>/<td class="pc-col-more"> columns step aside so the essentials fit without sideways scrolling; tapping
+     the row (app.js) slides a details row open beneath it with those cells under their headings. pc-col-hide columns
+     are hidden too, with no details row. sm+ shows every column and never the details row. */
+  .pc-table:has(:is(.pc-col-more, .pc-col-hide)) {
+    @apply max-sm:min-w-0!;
+  }
+  .pc-table :is(.pc-col-more, .pc-col-hide) {
+    @apply max-sm:hidden;
+  }
+  .pc-table tbody tr[data-pc-expandable] {
+    @apply max-sm:cursor-pointer;
+  }
+  .pc-table tbody tr.pc-row-details > td {
+    @apply border-b-0 p-0! sm:hidden;
+  }
+  .pc-table-hover tbody tr.pc-row-details:hover > td {
+    @apply bg-transparent;
+  }
+  /* w-0 + min-w-full: fills the row without its content (long, unwrapped values) widening the table */
+  .pc-row-details-inner {
+    @apply grid w-0 min-w-full grid-rows-[0fr] transition-[grid-template-rows] duration-200 ease-out;
+  }
+  .pc-row-details[data-pc-open="true"] > td {
+    @apply bg-pc-surface-alt;
+  }
+  .pc-row-details[data-pc-open="true"] .pc-row-details-inner {
+    @apply grid-rows-[1fr];
+  }
+  .pc-row-details-inner > div {
+    @apply min-h-0 overflow-hidden;
+  }
+  .pc-row-details dl {
+    @apply m-0 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2.5 px-3 pt-1 pb-4 text-sm;
+  }
+  .pc-row-details dt {
+    @apply self-center text-[11px] font-extrabold tracking-[0.02em] text-pc-muted uppercase;
+  }
+  .pc-row-details dd {
+    @apply m-0 min-w-0 text-end;
+  }
   /* x-table's table: borderless; the hover tint is on the cells, so the first and last get rounded ends. */
   .pc-table-inset :is(thead th, tbody td) {
     @apply border-b-0;
   }
   .pc-table-inset tbody td:first-child {
-    @apply rounded-l-pc-sm;
+    @apply rounded-s-pc-sm;
   }
   .pc-table-inset tbody td:last-child {
-    @apply rounded-r-pc-sm;
+    @apply rounded-e-pc-sm;
   }
   /* <tr class="pc-table-head">: column headings repeated inside the body, one per section, styled like the thead.
      <td class="pc-table-span" rowspan="n">: a first-column cell grouping the rows beside it (e.g. a semester);
      it stays white when the row it starts on is hovered */
   .pc-table tbody td.pc-table-span,
   .pc-table-hover tbody tr:hover td.pc-table-span {
-    @apply border-r bg-pc-surface align-middle;
+    @apply border-e bg-pc-surface align-middle;
   }
   .pc-table-compact tbody td {
     @apply py-[5px];
@@ -2116,10 +2237,10 @@
   }
   /* Dense: 8px column gaps, for wide data grids. */
   .pc-table.pc-table-dense :is(tbody td, thead th) {
-    @apply px-1 first:pl-3 last:pr-3;
+    @apply px-1 first:ps-3 last:pe-3;
   }
   .pc-table .pc-num {
-    @apply text-right font-pc-mono tabular-nums;
+    @apply text-end font-pc-mono tabular-nums;
   }
   .pc-sort-th {
     @apply inline-flex cursor-pointer items-center gap-1 border-0 bg-transparent p-0 font-[inherit] tracking-[inherit]
@@ -2129,10 +2250,10 @@
     @apply text-pc-text;
   }
   .pc-sticky-start {
-    @apply sticky left-0 z-1 bg-pc-surface shadow-[1px_0_0_var(--color-pc-border-soft)];
+    @apply sticky start-0 z-1 bg-pc-surface shadow-[1px_0_0_var(--color-pc-border-soft)] rtl:shadow-[-1px_0_0_var(--color-pc-border-soft)];
   }
   .pc-sticky-end {
-    @apply sticky right-0 z-1 bg-pc-surface shadow-[-1px_0_0_var(--color-pc-border-soft)];
+    @apply sticky end-0 z-1 bg-pc-surface shadow-[-1px_0_0_var(--color-pc-border-soft)] rtl:shadow-[1px_0_0_var(--color-pc-border-soft)];
   }
   thead .pc-sticky-start,
   thead .pc-sticky-end {

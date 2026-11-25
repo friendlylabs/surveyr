@@ -46,8 +46,8 @@
       title = "",
       text = "",
       icon = "primary",
-      confirmButtonText = "OK",
-      cancelButtonText = "Cancel",
+      confirmButtonText = pc.t("OK"),
+      cancelButtonText = pc.t("Cancel"),
       showCancelButton = false,
       confirmButtonVariant = null,
     } = options || {};

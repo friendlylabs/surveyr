@@ -4,22 +4,22 @@
         @csrf
 
         <div>
-            <h1 class="pc-auth-title">Confirm your password</h1>
-            <p class="pc-auth-sub">This is a secure area. Confirm your password to carry on, {{ str(auth()->user()->name)->before(' ') }}.</p>
+            <h1 class="pc-auth-title">{{ __('Confirm your password') }}</h1>
+            <p class="pc-auth-sub">{{ __('This is a secure area. Confirm your password to carry on, :name.', ['name' => str(auth()->user()->name)->before(' ')]) }}</p>
         </div>
 
         <div>
-            <label class="pc-auth-label" for="password">Password</label>
+            <label class="pc-auth-label" for="password">{{ __('Password') }}</label>
             <span class="pc-input-group">
-                <input id="password" name="password" type="password" class="pc-input pr-16" autocomplete="current-password" required data-pc-pw-input aria-describedby="passwordError" data-auth-msg-missing="Enter your password.">
-                <button type="button" class="pc-input-addon" data-pc-pw-toggle aria-label="Show password">SHOW</button>
+                <input id="password" name="password" type="password" class="pc-input pe-16" autocomplete="current-password" required data-pc-pw-input aria-describedby="passwordError" data-auth-msg-missing="{{ __('Enter your password.') }}">
+                <button type="button" class="pc-input-addon" data-pc-pw-toggle aria-label="{{ __('Show password') }}">{{ __('SHOW') }}</button>
             </span>
             <div id="passwordError" class="pc-field-error" hidden></div>
         </div>
 
-        <button type="submit" class="pc-btn pc-btn-primary pc-btn-lg pc-btn-block">Confirm</button>
+        <button type="submit" class="pc-btn pc-btn-primary pc-btn-lg pc-btn-block">{{ __('Confirm') }}</button>
 
-        <p class="pc-auth-foot"><a href="{{ route('dashboard') }}" class="pc-auth-link">Cancel</a></p>
+        <p class="pc-auth-foot"><a href="{{ route('dashboard') }}" class="pc-auth-link">{{ __('Cancel') }}</a></p>
     </form>
 
     @push('body')

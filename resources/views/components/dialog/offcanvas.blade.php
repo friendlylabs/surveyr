@@ -4,7 +4,7 @@
     Same contract as <x-dialog.modal>: with `action` the panel is a form posted by submitForm().
     Slots: default = body, `footer` replaces the Close / submit buttons. size = lg for the wider panel.
 --}}
-@props(['id', 'title', 'subtitle' => null, 'size' => null, 'action' => null, 'submit' => 'Save', 'footer' => null])
+@props(['id', 'title', 'subtitle' => null, 'size' => null, 'action' => null, 'submit' => __('Save'), 'footer' => null])
 
 @php($panelTag = $action ? 'form' : 'div')
 
@@ -14,11 +14,11 @@
         @if ($action) @csrf @endif
         <div class="pc-offcanvas-header">
             <div class="pc-offcanvas-tools">
-                <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm pc-offcanvas-expand max-sm:hidden" data-pc-offcanvas-expand aria-pressed="false" aria-label="Expand panel">
+                <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm pc-offcanvas-expand max-sm:hidden" data-pc-offcanvas-expand aria-pressed="false" aria-label="{{ __('Expand panel') }}">
                     <i class="ph ph-arrows-out-simple pc-offcanvas-expand-icon text-base" aria-hidden="true"></i>
                     <i class="ph ph-arrows-in-simple pc-offcanvas-shrink-icon text-base" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm" data-pc-dismiss="offcanvas" aria-label="Close">
+                <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm" data-pc-dismiss="offcanvas" aria-label="{{ __('Close') }}">
                     <i class="ph ph-x text-base" aria-hidden="true"></i>
                 </button>
             </div>
@@ -32,7 +32,7 @@
             @if ($footer)
                 {{ $footer }}
             @else
-                <button type="button" class="pc-btn pc-btn-secondary" data-pc-dismiss="offcanvas">Close</button>
+                <button type="button" class="pc-btn pc-btn-secondary" data-pc-dismiss="offcanvas">{{ __('Close') }}</button>
                 @if ($action)<button type="submit" class="pc-btn pc-btn-primary">{{ $submit }}</button>@endif
             @endif
         </div>

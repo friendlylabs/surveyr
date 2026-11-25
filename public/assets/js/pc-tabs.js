@@ -57,7 +57,9 @@
     if (!trigger) return;
     const list = triggers(trigger.closest("[data-pc-tabs-group]"));
     const i = list.indexOf(trigger);
-    const next = list[(i + (e.key === "ArrowRight" ? 1 : -1) + list.length) % list.length];
+    // the tab row mirrors on RTL pages, so Left moves to the next tab there
+    const forward = (e.key === "ArrowRight") !== pc.rtl();
+    const next = list[(i + (forward ? 1 : -1) + list.length) % list.length];
     e.preventDefault();
     next.focus();
     select(next);

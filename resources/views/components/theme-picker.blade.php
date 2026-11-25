@@ -7,7 +7,7 @@
 --}}
 @props(['solid' => false])
 
-<button type="button" {{ $attributes->class('pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm pc-theme-toggle') }} data-pc-trigger="theme-toggle" aria-label="Switch theme">
+<button type="button" {{ $attributes->class('pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm pc-theme-toggle') }} data-pc-trigger="theme-toggle" aria-label="{{ __('Switch theme') }}">
     @if ($solid)
         <i class="fa-solid fa-moon pc-theme-to-dark" aria-hidden="true"></i>
         <i class="fa-solid fa-sun pc-theme-to-light" aria-hidden="true"></i>

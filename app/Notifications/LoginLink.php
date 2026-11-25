@@ -38,10 +38,10 @@ class LoginLink extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Your '.config('app.name').' sign-in link')
-            ->line('Use the button below to sign in. No password needed.')
-            ->action('Sign in', $this->url)
-            ->line("The link expires in {$this->minutes} minutes and works once.")
-            ->line("If you didn't ask for it, you can ignore this email.");
+            ->subject(__('Your :app sign-in link', ['app' => config('app.name')]))
+            ->line(__('Use the button below to sign in. No password needed.'))
+            ->action(__('Sign in'), $this->url)
+            ->line(__('The link expires in :minutes minutes and works once.', ['minutes' => $this->minutes]))
+            ->line(__("If you didn't ask for it, you can ignore this email."));
     }
 }

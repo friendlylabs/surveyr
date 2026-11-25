@@ -3,7 +3,7 @@
       <x-form.checklist id="addDepartments" name="departments" label="Departments" :options="$options" />
     options: [value => label]; `selected` = values ticked on render.
 --}}
-@props(['id', 'name', 'label', 'options' => [], 'selected' => [], 'hint' => null, 'empty' => 'Nothing to choose from yet.'])
+@props(['id', 'name', 'label', 'options' => [], 'selected' => [], 'hint' => null, 'empty' => __('Nothing to choose from yet.')])
 
 <fieldset {{ $attributes }} aria-describedby="{{ $hint ? "{$id}Hint " : '' }}{{ $id }}Error">
     <legend class="pc-label">{{ $label }}</legend>

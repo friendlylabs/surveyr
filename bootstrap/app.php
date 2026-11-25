@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\ResolveCurrentWorkspace;
+use App\Http\Middleware\SetLocale;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -23,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectGuestsTo(fn () => route('auth.login'));
         $middleware->redirectUsersTo(fn () => route('dashboard'));
         $middleware->alias(['workspace' => ResolveCurrentWorkspace::class]);
+        $middleware->web(append: [SetLocale::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $wantsJson = fn (Request $request) => $request->is('api/*') || $request->expectsJson();
@@ -37,23 +39,23 @@ return Application::configure(basePath: dirname(__DIR__))
             }
 
             $status = 500;
-            $message = 'An unexpected error occurred';
+            $message = __('An unexpected error occurred');
             $response = [];
 
             if ($e instanceof HttpException) {
                 $status = $e->getStatusCode();
-                $message = $e->getMessage() ?: (Response::$statusTexts[$status] ?? 'An error occurred');
+                $message = $e->getMessage() ?: (Response::$statusTexts[$status] ?? __('An error occurred'));
             }
 
             // Laravel wraps these in an HttpException before this callback runs; check the original
             if ($e->getPrevious() instanceof ModelNotFoundException) {
                 $status = 404;
-                $message = 'The requested record was not found';
+                $message = __('The requested record was not found');
             }
 
             if ($e instanceof TokenMismatchException || $e->getPrevious() instanceof TokenMismatchException) {
                 $status = 419;
-                $message = 'Your session has expired. Reload the page and try again';
+                $message = __('Your session has expired. Reload the page and try again');
             }
 
             if ($e instanceof ValidationException) {
@@ -64,12 +66,12 @@ return Application::configure(basePath: dirname(__DIR__))
 
             if ($e instanceof AuthenticationException) {
                 $status = 401;
-                $message = 'Unauthenticated';
+                $message = __('Unauthenticated');
             }
 
             if ($e instanceof AuthorizationException) {
                 $status = 403;
-                $message = $e->getMessage() ?: 'Unauthorized';
+                $message = $e->getMessage() ?: __('Unauthorized');
             }
 
             $response = ['success' => false, 'message' => $message] + $response;

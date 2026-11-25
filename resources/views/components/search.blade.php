@@ -1,5 +1,5 @@
 {{-- GET search box for list toolbars; keeps the page's other query filters (except the page number) --}}
-@props(['name' => 'q', 'placeholder' => 'Search'])
+@props(['name' => 'q', 'placeholder' => __('Search')])
 
 <form method="GET" {{ $attributes->class('pc-input-group w-64 max-sm:w-full') }} role="search">
     @foreach (request()->except([$name, 'page']) as $key => $value)

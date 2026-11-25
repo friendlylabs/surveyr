@@ -23,7 +23,7 @@ class WorkspacesController extends Controller
 
         $this->redirect = route('dashboard');
 
-        return $this->jsonSuccess("Switched to {$workspace->name}");
+        return $this->jsonSuccess(__('Switched to :name', ['name' => $workspace->name]));
     }
 
     /** Registers the workspace routes. */

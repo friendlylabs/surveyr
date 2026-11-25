@@ -121,7 +121,7 @@ abstract class Controller
 
         $response = array_merge([
             'success' => false,
-            'message' => 'An unexpected error occurred',
+            'message' => __('An unexpected error occurred'),
         ], $this->data);
 
         return response()->json($response, 500);
@@ -154,28 +154,28 @@ abstract class Controller
         if (! $message) {
             switch ($sqlState) {
                 case '23000': // Integrity constraint violation
-                    $message = 'This content violates a database constraint.';
+                    $message = __('This content violates a database constraint.');
                     break;
                 case '22001': // String data, right truncation
-                    $message = 'The data you are trying to save is too long.';
+                    $message = __('The data you are trying to save is too long.');
                     break;
                 case '42000': // Syntax error or access violation
-                    $message = 'There is an issue with the database query syntax or permissions.';
+                    $message = __('There is an issue with the database query syntax or permissions.');
                     break;
                 case 'HY000': // General error
                     $message = 'A general database error occurred. Please try again later.';
                     break;
                 case '42S02': // Table or view not found
-                    $message = 'The requested table or view does not exist in the database.';
+                    $message = __('The requested table or view does not exist in the database.');
                     break;
                 case '42S22': // Column not found
                     $message = 'A required column is missing in the database.';
                     break;
                 case '23001': // Restrict violation
-                    $message = 'This operation violates a database restriction.';
+                    $message = __('This operation violates a database restriction.');
                     break;
                 default:
-                    $message = 'An unexpected database error occurred. Please contact support.';
+                    $message = __('An unexpected database error occurred. Please contact support.');
             }
         }
 

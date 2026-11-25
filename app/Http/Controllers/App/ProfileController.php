@@ -41,18 +41,18 @@ class ProfileController extends Controller
     }
 
     /**
-     * Saves the name and email. A changed email is unconfirmed again (while email verification is on), so that sends
+     * Saves the name, email and language. A changed email is unconfirmed again (while email verification is on), so that sends
      * them to confirm it.
      */
     public function update(Request $request, UpdatesUserProfileInformation $updater)
     {
         $user = $request->user();
-        $updater->update($user, $request->only('name', 'email'));
+        $updater->update($user, $request->only('name', 'email', 'locale'));
 
         $mustConfirm = Features::enabled(Features::emailVerification()) && ! $user->hasVerifiedEmail();
         $this->redirect = $mustConfirm ? route('auth.verify-email') : url()->previous();
 
-        return $this->jsonSuccess($mustConfirm ? 'Profile saved. Confirm your new email to carry on.' : 'Profile saved');
+        return $this->jsonSuccess($mustConfirm ? __('Profile saved. Confirm your new email to carry on.') : __('Profile saved'));
     }
 
     /** Changes the password. The user's other sessions end with the old password; this one carries on. */
@@ -65,21 +65,21 @@ class ProfileController extends Controller
 
         $this->redirect = url()->previous();
 
-        return $this->jsonSuccess('Password changed. Your other devices are signed out.');
+        return $this->jsonSuccess(__('Password changed. Your other devices are signed out.'));
     }
 
     /** Signs out one of the user's other devices; this device signs out through Log out instead. */
     public function destroySession(Request $request, string $id)
     {
         if ($id === $request->session()->getId()) {
-            return $this->jsonError('That\'s this device. Use Log out in the account menu instead.', 422);
+            return $this->jsonError(__('That\'s this device. Use Log out in the account menu instead.'), 422);
         }
 
         if (! $this->otherSessions($request)?->where('id', $id)->delete()) {
-            return $this->jsonError('That session has already ended', 404);
+            return $this->jsonError(__('That session has already ended'), 404);
         }
 
-        return $this->jsonSuccess('Device signed out');
+        return $this->jsonSuccess(__('Device signed out'));
     }
 
     /** Signs out every other device the user is signed in on. */
@@ -89,7 +89,7 @@ class ProfileController extends Controller
 
         $this->redirect = url()->previous();
 
-        return $this->jsonSuccess($count ? "{$count} other ".str('device')->plural($count).' signed out' : 'No other devices were signed in');
+        return $this->jsonSuccess($count ? trans_choice(':count other device signed out|:count other devices signed out', $count, ['count' => $count]) : __('No other devices were signed in'));
     }
 
     /** The user's sessions, this device first: { id, current, ip_address, last_active, device }. */
@@ -162,10 +162,10 @@ class ProfileController extends Controller
         };
 
         return match (true) {
-            $browser && $platform => "{$browser} on {$platform}",
+            $browser && $platform => __(':browser on :platform', ['browser' => $browser, 'platform' => $platform]),
             $browser !== null => $browser,
             $platform !== null => $platform,
-            default => 'Unknown device',
+            default => __('Unknown device'),
         };
     }
 

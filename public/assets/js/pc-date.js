@@ -149,7 +149,7 @@
 
   // mirrors DateFormat::range(): 12 Oct 2026, 09:00 – 17:30 · 12 – 18 Oct 2026 · 28 Sep – 4 Oct 2026
   function formatRange(a, b, pattern, locale, sep = " – ") {
-    if (!a || !b) return a ? `From ${format(a, pattern, locale)}` : b ? `Until ${format(b, pattern, locale)}` : "";
+    if (!a || !b) return a ? pc.t("From :date", { date: format(a, pattern, locale) }) : b ? pc.t("Until :date", { date: format(b, pattern, locale) }) : "";
     const full = format(b, pattern, locale);
     if (format(a, pattern, locale) === full) return full;
     const timeAt = pattern.search(TIME_CHARS);
@@ -241,25 +241,25 @@
       else if (this.labelText) this.trigger.setAttribute("aria-label", this.labelText);
       const describedBy = this.inputs[0].getAttribute("aria-describedby");
       if (describedBy) this.trigger.setAttribute("aria-describedby", describedBy);
-      this.clearX = el("span", "pc-date-clear", { "aria-hidden": "true", title: "Clear" });
+      this.clearX = el("span", "pc-date-clear", { "aria-hidden": "true", title: pc.t("Clear") });
       this.clearX.textContent = "×";
       this.trigger.append(el("i", `ph ph-${this.hasDate ? "calendar-blank" : "clock"} pc-date-icon`, { "aria-hidden": "true" }), this.value, this.clearX);
 
       this.backdrop = el("div", "pc-date-backdrop");
       this.backdrop.hidden = true;
 
-      this.flyout = el("div", "pc-date-flyout", { id: `${this.id}Picker`, role: "dialog", "aria-label": this.labelText || "Choose" });
+      this.flyout = el("div", "pc-date-flyout", { id: `${this.id}Picker`, role: "dialog", "aria-label": this.labelText || pc.t("Choose") });
       this.flyout.hidden = true;
 
       const head = el("div", "pc-date-sheet-head");
       const title = el("span", "truncate");
-      title.textContent = this.labelText || "Choose";
+      title.textContent = this.labelText || pc.t("Choose");
       this.headDone = el("button", "pc-btn pc-btn-secondary pc-btn-sm", { type: "button" });
-      this.headDone.textContent = "Done";
+      this.headDone.textContent = pc.t("Done");
       head.append(title, this.headDone);
 
       const body = el("div", "pc-date-body");
-      this.presetList = el("div", "pc-date-presets", { role: "group", "aria-label": "Shortcuts" });
+      this.presetList = el("div", "pc-date-presets", { role: "group", "aria-label": pc.t("Shortcuts") });
       this.calendar = el("div", "pc-date-calendar");
       this.clock = el("div", "pc-date-clock");
       body.append(this.presetList, this.calendar, this.clock);
@@ -269,13 +269,13 @@
 
       const foot = el("div", "pc-date-foot");
       this.nowButton = el("button", "pc-btn pc-btn-ghost pc-btn-sm", { type: "button" });
-      this.nowButton.textContent = this.mode === "date" ? "Today" : "Now";
+      this.nowButton.textContent = this.mode === "date" ? pc.t("Today") : pc.t("Now");
       this.nowButton.hidden = this.range;
       this.summary = el("span", "pc-date-summary", { "aria-live": "polite" });
       this.clearButton = el("button", "pc-btn pc-btn-ghost pc-btn-sm", { type: "button" });
-      this.clearButton.textContent = "Clear";
+      this.clearButton.textContent = pc.t("Clear");
       this.doneButton = el("button", "pc-btn pc-btn-primary pc-btn-sm", { type: "button" });
-      this.doneButton.textContent = "Done";
+      this.doneButton.textContent = pc.t("Done");
       this.doneButton.hidden = !this.hasTime && !this.range;
       foot.append(this.nowButton, this.summary, this.clearButton, this.doneButton);
 
@@ -396,7 +396,7 @@
       const text = this.range ? formatRange(a, b, this.pattern, this.locale) : format(a, this.pattern, this.locale);
       this.value.textContent = "";
       const span = el("span", text ? "pc-date-text" : "pc-date-placeholder");
-      span.textContent = text || this.root.dataset.placeholder || "Choose";
+      span.textContent = text || this.root.dataset.placeholder || pc.t("Choose");
       this.value.appendChild(span);
       const disabled = this.disabled();
       this.clearX.hidden = !text || this.inputs[0].required || disabled;
@@ -585,8 +585,9 @@
       const title = el("button", "pc-date-title", { type: "button", "data-nav": "up", id: `${this.id}Title`, "aria-live": "polite" });
       const prev = el("button", "pc-date-nav", { type: "button", "data-nav": "prev" });
       const next = el("button", "pc-date-nav", { type: "button", "data-nav": "next" });
-      prev.appendChild(el("i", "ph ph-caret-left", { "aria-hidden": "true" }));
-      next.appendChild(el("i", "ph ph-caret-right", { "aria-hidden": "true" }));
+      // the head row mirrors on RTL pages, so the carets swap to keep pointing outwards
+      prev.appendChild(el("i", `ph ph-caret-${pc.rtl() ? "right" : "left"}`, { "aria-hidden": "true" }));
+      next.appendChild(el("i", `ph ph-caret-${pc.rtl() ? "left" : "right"}`, { "aria-hidden": "true" }));
       head.append(prev, title, next);
       c.appendChild(head);
       const year = this.view.getFullYear();
@@ -594,9 +595,9 @@
 
       if (this.viewMode === "days") {
         title.textContent = format({ date: this.view }, "F Y", this.locale);
-        title.setAttribute("aria-label", `${title.textContent}, choose a month`);
-        prev.setAttribute("aria-label", "Previous month");
-        next.setAttribute("aria-label", "Next month");
+        title.setAttribute("aria-label", pc.t(":month, choose a month", { month: title.textContent }));
+        prev.setAttribute("aria-label", pc.t("Previous month"));
+        next.setAttribute("aria-label", pc.t("Next month"));
         const grid = el("div", "pc-date-grid", { role: "grid", "aria-labelledby": title.id });
         const names = el("div", "pc-date-row", { role: "row" });
         const offset = (this.view.getDay() - this.weekStart + 7) % 7;
@@ -640,9 +641,9 @@
       const chosen = this.draft[0]?.date;
       if (this.viewMode === "months") {
         title.textContent = String(year);
-        title.setAttribute("aria-label", `${year}, choose a year`);
-        prev.setAttribute("aria-label", "Previous year");
-        next.setAttribute("aria-label", "Next year");
+        title.setAttribute("aria-label", pc.t(":year, choose a year", { year }));
+        prev.setAttribute("aria-label", pc.t("Previous year"));
+        next.setAttribute("aria-label", pc.t("Next year"));
         for (let m = 0; m < 12; m++) {
           const first = day(year, m, 1);
           const last = day(year, m + 1, 0);
@@ -657,8 +658,8 @@
         const from = year - (year % 12);
         title.textContent = `${from} – ${from + 11}`;
         title.disabled = true;
-        prev.setAttribute("aria-label", "Previous years");
-        next.setAttribute("aria-label", "Next years");
+        prev.setAttribute("aria-label", pc.t("Previous years"));
+        next.setAttribute("aria-label", pc.t("Next years"));
         for (let y = from; y < from + 12; y++) {
           const button = el("button", "pc-date-cell", { type: "button", "data-year": y });
           button.textContent = y;
@@ -693,8 +694,8 @@
       const c = this.clock;
       c.textContent = "";
       if (this.range) {
-        const ends = el("div", "pc-tabs pc-tabs-soft pc-date-ends", { role: "tablist", "aria-label": "Which time" });
-        ["Start", "End"].forEach((label, i) => {
+        const ends = el("div", "pc-tabs pc-tabs-soft pc-date-ends", { role: "tablist", "aria-label": pc.t("Which time") });
+        [pc.t("Start"), pc.t("End")].forEach((label, i) => {
           const p = this.draft[i];
           const tab = el("button", `pc-tab${i === this.clockEnd ? " pc-tab-active" : ""}`, { type: "button", role: "tab", "data-end": i, "aria-selected": String(i === this.clockEnd) });
           const time = el("span", "pc-date-end-time");
@@ -708,14 +709,14 @@
       const date = p?.date ?? (this.hasDate ? this.draft[0]?.date ?? null : null);
       const time = p?.time ?? null;
       const cols = el("div", "pc-date-cols");
-      const hours = el("div", "pc-date-col", { role: "listbox", "aria-label": "Hour" });
+      const hours = el("div", "pc-date-col", { role: "listbox", "aria-label": pc.t("Hour") });
       for (let h = 0; h < 24; h++) {
         const option = el("button", "pc-date-option", { type: "button", role: "option", "data-hour": h, "aria-selected": String(time !== null && Math.floor(time / 60) === h) });
         option.textContent = this.twelveHour ? `${h % 12 || 12} ${h < 12 ? "AM" : "PM"}` : pad(h);
         option.disabled = !this.timeAllowed(date, h * 60, h * 60 + 59);
         hours.appendChild(option);
       }
-      const minutes = el("div", "pc-date-col", { role: "listbox", "aria-label": "Minute" });
+      const minutes = el("div", "pc-date-col", { role: "listbox", "aria-label": pc.t("Minute") });
       const hour = time === null ? Math.floor(this.defaultTime(this.clockEnd) / 60) : Math.floor(time / 60);
       const offered = new Set();
       for (let m = 0; m < 60; m += this.step) offered.add(m);
@@ -738,8 +739,8 @@
     renderFoot() {
       const [a, b] = this.draft;
       let text = "";
-      if (this.range && this.hasDate && !a) text = "Pick the first day";
-      else if (this.range && this.hasDate && this.picking === 1) text = "Pick the last day";
+      if (this.range && this.hasDate && !a) text = pc.t("Pick the first day");
+      else if (this.range && this.hasDate && this.picking === 1) text = pc.t("Pick the last day");
       else if (this.range) text = formatRange(a, b, this.pattern, this.locale);
       else if (this.hasTime) text = format(a, this.pattern, this.locale);
       this.summary.textContent = text;
@@ -800,9 +801,10 @@
     onCalendarKey(e) {
       if (!e.target.classList.contains("pc-date-day")) return;
       const d = this.cursor;
+      const back = pc.rtl() ? 1 : -1; // the grid mirrors on RTL pages, so Left moves forward there
       const keys = {
-        ArrowLeft: () => addDays(d, -1),
-        ArrowRight: () => addDays(d, 1),
+        ArrowLeft: () => addDays(d, back),
+        ArrowRight: () => addDays(d, -back),
         ArrowUp: () => addDays(d, -7),
         ArrowDown: () => addDays(d, 7),
         Home: () => addDays(d, -((d.getDay() - this.weekStart + 7) % 7)),
@@ -880,7 +882,8 @@
       const vh = window.innerHeight;
       f.maxHeight = "none";
       const width = Math.min(this.flyout.offsetWidth, vw - EDGE * 2);
-      f.left = Math.min(Math.max(EDGE, r.left), vw - width - EDGE) + "px";
+      const start = pc.rtl() ? r.right - width : r.left; // the field's inline-start edge
+      f.left = Math.min(Math.max(EDGE, start), vw - width - EDGE) + "px";
       const natural = this.flyout.offsetHeight;
       const below = vh - r.bottom - GAP - EDGE;
       const above = r.top - GAP - EDGE;

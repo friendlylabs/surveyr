@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ App\Support\Locales::direction() }}">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,11 +30,11 @@
 
             <main class="pc-auth-panel">
                 <div class="pc-auth-head">
-                    <a href="{{ route('auth.login') }}" class="pc-auth-brand" aria-label="{{ config('app.name') }} home">
+                    <a href="{{ route('auth.login') }}" class="pc-auth-brand" aria-label="{{ __(':app home', ['app' => config('app.name')]) }}">
                         <img src="{{ asset('assets/img/logo.svg') }}" alt="{{ config('app.name') }}" class="pc-auth-brand-light">
                         <img src="{{ asset('assets/img/logo-dark.svg') }}" alt="" class="pc-auth-brand-dark">
                     </a>
-                    <x-theme-picker class="pc-theme-toggle-ring ml-auto" />
+                    <x-theme-picker class="pc-theme-toggle-ring ms-auto" />
                 </div>
                 <div class="pc-auth-body">
                     {{ $slot }}
@@ -43,6 +43,10 @@
 
             <div class="pc-auth-art pc-auth-art-side" aria-hidden="true"></div>
         </div>
+
+        {{-- the current language's strings for pc.t() (pc-core.js) --}}
+
+        <script>window.pcStrings = @json(App\Support\Locales::strings(), JSON_FORCE_OBJECT);</script>
 
         <script src="{{ asset('assets/js/pc-core.js') }}" defer></script>
         <script src="{{ asset('assets/js/pc-loader.js') }}" defer></script>

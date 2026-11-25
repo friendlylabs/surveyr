@@ -49,4 +49,21 @@ return [
         'url' => env('SURVEYR_AVATAR_URL', 'https://api.dicebear.com/7.x/lorelei/svg?seed=:seed'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Languages
+    |--------------------------------------------------------------------------
+    |
+    | The interface languages users can pick (App\Support\Locales). A user's own
+    | choice wins, then their workspace's default, then the browser's language
+    | (sign-in pages), then app.locale. `dir` sets the page direction: add an
+    | rtl language (e.g. 'ar' => [..., 'dir' => 'rtl']) and its translations in
+    | lang/{code}.json, and the layout flips.
+    |
+    */
+
+    'locales' => [
+        'en' => ['name' => 'English', 'native' => 'English', 'dir' => 'ltr'],
+    ],
+
 ];

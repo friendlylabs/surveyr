@@ -7,32 +7,32 @@
             <i class="ph ph-shield-check text-[22px]" aria-hidden="true"></i>
         </span>
         <div>
-            <h1 class="pc-auth-title">Two-factor authentication</h1>
-            <p class="pc-auth-sub" data-mode-text="code">Enter the 6-digit code from your authenticator app.</p>
-            <p class="pc-auth-sub" data-mode-text="recovery" hidden>Enter one of the recovery codes you saved when you turned two-factor on. Each works once.</p>
+            <h1 class="pc-auth-title">{{ __('Two-factor authentication') }}</h1>
+            <p class="pc-auth-sub" data-mode-text="code">{{ __('Enter the 6-digit code from your authenticator app.') }}</p>
+            <p class="pc-auth-sub" data-mode-text="recovery" hidden>{{ __('Enter one of the recovery codes you saved when you turned two-factor on. Each works once.') }}</p>
         </div>
 
         <div data-mode="code">
-            <label class="pc-auth-label" for="code">Authentication code</label>
-            <input id="code" name="code" type="text" class="pc-input text-center font-pc-mono text-lg tracking-[0.5em]" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••" required aria-describedby="codeError" data-auth-msg-missing="Enter the code from your app.">
+            <label class="pc-auth-label" for="code">{{ __('Authentication code') }}</label>
+            <input id="code" name="code" type="text" class="pc-input text-center font-pc-mono text-lg tracking-[0.5em]" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••" required aria-describedby="codeError" data-auth-msg-missing="{{ __('Enter the code from your app.') }}">
             <div id="codeError" class="pc-field-error" hidden></div>
         </div>
 
         <div data-mode="recovery" hidden>
-            <label class="pc-auth-label" for="recovery_code">Recovery code</label>
-            <input id="recovery_code" name="recovery_code" type="text" class="pc-input font-pc-mono" autocomplete="off" placeholder="xxxxxxxxxx-xxxxxxxxxx" aria-describedby="recoveryCodeError" data-auth-msg-missing="Enter a recovery code." disabled>
+            <label class="pc-auth-label" for="recovery_code">{{ __('Recovery code') }}</label>
+            <input id="recovery_code" name="recovery_code" type="text" class="pc-input font-pc-mono" autocomplete="off" placeholder="xxxxxxxxxx-xxxxxxxxxx" aria-describedby="recoveryCodeError" data-auth-msg-missing="{{ __('Enter a recovery code.') }}" disabled>
             <div id="recoveryCodeError" class="pc-field-error" hidden></div>
         </div>
 
-        <button type="submit" id="verifyBtn" class="pc-btn pc-btn-primary pc-btn-lg pc-btn-block">Verify</button>
+        <button type="submit" id="verifyBtn" class="pc-btn pc-btn-primary pc-btn-lg pc-btn-block">{{ __('Verify') }}</button>
 
         <p class="pc-auth-foot">
-            <button type="button" class="pc-auth-link border-0 bg-transparent p-0" id="switchMode">Use a recovery code instead</button>
+            <button type="button" class="pc-auth-link border-0 bg-transparent p-0" id="switchMode">{{ __('Use a recovery code instead') }}</button>
         </p>
     </form>
 
     <a href="{{ route('auth.login') }}" class="pc-auth-link inline-flex items-center gap-1.5 text-[13px]">
-        <i class="ph ph-arrow-left text-sm" aria-hidden="true"></i>Back to sign in
+        <i class="ph ph-arrow-left text-sm rtl:-scale-x-100" aria-hidden="true"></i>{{ __('Back to sign in') }}
     </a>
 
     @push('body')
@@ -54,7 +54,7 @@
                         if (on) input.focus();
                     });
                     form.querySelectorAll("[data-mode-text]").forEach((el) => (el.hidden = el.dataset.modeText !== mode));
-                    toggle.textContent = mode === "code" ? "Use a recovery code instead" : "Use an authentication code instead";
+                    toggle.textContent = mode === "code" ? pc.t("Use a recovery code instead") : pc.t("Use an authentication code instead");
                 }
 
                 toggle.addEventListener("click", () => setMode(mode === "code" ? "recovery" : "code"));

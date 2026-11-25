@@ -77,17 +77,17 @@
 
       const head = el("div", "pc-select-sheet-head");
       const title = el("span", "truncate");
-      title.textContent = this.labelText || "Choose";
+      title.textContent = this.labelText || pc.t("Choose");
       this.done = el("button", "pc-btn pc-btn-secondary pc-btn-sm", { type: "button" });
-      this.done.textContent = "Done";
+      this.done.textContent = pc.t("Done");
       head.append(title, this.done);
 
       this.searchBox = el("div", "pc-select-search");
       this.search = el("input", "pc-input", {
         type: "search",
-        placeholder: "Search…",
+        placeholder: pc.t("Search…"),
         autocomplete: "off",
-        "aria-label": `Search ${this.labelText}`.trim(),
+        "aria-label": this.labelText ? pc.t("Search :label", { label: this.labelText }) : pc.t("Search"),
         "aria-controls": `${this.id}Listbox`,
         "aria-autocomplete": "list",
       });
@@ -96,9 +96,9 @@
       this.actions = el("div", "pc-select-actions");
       this.count = el("span", "pc-select-count");
       this.allButton = el("button", "", { type: "button" });
-      this.allButton.textContent = "Select all";
+      this.allButton.textContent = pc.t("Select all");
       this.clearButton = el("button", "", { type: "button" });
-      this.clearButton.textContent = "Clear";
+      this.clearButton.textContent = pc.t("Clear");
       this.actions.append(this.count, this.allButton, this.clearButton);
       this.actions.hidden = !this.multiple;
 
@@ -107,7 +107,7 @@
       if (label) this.list.setAttribute("aria-labelledby", label.id);
 
       this.empty = el("div", "pc-select-empty");
-      this.empty.textContent = "No matches";
+      this.empty.textContent = pc.t("No matches");
       this.empty.hidden = true;
 
       this.flyout.append(head, this.searchBox, this.actions, this.list, this.empty);
@@ -187,7 +187,7 @@
     /* ---------- rendering ---------- */
     placeholder() {
       const empty = !this.multiple && Array.from(this.select.options).find((o) => o.value === "");
-      return this.select.dataset.placeholder || (empty && empty.textContent.trim()) || (this.multiple ? "Choose…" : "Choose");
+      return this.select.dataset.placeholder || (empty && empty.textContent.trim()) || (this.multiple ? pc.t("Choose…") : pc.t("Choose"));
     }
 
     /** The empty option is the "nothing chosen" state; it's offered in the list only when the field is optional. */
@@ -256,7 +256,7 @@
         const chip = el("span", "pc-select-chip");
         const label = el("span", "pc-select-chip-label");
         label.textContent = option.textContent.trim();
-        const x = el("span", "pc-select-chip-x", { "aria-hidden": "true", title: "Remove" });
+        const x = el("span", "pc-select-chip-x", { "aria-hidden": "true", title: pc.t("Remove") });
         x.dataset.remove = option.index;
         x.textContent = "×";
         chip.append(label, x);
@@ -264,7 +264,7 @@
       });
       if (chosen.length > max) {
         const more = el("span", "pc-select-more");
-        more.textContent = `+${chosen.length - max} more`;
+        more.textContent = pc.t("+:count more", { count: chosen.length - max });
         this.value.appendChild(more);
       }
     }
@@ -273,7 +273,7 @@
       if (!this.multiple) return;
       const total = Array.from(this.select.options).filter((o) => o.value !== "").length;
       const chosen = Array.from(this.select.selectedOptions).filter((o) => o.value !== "").length;
-      this.count.textContent = `${chosen} of ${total} selected`;
+      this.count.textContent = pc.t(":chosen of :total selected", { chosen, total });
     }
 
     /* ---------- choosing ---------- */
@@ -479,7 +479,8 @@
       const vh = window.innerHeight;
       const width = Math.min(Math.max(r.width, 240), vw - EDGE * 2);
       f.width = width + "px";
-      f.left = Math.min(Math.max(EDGE, r.left), vw - width - EDGE) + "px";
+      const start = pc.rtl() ? r.right - width : r.left; // the field's inline-start edge
+      f.left = Math.min(Math.max(EDGE, start), vw - width - EDGE) + "px";
       f.maxHeight = "none";
       const natural = Math.min(this.flyout.offsetHeight, MAX_HEIGHT);
       const below = vh - r.bottom - GAP - EDGE;

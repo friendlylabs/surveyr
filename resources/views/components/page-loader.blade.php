@@ -7,7 +7,7 @@
     and brings it back on navigation. It only fades in after a short delay, so fast pages never show it.
     `overlay` false renders the scene inline (showcases, panels that load their own content).
 --}}
-@props(['overlay' => true, 'message' => 'Getting things ready…'])
+@props(['overlay' => true, 'message' => __('Getting things ready…')])
 
 <div {{ $attributes->class(['pc-loader', 'pc-page-loader' => $overlay]) }}
     @if ($overlay) data-pc-component="page-loader" data-pc-state="loading" @endif

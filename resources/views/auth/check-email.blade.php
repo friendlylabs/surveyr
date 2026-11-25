@@ -4,28 +4,28 @@
             <i class="ph ph-envelope-simple text-[22px]" aria-hidden="true"></i>
         </span>
         <div>
-            <h1 id="title" class="pc-auth-title">Check your email</h1>
+            <h1 id="title" class="pc-auth-title">{{ __('Check your email') }}</h1>
             <p class="pc-auth-sub">
-                We sent {{ $isLink ? 'a one-time sign-in link' : 'a password reset link' }} to<br>
-                <strong id="sentTo" class="font-semibold break-all text-pc-text">{{ $email ?: 'your email' }}</strong>
+                {{ $isLink ? __('We sent a one-time sign-in link to') : __('We sent a password reset link to') }}<br>
+                <strong id="sentTo" class="font-semibold break-all text-pc-text">{{ $email ?: __('your email') }}</strong>
             </p>
-            <p class="pc-auth-sub">The link expires in {{ $minutes }} minutes{{ $isLink ? ' and works once' : '' }}.</p>
+            <p class="pc-auth-sub">{{ $isLink ? __('The link expires in :minutes minutes and works once.', ['minutes' => $minutes]) : __('The link expires in :minutes minutes.', ['minutes' => $minutes]) }}</p>
         </div>
 
         {{-- Resend posts the same email back to the endpoint that sent it --}}
         <form id="resend" class="w-full" method="POST" action="{{ route($isLink ? 'auth.send-email-link' : 'auth.send-reset-link') }}">
             @csrf
             <input type="hidden" name="email" value="{{ $email }}">
-            <button type="submit" id="resendBtn" class="pc-btn pc-btn-secondary pc-btn-lg pc-btn-block">Resend email</button>
+            <button type="submit" id="resendBtn" class="pc-btn pc-btn-secondary pc-btn-lg pc-btn-block">{{ __('Resend email') }}</button>
         </form>
 
         <p class="pc-auth-foot">
-            Wrong address? <a href="{{ route($isLink ? 'auth.email-link' : 'auth.forgot-password', array_filter(['email' => $email])) }}" class="pc-auth-link">Use a different email</a>
+            {{ __('Wrong address?') }} <a href="{{ route($isLink ? 'auth.email-link' : 'auth.forgot-password', array_filter(['email' => $email])) }}" class="pc-auth-link">{{ __('Use a different email') }}</a>
         </p>
     </section>
 
     <a href="{{ route('auth.login') }}" class="pc-auth-link inline-flex items-center gap-1.5 text-[13px]">
-        <i class="ph ph-arrow-left text-sm" aria-hidden="true"></i>Back to sign in
+        <i class="ph ph-arrow-left text-sm rtl:-scale-x-100" aria-hidden="true"></i>{{ __('Back to sign in') }}
     </a>
 
     @push('body')
@@ -42,7 +42,7 @@
                     clearInterval(timer);
                     const tick = () => {
                         resend.disabled = left > 0;
-                        resend.textContent = left > 0 ? `Resend email in ${left}s` : "Resend email";
+                        resend.textContent = left > 0 ? pc.t("Resend email in :time", { time: left + "s" }) : pc.t("Resend email");
                         if (left-- <= 0) clearInterval(timer);
                     };
                     tick();
@@ -52,7 +52,7 @@
 
                 form.addEventListener("submit", (e) => submitForm(e, (data, response) => {
                     if (!(response.ok && data.success)) return toast.error({ message: data.message });
-                    toast.success({ message: "Email sent again" + (form.email.value ? " to " + form.email.value : "") + "." });
+                    toast.success({ message: form.email.value ? pc.t("Email sent again to :email.", { email: form.email.value }) : pc.t("Email sent again.") });
                     setTimeout(cooldown); // after submitForm resets the button
                 }));
             });

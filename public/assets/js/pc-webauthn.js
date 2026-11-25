@@ -22,7 +22,7 @@
   }
 
   function confirmRequiredError() {
-    const err = new Error("Please confirm your password to continue.");
+    const err = new Error(pc.t("Please confirm your password to continue."));
     err.confirmRequired = true;
     return err;
   }
@@ -30,7 +30,7 @@
   async function fetchOptions(url) {
     const res = await pc.jsonFetch(url);
     if (res.status === 423) throw confirmRequiredError();
-    if (!res.ok) throw new Error("Could not start the passkey ceremony.");
+    if (!res.ok) throw new Error(pc.t("Could not start the passkey ceremony."));
     const { options } = await res.json();
     return options;
   }
@@ -39,12 +39,12 @@
     const res = await pc.jsonFetch(url, { method: "POST", body: JSON.stringify(payload) });
     if (res.status === 423) throw confirmRequiredError();
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.message || "The passkey request failed.");
+    if (!res.ok) throw new Error(data.message || pc.t("The passkey request failed."));
     return data;
   }
 
   async function register(optionsUrl, storeUrl, name) {
-    if (!supported()) throw new Error("Passkeys aren't supported in this browser.");
+    if (!supported()) throw new Error(pc.t("Passkeys aren't supported in this browser."));
 
     const options = await fetchOptions(optionsUrl);
     const credential = await navigator.credentials.create({
@@ -55,7 +55,7 @@
   }
 
   async function login(optionsUrl, loginUrl, remember) {
-    if (!supported()) throw new Error("Passkeys aren't supported in this browser.");
+    if (!supported()) throw new Error(pc.t("Passkeys aren't supported in this browser."));
 
     const options = await fetchOptions(optionsUrl);
     const credential = await navigator.credentials.get({
