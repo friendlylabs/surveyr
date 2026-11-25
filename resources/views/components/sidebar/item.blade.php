@@ -1,7 +1,7 @@
 {{--
     One sidebar link.
       route  route name; until that route exists the link opens the "under development" dialog
-      icon   phosphor name without the prefix, rendered duotone (e.g. "scan" -> ph-duotone ph-scan)
+      icon   Font Awesome (free, solid) name without the prefix (e.g. "users" -> fa-solid fa-users)
       active route-name pattern that marks the item current (defaults to the route and its children)
       modal  id of a modal the item opens instead of following the route (e.g. a picker that chooses what to open); the route
              still marks it current
@@ -18,6 +18,6 @@
    @if ($current) aria-current="page" @endif
    @if ($modal) data-pc-trigger="modal" data-pc-target="#{{ $modal }}" @elseif (! $exists) onclick="underDevelopment(event)" @endif
    data-pc-tooltip="{{ $label }}" data-pc-placement="right" data-pc-tooltip-only="collapsed">
-    <span class="pc-nav-icon"><i class="ph-duotone ph-{{ $icon }} text-xl" aria-hidden="true"></i></span>
+    <span class="pc-nav-icon"><i class="fa-solid fa-{{ $icon }}" aria-hidden="true"></i></span>
     <span class="pc-nav-label">{{ $label }}</span>
 </a>

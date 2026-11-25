@@ -15,7 +15,7 @@ class SidebarTest extends TestCase
     {
         $this->actingAs(User::factory()->role('member')->create())->get(route('dashboard'))
             ->assertOk()
-            ->assertSee('ph-duotone ph-squares-four', false)
+            ->assertSee('fa-solid fa-grid-2', false)
             ->assertSee('aria-current="page"', false)
             ->assertSeeInOrder(['Dashboard', 'Components'])
             ->assertDontSee('Administration')

@@ -1,8 +1,8 @@
 {{--
-    Data table for list pages, in Surveyr's listing style: the toolbar (search, filters, actions) sits on the page above
+    Data table for list pages, in Surveyr's listing style: the toolbar (search and filters) sits on the page above
     the table, detached from it; the table sits in a card with a 24px inset, heavy uppercase headings and roomy rows.
       <x-table :paginator="$users" label="Users">
-          <x-slot:toolbar> filters on the left, actions pushed right with ml-auto </x-slot:toolbar>
+          <x-slot:toolbar> filters (page actions go in the layout's header slot, beside the title) </x-slot:toolbar>
           <x-slot:head> <th>Name</th> ... </x-slot:head>
           <x-slot:empty> <x-empty ... /> </x-slot:empty>
           @foreach (...) <tr>...</tr> @endforeach
@@ -28,7 +28,7 @@
         </div>
     @endif
 
-    <div {{ $attributes->class(['pc-card pc-list-card']) }}>
+    <div {{ $attributes->class(['pc-list-card']) }}>
         @if ($paginator && $paginator->isEmpty() && $empty)
             <div class="pc-list-empty">{{ $empty }}</div>
         @else

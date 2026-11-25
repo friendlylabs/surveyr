@@ -1,4 +1,13 @@
 <x-layout-app :title="__('Users')">
+    {{-- page actions sit in the page head, beside the title --}}
+    <x-slot:header>
+        <div class="ml-auto flex items-center gap-2">
+            <button type="button" class="pc-btn pc-btn-primary" data-pc-trigger="modal" data-pc-target="#addUser">
+                <i class="ph ph-plus" aria-hidden="true"></i>Add user
+            </button>
+        </div>
+    </x-slot:header>
+
     <x-table :paginator="$users" label="Users">
         <x-slot:toolbar>
             {{-- filter order: text / number inputs, then selects, then other controls (tabs) --}}
@@ -21,12 +30,6 @@
                     </a>
                 @endif
             </nav>
-
-            <div class="ml-auto flex items-center gap-2">
-                <button type="button" class="pc-btn pc-btn-primary" data-pc-trigger="modal" data-pc-target="#addUser">
-                    <i class="ph ph-plus" aria-hidden="true"></i>Add user
-                </button>
-            </div>
         </x-slot:toolbar>
 
         <x-slot:head>

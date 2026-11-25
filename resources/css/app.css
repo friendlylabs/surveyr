@@ -19,7 +19,8 @@
   --font-pc-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
 
   /* Radii: a four-step scale, and the roles components use (rounded-pc-control, rounded-pc-card, ...). Restyle the
-     kit's corners by pointing a role at another step, or by changing a step; components never name a pixel value. */
+     kit's corners by pointing a role at another step, or by changing a step; components never name a pixel value.
+     House rule: the slightest noticeable radius, 4px (sm), everywhere unless a shape needs more (pills, avatars). */
   --radius-pc-xs: 2px;
   --radius-pc-sm: 4px;
   --radius-pc-md: 6px;
@@ -28,9 +29,10 @@
   --radius-pc-control: var(--radius-pc-sm); /* buttons, inputs, selects, tabs, pager */
   --radius-pc-item: var(--radius-pc-sm); /* rows inside menus, lists and pickers */
   --radius-pc-badge: var(--radius-pc-sm);
-  --radius-pc-card: var(--radius-pc-md); /* cards, tables, alerts, stat tiles */
-  --radius-pc-popover: var(--radius-pc-md); /* dropdowns, select / date flyouts, popovers, toasts */
-  --radius-pc-modal: var(--radius-pc-lg); /* modals, dialogs, bottom sheets */
+  --radius-pc-card: var(--radius-pc-sm); /* cards, tables, alerts, stat tiles */
+  --radius-pc-popover: var(--radius-pc-sm); /* dropdowns, select / date flyouts, popovers, toasts */
+  --radius-pc-modal: var(--radius-pc-sm); /* modals, dialogs, offcanvas, bottom sheets */
+  --radius-pc-sheet: var(--radius-pc-sm); /* the app shell's content sheet (left corners; the right ones are square) */
 
   /* Surveyr's palette (the legacy app's theme). Light values here; the dark theme redefines the same tokens
      under [data-pc-theme="dark"] (below), so components never name a theme. */
@@ -47,7 +49,21 @@
   --color-pc-fill: #141824; /* strong fill for selected / emphasis states: active tab, pressed toggle, dark badge */
   --color-pc-on-fill: #ffffff;
   --color-pc-logo: #141824;
+
+  /* The app frame and sidebar: dark in both themes */
+  --color-pc-frame: #0c0c0c;
+  --color-pc-sheet: #ffffff; /* the app shell's content sheet */
+  --color-pc-sidebar-text: #cbd0dd;
+  --color-pc-sidebar-muted: #8a94ad;
+  --color-pc-sidebar-strong: #ffffff;
+  --color-pc-sidebar-hover: rgb(255 255 255 / 0.05);
+  --color-pc-sidebar-active: rgb(255 255 255 / 0.09);
+  --color-pc-sidebar-border: rgb(255 255 255 / 0.08);
+  --color-pc-sidebar-raised: #121c24; /* menus opened from the sidebar */
+  --color-pc-sidebar-danger: #f48270;
+
   --color-pc-scrim: rgb(15 17 26 / 0.25);
+  --color-pc-scrim-soft: rgb(15 17 26 / 0.1); /* the light veil behind floating panels */
   --color-pc-text: #31374a;
   --color-pc-text-2: #3e465b;
   --color-pc-muted: #6e7891;
@@ -164,7 +180,10 @@
     --color-pc-fill: #3e465b;
     --color-pc-on-fill: #eff2f6;
     --color-pc-logo: #222834;
+    --color-pc-frame: #000000;
+    --color-pc-sheet: #0c0c0c;
     --color-pc-scrim: rgb(0 0 0 / 0.45);
+    --color-pc-scrim-soft: rgb(0 0 0 / 0.35);
     --color-pc-text: #cbd0dd;
     --color-pc-text-2: #9fa6bc;
     --color-pc-muted: #8a94ad;
@@ -366,58 +385,50 @@
 }
 
 @layer components {
-  /* ================= App shell ================= */
-  /* The document scrolls; the top bar sticks, the desktop sidebar sticks below it at viewport height. */
+  /* ================= App shell (layouts/app) ================= */
+  /* A dark frame (pc-frame) holds the sidebar and the content sheet. The frame fills the viewport and never scrolls;
+     the sheet scrolls its own content, so its head stays put and list pages can fill it exactly. Below lg the sidebar
+     is an off-canvas drawer and the sheet runs edge to edge. */
   .pc-app {
-    @apply flex min-h-dvh flex-col bg-[--color-pc-bg];
+    @apply flex h-dvh overflow-hidden bg-pc-frame;
   }
-  .pc-topbar {
-    @apply sticky top-0 z-50 flex h-16 flex-none items-stretch border-b border-dashed border-pc-border bg-pc-surface;
+  .pc-main {
+    @apply flex min-w-0 flex-1 flex-col p-1 max-lg:p-0;
   }
-  .pc-brand {
-    @apply flex w-75 flex-none items-center gap-2.5 px-[22px] transition-[width,padding] duration-150
-      max-lg:w-auto max-lg:px-4;
+  .pc-sheet {
+    @apply relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-l-pc-sheet bg-pc-sheet max-lg:rounded-none;
   }
-  /* Dark tile holding /assets/img/icon.svg. The SVG is black, so it's inverted to white; its viewBox
-     already carries ~25% padding, so the image fills the tile and is nudged up a little. */
-  .pc-logo {
-    @apply grid size-7 flex-none place-items-center overflow-hidden rounded-pc-md bg-pc-logo;
-  }
-  .pc-logo > img {
-    @apply block size-full scale-125 object-contain invert;
-  }
-  .pc-brand-name {
-    @apply text-base font-semibold tracking-[-0.01em] whitespace-nowrap text-pc-text no-underline max-sm:hidden;
-  }
-  .pc-header {
-    @apply flex min-w-0 flex-1 items-center gap-3.5 px-6 whitespace-nowrap max-lg:px-3;
+  .pc-page-head {
+    @apply flex flex-none items-center gap-3 px-7 pt-6 pb-5 max-sm:px-4 max-sm:pt-4 max-sm:pb-4;
   }
   .pc-page-title {
-    @apply text-lg font-semibold tracking-[-0.01em];
+    @apply min-w-0 truncate text-2xl leading-tight font-semibold tracking-[-0.02em] text-pc-ink max-sm:text-xl;
   }
   .pc-header-chip {
     @apply flex flex-none items-center gap-2 rounded-pc-control border border-pc-border px-2.5 py-1 text-[13px] max-md:hidden;
   }
-  .pc-body {
-    @apply flex flex-1;
-  }
-  .pc-main {
-    @apply flex min-w-0 flex-1 flex-col;
-  }
   .pc-content {
-    @apply flex-1 p-6 max-sm:p-4;
+    @apply flex min-h-0 flex-1 flex-col overflow-y-auto px-7 pb-7 max-sm:px-4 max-sm:pb-4;
   }
-  /* <x-layout-app :contained-layout="false">: no gutter, the page runs to the edges of main */
+  /* <x-layout-app :contained-layout="false">: no gutter, the page runs to the edges of the sheet */
   .pc-content-flush {
-    @apply flex min-w-0 flex-1 flex-col;
+    @apply flex min-h-0 min-w-0 flex-1 flex-col overflow-auto;
+  }
+  /* Tile holding the placeholder /assets/img/icon.svg (black, so inverted to white on the logo colour). */
+  .pc-logo {
+    @apply grid size-7 flex-none place-items-center overflow-hidden rounded-pc-sm bg-pc-logo;
+  }
+  .pc-logo > img {
+    @apply block size-full scale-125 object-contain invert;
   }
 
   /* ================= Sidebar (pc-sidebar.js) ================= */
+  /* Dark in both themes (pc-sidebar-* tokens): brand and collapse toggle, the menu, the account at the bottom.
+     At lg+ it collapses to an icon rail (<html data-pc-sidebar="collapsed">); below lg it's a drawer. */
   .pc-sidebar {
-    @apply flex w-75 flex-none flex-col overflow-hidden border-r border-dashed border-pc-border bg-pc-surface-alt
-      transition-[width] duration-150 lg:sticky lg:top-16 lg:h-[calc(100dvh-4rem)] lg:self-start
-      max-lg:fixed max-lg:inset-y-0 max-lg:left-0 max-lg:z-90 max-lg:w-[264px] max-lg:border-solid
-      max-lg:-translate-x-full max-lg:transition-transform max-lg:duration-200;
+    @apply flex w-64 flex-none flex-col overflow-hidden bg-pc-frame text-pc-sidebar-text transition-[width] duration-150
+      max-lg:fixed max-lg:inset-y-0 max-lg:left-0 max-lg:z-90 max-lg:w-[272px] max-lg:-translate-x-full
+      max-lg:transition-transform max-lg:duration-200;
   }
   .pc-sidebar[data-pc-open="true"] {
     @apply max-lg:translate-x-0 max-lg:shadow-pc-overlay;
@@ -428,54 +439,122 @@
   .pc-sidebar-backdrop[data-pc-open="true"] {
     @apply block animate-pc-fade;
   }
-  .pc-sidebar-mobile-head {
-    @apply hidden h-16 flex-none items-center gap-2.5 border-b border-dashed border-pc-border px-5 max-lg:flex;
+  .pc-sidebar-head {
+    @apply flex h-16 flex-none items-center gap-2 pr-3 pl-5;
+  }
+  .pc-sidebar-brand {
+    @apply flex min-w-0 flex-1 items-center no-underline;
+  }
+  .pc-sidebar-logo {
+    @apply h-6 w-auto;
+  }
+  .pc-sidebar-mark {
+    @apply hidden size-7;
+  }
+  .pc-sidebar-expand-icon {
+    @apply hidden;
+  }
+  .pc-sidebar-tool {
+    @apply grid size-8 flex-none place-items-center rounded-pc-control border-0 bg-transparent text-pc-sidebar-muted
+      transition-colors hover:bg-pc-sidebar-hover hover:text-pc-sidebar-strong;
   }
   .pc-nav {
-    @apply flex flex-1 flex-col gap-0.5 overflow-x-hidden overflow-y-auto px-3 py-4;
-  }
-  .pc-nav-footer {
-    @apply flex flex-col gap-0.5 p-3;
+    @apply flex flex-1 flex-col gap-0.5 overflow-x-hidden overflow-y-auto px-3 pb-4;
   }
   .pc-nav-section-label {
-    @apply mx-4 mt-[18px] mb-1.5 text-xs whitespace-nowrap text-pc-muted first:mt-1;
+    @apply mx-3 mt-[18px] mb-1.5 text-xs whitespace-nowrap text-pc-sidebar-muted first:mt-1;
   }
   .pc-nav-divider {
-    @apply m-3.5 hidden h-px bg-pc-border-soft;
+    @apply m-3.5 hidden h-px bg-pc-sidebar-border;
   }
   .pc-nav-item {
-    @apply flex h-10 w-full items-center gap-3 rounded-pc-md border-0 bg-transparent px-3.5 text-left text-sm
-      whitespace-nowrap text-pc-text no-underline transition-colors hover:bg-pc-ink/[0.04] hover:text-pc-text;
+    @apply flex h-9 w-full items-center gap-3 rounded-pc-sm border-0 bg-transparent px-3 text-left text-sm whitespace-nowrap
+      text-pc-sidebar-text no-underline transition-colors hover:bg-pc-sidebar-hover hover:text-pc-sidebar-strong;
   }
   .pc-nav-icon {
-    @apply inline-flex flex-none text-pc-text-2;
+    @apply inline-flex w-5 flex-none justify-center text-[15px] text-pc-sidebar-muted;
   }
   .pc-nav-item-active {
-    @apply bg-pc-brand-soft font-medium hover:bg-pc-brand-soft;
+    @apply bg-pc-sidebar-active font-medium text-pc-sidebar-strong hover:bg-pc-sidebar-active;
   }
   .pc-nav-item-active .pc-nav-icon {
-    @apply text-pc-brand;
+    @apply text-pc-sidebar-strong;
+  }
+  .pc-sidebar-foot {
+    @apply flex-none p-3;
+  }
+  /* the whole row highlights on hover; the theme toggle sits on top of it, at the right */
+  .pc-sidebar-account-row {
+    @apply flex w-full items-center gap-1 rounded-pc-sm pr-1.5 transition-colors hover:bg-pc-sidebar-hover;
+  }
+  .pc-sidebar-account {
+    @apply flex min-w-0 flex-1 items-center gap-3 rounded-pc-sm border-0 bg-transparent px-2 py-2 text-left text-sm;
+  }
+  /* avatars in the sidebar and its menu stay monochrome */
+  :is(.pc-sidebar, .pc-dropdown-menu-dark) .pc-avatar {
+    @apply bg-pc-sidebar-active text-pc-sidebar-strong;
+  }
+  .pc-sidebar-account-text {
+    @apply flex min-w-0 flex-1 flex-col leading-tight;
+  }
+  .pc-sidebar-foot .pc-sidebar-theme {
+    @apply flex-none text-pc-sidebar-muted hover:bg-pc-sidebar-active hover:text-pc-sidebar-strong;
+  }
+  /* The account menu is exactly as wide as the account button (the sidebar less its padding). */
+  .pc-sidebar-foot .pc-dropdown-menu {
+    @apply w-58;
   }
 
-  /* Desktop collapsed rail — state lives on <html data-pc-sidebar="collapsed"> so the
-     brand cell in the top bar and the sidebar resize together. */
-  :root[data-pc-sidebar="collapsed"] .pc-brand {
-    @apply lg:w-[72px] lg:justify-center lg:px-0;
-  }
-  :root[data-pc-sidebar="collapsed"] .pc-brand .pc-brand-name {
-    @apply lg:hidden;
-  }
+  /* Desktop collapsed rail: icons only, the brand mark in place of the wordmark, the account as its avatar. */
   :root[data-pc-sidebar="collapsed"] .pc-sidebar {
     @apply lg:w-[72px];
+  }
+  :root[data-pc-sidebar="collapsed"] .pc-sidebar-head {
+    @apply lg:justify-center lg:px-0;
+  }
+  :root[data-pc-sidebar="collapsed"] .pc-sidebar-brand {
+    @apply lg:justify-center;
+  }
+  /* the expand button: a round button on the edge between the rail and the sheet, level with the mark. Fixed, so the
+     sidebar's overflow doesn't clip the half that sits over the sheet. */
+  :root[data-pc-sidebar="collapsed"] .pc-sidebar-collapse {
+    @apply lg:fixed lg:top-5 lg:left-[62px] lg:z-60 lg:size-6 lg:rounded-full lg:border lg:border-pc-sidebar-border
+      lg:bg-pc-sidebar-raised lg:text-pc-sidebar-strong lg:shadow-[0_2px_8px_rgba(0,0,0,0.3)] lg:hover:bg-pc-frame
+      lg:hover:text-pc-sidebar-strong;
+  }
+  :root[data-pc-sidebar="collapsed"] .pc-sidebar-collapse-icon {
+    @apply lg:hidden;
+  }
+  :root[data-pc-sidebar="collapsed"] .pc-sidebar-expand-icon {
+    @apply lg:inline-block;
+  }
+  :root[data-pc-sidebar="collapsed"] .pc-sidebar-brand {
+    @apply lg:flex-none;
+  }
+  :root[data-pc-sidebar="collapsed"] .pc-sidebar-logo {
+    @apply lg:hidden;
+  }
+  :root[data-pc-sidebar="collapsed"] .pc-sidebar-mark {
+    @apply lg:block;
   }
   :root[data-pc-sidebar="collapsed"] .pc-nav-item {
     @apply lg:justify-center lg:px-0;
   }
-  :root[data-pc-sidebar="collapsed"] :is(.pc-nav-label, .pc-nav-section-label) {
+  :root[data-pc-sidebar="collapsed"] :is(.pc-nav-label, .pc-nav-section-label, .pc-sidebar-account-text) {
     @apply lg:hidden;
   }
   :root[data-pc-sidebar="collapsed"] .pc-nav-divider {
     @apply lg:block;
+  }
+  :root[data-pc-sidebar="collapsed"] .pc-sidebar-account-row {
+    @apply lg:flex-col-reverse lg:pr-0 lg:pt-1.5;
+  }
+  :root[data-pc-sidebar="collapsed"] .pc-sidebar-account {
+    @apply lg:justify-center lg:px-0;
+  }
+  /* On the rail the account menu opens beside it rather than over it. */
+  :root[data-pc-sidebar="collapsed"] .pc-sidebar-foot .pc-dropdown-menu[data-pc-floating] {
+    @apply lg:left-[80px]!;
   }
 
   /* ================= Buttons ================= */
@@ -643,7 +722,7 @@
     @apply size-11 text-[15px];
   }
   .pc-avatar-square {
-    @apply size-8 rounded-pc-md;
+    @apply size-8 rounded-pc-sm;
   }
 
   /* ================= Alerts & banners ================= */
@@ -684,37 +763,40 @@
   .pc-card-footer {
     @apply flex items-center justify-between gap-3 border-t border-pc-border-soft px-5 py-3;
   }
-  /* List pages (x-table), Surveyr's listing: the toolbar is its own row on the page, above the card; the card holds
-     the table at a 28px inset and the footer (range + pagination). The inset is padding inside the scroll area, not on
-     the card, so the overlay scrollbar runs along the card's edge. .pc-list-fill: toolbar + card fill the viewport below
-     the header, the table area scrolls (its head sticks), the empty state centres and the footer stays at the bottom. */
+  /* List pages (x-table): the toolbar is its own row above the table; the table and its footer (range + pagination)
+     are borderless, rows separated by space alone, a hovered row tinted with rounded ends. .pc-list-fill: toolbar +
+     table fill the rest of the sheet, the table area scrolls (its head sticks), the empty state centres and the footer
+     stays at the bottom. There the list widens to the sheet's edges (negative margin, padding back inside) so the
+     overlay scrollbar runs along the sheet's edge while text stays aligned with the page title. */
   .pc-list {
     @apply flex flex-col gap-4;
   }
   .pc-list-fill {
-    @apply h-[calc(100dvh-100px)] lg:h-[calc(100dvh-115px)];
+    @apply min-h-0 flex-1;
   }
   .pc-list-toolbar {
     @apply flex flex-none flex-wrap items-center gap-3;
   }
   .pc-list-card {
-    @apply flex min-h-0 flex-col rounded-pc-card border-pc-border-soft;
+    @apply flex min-h-0 flex-col;
   }
   .pc-list-fill .pc-list-card {
-    @apply flex-1;
+    @apply -mx-7 flex-1 max-sm:-mx-4;
   }
   .pc-list-scroll {
-    @apply overflow-x-auto px-7 max-sm:px-5;
+    @apply overflow-x-auto;
   }
   .pc-list-fill .pc-list-scroll {
-    @apply min-h-0 flex-1 overflow-auto;
+    @apply min-h-0 flex-1 overflow-auto px-4 max-sm:px-1;
   }
   .pc-list-empty {
-    @apply flex flex-1 items-center justify-center px-7 py-10 max-sm:px-5;
+    @apply flex flex-1 items-center justify-center py-10;
   }
   .pc-list-footer {
-    @apply flex flex-none flex-wrap items-center justify-between gap-3 border-t border-pc-border-soft px-7 py-4 text-[13px] max-sm:px-5
-      text-pc-text-2;
+    @apply flex flex-none flex-wrap items-center justify-between gap-3 px-3 pt-4 text-[13px] text-pc-text-2;
+  }
+  .pc-list-fill .pc-list-footer {
+    @apply px-7 pb-1 max-sm:px-4;
   }
   .pc-card-dashed {
     @apply rounded-pc-card border border-dashed border-pc-border bg-pc-surface;
@@ -906,11 +988,21 @@
   [data-step="fill"] [data-row="1"].pc-loader-dot { animation-name: pc-loader-dot-1; }
   [data-step="fill"] [data-row="2"].pc-loader-dot { animation-name: pc-loader-dot-2; }
   /* the filled form gets its check as soon as it settles at the next stop, with a little hop */
-  [data-step="seal"].pc-loader-card {
-    animation-name: pc-loader-hop;
-  }
   [data-step="seal"] .pc-loader-seal {
     animation-name: pc-loader-sealed;
+  }
+  /* warm-up: the line starts with nothing past the drip. A stop only gets a card once the first filled form rides
+     into it: one loop for the check stop, two for the stop after it. pc-loader.js restarts this on every show. */
+  [data-step="seal"].pc-loader-card {
+    animation:
+      pc-loader-hop var(--pc-loader-loop) infinite,
+      pc-loader-empty-stop var(--pc-loader-loop) 1;
+  }
+  [data-step="done"].pc-loader-card {
+    animation: pc-loader-empty-stop calc(var(--pc-loader-loop) * 2) 1;
+  }
+  .pc-loader[data-pc-restart] .pc-loader-scene * {
+    animation: none !important;
   }
 
   .pc-loader-progress {
@@ -993,6 +1085,9 @@
     36% { scale: 1.35; }
     40%, 100% { scale: 1; }
   }
+  @keyframes pc-loader-empty-stop {
+    from, to { opacity: 0; }
+  }
   @keyframes pc-loader-hop {
     0%, 6% { translate: 0 0; animation-timing-function: ease-out; }
     11% { translate: 0 -2.5px; animation-timing-function: ease-in; }
@@ -1012,10 +1107,10 @@
     @apply grid place-items-center rounded-pc-sm border border-dashed border-pc-border text-center font-pc-mono text-[11px] text-pc-muted;
   }
   /* Pages that need a standard-size screen: <x-layout-app desktop-only>. Below xl (1280px)
-     main is held to the viewport and .pc-screen-gate frosts over it with a panel saying why; the topbar
-     and sidebar stay usable so the user can leave. The layout marks the content inert to match. */
+     .pc-screen-gate frosts over the sheet with a panel saying why; the sidebar stays usable so the user can leave.
+     The layout marks the content inert to match. */
   .pc-requires-xl {
-    @apply relative max-xl:h-[calc(100dvh-4rem)] max-xl:overflow-hidden;
+    @apply max-xl:overflow-hidden;
   }
   .pc-screen-gate {
     @apply absolute inset-0 z-40 flex items-center justify-center bg-pc-surface/45 p-4 backdrop-blur-md animate-pc-fade xl:hidden;
@@ -1518,7 +1613,7 @@
     @apply flex h-24 flex-none items-center justify-between gap-3 rounded-br-[40px] bg-[center_35%] px-6 lg:hidden;
   }
   .pc-auth-art-logo {
-    @apply h-11 w-auto brightness-0 invert drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)];
+    @apply h-11 w-auto drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)];
   }
   .pc-auth-art-banner .pc-auth-art-logo {
     @apply relative h-7;
@@ -1661,7 +1756,7 @@
   }
   /* Soft variant — light track, white raised tab; for filters inside a toolbar. */
   .pc-tabs-soft {
-    @apply gap-0.5 rounded-pc-md bg-pc-surface-soft p-[3px];
+    @apply gap-0.5 rounded-pc-sm bg-pc-surface-soft p-[3px];
   }
   .pc-tabs-soft .pc-tab {
     @apply h-7 rounded-pc-control px-3 text-[13px] text-pc-muted hover:bg-transparent hover:text-pc-text;
@@ -1688,7 +1783,7 @@
   }
   .pc-dropdown-menu {
     @apply absolute top-[calc(100%+8px)] left-0 z-50 hidden min-w-48 flex-col gap-0.5 rounded-pc-popover border border-pc-border
-      bg-pc-surface p-1.5 whitespace-normal shadow-pc-pop animate-pc-drop;
+      bg-pc-surface p-1.5 text-sm text-pc-text whitespace-normal shadow-pc-pop animate-pc-drop;
   }
   .pc-dropdown-menu[data-pc-open="true"] {
     @apply flex;
@@ -1725,6 +1820,25 @@
   }
   .pc-dropdown-divider {
     @apply mx-1 my-1 h-px bg-pc-border-soft;
+  }
+  /* Dark menu, for menus opened over the dark sidebar (the account menu): the sidebar's colours, a raised surface. */
+  .pc-dropdown-menu-dark {
+    @apply border-pc-sidebar-border bg-pc-sidebar-raised text-pc-sidebar-text shadow-[0_12px_32px_rgba(0,0,0,0.45)];
+  }
+  .pc-dropdown-menu-dark .pc-dropdown-item {
+    @apply text-pc-sidebar-text hover:bg-pc-sidebar-hover hover:text-pc-sidebar-strong;
+  }
+  .pc-dropdown-menu-dark .pc-dropdown-item > .fa-solid {
+    @apply w-4 flex-none text-center text-[13px];
+  }
+  .pc-dropdown-menu-dark .pc-dropdown-item-active {
+    @apply bg-pc-sidebar-active text-pc-sidebar-strong;
+  }
+  .pc-dropdown-menu-dark .pc-dropdown-item-danger {
+    @apply text-pc-sidebar-danger hover:bg-pc-sidebar-hover hover:text-pc-sidebar-danger;
+  }
+  .pc-dropdown-menu-dark .pc-dropdown-divider {
+    @apply bg-pc-sidebar-border;
   }
   .pc-dropdown-header {
     @apply flex items-center gap-2.5 px-2.5 pt-2.5 pb-3;
@@ -1819,6 +1933,9 @@
   }
 
   /* ================= Offcanvas (pc-offcanvas.js) ================= */
+  /* A floating panel: inset from the screen edges, a faint border and soft shadow over a light veil. The header is a
+     row of tools (expand, close) at the top right above a large title; expanded, the panel widens. Below sm it runs
+     edge to edge. */
   .pc-offcanvas {
     @apply fixed inset-0 z-100 hidden;
   }
@@ -1826,29 +1943,53 @@
     @apply block;
   }
   .pc-offcanvas-backdrop {
-    @apply absolute inset-0 bg-pc-scrim animate-pc-fade;
+    @apply absolute inset-0 bg-pc-scrim-soft animate-pc-fade;
   }
   .pc-offcanvas-panel {
-    @apply absolute top-0 right-0 flex h-full w-full max-w-[420px] flex-col border-l border-pc-border bg-pc-surface
-      shadow-pc-overlay animate-pc-slide-in;
+    @apply absolute inset-y-2 right-2 flex w-[calc(100%-16px)] max-w-[440px] flex-col overflow-hidden rounded-pc-modal border
+      border-pc-border-soft bg-pc-surface shadow-[0_16px_48px_rgba(15,17,26,0.16)] transition-[max-width] duration-200
+      animate-pc-slide-in max-sm:inset-0 max-sm:w-full max-sm:max-w-none max-sm:rounded-none max-sm:border-0;
   }
   .pc-offcanvas-start .pc-offcanvas-panel {
-    @apply right-auto left-0 border-r border-l-0 animate-pc-slide-in-start;
+    @apply right-auto left-2 animate-pc-slide-in-start;
   }
   .pc-offcanvas-lg .pc-offcanvas-panel {
     @apply max-w-[560px];
   }
+  .pc-offcanvas[data-pc-expanded="true"] .pc-offcanvas-panel {
+    @apply max-w-[min(960px,calc(100vw-16px))];
+  }
   .pc-offcanvas-header {
-    @apply flex flex-none items-center justify-between gap-3 border-b border-pc-border px-5 py-3.5;
+    @apply flex flex-none flex-col px-6 pt-3 pb-4;
+  }
+  .pc-offcanvas-tools {
+    @apply -mr-2 mb-2 flex items-center justify-end gap-0.5;
+  }
+  .pc-offcanvas-tools .pc-btn {
+    @apply text-pc-muted hover:text-pc-ink;
+  }
+  /* the expand button is a plain icon button in both states; its icon tells which */
+  .pc-offcanvas-tools .pc-offcanvas-expand[aria-pressed="true"] {
+    @apply border-transparent bg-transparent text-pc-muted hover:bg-pc-surface-soft;
+  }
+  .pc-offcanvas-shrink-icon,
+  .pc-offcanvas[data-pc-expanded="true"] .pc-offcanvas-expand-icon {
+    @apply hidden;
+  }
+  .pc-offcanvas[data-pc-expanded="true"] .pc-offcanvas-shrink-icon {
+    @apply inline-block;
   }
   .pc-offcanvas-title {
-    @apply text-base font-semibold;
+    @apply text-2xl leading-tight font-semibold tracking-[-0.02em] text-pc-ink;
+  }
+  .pc-offcanvas-subtitle {
+    @apply mt-1 truncate text-sm text-pc-muted;
   }
   .pc-offcanvas-body {
-    @apply flex-1 overflow-y-auto p-5;
+    @apply flex-1 overflow-y-auto px-6 pb-6;
   }
   .pc-offcanvas-footer {
-    @apply flex flex-none items-center justify-end gap-2 border-t border-pc-border bg-pc-surface-alt px-5 py-3;
+    @apply flex flex-none items-center justify-end gap-2 border-t border-pc-border-soft px-6 py-3;
   }
 
   /* ================= Toast (pc-toast.js) ================= */
@@ -1939,18 +2080,15 @@
   .pc-table-hover tbody tr:hover td {
     @apply bg-pc-surface-alt;
   }
-  /* Inside a padded card (x-table): the first and last columns line up with the card's inset rather than adding their own. */
-  .pc-table-inset :is(thead th, tbody td):first-child {
-    @apply pl-0;
+  /* x-table's table: borderless; the hover tint is on the cells, so the first and last get rounded ends. */
+  .pc-table-inset :is(thead th, tbody td) {
+    @apply border-b-0;
   }
-  .pc-table-inset :is(thead th, tbody td):last-child {
-    @apply pr-0;
+  .pc-table-inset tbody td:first-child {
+    @apply rounded-l-pc-sm;
   }
-  .pc-table-inset.pc-table-hover tbody tr:hover td {
-    @apply bg-transparent;
-  }
-  .pc-table-inset.pc-table-hover tbody tr:hover {
-    @apply bg-pc-surface-alt;
+  .pc-table-inset tbody td:last-child {
+    @apply rounded-r-pc-sm;
   }
   /* <tr class="pc-table-head">: column headings repeated inside the body, one per section, styled like the thead.
      <td class="pc-table-span" rowspan="n">: a first-column cell grouping the rows beside it (e.g. a semester);

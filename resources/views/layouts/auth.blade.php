@@ -7,7 +7,9 @@
         @if (session('toast'))<meta name="pc-toast" content="{{ session('toast') }}">@endif
 
         <title>{{ !empty($title) ? "$title | " . config('app.name') : config('app.name') }}</title>
-        <link rel="icon" type="image/svg+xml" href="{{ asset('assets/img/icon.svg') }}">
+        <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+        <link rel="icon" type="image/svg+xml" href="{{ asset('assets/img/favicon.svg') }}">
+        <link rel="apple-touch-icon" href="{{ asset('assets/img/apple-touch-icon.png') }}">
 
         <x-theme-boot />
 
@@ -22,7 +24,7 @@
         {{-- Split screen: the form on the left, the brand artwork on the right (a banner across the top on small screens) --}}
         <div class="pc-auth" style="--pc-auth-art: url('{{ asset('assets/img/auth-art.webp') }}')">
             <div class="pc-auth-art pc-auth-art-banner">
-                <img src="{{ asset('assets/img/logo-white.svg') }}" alt="" class="pc-auth-art-logo">
+                <img src="{{ asset('assets/img/logo-dark.svg') }}" alt="" class="pc-auth-art-logo">
                 <x-theme-picker class="pc-theme-toggle-glass" />
             </div>
 

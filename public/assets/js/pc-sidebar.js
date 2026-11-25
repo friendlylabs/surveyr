@@ -1,13 +1,13 @@
 /**
  * pc-sidebar.js — app sidebar: off-canvas drawer below lg, collapsible icon rail at lg+.
  * Markup contract:
- *   <button data-pc-trigger="sidebar" class="lg:hidden">...</button>                 (mobile open)
+ *   <button data-pc-trigger="sidebar" class="lg:hidden">...</button>                 (mobile open / close)
  *   <div data-pc-component="sidebar-backdrop" class="pc-sidebar-backdrop"></div>
  *   <aside data-pc-component="sidebar" class="pc-sidebar">...</aside>
  *   <button data-pc-trigger="sidebar-collapse" aria-expanded="true">...</button>      (desktop rail)
  *
- * The desktop collapsed state lives on <html data-pc-sidebar="collapsed"> so the brand cell
- * in the top bar and the sidebar resize together, and is remembered in localStorage.
+ * The desktop collapsed state lives on <html data-pc-sidebar="collapsed">, so the head script can apply it before
+ * first paint, and is remembered in localStorage.
  * Pages that need the room (wide editors, data grids) set <html data-pc-sidebar-auto="collapsed">: they always
  * open collapsed, and toggling there lasts for the visit without changing the saved preference.
  * Windows ≤1280px wide behave the same way (rail by default, toggle not saved); crossing that width
@@ -79,6 +79,7 @@
       const text = btn.querySelector("[data-pc-sidebar-label]");
       if (text) text.textContent = label;
       btn.setAttribute("data-pc-tooltip", label);
+      btn.setAttribute("aria-label", label);
     });
   }
 

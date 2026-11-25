@@ -18,8 +18,11 @@
   function show() {
     loader.getAnimations().forEach((animation) => animation.cancel());
     loader.dataset.pcState = "done";
-    // reflow so the fade-in delay and progress restart from zero
+    // data-pc-restart drops every scene animation for one reflow, so the line starts over empty (app.css warm-up)
+    // and the fade-in delay and progress restart from zero
+    loader.dataset.pcRestart = "";
     void loader.offsetWidth;
+    delete loader.dataset.pcRestart;
     loader.dataset.pcState = "loading";
   }
 

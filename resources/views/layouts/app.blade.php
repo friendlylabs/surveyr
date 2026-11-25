@@ -6,7 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @if (session('toast'))<meta name="pc-toast" content="{{ session('toast') }}">@endif
     <title>{{ !empty($title) ? "$title | " . config('app.name') : config('app.name') }}</title>
-    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/img/icon.svg') }}">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/img/favicon.svg') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/img/apple-touch-icon.png') }}">
 
     <x-theme-boot />
 
@@ -24,29 +26,51 @@
 <body>
 <x-page-loader />
 
+{{--
+    The shell: a dark frame holding the sidebar (brand, menu, account) and the content sheet (page title,
+    the page's header slot for actions, then the page). The sheet scrolls on its own; the frame and sidebar stay put.
+    Below lg the sidebar is a drawer opened from the page head, and the sheet runs edge to edge.
+--}}
 <div class="pc-app">
-    <div class="pc-topbar">
-        <div class="pc-brand">
-            <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon -ml-1 lg:hidden" data-pc-trigger="sidebar" aria-label="Open navigation">
-                <i class="ph ph-list text-xl" aria-hidden="true"></i>
+    <div class="pc-sidebar-backdrop" data-pc-component="sidebar-backdrop"></div>
+    <aside class="pc-sidebar" data-pc-component="sidebar" aria-label="Main navigation">
+        <div class="pc-sidebar-head">
+            <a href="{{ url('/') }}" class="pc-sidebar-brand" aria-label="{{ config('app.name') }} home">
+                <img src="{{ asset('assets/img/logo-dark.svg') }}" alt="" class="pc-sidebar-logo">
+                <img src="{{ asset('assets/img/favicon.svg') }}" alt="" class="pc-sidebar-mark">
+            </a>
+            <button type="button" class="pc-sidebar-tool pc-sidebar-collapse max-lg:hidden" data-pc-trigger="sidebar-collapse" data-pc-label-expanded="Collapse sidebar" data-pc-label-collapsed="Expand sidebar" aria-expanded="true" aria-label="Collapse sidebar" data-pc-tooltip="Collapse sidebar" data-pc-placement="right">
+                <i class="fa-solid fa-angles-left pc-sidebar-collapse-icon" aria-hidden="true"></i>
+                <i class="fa-solid fa-chevron-right pc-sidebar-expand-icon text-[10px]" aria-hidden="true"></i>
             </button>
-            <a href="{{ url('/') }}" class="pc-logo" aria-label="{{ config('app.name') }} home"><img src="{{ asset('assets/img/icon.svg') }}" alt=""></a>
-            <a href="{{ url('/') }}" class="pc-brand-name">{{ config('app.name') }}</a>
+            <button type="button" class="pc-sidebar-tool lg:hidden" data-pc-trigger="sidebar" aria-label="Close navigation">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
         </div>
-        <header class="pc-header">
-            <h1 class="pc-page-title">{{ $title }}</h1>
-            {{ $header ?? '' }}
 
-            @auth
-                @php($user = auth()->user())
-                <div class="pc-dropdown ml-auto flex-none">
-                    <button type="button" class="rounded-full" data-pc-trigger="dropdown" data-pc-target="#userMenu" aria-haspopup="menu" aria-expanded="false" aria-label="Account menu for {{ $user->name }}"><x-avatar :name="$user->name" /></button>
-                    <div id="userMenu" class="pc-dropdown-menu pc-dropdown-menu-end w-[260px]" role="menu" aria-hidden="true">
+        <nav class="pc-nav">
+            <x-sidebar.app />
+        </nav>
+
+        @auth
+            @php($user = auth()->user())
+            <div class="pc-sidebar-foot">
+                {{-- the account (avatar + name) opens the menu; the theme toggle sits beside it --}}
+                <div class="pc-dropdown pc-sidebar-account-row">
+                    <button type="button" class="pc-sidebar-account" data-pc-trigger="dropdown" data-pc-target="#userMenu" aria-haspopup="menu" aria-expanded="false" aria-label="Account menu for {{ $user->name }}">
+                        <x-avatar :name="$user->name" size="sm" />
+                        <span class="pc-sidebar-account-text">
+                            <span class="truncate font-medium text-pc-sidebar-strong">{{ $user->name }}</span>
+                            <span class="truncate text-xs text-pc-sidebar-muted">{{ $user->role?->label ?? $user->email }}</span>
+                        </span>
+                    </button>
+                    <x-theme-picker class="pc-sidebar-theme" solid />
+                    <div id="userMenu" class="pc-dropdown-menu pc-dropdown-menu-dark" role="menu" aria-hidden="true">
                         <div class="pc-dropdown-header">
                             <x-avatar :name="$user->name" />
                             <div class="flex min-w-0 flex-col">
-                                <span class="truncate font-semibold">{{ $user->name }}</span>
-                                <span class="truncate text-xs text-pc-muted">{{ $user->role?->label ?? $user->email }}</span>
+                                <span class="truncate font-semibold text-pc-sidebar-strong">{{ $user->name }}</span>
+                                <span class="truncate text-xs text-pc-sidebar-muted">{{ $user->email }}</span>
                             </div>
                         </div>
                         @isset($currentWorkspace)
@@ -56,65 +80,49 @@
                                 @foreach ($user->workspaces()->orderBy('name')->get() as $workspace)
                                     <form method="POST" action="{{ route('workspaces.switch', $workspace) }}" onsubmit="submitForm(event)">
                                         <button type="submit" @class(['pc-dropdown-item w-full', 'pc-dropdown-item-active' => $workspace->is($currentWorkspace)]) role="menuitem" @disabled($workspace->is($currentWorkspace))>
-                                            <i class="ph ph-buildings text-base" aria-hidden="true"></i><span class="truncate">{{ $workspace->name }}</span>
-                                            @if ($workspace->is($currentWorkspace))<i class="ph ph-check ml-auto text-base" aria-label="Current workspace"></i>@endif
+                                            <i class="fa-solid fa-building" aria-hidden="true"></i><span class="truncate">{{ $workspace->name }}</span>
+                                            @if ($workspace->is($currentWorkspace))<i class="fa-solid fa-check ml-auto" aria-label="Current workspace"></i>@endif
                                         </button>
                                     </form>
                                 @endforeach
                             @else
                                 <div class="pc-dropdown-item pointer-events-none" aria-label="Workspace">
-                                    <i class="ph ph-buildings text-base" aria-hidden="true"></i><span class="truncate">{{ $currentWorkspace->name }}</span>
+                                    <i class="fa-solid fa-building" aria-hidden="true"></i><span class="truncate">{{ $currentWorkspace->name }}</span>
                                 </div>
                             @endif
                         @endisset
                         <div class="pc-dropdown-divider"></div>
                         <a href="{{ route('profile') }}" @class(['pc-dropdown-item', 'pc-dropdown-item-active' => request()->routeIs('profile')]) role="menuitem">
-                            <i class="ph ph-user text-base" aria-hidden="true"></i>Profile
+                            <i class="fa-solid fa-user" aria-hidden="true"></i>Profile
                         </a>
-                        <div class="pc-dropdown-divider"></div>
-                        {{-- light / dark toggle (pc-theme.js) --}}
-                        <div class="flex items-center justify-between gap-3 px-3 py-1.5">
-                            <span class="text-[13px] text-pc-text-2">Theme</span>
-                            <x-theme-picker />
-                        </div>
                         <div class="pc-dropdown-divider"></div>
                         <form method="POST" action="{{ route('auth.logout') }}" onsubmit="submitForm(event)">
                             <button type="submit" class="pc-dropdown-item pc-dropdown-item-danger w-full" role="menuitem">
-                                <i class="ph ph-sign-out text-base" aria-hidden="true"></i>Log out
+                                <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>Log out
                             </button>
                         </form>
                     </div>
                 </div>
-            @endauth
-        </header>
-    </div>
-
-    <div class="pc-body">
-        <div class="pc-sidebar-backdrop" data-pc-component="sidebar-backdrop"></div>
-        <aside class="pc-sidebar" data-pc-component="sidebar" aria-label="Main navigation">
-            <div class="pc-sidebar-mobile-head">
-                <span class="pc-logo" aria-hidden="true"><img src="{{ asset('assets/img/icon.svg') }}" alt=""></span>
-                <span class="text-base font-semibold">{{ config('app.name') }}</span>
-                <button type="button" class="pc-close ml-auto" data-pc-trigger="sidebar" aria-label="Close navigation">×</button>
             </div>
-            <nav class="pc-nav">
-                <x-sidebar.app />
-            </nav>
-            <div class="pc-nav-footer">
-                <button type="button" class="pc-nav-item max-lg:hidden" data-pc-trigger="sidebar-collapse" data-pc-label-expanded="Collapse" data-pc-label-collapsed="Expand sidebar" aria-expanded="true" data-pc-tooltip="Collapse" data-pc-placement="right" data-pc-tooltip-only="collapsed">
-                    <span class="pc-nav-icon"><i class="ph ph-sidebar-simple text-xl" aria-hidden="true"></i></span>
-                    <span class="pc-nav-label" data-pc-sidebar-label>Collapse</span>
+        @endauth
+    </aside>
+
+    <main class="pc-main">
+        <div @class(['pc-sheet', 'pc-requires-xl' => $desktopOnly])>
+            <header class="pc-page-head">
+                <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon -ml-2 lg:hidden" data-pc-trigger="sidebar" aria-label="Open navigation">
+                    <i class="ph ph-list text-xl" aria-hidden="true"></i>
                 </button>
-            </div>
-        </aside>
+                <h1 class="pc-page-title">{{ $title }}</h1>
+                {{ $header ?? '' }}
+            </header>
 
-        <main @class(['pc-main', 'pc-requires-xl' => $desktopOnly])>
             <div id="pcContent" @class(['pc-content' => $contained, 'pc-content-flush' => ! $contained])>
                 {{ $slot }}
             </div>
 
             @if($desktopOnly)
-                {{-- Below xl (1280px): frosted over the content, never dismissible. Pages can explain why with <x-slot:screen-gate>. --}}
+                {{-- Below xl (1280px): frosted over the sheet, never dismissible. Pages can explain why with <x-slot:screen-gate>. --}}
                 <div class="pc-screen-gate" role="alertdialog" aria-modal="true" aria-labelledby="pcScreenGateTitle">
                     <div class="pc-screen-gate-panel">
                         <span class="pc-empty-icon"><i class="ph ph-monitor text-[22px]" aria-hidden="true"></i></span>
@@ -126,8 +134,8 @@
                 {{-- Keep focus and keyboard out of the content while the gate is up. --}}
                 <script>(function(m,c){var s=function(){c.inert=!m.matches};s();m.addEventListener("change",s)})(matchMedia("(min-width: 1280px)"),document.getElementById("pcContent"))</script>
             @endif
-        </main>
-    </div>
+        </div>
+    </main>
 </div>
 
 {{-- pc-core first, app.js last; defer keeps this order. Page-only components (pc-tabs,
