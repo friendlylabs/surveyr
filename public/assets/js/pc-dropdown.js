@@ -30,8 +30,10 @@
     return pc.qsa(".pc-dropdown-item:not([disabled])", el);
   }
 
-  /* A menu inside a scrolling / overflow-hidden box (a table wrapper, a card) would be clipped, so it
-     floats instead: position fixed, placed from the trigger's rect, flipped up when there's no room below. */
+  /**
+   * A menu inside a scrolling / overflow-hidden box (a table wrapper, a card) would be clipped, so it floats instead:
+   * position fixed, placed from the trigger's rect, flipped up when there's no room below.
+   */
   function clipped(el) {
     for (let node = el.parentElement; node && node !== document.body; node = node.parentElement) {
       const style = getComputedStyle(node);

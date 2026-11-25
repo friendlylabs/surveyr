@@ -9,7 +9,11 @@ use RuntimeException;
 use Tests\Concerns\ConfiguresRegistration;
 use Tests\TestCase;
 
-// config/auth.php `registration`: enabled, default_role, allow_invitation_only, allow_email_domains
+/**
+ * RegistrationTest
+ *
+ * config/auth.php `registration`: enabled, default_role, allow_invitation_only, allow_email_domains.
+ */
 class RegistrationTest extends TestCase
 {
     use ConfiguresRegistration, RefreshDatabase;

@@ -13,7 +13,11 @@ use Illuminate\Support\Facades\Notification;
 use Tests\Concerns\ConfiguresRegistration;
 use Tests\TestCase;
 
-// config/surveyr.php `workspaces`: self-hosted (one shared workspace) and SaaS (a workspace per account)
+/**
+ * WorkspacesTest
+ *
+ * config/surveyr.php `workspaces`: self-hosted (one shared workspace) and SaaS (a workspace per account).
+ */
 class WorkspacesTest extends TestCase
 {
     use ConfiguresRegistration, RefreshDatabase;

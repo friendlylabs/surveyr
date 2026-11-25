@@ -1,0 +1,2015 @@
+@import 'tailwindcss';
+@import '@phosphor-icons/web/regular';
+@import '@phosphor-icons/web/duotone';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+/*
+ * Design system
+ * Every interactive piece follows the pc-* contract used by the pc-*.js scripts
+ * (public/assets/js): state lives in data-pc-* attributes (data-pc-open, data-pc-on, ...),
+ * never in toggled classes. Colours, type and motion are tokens in @theme below; restyle the
+ * kit by changing them rather than the component rules.
+ */
+
+@theme {
+  --font-pc-sans: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-pc-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* Radii: a four-step scale, and the roles components use (rounded-pc-control, rounded-pc-card, ...). Restyle the
+     kit's corners by pointing a role at another step, or by changing a step; components never name a pixel value. */
+  --radius-pc-xs: 2px;
+  --radius-pc-sm: 4px;
+  --radius-pc-md: 6px;
+  --radius-pc-lg: 8px;
+
+  --radius-pc-control: var(--radius-pc-sm); /* buttons, inputs, selects, tabs, pager */
+  --radius-pc-item: var(--radius-pc-sm); /* rows inside menus, lists and pickers */
+  --radius-pc-badge: var(--radius-pc-sm);
+  --radius-pc-card: var(--radius-pc-md); /* cards, tables, alerts, stat tiles */
+  --radius-pc-popover: var(--radius-pc-md); /* dropdowns, select / date flyouts, popovers, toasts */
+  --radius-pc-modal: var(--radius-pc-lg); /* modals, dialogs, bottom sheets */
+
+  /* Surveyr's palette (the legacy app's theme). Light values here; the dark theme redefines the same tokens
+     under [data-pc-theme="dark"] (below), so components never name a theme. */
+
+  /* Surfaces & ink */
+  --color-pc-bg: #f5f7fa;
+  --color-pc-surface: #ffffff;
+  --color-pc-surface-alt: #f5f7fa;
+  --color-pc-surface-soft: #eff2f6;
+  --color-pc-surface-sunken: #e3e6ed;
+  --color-pc-ink: #141824;
+  --color-pc-ink-hover: #000000;
+  --color-pc-on-ink: #ffffff;
+  --color-pc-fill: #141824; /* strong fill for selected / emphasis states: active tab, pressed toggle, dark badge */
+  --color-pc-on-fill: #ffffff;
+  --color-pc-logo: #141824;
+  --color-pc-scrim: rgb(15 17 26 / 0.25);
+  --color-pc-text: #31374a;
+  --color-pc-text-2: #3e465b;
+  --color-pc-muted: #6e7891;
+  --color-pc-muted-2: #9fa6bc;
+  --color-pc-muted-3: #cbd0dd;
+  --color-pc-border: #cbd0dd;
+  --color-pc-border-soft: #e3e6ed;
+  --color-pc-border-faint: #eff2f6;
+  --color-pc-track: #e3e6ed;
+
+  /* Brand (Surveyr green) */
+  --color-pc-brand: #19b394;
+  --color-pc-brand-soft: #dbf4ee;
+  --color-pc-brand-ink: #079578;
+  --color-pc-on-brand: #ffffff;
+
+  /* Status */
+  --color-pc-success: #0f9d6b;
+  --color-pc-success-line: #0f9d6b;
+  --color-pc-success-ink: #0b6b49;
+  --color-pc-success-bg: #e3f6ee;
+  --color-pc-success-border: #b6e6d1;
+
+  --color-pc-warning: #e5780b;
+  --color-pc-warning-dot: #e5780b;
+  --color-pc-warning-text: #bc3803;
+  --color-pc-warning-ink: #923204;
+  --color-pc-warning-bg: #ffefca;
+  --color-pc-warning-border: #ffd88f;
+
+  --color-pc-danger: #fa3b1d;
+  --color-pc-danger-strong: #cc2b12;
+  --color-pc-danger-ink: #b81800;
+  --color-pc-danger-bg: #ffe0db;
+  --color-pc-danger-row: #fff3f1;
+  --color-pc-danger-border: #ffb7ac;
+  --color-pc-danger-line: #f8826f;
+
+  --color-pc-info: #0097eb;
+  --color-pc-info-ink: #005585;
+  --color-pc-info-bg: #c7ebff;
+  --color-pc-info-field: #eef8ff;
+  --color-pc-info-border: #98d9ff;
+
+  /* Chart series */
+  --color-pc-chart-1: #19b394;
+  --color-pc-chart-2: #3874ff;
+
+  /* Toast type dots: the toast is inverted (ink), so they take the other theme's status colours */
+  --color-pc-toast-success: #4fd1a1;
+  --color-pc-toast-warning: #ffcc85;
+  --color-pc-toast-danger: #f48270;
+  --color-pc-toast-info: #60c6ff;
+
+  --shadow-pc-pop: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-pc-float: 0 8px 24px rgba(0, 0, 0, 0.14);
+  --shadow-pc-overlay: 0 24px 64px rgba(23, 24, 28, 0.22);
+
+  --animate-pc-fade-up: pc-fade-up 0.18s ease;
+  --animate-pc-slide-in: pc-slide-in 0.22s ease;
+  --animate-pc-slide-in-start: pc-slide-in-start 0.22s ease;
+  --animate-pc-drop: pc-drop 0.14s ease;
+  --animate-pc-toast-in: pc-toast-in 0.2s ease;
+  --animate-pc-fade: pc-fade 0.18s ease;
+  --animate-pc-sheet-up: pc-sheet-up 0.22s ease;
+
+  @keyframes pc-fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes pc-slide-in {
+    from { transform: translateX(100%); }
+    to { transform: none; }
+  }
+  @keyframes pc-slide-in-start {
+    from { transform: translateX(-100%); }
+    to { transform: none; }
+  }
+  @keyframes pc-sheet-up {
+    from { transform: translateY(100%); }
+    to { transform: none; }
+  }
+  @keyframes pc-drop {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes pc-toast-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes pc-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+/* Dark theme: <x-theme-boot /> sets data-pc-theme on <html> before first paint from the saved choice (pc-theme.js:
+   light, dark, or system); these redefine the @theme tokens, so every utility and component follows. */
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  :root[data-pc-theme="dark"] {
+    color-scheme: dark;
+
+    --color-pc-bg: #0f111a;
+    --color-pc-surface: #141824;
+    --color-pc-surface-alt: #0f111a;
+    --color-pc-surface-soft: #222834;
+    --color-pc-surface-sunken: #31374a;
+    --color-pc-ink: #eff2f6;
+    --color-pc-ink-hover: #ffffff;
+    --color-pc-on-ink: #141824;
+    --color-pc-fill: #3e465b;
+    --color-pc-on-fill: #eff2f6;
+    --color-pc-logo: #222834;
+    --color-pc-scrim: rgb(0 0 0 / 0.45);
+    --color-pc-text: #cbd0dd;
+    --color-pc-text-2: #9fa6bc;
+    --color-pc-muted: #8a94ad;
+    --color-pc-muted-2: #606981;
+    --color-pc-muted-3: #3e465b;
+    --color-pc-border: #373e53;
+    --color-pc-border-soft: #31374a;
+    --color-pc-border-faint: #222834;
+    --color-pc-track: #31374a;
+
+    --color-pc-brand: #83d66f;
+    --color-pc-brand-soft: #283a31;
+    --color-pc-brand-ink: #a6e39a;
+    --color-pc-on-brand: #0f111a;
+
+    --color-pc-success: #4fd1a1;
+    --color-pc-success-line: #3fb88c;
+    --color-pc-success-ink: #b9f0da;
+    --color-pc-success-bg: #133026;
+    --color-pc-success-border: #1f4d3c;
+
+    --color-pc-warning: #ffcc85;
+    --color-pc-warning-dot: #ffcc85;
+    --color-pc-warning-text: #ffcc85;
+    --color-pc-warning-ink: #ffe2b8;
+    --color-pc-warning-bg: #3a2c17;
+    --color-pc-warning-border: #5c4524;
+
+    --color-pc-danger: #f48270;
+    --color-pc-danger-strong: #f69a8b;
+    --color-pc-danger-ink: #fbc4bb;
+    --color-pc-danger-bg: #3b1f1d;
+    --color-pc-danger-row: #2a1a1c;
+    --color-pc-danger-border: #5e2f2a;
+    --color-pc-danger-line: #b8574a;
+
+    --color-pc-info: #60c6ff;
+    --color-pc-info-ink: #b3e3ff;
+    --color-pc-info-bg: #15293a;
+    --color-pc-info-field: #142131;
+    --color-pc-info-border: #1f4560;
+
+    --color-pc-chart-1: #83d66f;
+    --color-pc-chart-2: #60c6ff;
+
+    --color-pc-toast-success: #0f9d6b;
+    --color-pc-toast-warning: #e5780b;
+    --color-pc-toast-danger: #fa3b1d;
+    --color-pc-toast-info: #0097eb;
+
+    --shadow-pc-pop: 0 8px 24px rgba(0, 0, 0, 0.35);
+    --shadow-pc-float: 0 8px 24px rgba(0, 0, 0, 0.45);
+    --shadow-pc-overlay: 0 24px 64px rgba(0, 0, 0, 0.55);
+  }
+}
+
+@layer base {
+  html {
+    @apply scroll-pt-16 accent-pc-brand;
+  }
+  body {
+    @apply m-0 bg-pc-bg text-pc-text font-pc-sans text-sm leading-[1.45] antialiased;
+  }
+  a {
+    @apply text-pc-brand hover:text-pc-brand-ink;
+  }
+  button {
+    @apply cursor-pointer;
+  }
+  button:disabled {
+    @apply cursor-default opacity-45;
+  }
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    @apply outline-2 outline-offset-1 outline-pc-brand;
+  }
+  /* Native select lists (before pc-select.js enhances them, or where it doesn't) highlight in brand, not system blue. */
+  select option:checked {
+    @apply bg-pc-brand text-pc-on-brand;
+  }
+  ::placeholder {
+    @apply text-pc-muted-2;
+  }
+  [hidden] {
+    display: none !important;
+  }
+
+  /* Scrolling — thin, quiet scrollbars that only show while the pointer (or focus) is in the scroll area;
+     smooth programmatic/anchor scrolls. Scroll chaining is left at the default so a section hands the wheel
+     to the page once it has nothing (more) to scroll. */
+  @media (prefers-reduced-motion: no-preference) {
+    html,
+    * {
+      scroll-behavior: smooth;
+    }
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.2s;
+  }
+  html,
+  :where(*:hover, *:focus-within) {
+    scrollbar-color: var(--color-pc-muted-3) transparent;
+  }
+  /* Safari has no scrollbar-color; style the WebKit pseudo-elements there instead. */
+  @supports not (scrollbar-color: auto) {
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      border: 2px solid transparent;
+      border-radius: 8px;
+      background-clip: padding-box;
+      background-color: transparent;
+    }
+    html::-webkit-scrollbar-thumb,
+    :hover::-webkit-scrollbar-thumb,
+    :focus-within::-webkit-scrollbar-thumb {
+      background-color: var(--color-pc-muted-3);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: var(--color-pc-muted-2);
+    }
+  }
+
+  /* Overlay scrollbars (pc-scrollbar.js, mouse devices): inner areas drop the native bar and its gutter,
+     a floating thumb is drawn over the hovered area instead. The page keeps its native scrollbar. */
+  html.pc-overlay-scroll body * {
+    scrollbar-width: none;
+  }
+  html.pc-overlay-scroll body *::-webkit-scrollbar {
+    display: none;
+  }
+  html.pc-scrollbar-dragging,
+  html.pc-scrollbar-dragging * {
+    cursor: default !important;
+    user-select: none !important;
+  }
+}
+
+@layer components {
+  .pc-scrollbar {
+    @apply pointer-events-none fixed top-0 left-0 z-1000 opacity-0 transition-opacity duration-200;
+  }
+  .pc-scrollbar[data-show] {
+    @apply pointer-events-auto opacity-100;
+  }
+  .pc-scrollbar[data-axis="y"] {
+    @apply w-2.5;
+  }
+  .pc-scrollbar[data-axis="x"] {
+    @apply h-2.5;
+  }
+  .pc-scrollbar-thumb {
+    @apply absolute rounded-full bg-pc-muted-3 transition-[background-color,width,height] duration-150;
+  }
+  .pc-scrollbar[data-axis="y"] .pc-scrollbar-thumb {
+    @apply top-0 right-0.5 w-1.5;
+  }
+  .pc-scrollbar[data-axis="x"] .pc-scrollbar-thumb {
+    @apply bottom-0.5 left-0 h-1.5;
+  }
+  .pc-scrollbar:is(:hover, [data-dragging]) .pc-scrollbar-thumb {
+    @apply bg-pc-muted-2;
+  }
+  .pc-scrollbar[data-axis="y"]:is(:hover, [data-dragging]) .pc-scrollbar-thumb {
+    @apply w-2;
+  }
+  .pc-scrollbar[data-axis="x"]:is(:hover, [data-dragging]) .pc-scrollbar-thumb {
+    @apply h-2;
+  }
+}
+
+/* Pins a panel under the top bar for the rest of the viewport (side panels, previews).
+   Pages with their own sticky header raise --pc-sticky-top to its bottom edge. A utility, so it
+   takes variants: lg:pc-pinned, xl:pc-pinned. */
+/* Error pages (.pc-error-code): the hover spotlight's radius, registered so it can transition, and the fade's sweep.
+   Both background layers are listed so only the fade moves. */
+@property --pc-spot {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@keyframes pc-error-sweep {
+  from { background-position: 0 0, 0% 50%; }
+  to { background-position: 0 0, 100% 50%; }
+}
+
+@utility pc-pinned {
+  position: sticky;
+  top: var(--pc-sticky-top, 4rem);
+  height: calc(100dvh - var(--pc-sticky-top, 4rem));
+  align-self: flex-start;
+  overflow-y: auto;
+}
+
+@layer components {
+  /* ================= App shell ================= */
+  /* The document scrolls; the top bar sticks, the desktop sidebar sticks below it at viewport height. */
+  .pc-app {
+    @apply flex min-h-dvh flex-col bg-[--color-pc-bg];
+  }
+  .pc-topbar {
+    @apply sticky top-0 z-50 flex h-16 flex-none items-stretch border-b border-dashed border-pc-border bg-pc-surface;
+  }
+  .pc-brand {
+    @apply flex w-75 flex-none items-center gap-2.5 px-[22px] transition-[width,padding] duration-150
+      max-lg:w-auto max-lg:px-4;
+  }
+  /* Dark tile holding /assets/img/icon.svg. The SVG is black, so it's inverted to white; its viewBox
+     already carries ~25% padding, so the image fills the tile and is nudged up a little. */
+  .pc-logo {
+    @apply grid size-7 flex-none place-items-center overflow-hidden rounded-pc-md bg-pc-logo;
+  }
+  .pc-logo > img {
+    @apply block size-full scale-125 object-contain invert;
+  }
+  .pc-brand-name {
+    @apply text-base font-semibold tracking-[-0.01em] whitespace-nowrap text-pc-text no-underline max-sm:hidden;
+  }
+  .pc-header {
+    @apply flex min-w-0 flex-1 items-center gap-3.5 px-6 whitespace-nowrap max-lg:px-3;
+  }
+  .pc-page-title {
+    @apply text-lg font-semibold tracking-[-0.01em];
+  }
+  .pc-header-chip {
+    @apply flex flex-none items-center gap-2 rounded-pc-control border border-pc-border px-2.5 py-1 text-[13px] max-md:hidden;
+  }
+  .pc-body {
+    @apply flex flex-1;
+  }
+  .pc-main {
+    @apply flex min-w-0 flex-1 flex-col;
+  }
+  .pc-content {
+    @apply flex-1 p-6 max-sm:p-4;
+  }
+  /* <x-layout-app :contained-layout="false">: no gutter, the page runs to the edges of main */
+  .pc-content-flush {
+    @apply flex min-w-0 flex-1 flex-col;
+  }
+
+  /* ================= Sidebar (pc-sidebar.js) ================= */
+  .pc-sidebar {
+    @apply flex w-75 flex-none flex-col overflow-hidden border-r border-dashed border-pc-border bg-pc-surface-alt
+      transition-[width] duration-150 lg:sticky lg:top-16 lg:h-[calc(100dvh-4rem)] lg:self-start
+      max-lg:fixed max-lg:inset-y-0 max-lg:left-0 max-lg:z-90 max-lg:w-[264px] max-lg:border-solid
+      max-lg:-translate-x-full max-lg:transition-transform max-lg:duration-200;
+  }
+  .pc-sidebar[data-pc-open="true"] {
+    @apply max-lg:translate-x-0 max-lg:shadow-pc-overlay;
+  }
+  .pc-sidebar-backdrop {
+    @apply fixed inset-0 z-80 hidden bg-pc-scrim lg:hidden;
+  }
+  .pc-sidebar-backdrop[data-pc-open="true"] {
+    @apply block animate-pc-fade;
+  }
+  .pc-sidebar-mobile-head {
+    @apply hidden h-16 flex-none items-center gap-2.5 border-b border-dashed border-pc-border px-5 max-lg:flex;
+  }
+  .pc-nav {
+    @apply flex flex-1 flex-col gap-0.5 overflow-x-hidden overflow-y-auto px-3 py-4;
+  }
+  .pc-nav-footer {
+    @apply flex flex-col gap-0.5 p-3;
+  }
+  .pc-nav-section-label {
+    @apply mx-4 mt-[18px] mb-1.5 text-xs whitespace-nowrap text-pc-muted first:mt-1;
+  }
+  .pc-nav-divider {
+    @apply m-3.5 hidden h-px bg-pc-border-soft;
+  }
+  .pc-nav-item {
+    @apply flex h-10 w-full items-center gap-3 rounded-pc-md border-0 bg-transparent px-3.5 text-left text-sm
+      whitespace-nowrap text-pc-text no-underline transition-colors hover:bg-pc-ink/[0.04] hover:text-pc-text;
+  }
+  .pc-nav-icon {
+    @apply inline-flex flex-none text-pc-text-2;
+  }
+  .pc-nav-item-active {
+    @apply bg-pc-brand-soft font-medium hover:bg-pc-brand-soft;
+  }
+  .pc-nav-item-active .pc-nav-icon {
+    @apply text-pc-brand;
+  }
+
+  /* Desktop collapsed rail — state lives on <html data-pc-sidebar="collapsed"> so the
+     brand cell in the top bar and the sidebar resize together. */
+  :root[data-pc-sidebar="collapsed"] .pc-brand {
+    @apply lg:w-[72px] lg:justify-center lg:px-0;
+  }
+  :root[data-pc-sidebar="collapsed"] .pc-brand .pc-brand-name {
+    @apply lg:hidden;
+  }
+  :root[data-pc-sidebar="collapsed"] .pc-sidebar {
+    @apply lg:w-[72px];
+  }
+  :root[data-pc-sidebar="collapsed"] .pc-nav-item {
+    @apply lg:justify-center lg:px-0;
+  }
+  :root[data-pc-sidebar="collapsed"] :is(.pc-nav-label, .pc-nav-section-label) {
+    @apply lg:hidden;
+  }
+  :root[data-pc-sidebar="collapsed"] .pc-nav-divider {
+    @apply lg:block;
+  }
+
+  /* ================= Buttons ================= */
+  .pc-btn {
+    @apply inline-flex h-[34px] items-center justify-center gap-2 rounded-pc-control border px-3.5 text-sm font-medium
+      whitespace-nowrap no-underline select-none transition-colors duration-150;
+  }
+  .pc-btn-sm {
+    @apply h-7 gap-1.5 rounded-pc-control px-2.5 text-xs;
+  }
+  .pc-btn-lg {
+    @apply h-11 px-5 text-[15px];
+  }
+  .pc-btn-block {
+    @apply w-full;
+  }
+  /* the main action: Surveyr's brand green (same as pc-btn-brand) */
+  .pc-btn-primary {
+    @apply border-pc-brand bg-pc-brand text-pc-on-brand hover:border-pc-brand-ink hover:bg-pc-brand-ink hover:text-pc-on-brand;
+  }
+  .pc-btn-outline {
+    @apply border-pc-border bg-pc-surface text-pc-ink hover:border-pc-muted-2 hover:bg-pc-surface-soft hover:text-pc-ink;
+  }
+  .pc-btn-secondary {
+    @apply border-pc-border bg-pc-surface text-pc-text-2 hover:bg-pc-surface-soft hover:text-pc-text-2;
+  }
+  .pc-btn-ghost {
+    @apply border-transparent bg-transparent text-pc-text-2 hover:bg-pc-surface-soft hover:text-pc-text-2;
+  }
+  .pc-btn-success {
+    @apply border-pc-success-line bg-pc-surface text-pc-success-ink hover:bg-pc-success-bg;
+  }
+  .pc-btn-danger {
+    @apply border-pc-danger bg-pc-surface text-pc-danger-ink hover:bg-pc-danger-bg;
+  }
+  .pc-btn-danger-solid {
+    @apply border-pc-danger bg-pc-danger text-pc-on-brand hover:border-pc-danger-strong hover:bg-pc-danger-strong;
+  }
+  .pc-btn-soft-danger {
+    @apply border-pc-danger-line bg-pc-surface text-pc-danger-ink hover:bg-pc-danger-row;
+  }
+  /* Solid status buttons, for the confirm action of a dialog of that type (pc-dialog.js) */
+  .pc-btn-success-solid {
+    @apply border-pc-success bg-pc-success text-pc-on-brand hover:border-pc-success-ink hover:bg-pc-success-ink
+      hover:text-pc-on-brand;
+  }
+  .pc-btn-warning-solid {
+    @apply border-pc-warning bg-pc-warning text-pc-on-brand hover:border-pc-warning-text hover:bg-pc-warning-text
+      hover:text-pc-on-brand;
+  }
+  .pc-btn-info-solid {
+    @apply border-pc-info bg-pc-info text-pc-on-brand hover:border-pc-info-ink hover:bg-pc-info-ink hover:text-pc-on-brand;
+  }
+  .pc-btn-info {
+    @apply border-pc-info bg-pc-surface text-pc-info-ink hover:bg-pc-info-field;
+  }
+  .pc-btn-icon {
+    @apply w-[34px] px-0;
+  }
+  .pc-btn-icon.pc-btn-sm {
+    @apply w-[30px];
+  }
+  /* Toggle buttons (aria-pressed) — pressed state is the strong fill. */
+  .pc-btn[aria-pressed="true"] {
+    @apply border-pc-fill bg-pc-fill text-pc-on-fill;
+  }
+  .pc-btn-group {
+    @apply inline-flex items-center gap-2;
+  }
+  .pc-kbd {
+    @apply font-pc-mono text-[11px] opacity-70;
+  }
+  .pc-close {
+    @apply grid size-[26px] flex-none place-items-center rounded-pc-control border border-pc-border bg-pc-surface p-0 text-base
+      leading-none text-pc-text-2 hover:bg-pc-surface-soft;
+  }
+
+  /* ================= Badges, pills, dots ================= */
+  .pc-badge {
+    @apply inline-flex items-center gap-1 rounded-pc-badge border px-2 py-0.5 text-xs leading-[1.4] whitespace-nowrap;
+  }
+  .pc-badge-mono {
+    @apply font-pc-mono text-[11px] font-medium tracking-[0.02em];
+  }
+  .pc-badge-neutral {
+    @apply border-pc-border bg-pc-surface-soft text-pc-muted;
+  }
+  .pc-badge-success {
+    @apply border-pc-success-border bg-pc-success-bg text-pc-success-ink;
+  }
+  .pc-badge-warning {
+    @apply border-pc-warning-border bg-pc-warning-bg text-pc-warning-ink;
+  }
+  .pc-badge-danger {
+    @apply border-pc-danger-border bg-pc-danger-bg text-pc-danger-ink;
+  }
+  .pc-badge-info {
+    @apply border-pc-info-border bg-pc-info-bg text-pc-info-ink;
+  }
+  .pc-badge-brand {
+    @apply border-transparent bg-pc-brand-soft text-pc-brand-ink;
+  }
+  .pc-badge-dark {
+    @apply border-pc-fill bg-pc-fill text-pc-on-fill;
+  }
+  .pc-pill {
+    @apply rounded-full bg-pc-danger-bg px-[7px] font-pc-mono text-[11px] leading-[18px] font-medium text-pc-danger-ink;
+  }
+  .pc-dot {
+    @apply inline-block size-2.5 flex-none rounded-full bg-pc-muted-3;
+  }
+  .pc-dot-sm {
+    @apply size-[7px];
+  }
+  .pc-dot-success {
+    @apply bg-pc-success;
+  }
+  .pc-dot-warning {
+    @apply bg-pc-warning-dot;
+  }
+  .pc-dot-danger {
+    @apply bg-pc-danger;
+  }
+  .pc-dot-info {
+    @apply bg-pc-info;
+  }
+  .pc-live {
+    @apply flex items-center gap-1.5 text-xs text-pc-success;
+  }
+  .pc-live::before {
+    content: "";
+    @apply inline-block size-[7px] rounded-full bg-current;
+  }
+  .pc-legend {
+    @apply inline-flex items-center gap-1.5;
+  }
+  .pc-legend-line {
+    @apply h-[3px] w-2.5 rounded-pc-xs;
+  }
+  .pc-legend-box {
+    @apply size-2 rounded-pc-xs border-2;
+  }
+  .pc-status {
+    @apply font-pc-mono text-xs text-pc-muted;
+  }
+  .pc-status-success {
+    @apply text-pc-success-ink;
+  }
+  .pc-status-warning {
+    @apply text-pc-warning-text;
+  }
+  .pc-status-danger {
+    @apply text-pc-danger-ink;
+  }
+
+  /* ================= Avatars ================= */
+  .pc-avatar {
+    @apply grid size-9 flex-none place-items-center rounded-full border-0 bg-pc-brand-soft p-0 text-[13px] leading-none
+      font-semibold text-pc-brand-ink;
+  }
+  .pc-avatar-sm {
+    @apply size-7 text-[11px];
+  }
+  .pc-avatar-lg {
+    @apply size-11 text-[15px];
+  }
+  .pc-avatar-square {
+    @apply size-8 rounded-pc-md;
+  }
+
+  /* ================= Alerts & banners ================= */
+  /* Block by default so inline text flows naturally; add `flex items-center gap-3` when it holds actions. */
+  .pc-alert {
+    @apply block rounded-pc-card border px-3.5 py-2.5 text-[13px];
+  }
+  /* Full-bleed banner variant used under page headers. */
+  .pc-banner {
+    @apply flex flex-wrap items-center gap-3 border-b px-6 py-2.5 text-[13px] max-sm:px-4;
+  }
+  :is(.pc-alert, .pc-banner).pc-alert-danger {
+    @apply border-pc-danger-border bg-pc-danger-bg text-pc-danger-ink;
+  }
+  :is(.pc-alert, .pc-banner).pc-alert-warning {
+    @apply border-pc-warning-border bg-pc-warning-bg text-pc-warning-ink;
+  }
+  :is(.pc-alert, .pc-banner).pc-alert-success {
+    @apply border-pc-success-border bg-pc-success-bg text-pc-success-ink;
+  }
+  :is(.pc-alert, .pc-banner).pc-alert-info {
+    @apply border-pc-info-border bg-pc-info-bg text-pc-info-ink;
+  }
+  .pc-alert-icon {
+    @apply inline-flex flex-none;
+  }
+
+  /* ================= Cards & stats ================= */
+  .pc-card {
+    @apply rounded-pc-card border border-pc-border bg-pc-surface;
+  }
+  .pc-card-header {
+    @apply flex items-center justify-between gap-3 border-b border-pc-border-soft px-5 py-3.5 font-semibold;
+  }
+  .pc-card-body {
+    @apply p-5;
+  }
+  .pc-card-footer {
+    @apply flex items-center justify-between gap-3 border-t border-pc-border-soft px-5 py-3;
+  }
+  /* List pages (x-table), Surveyr's listing: the toolbar is its own row on the page, above the card; the card holds
+     the table at a 28px inset and the footer (range + pagination). The inset is padding inside the scroll area, not on
+     the card, so the overlay scrollbar runs along the card's edge. .pc-list-fill: toolbar + card fill the viewport below
+     the header, the table area scrolls (its head sticks), the empty state centres and the footer stays at the bottom. */
+  .pc-list {
+    @apply flex flex-col gap-4;
+  }
+  .pc-list-fill {
+    @apply h-[calc(100dvh-100px)] lg:h-[calc(100dvh-115px)];
+  }
+  .pc-list-toolbar {
+    @apply flex flex-none flex-wrap items-center gap-3;
+  }
+  .pc-list-card {
+    @apply flex min-h-0 flex-col rounded-pc-card border-pc-border-soft;
+  }
+  .pc-list-fill .pc-list-card {
+    @apply flex-1;
+  }
+  .pc-list-scroll {
+    @apply overflow-x-auto px-7 max-sm:px-5;
+  }
+  .pc-list-fill .pc-list-scroll {
+    @apply min-h-0 flex-1 overflow-auto;
+  }
+  .pc-list-empty {
+    @apply flex flex-1 items-center justify-center px-7 py-10 max-sm:px-5;
+  }
+  .pc-list-footer {
+    @apply flex flex-none flex-wrap items-center justify-between gap-3 border-t border-pc-border-soft px-7 py-4 text-[13px] max-sm:px-5
+      text-pc-text-2;
+  }
+  .pc-card-dashed {
+    @apply rounded-pc-card border border-dashed border-pc-border bg-pc-surface;
+  }
+  /* KPI tiles (x-stat): a card, optionally linked, with a duotone
+     icon, label over value, and a faint oversized copy of the icon in the bottom-right corner. */
+  .pc-stat-grid {
+    @apply grid grid-cols-2 gap-3 xl:grid-cols-4;
+  }
+  .pc-stat {
+    @apply relative block overflow-hidden rounded-pc-card border border-pc-border bg-pc-surface px-5 py-4 text-pc-text
+      no-underline transition-[border-color,translate] duration-[180ms] ease-in-out motion-reduce:transition-none;
+  }
+  a.pc-stat:hover {
+    @apply -translate-y-px border-pc-brand text-pc-text;
+  }
+  .pc-stat-icon {
+    @apply mb-3 block size-10;
+  }
+  .pc-stat-label {
+    @apply m-0 text-[13px] font-semibold text-pc-muted;
+  }
+  .pc-stat-value {
+    @apply block text-[28px] leading-[1.15] font-extrabold tracking-[-0.02em] text-pc-text;
+  }
+  .pc-stat-hint {
+    @apply mt-0.5 block text-xs text-pc-muted;
+  }
+  .pc-stat-watermark {
+    @apply pointer-events-none absolute -right-[35px] -bottom-[36px] h-35 w-36 -rotate-25 text-pc-text opacity-[0.06];
+  }
+  .pc-eyebrow {
+    @apply font-pc-mono text-[11px] font-medium tracking-[0.06em] text-pc-muted uppercase;
+  }
+  .pc-section-title {
+    @apply font-semibold;
+  }
+  .pc-mono {
+    @apply font-pc-mono tabular-nums;
+  }
+
+  /* ================= Progress, spinner, skeleton ================= */
+  .pc-progress {
+    @apply h-1.5 overflow-hidden rounded-pc-xs bg-pc-track;
+  }
+  .pc-progress-bar {
+    @apply h-full rounded-pc-xs bg-pc-brand transition-[width] duration-300;
+  }
+  .pc-progress-ink .pc-progress-bar {
+    @apply rounded-none bg-pc-ink duration-150 ease-linear;
+  }
+  .pc-progress-stack {
+    @apply flex h-2 gap-0.5 overflow-hidden rounded-pc-xs bg-pc-track;
+  }
+  .pc-progress-stack > span {
+    @apply h-full transition-[width] duration-300;
+  }
+  .pc-spinner {
+    @apply inline-block size-3.5 animate-spin rounded-full border-2 border-current/25 border-t-current;
+  }
+  .pc-skeleton {
+    @apply animate-pulse rounded-pc-sm bg-pc-track;
+  }
+
+  /* ================= Page loader (<x-page-loader />, pc-loader.js) ================= */
+  /* A form assembly line on one loop: the belt rests while the fill station pours answers into the form in front of
+     it and the form it filled last loop gets its check, then moves everything one pitch (54 units) to the right. At
+     the end of a loop every card sits where the card behind it started, in the state it started in, so the loop is
+     seamless. Each card's job is fixed by data-step (blank / fill / seal / done); only the belt and the stream move. */
+  .pc-loader {
+    --pc-loader-loop: 1.6s;
+    @apply flex flex-col items-center gap-4;
+  }
+  .pc-page-loader {
+    @apply invisible fixed inset-0 z-[200] justify-center bg-pc-bg opacity-0;
+  }
+  /* wait a beat before showing: pages that are ready quickly never flash it */
+  .pc-page-loader[data-pc-state="loading"] {
+    @apply visible;
+    animation: pc-loader-in 0.3s ease 0.45s both;
+  }
+  .pc-loader-scene {
+    @apply w-72 max-w-full overflow-visible;
+    mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent);
+  }
+  .pc-loader-scene * {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation-duration: var(--pc-loader-loop);
+    animation-iteration-count: infinite;
+  }
+  .pc-loader-disc {
+    fill: var(--color-pc-brand-soft);
+    animation-name: pc-loader-disc;
+  }
+  .pc-loader-belt {
+    stroke: var(--color-pc-border);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+  .pc-loader-rollers {
+    stroke: var(--color-pc-muted-3);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-dasharray: 0.01 9;
+    animation-name: pc-loader-rollers;
+  }
+  .pc-loader-line {
+    animation-name: pc-loader-belt;
+  }
+  .pc-loader-stream {
+    stroke: var(--color-pc-brand);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-dasharray: 100 100;
+    stroke-dashoffset: 100;
+    animation-name: pc-loader-stream;
+  }
+
+  /* cards: an empty form is a dashed outline; a filled one gets a solid edge, answers and finally a seal */
+  .pc-loader-card {
+    transform-origin: bottom;
+  }
+  .pc-loader-sheet {
+    fill: var(--color-pc-surface);
+    stroke: var(--color-pc-muted-3);
+    stroke-dasharray: 3 2.5;
+  }
+  .pc-loader-edge {
+    fill: none;
+    stroke: var(--color-pc-brand);
+    stroke-width: 1.25;
+    stroke-dasharray: 100 100;
+    stroke-dashoffset: 100;
+  }
+  .pc-loader-title,
+  .pc-loader-field {
+    fill: var(--color-pc-track);
+  }
+  .pc-loader-choice {
+    fill: none;
+    stroke: var(--color-pc-muted-3);
+  }
+  .pc-loader-dot,
+  .pc-loader-answer {
+    fill: var(--color-pc-brand);
+    scale: 0;
+  }
+  .pc-loader-answer {
+    transform-origin: left;
+    scale: 0 1;
+  }
+  .pc-loader-seal {
+    scale: 0;
+  }
+  .pc-loader-seal circle {
+    fill: var(--color-pc-brand);
+  }
+  .pc-loader-seal path {
+    fill: none;
+    stroke: var(--color-pc-on-brand);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  :is([data-step="seal"], [data-step="done"]) .pc-loader-edge {
+    stroke-dashoffset: 0;
+  }
+  :is([data-step="seal"], [data-step="done"]) .pc-loader-dot {
+    scale: 1;
+  }
+  :is([data-step="seal"], [data-step="done"]) .pc-loader-answer {
+    scale: 1 1;
+  }
+  [data-step="done"] .pc-loader-seal {
+    scale: 1;
+  }
+  [data-step="fill"] .pc-loader-edge {
+    animation-name: pc-loader-edge;
+  }
+  /* answers type in row by row, in keystroke steps, like a typewriter */
+  [data-step="fill"] .pc-loader-answer {
+    animation-timing-function: steps(4, jump-end);
+  }
+  [data-step="fill"] [data-row="0"].pc-loader-answer { animation-name: pc-loader-answer-0; }
+  [data-step="fill"] [data-row="1"].pc-loader-answer { animation-name: pc-loader-answer-1; }
+  [data-step="fill"] [data-row="2"].pc-loader-answer { animation-name: pc-loader-answer-2; }
+  [data-step="fill"] [data-row="0"].pc-loader-dot { animation-name: pc-loader-dot-0; }
+  [data-step="fill"] [data-row="1"].pc-loader-dot { animation-name: pc-loader-dot-1; }
+  [data-step="fill"] [data-row="2"].pc-loader-dot { animation-name: pc-loader-dot-2; }
+  /* the filled form gets its check as soon as it settles at the next stop, with a little hop */
+  [data-step="seal"].pc-loader-card {
+    animation-name: pc-loader-hop;
+  }
+  [data-step="seal"] .pc-loader-seal {
+    animation-name: pc-loader-sealed;
+  }
+
+  .pc-loader-progress {
+    @apply h-0.5 w-40 overflow-hidden rounded-full bg-pc-track;
+  }
+  .pc-loader-progress > span {
+    @apply block h-full w-0 rounded-full bg-pc-brand;
+    animation: pc-loader-progress 12s cubic-bezier(0.1, 0.6, 0.3, 1) forwards;
+  }
+  .pc-loader:not(.pc-page-loader) .pc-loader-progress > span {
+    animation-duration: calc(var(--pc-loader-loop) * 4);
+    animation-iteration-count: infinite;
+  }
+  .pc-page-loader[data-pc-state="done"] .pc-loader-progress > span {
+    @apply w-full transition-[width] duration-200;
+    animation: none;
+  }
+  .pc-loader-message {
+    @apply text-[13px] text-pc-muted;
+  }
+  /* reduced motion: hold the line still on a finished frame; only the progress bar moves */
+  @media (prefers-reduced-motion: reduce) {
+    .pc-loader-scene * {
+      animation-play-state: paused;
+      animation-delay: calc(var(--pc-loader-loop) * -0.5);
+    }
+  }
+
+  @keyframes pc-loader-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pc-loader-progress {
+    from { width: 0; }
+    to { width: 92%; }
+  }
+  @keyframes pc-loader-belt {
+    0%, 56% { translate: 0 0; animation-timing-function: cubic-bezier(0.6, 0, 0.3, 1); }
+    88% { translate: 56px 0; animation-timing-function: ease-out; }
+    100% { translate: 54px 0; }
+  }
+  @keyframes pc-loader-rollers {
+    0%, 56% { stroke-dashoffset: 0; animation-timing-function: cubic-bezier(0.6, 0, 0.3, 1); }
+    88% { stroke-dashoffset: -56; animation-timing-function: ease-out; }
+    100% { stroke-dashoffset: -54; }
+  }
+  @keyframes pc-loader-stream {
+    0%, 4% { stroke-dashoffset: 100; animation-timing-function: ease-in; }
+    14%, 40% { stroke-dashoffset: 0; animation-timing-function: ease-in; }
+    50%, 100% { stroke-dashoffset: -100; }
+  }
+  @keyframes pc-loader-edge {
+    0%, 8% { stroke-dashoffset: 100; animation-timing-function: ease-in-out; }
+    46%, 100% { stroke-dashoffset: 0; }
+  }
+  @keyframes pc-loader-answer-0 {
+    0%, 14% { scale: 0 1; }
+    24%, 100% { scale: 1 1; }
+  }
+  @keyframes pc-loader-answer-1 {
+    0%, 24% { scale: 0 1; }
+    34%, 100% { scale: 1 1; }
+  }
+  @keyframes pc-loader-answer-2 {
+    0%, 34% { scale: 0 1; }
+    44%, 100% { scale: 1 1; }
+  }
+  @keyframes pc-loader-dot-0 {
+    0%, 12% { scale: 0; }
+    16% { scale: 1.35; }
+    20%, 100% { scale: 1; }
+  }
+  @keyframes pc-loader-dot-1 {
+    0%, 22% { scale: 0; }
+    26% { scale: 1.35; }
+    30%, 100% { scale: 1; }
+  }
+  @keyframes pc-loader-dot-2 {
+    0%, 32% { scale: 0; }
+    36% { scale: 1.35; }
+    40%, 100% { scale: 1; }
+  }
+  @keyframes pc-loader-hop {
+    0%, 6% { translate: 0 0; animation-timing-function: ease-out; }
+    11% { translate: 0 -2.5px; animation-timing-function: ease-in; }
+    16%, 100% { translate: 0 0; }
+  }
+  @keyframes pc-loader-sealed {
+    0%, 6% { scale: 0; animation-timing-function: cubic-bezier(0.3, 1.6, 0.6, 1); }
+    16%, 100% { scale: 1; }
+  }
+  @keyframes pc-loader-disc {
+    0%, 6% { scale: 1; }
+    12% { scale: 1.06; }
+    26%, 100% { scale: 1; }
+  }
+  .pc-hatch {
+    background: repeating-linear-gradient(135deg, var(--color-pc-surface-sunken) 0 6px, var(--color-pc-surface-soft) 6px 12px);
+    @apply grid place-items-center rounded-pc-sm border border-dashed border-pc-border text-center font-pc-mono text-[11px] text-pc-muted;
+  }
+  /* Pages that need a standard-size screen: <x-layout-app desktop-only>. Below xl (1280px)
+     main is held to the viewport and .pc-screen-gate frosts over it with a panel saying why; the topbar
+     and sidebar stay usable so the user can leave. The layout marks the content inert to match. */
+  .pc-requires-xl {
+    @apply relative max-xl:h-[calc(100dvh-4rem)] max-xl:overflow-hidden;
+  }
+  .pc-screen-gate {
+    @apply absolute inset-0 z-40 flex items-center justify-center bg-pc-surface/45 p-4 backdrop-blur-md animate-pc-fade xl:hidden;
+  }
+  .pc-screen-gate-panel {
+    @apply flex w-full max-w-[380px] flex-col items-center gap-2 rounded-pc-modal border border-pc-border bg-pc-surface px-6 py-8
+      text-center text-[13px] text-pc-muted shadow-pc-overlay animate-pc-fade-up;
+  }
+  .pc-empty {
+    @apply flex flex-col items-center justify-center gap-2 px-6 py-10 text-center text-[13px] text-pc-muted;
+  }
+  .pc-empty-icon {
+    @apply mb-1 grid size-11 place-items-center rounded-full bg-pc-surface-soft text-pc-muted;
+  }
+
+  /* ================= Forms ================= */
+  .pc-label {
+    @apply mb-1.5 block text-xs font-medium text-pc-text-2;
+  }
+  /* Required field: <label class="pc-label required">; the x-form components add it for `required` fields */
+  .required::after {
+    content: " *";
+    @apply text-pc-danger;
+  }
+  .pc-input,
+  .pc-select,
+  .pc-textarea {
+    @apply box-border h-9 w-full rounded-pc-control border border-pc-border bg-pc-surface px-3 text-sm text-pc-text
+      transition-colors outline-none focus:border-pc-brand focus:ring-2 focus:ring-pc-brand/10
+      disabled:cursor-not-allowed disabled:bg-pc-surface-alt disabled:text-pc-muted;
+  }
+  .pc-textarea {
+    @apply h-auto min-h-22 py-2 leading-normal;
+  }
+  .pc-select {
+    @apply appearance-none bg-[url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='12'%20height='12'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%236b6b6b'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='m6%209%206%206%206-6'/%3E%3C/svg%3E")]
+      bg-[length:12px] bg-[right_10px_center] bg-no-repeat pr-8;
+  }
+  .pc-input-sm {
+    @apply h-7 rounded-pc-control px-2 text-xs;
+  }
+  .pc-input-mono {
+    @apply font-pc-mono;
+  }
+  .pc-input[aria-invalid="true"] {
+    @apply border-pc-danger focus:ring-pc-danger/10;
+  }
+  .pc-field-hint {
+    @apply mt-1.5 text-xs leading-relaxed text-pc-muted;
+  }
+  .pc-field-error {
+    @apply mt-1.5 text-xs text-pc-danger-ink;
+  }
+  .pc-input-group {
+    @apply relative flex items-center;
+  }
+  .pc-input-group > :is(svg, i) {
+    @apply pointer-events-none absolute left-3 text-pc-muted;
+  }
+  .pc-input-group > :is(svg, i) + .pc-input {
+    @apply pl-9;
+  }
+  .pc-input-addon {
+    @apply absolute right-1.5 h-6 rounded-pc-xs border-0 bg-transparent px-2 font-pc-mono text-[11px] font-medium text-pc-muted
+      hover:bg-pc-surface-soft hover:text-pc-text;
+  }
+  .pc-check {
+    @apply inline-flex cursor-pointer items-center gap-2 text-sm select-none;
+  }
+  .pc-check > input {
+    @apply size-4 cursor-pointer accent-pc-brand;
+  }
+
+  /* ================= Select (pc-select.js) ================= */
+  /* Every select.pc-select is enhanced: the native select stays (hidden) as the form value, the trigger shows it,
+     and the flyout floats (position fixed) so modal and table overflow can't clip it. data-mode = pop | sheet. */
+  .pc-select-wrap {
+    @apply relative w-full min-w-0;
+  }
+  .pc-select-native {
+    @apply pointer-events-none absolute inset-0 size-full opacity-0;
+  }
+  .pc-select-trigger {
+    @apply relative flex min-h-9 w-full cursor-pointer items-center rounded-pc-control border border-pc-border bg-pc-surface py-1 pr-8 pl-3
+      text-left text-sm text-pc-text transition-colors outline-none select-none
+      focus-visible:border-pc-brand focus-visible:ring-2 focus-visible:ring-pc-brand/10;
+  }
+  .pc-select-trigger[aria-expanded="true"] {
+    @apply border-pc-brand ring-2 ring-pc-brand/10;
+  }
+  .pc-select-trigger[aria-disabled="true"] {
+    @apply cursor-not-allowed bg-pc-surface-alt text-pc-muted;
+  }
+  .pc-select-wrap:has(> select[aria-invalid="true"]) .pc-select-trigger {
+    @apply border-pc-danger ring-pc-danger/10;
+  }
+  .pc-select-caret {
+    @apply pointer-events-none absolute right-2.5 text-xs text-pc-muted transition-transform;
+  }
+  .pc-select-trigger[aria-expanded="true"] .pc-select-caret {
+    @apply rotate-180;
+  }
+  /* one line: chips shrink (labels truncate) so they and "+N more" always fit beside the caret */
+  .pc-select-value {
+    @apply flex min-w-0 flex-1 flex-nowrap items-center gap-1 overflow-hidden;
+  }
+  .pc-select-placeholder {
+    @apply truncate text-pc-muted-2;
+  }
+  .pc-select-text {
+    @apply truncate;
+  }
+  .pc-select-chip {
+    @apply inline-flex h-6 max-w-full min-w-0 items-center gap-0.5 rounded-pc-sm bg-pc-surface-soft pr-0.5 pl-2 text-xs text-pc-text;
+  }
+  .pc-select-chip-label {
+    @apply truncate;
+  }
+  .pc-select-chip-x {
+    @apply grid size-5 flex-none place-items-center rounded-pc-xs text-sm leading-none text-pc-muted hover:bg-pc-border hover:text-pc-text;
+  }
+  .pc-select-more {
+    @apply flex-none px-1 text-xs whitespace-nowrap text-pc-muted;
+  }
+  .pc-select-backdrop {
+    @apply fixed inset-0 z-[149] bg-pc-scrim animate-pc-fade;
+  }
+  .pc-select-flyout {
+    @apply fixed z-[150] flex flex-col overflow-hidden rounded-pc-popover border border-pc-border bg-pc-surface text-sm shadow-pc-float
+      animate-pc-drop;
+  }
+  .pc-select-flyout[data-mode="sheet"] {
+    @apply inset-x-0 top-auto bottom-0 max-h-[75dvh] rounded-t-pc-modal rounded-b-none border-x-0 border-b-0 pb-[env(safe-area-inset-bottom)]
+      animate-pc-sheet-up;
+  }
+  .pc-select-sheet-head {
+    @apply hidden;
+  }
+  .pc-select-flyout[data-mode="sheet"] .pc-select-sheet-head {
+    @apply flex flex-none items-center justify-between gap-3 border-b border-pc-border-soft px-4 py-3 font-semibold;
+  }
+  .pc-select-search {
+    @apply flex-none border-b border-pc-border-soft p-1.5;
+  }
+  .pc-select-search .pc-input {
+    @apply h-8;
+  }
+  .pc-select-actions {
+    @apply flex flex-none items-center gap-3 border-b border-pc-border-soft px-3 py-1.5 text-xs;
+  }
+  .pc-select-actions > button {
+    @apply border-0 bg-transparent p-0 font-medium text-pc-brand hover:text-pc-brand-ink hover:underline;
+  }
+  .pc-select-count {
+    @apply mr-auto text-pc-muted;
+  }
+  .pc-select-list {
+    @apply m-0 min-h-0 flex-1 list-none overflow-y-auto overscroll-contain p-1.5;
+  }
+  .pc-select-group {
+    @apply px-2.5 pt-2 pb-1 text-[11px] font-semibold tracking-[0.06em] text-pc-muted uppercase;
+  }
+  .pc-select-option {
+    @apply flex min-h-9 cursor-pointer items-center gap-2.5 rounded-pc-item px-2.5 py-1.5 text-pc-text;
+  }
+  .pc-select-flyout[data-mode="sheet"] .pc-select-option {
+    @apply min-h-11;
+  }
+  .pc-select-option[data-active] {
+    @apply bg-pc-surface-soft;
+  }
+  .pc-select-option[aria-selected="true"] {
+    @apply font-medium;
+  }
+  .pc-select-flyout:not(:has(.pc-select-box)) .pc-select-option[aria-selected="true"]::after {
+    content: "✓";
+    @apply ml-auto text-xs text-pc-brand;
+  }
+  .pc-select-option[aria-disabled="true"] {
+    @apply cursor-not-allowed opacity-45;
+  }
+  .pc-select-option-text {
+    @apply min-w-0 flex-1;
+  }
+  .pc-select-box {
+    @apply grid size-4 flex-none place-items-center rounded-pc-sm border border-pc-border bg-pc-surface text-[10px] leading-none text-pc-on-brand;
+  }
+  .pc-select-option[aria-selected="true"] .pc-select-box {
+    @apply border-pc-brand bg-pc-brand;
+  }
+  .pc-select-option[aria-selected="true"] .pc-select-box::after {
+    content: "✓";
+  }
+  .pc-select-empty {
+    @apply px-3 py-6 text-center text-[13px] text-pc-muted;
+  }
+
+  /* ================= Date & time picker (pc-date.js) ================= */
+  /* Every .pc-date field is enhanced: its inputs stay (hidden) as the form values, the trigger shows them, and the
+     flyout floats (position fixed) like the select's. data-mode = pop | sheet. Before the script runs the inputs show. */
+  .pc-date {
+    @apply relative w-full min-w-0;
+  }
+  .pc-date:not([data-pc-enhanced]) {
+    @apply flex gap-2;
+  }
+  .pc-date-native {
+    @apply pointer-events-none absolute inset-0 size-full opacity-0;
+  }
+  .pc-date-trigger {
+    @apply relative flex h-9 w-full cursor-pointer items-center gap-2 rounded-pc-control border border-pc-border bg-pc-surface pr-8 pl-3
+      text-left text-sm text-pc-text transition-colors outline-none select-none
+      focus-visible:border-pc-brand focus-visible:ring-2 focus-visible:ring-pc-brand/10;
+  }
+  .pc-date-trigger[aria-expanded="true"] {
+    @apply border-pc-brand ring-2 ring-pc-brand/10;
+  }
+  .pc-date-trigger[aria-disabled="true"] {
+    @apply cursor-not-allowed bg-pc-surface-alt text-pc-muted;
+  }
+  .pc-date:has(> input[aria-invalid="true"]) .pc-date-trigger {
+    @apply border-pc-danger ring-pc-danger/10;
+  }
+  .pc-date-icon {
+    @apply flex-none text-base text-pc-muted;
+  }
+  .pc-date-value {
+    @apply flex min-w-0 flex-1 items-center overflow-hidden;
+  }
+  .pc-date-text {
+    @apply truncate tabular-nums;
+  }
+  .pc-date-placeholder {
+    @apply truncate text-pc-muted-2;
+  }
+  .pc-date-clear {
+    @apply absolute right-2 grid size-5 place-items-center rounded-pc-xs text-sm leading-none text-pc-muted
+      hover:bg-pc-surface-soft hover:text-pc-text;
+  }
+  .pc-date-backdrop {
+    @apply fixed inset-0 z-[149] bg-pc-scrim animate-pc-fade;
+  }
+  .pc-date-flyout {
+    @apply fixed z-[150] flex w-max max-w-[calc(100vw-16px)] flex-col overflow-y-auto overscroll-contain rounded-pc-popover
+      border border-pc-border bg-pc-surface text-sm shadow-pc-float animate-pc-drop;
+  }
+  .pc-date-flyout[data-mode="sheet"] {
+    @apply inset-x-0 top-auto bottom-0 w-full max-w-none max-h-[85dvh] rounded-t-pc-modal rounded-b-none border-x-0 border-b-0
+      pb-[env(safe-area-inset-bottom)] animate-pc-sheet-up;
+  }
+  .pc-date-sheet-head {
+    @apply hidden;
+  }
+  .pc-date-flyout[data-mode="sheet"] .pc-date-sheet-head {
+    @apply sticky top-0 z-1 flex flex-none items-center justify-between gap-3 border-b border-pc-border-soft bg-pc-surface px-4 py-3 font-semibold;
+  }
+  /* when the panel is taller than the room it has, it scrolls as a whole; the sheet's head and the foot stay put */
+  .pc-date-body {
+    @apply flex flex-none;
+  }
+  .pc-date-flyout[data-mode="sheet"] .pc-date-body {
+    @apply flex-col;
+  }
+  /* range shortcuts: a column beside the calendar, a scrolling row of chips on phones */
+  .pc-date-presets {
+    @apply flex w-36 flex-none flex-col gap-0.5 border-r border-pc-border-soft p-1.5;
+  }
+  .pc-date-flyout[data-mode="sheet"] .pc-date-presets {
+    @apply w-auto flex-row gap-1.5 overflow-x-auto border-r-0 border-b px-4 py-2;
+  }
+  .pc-date-preset {
+    @apply rounded-pc-item border-0 bg-transparent px-2.5 py-1.5 text-left text-[13px] whitespace-nowrap text-pc-text-2
+      hover:bg-pc-surface-soft aria-pressed:bg-pc-brand-soft aria-pressed:font-medium aria-pressed:text-pc-brand-ink;
+  }
+  .pc-date-flyout[data-mode="sheet"] .pc-date-preset {
+    @apply flex-none rounded-full border border-pc-border-soft px-3;
+  }
+  .pc-date-calendar {
+    @apply w-[18rem] flex-none p-3;
+  }
+  .pc-date-flyout[data-mode="sheet"] .pc-date-calendar {
+    @apply w-full px-4;
+  }
+  .pc-date-head {
+    @apply mb-2 flex items-center justify-between gap-1;
+  }
+  .pc-date-title {
+    @apply h-8 rounded-pc-item border-0 bg-transparent px-2 text-sm font-semibold text-pc-text hover:bg-pc-surface-soft
+      disabled:opacity-100 disabled:hover:bg-transparent;
+  }
+  .pc-date-nav {
+    @apply grid size-8 place-items-center rounded-pc-item border-0 bg-transparent text-pc-muted hover:bg-pc-surface-soft hover:text-pc-text;
+  }
+  .pc-date-grid {
+    @apply flex flex-col gap-0.5;
+  }
+  .pc-date-row {
+    @apply grid grid-cols-7;
+  }
+  .pc-date-weekday {
+    @apply grid h-7 place-items-center text-[11px] font-medium text-pc-muted;
+  }
+  .pc-date-day {
+    @apply relative h-9 rounded-pc-item border-0 bg-transparent p-0 text-[13px] text-pc-text tabular-nums hover:bg-pc-surface-soft
+      disabled:cursor-not-allowed disabled:text-pc-muted-3 disabled:opacity-100 disabled:hover:bg-transparent;
+  }
+  .pc-date-flyout[data-mode="sheet"] .pc-date-day {
+    @apply h-11;
+  }
+  .pc-date-day[data-outside] {
+    @apply text-pc-muted-2;
+  }
+  .pc-date-day[data-today] {
+    @apply font-semibold text-pc-brand;
+  }
+  .pc-date-day[data-today]::after {
+    content: "";
+    @apply absolute bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-full bg-current;
+  }
+  .pc-date-day[data-today]:disabled {
+    @apply font-normal text-pc-muted-3;
+  }
+  .pc-date-day[data-in-range] {
+    @apply rounded-none bg-pc-brand-soft text-pc-brand-ink hover:bg-pc-brand-soft;
+  }
+  .pc-date-day[aria-selected="true"] {
+    @apply bg-pc-brand font-medium text-pc-on-brand hover:bg-pc-brand-ink;
+  }
+  .pc-date-day[data-range-start] {
+    @apply rounded-r-none;
+  }
+  .pc-date-day[data-range-end] {
+    @apply rounded-l-none;
+  }
+  /* month and year pages */
+  .pc-date-cells {
+    @apply grid grid-cols-3 gap-1;
+  }
+  .pc-date-cell {
+    @apply h-12 rounded-pc-item border-0 bg-transparent text-[13px] text-pc-text tabular-nums hover:bg-pc-surface-soft
+      disabled:cursor-not-allowed disabled:text-pc-muted-3 disabled:opacity-100;
+  }
+  .pc-date-cell[data-today] {
+    @apply font-semibold text-pc-brand;
+  }
+  .pc-date-cell[aria-selected="true"] {
+    @apply bg-pc-brand font-medium text-pc-on-brand hover:bg-pc-brand-ink;
+  }
+  /* time columns; beside a calendar they take its height, on their own a fixed one */
+  .pc-date-clock {
+    @apply flex flex-col gap-2 p-3;
+  }
+  .pc-date-calendar:not([hidden]) ~ .pc-date-clock {
+    @apply border-l border-pc-border-soft;
+  }
+  .pc-date-flyout[data-mode="sheet"] .pc-date-clock {
+    @apply border-l-0 px-4;
+  }
+  .pc-date-flyout[data-mode="sheet"] .pc-date-calendar:not([hidden]) ~ .pc-date-clock {
+    @apply border-t;
+  }
+  .pc-date-ends {
+    @apply flex;
+  }
+  .pc-date-ends .pc-tab {
+    @apply flex-1 justify-center gap-2 whitespace-nowrap;
+  }
+  .pc-date-end-time {
+    @apply font-pc-mono text-xs tabular-nums;
+  }
+  .pc-date-cols {
+    @apply flex h-60 min-h-0 min-w-36 gap-1;
+  }
+  /* size containment: the 24 hours don't stretch the panel past the calendar, they scroll inside its height */
+  .pc-date-calendar:not([hidden]) ~ .pc-date-clock .pc-date-cols {
+    @apply h-auto flex-1 [contain:size];
+  }
+  .pc-date-flyout[data-mode="sheet"] .pc-date-clock .pc-date-cols {
+    @apply h-44 flex-none [contain:none];
+  }
+  /* scroll-auto: re-rendered columns jump to the chosen time instead of gliding there from the top */
+  .pc-date-col {
+    @apply flex min-w-16 flex-1 flex-col gap-0.5 overflow-y-auto overscroll-contain scroll-auto;
+  }
+  .pc-date-option {
+    @apply min-h-8 flex-none rounded-pc-item border-0 bg-transparent px-2 text-[13px] whitespace-nowrap text-pc-text tabular-nums
+      hover:bg-pc-surface-soft disabled:cursor-not-allowed disabled:text-pc-muted-3 disabled:opacity-100 disabled:hover:bg-transparent;
+  }
+  .pc-date-option[aria-selected="true"] {
+    @apply bg-pc-brand font-medium text-pc-on-brand hover:bg-pc-brand-ink;
+  }
+  .pc-date-foot {
+    @apply sticky bottom-0 z-1 flex flex-none items-center gap-1.5 border-t border-pc-border-soft bg-pc-surface px-3 py-2;
+  }
+  .pc-date-summary {
+    @apply mr-auto min-w-0 truncate px-1 text-xs text-pc-muted tabular-nums;
+  }
+  .pc-range {
+    @apply w-full cursor-pointer accent-pc-brand;
+  }
+
+  /* Toggle switch (pc-toggle.js) */
+  .pc-toggle {
+    @apply relative inline-flex h-5 w-9 flex-none items-center rounded-full border-0 bg-pc-border p-0 transition-colors;
+  }
+  .pc-toggle[data-pc-on="true"] {
+    @apply bg-pc-brand;
+  }
+  .pc-toggle-thumb {
+    @apply absolute top-0.5 left-0.5 size-4 rounded-full bg-white shadow transition-transform duration-150;
+  }
+  .pc-toggle[data-pc-on="true"] .pc-toggle-thumb {
+    @apply translate-x-4;
+  }
+
+  /* Password strength (pc-password.js) */
+  .pc-strength {
+    @apply mt-2 grid grid-cols-3 gap-1;
+  }
+  .pc-strength > span {
+    @apply h-1 rounded-full bg-pc-track transition-colors;
+  }
+
+  /* Theme toggle (x-theme-picker, pc-theme.js): a moon while the page is light, a sun while it is dark */
+  .pc-theme-to-light,
+  [data-pc-theme="dark"] .pc-theme-to-dark {
+    @apply hidden;
+  }
+  [data-pc-theme="dark"] .pc-theme-to-light {
+    @apply inline-block;
+  }
+  /* Standalone toggles that should be noticed (auth pages). Ring: a round outlined button in the brand colour,
+     on light or dark surfaces. Glass: frosted white over artwork (the mobile banner). */
+  .pc-theme-toggle-ring {
+    @apply size-9! flex-none rounded-full border border-pc-border bg-pc-surface text-pc-brand-ink shadow-sm
+      hover:border-pc-brand hover:bg-pc-brand-soft hover:text-pc-brand-ink;
+  }
+  .pc-theme-toggle-glass {
+    @apply relative size-9! flex-none rounded-full border border-white/35 bg-white/15 text-white shadow-[0_4px_16px_rgba(0,0,0,0.25)]
+      backdrop-blur-md hover:bg-white/25 hover:text-white;
+  }
+
+  /* the icon turns in as it swaps (it restarts each time it is shown) */
+  .pc-theme-toggle i {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: pc-theme-turn 0.4s ease;
+    }
+  }
+  @keyframes pc-theme-turn {
+    from { opacity: 0; rotate: -90deg; scale: 0.6; }
+    to { opacity: 1; rotate: 0deg; scale: 1; }
+  }
+  /* the theme switch's view transition (pc-theme.js): no cross-fade, the new theme is revealed by a growing circle
+     (clip-path, animated from JS) over the old one */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  /* ================= Auth pages (login, forgot / reset password, SSO, email link) ================= */
+  /* Split screen (layouts/auth): the form panel on the left with the wordmark top-left, the brand artwork on the
+     right with a rounded inner edge and the white logo over it. Below lg the artwork becomes a short banner across
+     the top, carrying the logo, and the panel's own wordmark steps aside. Fields are underlined, not boxed. */
+  .pc-auth {
+    @apply flex min-h-dvh flex-col bg-pc-surface lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)];
+  }
+  .pc-auth-panel {
+    @apply flex min-w-0 flex-1 flex-col px-6 pt-8 pb-10 lg:px-10;
+  }
+  /* the panel's top row on desktop: wordmark and the theme toggle; below lg both move onto the banner */
+  .pc-auth-head {
+    @apply flex min-h-9 items-center gap-3 max-lg:hidden;
+  }
+  .pc-auth-brand {
+    @apply block w-fit no-underline max-lg:hidden;
+  }
+  .pc-auth-brand img {
+    @apply h-7 w-auto;
+  }
+  .pc-auth-brand-dark,
+  [data-pc-theme="dark"] .pc-auth-brand-light {
+    @apply hidden;
+  }
+  [data-pc-theme="dark"] .pc-auth-brand-dark {
+    @apply block;
+  }
+  .pc-auth-body {
+    @apply flex flex-1 items-start justify-center pt-4 lg:items-center lg:py-10;
+  }
+  .pc-auth-art {
+    @apply relative grid place-items-center overflow-hidden bg-[#2b1f86] bg-cover bg-center;
+    /* the layout passes the image URL (asset()), so it resolves against the app, not the Vite dev server */
+    background-image: var(--pc-auth-art);
+  }
+  .pc-auth-art-side {
+    @apply min-h-dvh rounded-l-[48px] max-lg:hidden;
+  }
+  .pc-auth-art-banner {
+    @apply flex h-24 flex-none items-center justify-between gap-3 rounded-br-[40px] bg-[center_35%] px-6 lg:hidden;
+  }
+  .pc-auth-art-logo {
+    @apply h-11 w-auto brightness-0 invert drop-shadow-[0_2px_12px_rgba(0,0,0,0.35)];
+  }
+  .pc-auth-art-banner .pc-auth-art-logo {
+    @apply relative h-7;
+  }
+  /* darkens the banner, most behind the logo on the left, so the white mark reads on the bright stripes */
+  .pc-auth-art-banner::before {
+    content: "";
+    @apply absolute inset-0 bg-linear-to-r from-[#0b0a2e]/80 via-[#0b0a2e]/55 to-[#0b0a2e]/20;
+  }
+  .pc-auth-card {
+    @apply flex w-full max-w-[360px] flex-col gap-5;
+  }
+  .pc-auth-title {
+    @apply text-[26px] leading-tight font-semibold tracking-[-0.02em] text-pc-ink;
+  }
+  .pc-auth-sub {
+    @apply mt-2 text-sm text-pc-text-2;
+  }
+  .pc-auth-label {
+    @apply flex items-center justify-between gap-3 text-sm text-pc-text-2;
+  }
+  /* underlined fields: the label sits above a bare line that darkens on focus */
+  .pc-auth .pc-input {
+    @apply h-10 rounded-none border-0 border-b border-pc-border bg-transparent px-0 shadow-none focus:border-pc-ink
+      focus:ring-0 focus:outline-none;
+  }
+  .pc-auth .pc-input[aria-invalid="true"] {
+    @apply border-pc-danger;
+  }
+  .pc-auth .pc-input-addon {
+    @apply right-0;
+  }
+  .pc-auth .pc-btn-lg {
+    @apply h-11 rounded-pc-control;
+  }
+  .pc-auth-link {
+    @apply font-semibold text-pc-ink no-underline hover:text-pc-brand-ink;
+  }
+  /* "Forgot password"-style small links: underlined in the text colour */
+  .pc-auth-link-quiet {
+    @apply text-[13px] font-medium text-pc-text underline underline-offset-2 hover:text-pc-ink;
+  }
+  .pc-auth-divider {
+    @apply flex items-center gap-3 text-xs text-pc-muted before:h-px before:flex-1 before:bg-pc-border-soft
+      after:h-px after:flex-1 after:bg-pc-border-soft;
+  }
+  .pc-auth-foot {
+    @apply text-center text-[13px] text-pc-text-2;
+  }
+  /* <a class="pc-auth-link pc-auth-cta">: the footer call to action (sign up / sign in) gets a hand-drawn underline stroke */
+  .pc-auth-cta {
+    @apply relative inline-block pb-1.5;
+  }
+  .pc-auth-cta::after {
+    content: "";
+    @apply absolute inset-x-[-6px] bottom-[-2px] h-2 bg-current;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 8' preserveAspectRatio='none'%3E%3Cpath d='M2 6.2C30 3.6 66 2.4 118 2.8M22 7.2c22-1.4 52-1.9 78-1.6' fill='none' stroke='%23000' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  }
+  /* Round badge heading a status card (check your email, link expired). */
+  .pc-auth-badge {
+    @apply grid size-12 place-items-center rounded-full bg-pc-brand-soft text-pc-brand;
+  }
+  /* ================= Error pages (layouts/error) ================= */
+  /* Centred on the page: the code in large type fading from light grey to ink, a heading with one italic serif
+     word (<em>), a muted line, and pill buttons. */
+  .pc-error {
+    @apply flex min-h-dvh flex-col items-center justify-center bg-pc-bg px-4 py-16 text-center;
+  }
+  /* Two layers clipped to the digits: a light-grey to ink fade that sweeps slowly back and forth, and an ink spotlight
+     that follows the pointer while it's over the code (layouts/error sets --pc-x / --pc-y and data-pc-spot). The
+     spotlight's radius is a registered property (below), so it grows and fades instead of popping. */
+  .pc-error-code {
+    --pc-x: 50%;
+    --pc-y: 50%;
+    @apply bg-clip-text text-[clamp(7rem,22vw,12rem)] leading-none font-extrabold tracking-[-0.06em] text-transparent select-none;
+    background-image:
+      radial-gradient(circle at var(--pc-x) var(--pc-y), var(--color-pc-ink) calc(var(--pc-spot) * 0.3), transparent var(--pc-spot)),
+      linear-gradient(90deg, var(--color-pc-muted-3), var(--color-pc-muted), var(--color-pc-ink), var(--color-pc-muted), var(--color-pc-muted-3));
+    background-size: 100% 100%, 200% 100%;
+    background-repeat: no-repeat;
+    animation: pc-error-sweep 7s ease-in-out infinite alternate;
+    transition: --pc-spot 0.35s ease;
+  }
+  .pc-error-code[data-pc-spot] {
+    --pc-spot: 9rem;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pc-error-code {
+      animation: none;
+      transition: none;
+    }
+  }
+  .pc-error-heading {
+    @apply mt-10 text-[clamp(1.5rem,4vw,1.875rem)] leading-tight font-normal tracking-[-0.02em] text-pc-ink;
+  }
+  .pc-error-message {
+    @apply mt-3 max-w-md text-[13px] text-pc-muted;
+  }
+  .pc-error-actions {
+    @apply mt-7 flex flex-wrap items-center justify-center gap-2.5;
+  }
+  .pc-btn-pill {
+    @apply h-9 rounded-full px-4 text-[13px];
+  }
+
+  .pc-btn-brand {
+    @apply border-pc-brand bg-pc-brand text-pc-on-brand hover:border-pc-brand-ink hover:bg-pc-brand-ink hover:text-pc-on-brand;
+  }
+
+  /* ================= Tabs (pc-tabs.js) ================= */
+  .pc-tabs {
+    @apply inline-flex items-center gap-1;
+  }
+  .pc-tab {
+    @apply inline-flex h-8 items-center gap-1.5 rounded-pc-control border border-transparent bg-transparent px-3 text-sm
+      font-medium text-pc-text-2 transition-colors hover:bg-pc-surface-soft;
+  }
+  .pc-tab-active {
+    @apply border-pc-fill bg-pc-fill text-pc-on-fill hover:bg-pc-fill;
+  }
+  /* Segmented variant — joined buttons for a view switch. */
+  .pc-segmented {
+    @apply inline-flex overflow-hidden rounded-pc-control border border-pc-border bg-pc-surface;
+  }
+  .pc-segmented .pc-tab {
+    @apply h-[34px] rounded-none border-0 border-l border-pc-border px-3.5 first:border-l-0;
+  }
+  .pc-segmented .pc-tab-active {
+    @apply bg-pc-fill text-pc-on-fill;
+  }
+  /* Underline variant — for switching content panels. */
+  .pc-tabs-underline {
+    @apply flex items-center gap-5 border-b border-pc-border-soft;
+  }
+  .pc-tabs-underline .pc-tab {
+    @apply -mb-px h-10 rounded-none border-0 border-b-2 border-transparent px-0.5 text-pc-muted hover:bg-transparent hover:text-pc-text;
+  }
+  .pc-tabs-underline .pc-tab-active {
+    @apply border-pc-ink bg-transparent text-pc-text;
+  }
+  /* Soft variant — light track, white raised tab; for filters inside a toolbar. */
+  .pc-tabs-soft {
+    @apply gap-0.5 rounded-pc-md bg-pc-surface-soft p-[3px];
+  }
+  .pc-tabs-soft .pc-tab {
+    @apply h-7 rounded-pc-control px-3 text-[13px] text-pc-muted hover:bg-transparent hover:text-pc-text;
+  }
+  .pc-tabs-soft .pc-tab-active {
+    @apply border-pc-border-soft bg-pc-surface text-pc-text shadow-xs hover:bg-pc-surface;
+  }
+  .pc-tab-count {
+    @apply rounded-full bg-pc-surface-soft px-1.5 font-pc-mono text-[11px] leading-[18px] text-pc-muted;
+  }
+  .pc-tab-active .pc-tab-count {
+    @apply bg-white/15 text-current;
+  }
+  .pc-tabs-underline .pc-tab-active .pc-tab-count {
+    @apply bg-pc-fill text-pc-on-fill;
+  }
+  [data-pc-tab-panel][data-pc-open="false"] {
+    display: none !important;
+  }
+
+  /* ================= Dropdown (pc-dropdown.js) ================= */
+  .pc-dropdown {
+    @apply relative inline-flex;
+  }
+  .pc-dropdown-menu {
+    @apply absolute top-[calc(100%+8px)] left-0 z-50 hidden min-w-48 flex-col gap-0.5 rounded-pc-popover border border-pc-border
+      bg-pc-surface p-1.5 whitespace-normal shadow-pc-pop animate-pc-drop;
+  }
+  .pc-dropdown-menu[data-pc-open="true"] {
+    @apply flex;
+  }
+  .pc-dropdown-menu-end {
+    @apply right-0 left-auto;
+  }
+  .pc-dropdown-menu-up {
+    @apply top-auto bottom-[calc(100%+8px)];
+  }
+  /* set by pc-dropdown.js inside overflow containers; top/left come from the trigger's position */
+  .pc-dropdown-menu[data-pc-floating="true"] {
+    @apply fixed right-auto bottom-auto;
+  }
+  .pc-dropdown-item {
+    @apply flex h-9 w-full items-center gap-2.5 rounded-pc-item border-0 bg-transparent px-2.5 text-left text-sm text-pc-text
+      no-underline hover:bg-pc-surface-soft hover:text-pc-text;
+  }
+  .pc-dropdown-item > :is(svg, i) {
+    @apply flex-none text-pc-text-2;
+  }
+  .pc-dropdown-item-active {
+    @apply font-medium;
+  }
+  .pc-dropdown-item-active::after {
+    content: "✓";
+    @apply ml-auto text-xs text-pc-brand;
+  }
+  .pc-dropdown-item-danger {
+    @apply text-pc-danger-strong hover:bg-pc-danger-bg hover:text-pc-danger-strong;
+  }
+  .pc-dropdown-item-danger > :is(svg, i) {
+    @apply text-current;
+  }
+  .pc-dropdown-divider {
+    @apply mx-1 my-1 h-px bg-pc-border-soft;
+  }
+  .pc-dropdown-header {
+    @apply flex items-center gap-2.5 px-2.5 pt-2.5 pb-3;
+  }
+
+  /* ================= Modal (pc-modal.js / pc-dialog.js) ================= */
+  .pc-modal {
+    @apply fixed inset-0 z-100 hidden items-center justify-center p-4;
+  }
+  .pc-modal[data-pc-open="true"] {
+    @apply flex;
+  }
+  .pc-modal-backdrop {
+    @apply absolute inset-0 bg-pc-scrim animate-pc-fade;
+  }
+  .pc-modal-panel {
+    @apply relative flex max-h-[85vh] w-full max-w-[480px] flex-col overflow-hidden rounded-pc-modal border border-pc-border
+      bg-pc-surface shadow-pc-overlay animate-pc-fade-up;
+  }
+  .pc-modal-sm .pc-modal-panel {
+    @apply max-w-[380px];
+  }
+  .pc-modal-lg .pc-modal-panel {
+    @apply max-w-[720px];
+  }
+  .pc-modal-xl .pc-modal-panel {
+    @apply max-w-[960px];
+  }
+  .pc-modal-header {
+    @apply flex flex-none items-center justify-between gap-3 border-b border-pc-border-soft px-5 py-4;
+  }
+  .pc-modal-title {
+    @apply text-base font-semibold;
+  }
+  .pc-modal-subtitle {
+    @apply mt-0.5 text-xs text-pc-muted;
+  }
+  .pc-modal-body {
+    @apply min-h-0 flex-1 overflow-y-auto p-5;
+  }
+  .pc-modal-footer {
+    @apply flex flex-none items-center justify-end gap-2 border-t border-pc-border-soft bg-pc-surface-alt px-5 py-3;
+  }
+  /* Alert / confirm dialogs (pc-dialog.js): a compact card, the title with the type icon on its right, the message,
+     then the actions bottom-right; a soft Cancel and the confirm button in the type's colour (pc-btn-*-solid). */
+  .pc-dialog .pc-modal-panel {
+    @apply max-w-[400px] rounded-pc-modal border-pc-border-soft;
+  }
+  .pc-dialog-body {
+    @apply flex flex-col p-5;
+  }
+  .pc-dialog-head {
+    @apply flex items-start justify-between gap-4;
+  }
+  .pc-dialog-title {
+    @apply text-[17px] leading-snug font-semibold text-pc-ink;
+  }
+  .pc-dialog-icon {
+    @apply mt-0.5 ml-auto flex-none text-lg leading-none;
+  }
+  .pc-dialog-icon-primary,
+  .pc-dialog-icon-question {
+    @apply text-pc-brand;
+  }
+  .pc-dialog-icon-info {
+    @apply text-pc-info;
+  }
+  .pc-dialog-icon-success {
+    @apply text-pc-success;
+  }
+  .pc-dialog-icon-warning {
+    @apply text-pc-warning;
+  }
+  .pc-dialog-icon-danger {
+    @apply text-pc-danger;
+  }
+  .pc-dialog-text {
+    @apply mt-2 text-[15px] leading-relaxed text-pc-muted;
+  }
+  .pc-dialog-actions {
+    @apply mt-6 flex flex-wrap items-center justify-end gap-2;
+  }
+  .pc-dialog-actions .pc-btn {
+    @apply h-9 rounded-pc-control px-4 font-semibold;
+  }
+  /* Cancel: a light grey pill on light pages, near-white on dark ones */
+  .pc-dialog-cancel {
+    @apply border-pc-border-soft bg-pc-surface-soft text-pc-ink hover:bg-pc-surface-sunken hover:text-pc-ink;
+  }
+  [data-pc-theme="dark"] .pc-dialog-cancel {
+    @apply border-pc-ink bg-pc-ink text-pc-on-ink hover:bg-pc-ink-hover hover:text-pc-on-ink;
+  }
+
+  /* ================= Offcanvas (pc-offcanvas.js) ================= */
+  .pc-offcanvas {
+    @apply fixed inset-0 z-100 hidden;
+  }
+  .pc-offcanvas[data-pc-open="true"] {
+    @apply block;
+  }
+  .pc-offcanvas-backdrop {
+    @apply absolute inset-0 bg-pc-scrim animate-pc-fade;
+  }
+  .pc-offcanvas-panel {
+    @apply absolute top-0 right-0 flex h-full w-full max-w-[420px] flex-col border-l border-pc-border bg-pc-surface
+      shadow-pc-overlay animate-pc-slide-in;
+  }
+  .pc-offcanvas-start .pc-offcanvas-panel {
+    @apply right-auto left-0 border-r border-l-0 animate-pc-slide-in-start;
+  }
+  .pc-offcanvas-lg .pc-offcanvas-panel {
+    @apply max-w-[560px];
+  }
+  .pc-offcanvas-header {
+    @apply flex flex-none items-center justify-between gap-3 border-b border-pc-border px-5 py-3.5;
+  }
+  .pc-offcanvas-title {
+    @apply text-base font-semibold;
+  }
+  .pc-offcanvas-body {
+    @apply flex-1 overflow-y-auto p-5;
+  }
+  .pc-offcanvas-footer {
+    @apply flex flex-none items-center justify-end gap-2 border-t border-pc-border bg-pc-surface-alt px-5 py-3;
+  }
+
+  /* ================= Toast (pc-toast.js) ================= */
+  .pc-toast-viewport {
+    @apply pointer-events-none fixed bottom-6 left-1/2 z-200 flex -translate-x-1/2 flex-col items-center gap-2;
+  }
+  .pc-toast {
+    @apply pointer-events-auto inline-flex max-w-[calc(100vw-32px)] items-center gap-2.5 rounded-pc-popover bg-pc-ink px-4 py-2.5
+      text-[13px] text-pc-on-ink shadow-[0_12px_32px_rgba(0,0,0,0.3)] animate-pc-toast-in;
+  }
+  .pc-toast[data-pc-leaving="true"] {
+    @apply opacity-0 transition-opacity duration-200;
+  }
+  /* The toast body is always the inverted ink surface; only the leading dot carries the type colour (pc-toast-* tokens). */
+  .pc-toast-dot {
+    @apply size-[7px] flex-none rounded-full bg-pc-muted-2;
+  }
+  .pc-toast-dot-success {
+    @apply bg-pc-toast-success;
+  }
+  .pc-toast-dot-warning {
+    @apply bg-pc-toast-warning;
+  }
+  .pc-toast-dot-danger {
+    @apply bg-pc-toast-danger;
+  }
+  .pc-toast-dot-info {
+    @apply bg-pc-toast-info;
+  }
+  .pc-toast-action {
+    @apply -my-1 ml-2 rounded-pc-xs border-0 bg-pc-on-ink/10 px-2 py-1 font-pc-mono text-[11px] font-medium text-pc-on-ink
+      hover:bg-pc-on-ink/20;
+  }
+
+  /* ================= Tooltip (pc-tooltip.js) ================= */
+  .pc-tooltip {
+    @apply pointer-events-none fixed z-300 rounded-pc-sm bg-pc-ink px-2.5 py-1.5 text-xs font-medium whitespace-nowrap text-pc-on-ink
+      shadow-[0_4px_12px_rgba(0,0,0,0.12)] animate-pc-fade;
+  }
+  .pc-tooltip-arrow {
+    @apply absolute size-2 rotate-45 bg-pc-ink;
+  }
+
+  /* ================= Popover (pc-popover.js) ================= */
+  .pc-popover {
+    @apply fixed z-150 hidden w-[300px] flex-col gap-2.5 rounded-pc-popover border border-pc-border bg-pc-surface p-3 text-left
+      whitespace-normal shadow-pc-float animate-pc-drop;
+  }
+  .pc-popover[data-pc-open="true"] {
+    @apply flex;
+  }
+  .pc-popover-text {
+    @apply text-xs leading-[1.4] text-pc-text-2;
+  }
+
+  /* ================= Tables (pc-table.js) ================= */
+  .pc-table-wrap {
+    @apply overflow-auto rounded-pc-card border border-pc-border bg-pc-surface;
+  }
+  .pc-table {
+    @apply w-full border-separate border-spacing-0 text-[13px];
+  }
+  /* Surveyr's table: heavy uppercase headings in the text colour, roomy rows on faint dividers, no fills. */
+  .pc-table thead th,
+  .pc-table tbody tr.pc-table-head th {
+    @apply border-b border-pc-border-soft bg-pc-surface px-3 py-4 text-left align-middle text-[11px] font-extrabold
+      tracking-[0.02em] whitespace-nowrap text-pc-text uppercase;
+  }
+  .pc-table-sticky-head thead th,
+  .sticky-thead thead th,
+  .pc-list-fill thead th {
+    @apply sticky top-0 z-3;
+  }
+  /* <table class="sticky-thead">: the table's wrapper (it already scrolls sideways, so the head can only stick to it)
+     becomes a viewport-capped scroll area. Override the cap per page with --pc-sticky-thead-max.
+     Also works on a wrapper, e.g. <x-table class="sticky-thead">. */
+  :has(> table.sticky-thead),
+  .sticky-thead :has(> table) {
+    max-height: var(--pc-sticky-thead-max, calc(100dvh - 12rem));
+    overflow: auto;
+  }
+  .pc-table tbody td {
+    @apply border-b border-pc-border-soft px-3 py-3.5 align-middle;
+  }
+  .pc-table tbody tr:last-child td {
+    @apply border-b-0;
+  }
+  .pc-table-hover tbody tr:hover td {
+    @apply bg-pc-surface-alt;
+  }
+  /* Inside a padded card (x-table): the first and last columns line up with the card's inset rather than adding their own. */
+  .pc-table-inset :is(thead th, tbody td):first-child {
+    @apply pl-0;
+  }
+  .pc-table-inset :is(thead th, tbody td):last-child {
+    @apply pr-0;
+  }
+  .pc-table-inset.pc-table-hover tbody tr:hover td {
+    @apply bg-transparent;
+  }
+  .pc-table-inset.pc-table-hover tbody tr:hover {
+    @apply bg-pc-surface-alt;
+  }
+  /* <tr class="pc-table-head">: column headings repeated inside the body, one per section, styled like the thead.
+     <td class="pc-table-span" rowspan="n">: a first-column cell grouping the rows beside it (e.g. a semester);
+     it stays white when the row it starts on is hovered */
+  .pc-table tbody td.pc-table-span,
+  .pc-table-hover tbody tr:hover td.pc-table-span {
+    @apply border-r bg-pc-surface align-middle;
+  }
+  .pc-table-compact tbody td {
+    @apply py-[5px];
+  }
+  .pc-table-roomy tbody td {
+    @apply px-5 py-3;
+  }
+  .pc-table-roomy thead th {
+    @apply px-5;
+  }
+  /* Dense: 8px column gaps, for wide data grids. */
+  .pc-table.pc-table-dense :is(tbody td, thead th) {
+    @apply px-1 first:pl-3 last:pr-3;
+  }
+  .pc-table .pc-num {
+    @apply text-right font-pc-mono tabular-nums;
+  }
+  .pc-sort-th {
+    @apply inline-flex cursor-pointer items-center gap-1 border-0 bg-transparent p-0 font-[inherit] tracking-[inherit]
+      text-[inherit] uppercase hover:text-pc-text;
+  }
+  .pc-sort-th[data-pc-sorted] {
+    @apply text-pc-text;
+  }
+  .pc-sticky-start {
+    @apply sticky left-0 z-1 bg-pc-surface shadow-[1px_0_0_var(--color-pc-border-soft)];
+  }
+  .pc-sticky-end {
+    @apply sticky right-0 z-1 bg-pc-surface shadow-[-1px_0_0_var(--color-pc-border-soft)];
+  }
+  thead .pc-sticky-start,
+  thead .pc-sticky-end {
+    @apply z-4 bg-pc-surface-alt;
+  }
+
+  /* ================= Pagination ================= */
+  /* Surveyr's pager: borderless page numbers, the current one a brand pill, brand chevrons either side. */
+  .pc-pagination {
+    @apply flex items-center gap-1;
+  }
+  .pc-page-btn {
+    @apply grid h-[30px] min-w-[30px] place-items-center rounded-pc-control border-0 bg-transparent px-2 text-xs font-bold
+      text-pc-text-2 no-underline tabular-nums hover:bg-pc-surface-soft hover:text-pc-text disabled:hover:bg-transparent;
+  }
+  .pc-page-btn[aria-current="page"] {
+    @apply bg-pc-brand text-pc-on-brand hover:bg-pc-brand hover:text-pc-on-brand;
+  }
+  .pc-page-step {
+    @apply text-base text-pc-brand hover:bg-transparent hover:text-pc-brand-ink disabled:text-pc-muted-3;
+  }
+
+  /* A settled value: shown, not editable */
+  .pc-input[readonly] {
+    @apply cursor-default border-pc-border-soft bg-pc-surface-alt text-pc-text-2 focus:border-pc-border-soft focus:ring-0;
+  }
+}

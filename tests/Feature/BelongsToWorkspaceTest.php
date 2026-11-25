@@ -11,7 +11,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
-// The tenancy scope every workspace data model uses, on a throwaway table so it is checked before any real model has it
+/**
+ * BelongsToWorkspaceTest
+ *
+ * The tenancy scope every workspace data model uses, on a throwaway table so it is checked before any real model
+ * has it.
+ */
 class BelongsToWorkspaceTest extends TestCase
 {
     use RefreshDatabase;

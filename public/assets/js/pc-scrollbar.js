@@ -30,7 +30,7 @@
     return (style === "auto" || style === "scroll") && el[a.scroll] > el[a.client] + 1;
   }
 
-  // Nearest scrollable ancestor per axis, so a sideways table inside a tall card gets both bars.
+  /** Nearest scrollable ancestor per axis, so a sideways table inside a tall card gets both bars. */
   function resolve(node) {
     const found = { y: null, x: null };
     for (let el = node; el && el !== document.body && el !== root; el = el.parentElement) {

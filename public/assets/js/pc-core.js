@@ -93,8 +93,7 @@
     return (targetSel || "").replace(/^#/, "");
   };
 
-  /** Returns a debounced wrapper around `fn`: repeated calls within `wait`ms
-   * of each other collapse into a single trailing call. */
+  /** Debounces `fn`: calls within `wait`ms of each other collapse into one trailing call. */
   pc.debounce = function (fn, wait) {
     let timer;
     return function (...args) {
@@ -103,11 +102,11 @@
     };
   };
 
-  /** Places a `position: fixed` floating element next to `anchor`.
-   * placement: 'top' | 'bottom' | 'left' | 'right', optionally suffixed with
-   * '-start' / '-end' (e.g. 'bottom-end'). Flips to the opposite side when the
-   * preferred side would overflow the viewport, then clamps inside it.
-   * Returns the side actually used so callers can point an arrow at the anchor. */
+  /**
+   * Places a `position: fixed` element next to `anchor`. placement: 'top' | 'bottom' | 'left' | 'right', optionally
+   * '-start' / '-end' (e.g. 'bottom-end'). Flips when the side would overflow, then clamps to the viewport.
+   * Returns the side used, so callers can point an arrow at the anchor.
+   */
   pc.place = function (floating, anchor, placement, gap) {
     const [side0, align = "center"] = String(placement || "bottom").split("-");
     const g = gap == null ? 8 : gap;
@@ -141,8 +140,10 @@
     return side;
   };
 
-  /** fetch() with the app's JSON headers and CSRF token; a string body is sent as JSON.
-   * For calls that aren't a form post (submitForm in app.js covers those). */
+  /**
+   * fetch() with the app's JSON headers and CSRF token; a string body is sent as JSON.
+   * For calls that aren't a form post (submitForm in app.js covers those).
+   */
   pc.jsonFetch = function (url, options) {
     options = options || {};
     const token = document.querySelector('meta[name="csrf-token"]');
@@ -158,8 +159,10 @@
     });
   };
 
-  /** Renders a list of pc-dropdown-item options into a menu container, highlighting the
-   * current selection and wiring each item's click to `onPick`. */
+  /**
+   * Renders pc-dropdown-item options into a menu container, highlighting the current one and wiring each item's
+   * click to `onPick`.
+   */
   pc.renderOptionMenu = function (containerId, options, current, onPick) {
     const el = document.getElementById(containerId);
     if (!el) return;

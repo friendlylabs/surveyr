@@ -11,11 +11,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\Response;
 
-// Sets the signed-in user's workspace for the request (App\Support\CurrentWorkspace) and shares it with views as
-// $currentWorkspace: their current one while they're still a member, else the first they belong to, else a new seat
-// (Workspaces::provision; accounts made before workspaces existed, or removed from their last one).
+/**
+ * ResolveCurrentWorkspace
+ *
+ * Sets the signed-in user's workspace for the request (App\Support\CurrentWorkspace) and shares it with views as
+ * $currentWorkspace: their current one while they're still a member, else the first they belong to, else a new seat
+ * (Workspaces::provision; accounts made before workspaces existed, or removed from their last one).
+ */
 class ResolveCurrentWorkspace
 {
+    /** Takes the request's CurrentWorkspace holder. */
     public function __construct(private CurrentWorkspace $currentWorkspace) {}
 
     /**
@@ -37,6 +42,7 @@ class ResolveCurrentWorkspace
         return $next($request);
     }
 
+    /** The user's current workspace while they're still a member, else the first they belong to, else a new one. */
     private function resolve(User $user): Workspace
     {
         $current = $user->currentWorkspace;

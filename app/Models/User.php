@@ -20,6 +20,11 @@ use Laravel\Fortify\Features;
 use Laravel\Fortify\PasskeyAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
+/**
+ * User
+ *
+ * An account, with an install-wide role and one or more workspaces.
+ */
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token', 'role_id', 'current_workspace_id', 'two_factor_secret', 'two_factor_recovery_codes'])]
 class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
@@ -27,7 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasHash, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
 
-    // column types and casting
+    /** Column types and casting. */
     protected function casts(): array
     {
         return [
@@ -37,19 +42,22 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
         ];
     }
 
-    // true once two-factor authentication is set up and confirmed with a first code
+    /** True once two-factor authentication is set up and confirmed with a first code. */
     public function hasTwoFactorEnabled(): bool
     {
         return $this->two_factor_secret !== null && $this->two_factor_confirmed_at !== null;
     }
 
-    // queued version of Laravel's reset email; all mail goes through the queue
+    /** Queued version of Laravel's reset email; all mail goes through the queue. */
     public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetPassword($token));
     }
 
-    // queued version of Laravel's verification email; nothing is sent while email verification is off (config/fortify.php)
+    /**
+     * Queued version of Laravel's verification email; nothing is sent while email verification is off
+     * (config/fortify.php).
+     */
     public function sendEmailVerificationNotification(): void
     {
         if (Features::enabled(Features::emailVerification())) {
@@ -57,19 +65,19 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
         }
     }
 
-    // belongs to role
+    /** Belongs to role. */
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
 
-    // true when the user's role is any of the given names (admin, member)
+    /** True when the user's role is any of the given names (admin, member). */
     public function hasRole(string ...$names): bool
     {
         return in_array($this->role?->name, $names, true);
     }
 
-    // workspaces the user is a member of, with their role in pivot->role (WorkspaceRole)
+    /** Workspaces the user is a member of, with their role in pivot->role (WorkspaceRole). */
     public function workspaces(): BelongsToMany
     {
         return $this->belongsToMany(Workspace::class, 'workspace_user')
@@ -78,19 +86,21 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
             ->withTimestamps();
     }
 
-    // the workspace the user last worked in (ResolveCurrentWorkspace keeps it pointing at one they belong to)
+    /** The workspace the user last worked in (ResolveCurrentWorkspace keeps it pointing at one they belong to). */
     public function currentWorkspace(): BelongsTo
     {
         return $this->belongsTo(Workspace::class, 'current_workspace_id');
     }
 
-    // the user's role in the workspace, or null when they aren't a member
+    /** The user's role in the workspace, or null when they aren't a member. */
     public function workspaceRole(Workspace $workspace): ?WorkspaceRole
     {
         return $this->workspaces()->whereKey($workspace->id)->first()?->pivot->role;
     }
 
-    // makes a workspace the user belongs to the current one; false (and nothing changes) when they aren't a member
+    /**
+     * Makes a workspace the user belongs to the current one; false (and nothing changes) when they aren't a member.
+     */
     public function switchWorkspace(Workspace $workspace): bool
     {
         if (! $workspace->hasMember($this)) {

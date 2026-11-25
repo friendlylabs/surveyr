@@ -54,7 +54,7 @@
     return d.getMonth() === +m[2] - 1 ? d : null;
   }
 
-  // minutes since midnight
+  /** Minutes since midnight. */
   function parseTime(s) {
     const m = /^(\d{1,2}):(\d{2})$/.exec(s || "");
     return m && +m[1] < 24 && +m[2] < 60 ? +m[1] * 60 + +m[2] : null;
@@ -451,7 +451,7 @@
       this.write([serialize(this.mode, a), serialize(this.mode, b)]);
     }
 
-    // the time picked for an end that has none yet: now for a single value, the whole day for a range
+    /** The time picked for an end that has none yet: now for a single value, the whole day for a range. */
     defaultTime(end) {
       if (!this.hasTime) return null;
       if (this.range) return end === 0 ? 0 : 23 * 60 + 59;
@@ -467,7 +467,7 @@
       return d;
     }
 
-    // whether any day from first to last is inside min / max
+    /** Whether any day from first to last is inside min / max. */
     spanAllowed(first, last) {
       const min = this.bound("min");
       const max = this.bound("max");
@@ -478,7 +478,7 @@
       return this.spanAllowed(d, d);
     }
 
-    // whether any minute from..to on the given date (null for a time-only field) is inside min / max
+    /** Whether any minute from..to on the given date (null for a time-only field) is inside min / max. */
     timeAllowed(date, from, to) {
       const min = this.bound("min");
       const max = this.bound("max");
@@ -541,7 +541,7 @@
       return this.draft[this.clockEnd];
     }
 
-    // advance: a minute was picked, so a range's start time is done and the columns move on to the end's
+    /** Advance: a minute was picked, so a range's start time is done and the columns move on to the end's. */
     setTime(minutes, advance = false) {
       const i = this.clockEnd;
       const p = this.draft[i];
@@ -671,7 +671,7 @@
       c.appendChild(grid);
     }
 
-    // marks the chosen day(s) and the span between without rebuilding the grid
+    /** Marks the chosen day(s) and the span between without rebuilding the grid. */
     markDays() {
       const [a, b] = this.draft;
       let start = a?.date || null;
@@ -847,7 +847,7 @@
       window.addEventListener("resize", this.reposition);
     }
 
-    // keep: write the edit to the inputs if it's finished (Done, a click outside, Tab); otherwise it's dropped
+    /** Keep: write the edit to the inputs if it's finished (Done, a click outside, Tab); otherwise it's dropped. */
     close(refocus = false, keep = false) {
       if (!this.isOpen()) return;
       current = null;
@@ -862,7 +862,7 @@
       if (refocus) this.trigger.focus();
     }
 
-    // below the field when it fits or there's more room below, otherwise above; never off-screen
+    /** Below the field when it fits or there's more room below, otherwise above; never off-screen. */
     place() {
       const f = this.flyout.style;
       if (this.sheet !== sheetQuery.matches) {

@@ -5,6 +5,11 @@ namespace App\Actions\Fortify;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
+/**
+ * PasswordValidationRules
+ *
+ * The password rules shared by sign-up, reset and change.
+ */
 trait PasswordValidationRules
 {
     /**

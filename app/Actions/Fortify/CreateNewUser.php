@@ -15,8 +15,12 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use RuntimeException;
 
-// public sign-up (AuthController::store), by config/auth.php `registration` (App\Support\Registration): the email must
-// be on an allowed domain when a list is set, and new accounts get the default role, never admin
+/**
+ * CreateNewUser
+ *
+ * Public sign-up (AuthController::store), by config/auth.php `registration` (App\Support\Registration): the email
+ * must be on an allowed domain when a list is set, and new accounts get the default role, never admin.
+ */
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
@@ -64,8 +68,10 @@ class CreateNewUser implements CreatesNewUsers
         });
     }
 
-    // auth.registration.default_role, created on first use so a renamed default works without a seeder run;
-    // never admin, so a config slip can't hand out full access to anyone who signs up
+    /**
+     * auth.registration.default_role, created on first use so a renamed default works without a seeder run; never
+     * admin, so a config slip can't hand out full access to anyone who signs up.
+     */
     private function defaultRole(): Role
     {
         $name = Registration::defaultRole();

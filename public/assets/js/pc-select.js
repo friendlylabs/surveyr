@@ -190,7 +190,7 @@
       return this.select.dataset.placeholder || (empty && empty.textContent.trim()) || (this.multiple ? "Choose…" : "Choose");
     }
 
-    // the empty option is the "nothing chosen" state; it's offered in the list only when the field is optional
+    /** The empty option is the "nothing chosen" state; it's offered in the list only when the field is optional. */
     listed(option) {
       if (option.value !== "") return true;
       return !this.multiple && !this.select.required;
@@ -302,7 +302,7 @@
       this.changed();
     }
 
-    // select all / clear apply to the options showing under the current search
+    /** Select all / clear apply to the options showing under the current search. */
     setAll(on) {
       this.items().forEach((item) => {
         const option = this.select.options[Number(item.dataset.index)];
@@ -460,7 +460,7 @@
       if (refocus) this.trigger.focus();
     }
 
-    // below the field when the list fits or there's more room below, otherwise above; never off-screen
+    /** Below the field when the list fits or there's more room below, otherwise above; never off-screen. */
     place() {
       const f = this.flyout.style;
       if (this.sheet !== sheetQuery.matches) {

@@ -7,18 +7,25 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
-// Base controller. Properties set on a controller ($this->users = ...) collect in $data, which is handed to the view
-// (view('...', $this->data)) or merged into the JSON body by jsonSuccess / jsonError; `redirect` in that body is
-// followed by the frontend (public/assets/js/app.js submitForm).
+/**
+ * Controller
+ *
+ * Base controller. Properties set on a controller ($this->users = ...) collect in $data, which is handed to the view
+ * (view('...', $this->data)) or merged into the JSON body by jsonSuccess / jsonError; `redirect` in that body is
+ * followed by the frontend (public/assets/js/app.js submitForm).
+ */
 abstract class Controller
 {
+    /** Values set on the controller, for the view or the JSON body. */
     protected array $data = [];
 
+    /** Collects an undeclared property into $data. */
     public function __set(string $name, mixed $value): void
     {
         $this->data[$name] = $value;
     }
 
+    /** Reads a declared property, else the value collected in $data (null when unset). */
     public function __get(string $name): mixed
     {
         property_exists($this, $name) ?

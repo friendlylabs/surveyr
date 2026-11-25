@@ -29,7 +29,7 @@
 
   class ConfirmRequired extends Error {}
 
-  // fetch that turns a 423 into ConfirmRequired; anything else not ok becomes an Error with the server's message
+  /** Fetch that turns a 423 into ConfirmRequired; anything else not ok becomes an Error with the server's message. */
   async function call(url, options = {}) {
     const res = await pc.jsonFetch(url, options);
     if (res.status === 423) throw new ConfirmRequired();
@@ -42,7 +42,7 @@
     return data;
   }
 
-  // run action(); a 423 asks for the password, then runs it again. button (optional) shows the loading state
+  /** Run action(); a 423 asks for the password, then runs it again. button (optional) shows the loading state. */
   async function guarded(action, button) {
     if (button) buttonState(button, "loading");
     try {

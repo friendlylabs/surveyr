@@ -6,7 +6,11 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\View\ViewException;
 use Tests\TestCase;
 
-// <x-surveyjs>: loads one SurveyJS bundle and hands it the licence key from config/surveyr.php
+/**
+ * SurveyJsComponentTest
+ *
+ * <x-surveyjs>: loads one SurveyJS bundle and hands it the licence key from config/surveyr.php.
+ */
 class SurveyJsComponentTest extends TestCase
 {
     protected function setUp(): void

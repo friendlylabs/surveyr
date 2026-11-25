@@ -24,7 +24,7 @@
   const root = document.documentElement;
   const narrow = window.matchMedia("(max-width: 1280px)");
 
-  // Auto-collapsed (page asks for it, or the window is narrow): toggles last only until the next reset.
+  /** Auto-collapsed (page asks for it, or the window is narrow): toggles last only until the next reset. */
   function isAuto() {
     return root.hasAttribute("data-pc-sidebar-auto") || narrow.matches;
   }
@@ -101,7 +101,7 @@
     if (window.pcTooltip) pcTooltip.hide();
   }
 
-  // Applies the default for the current width without touching the saved preference.
+  /** Applies the default for the current width without touching the saved preference. */
   function reset() {
     if (isAuto() || savedCollapsed()) root.setAttribute("data-pc-sidebar", "collapsed");
     else root.removeAttribute("data-pc-sidebar");

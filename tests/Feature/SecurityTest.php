@@ -19,7 +19,7 @@ class SecurityTest extends TestCase
         return User::factory()->role('member')->create(['email' => 'jane@example.com', 'password' => 'secret-password'] + $attributes);
     }
 
-    // a user with two-factor already on, and the plain secret to make codes from
+    /** A user with two-factor already on, and the plain secret to make codes from. */
     private function withTwoFactor(): array
     {
         $secret = (new Google2FA)->generateSecretKey();

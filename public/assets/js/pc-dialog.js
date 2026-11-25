@@ -1,43 +1,51 @@
 /**
- * pc-dialog.js — lightweight SweetAlert-style alert/confirm dialogs, built
- * from the same .pc-modal markup/CSS pc-modal.js uses, created and torn
- * down imperatively (no static markup needed in the page).
+ * pc-dialog.js — alert / confirm dialogs.
+ *
+ * A compact card: the title with a small type icon on its right, the message under it, and the actions bottom-right
+ * (a soft Cancel, then the confirm button in the dialog type's colour). Built from the .pc-modal markup pc-modal.js
+ * uses, created and torn down imperatively, so pages need no static markup.
  *
  * JS API:
  *   pcDialog.fire({ title, text, icon, confirmButtonText, cancelButtonText, showCancelButton, confirmButtonVariant })
  *     -> Promise<{ isConfirmed: boolean, isDismissed: boolean }>
- *   pcDialog.alert({ title, text, icon, confirmButtonText })    // no cancel button
- *   pcDialog.confirm({ title, text, icon, confirmButtonText, cancelButtonText }) // with cancel button
+ *   pcDialog.alert({ title, text, icon, confirmButtonText })                        (no cancel button)
+ *   pcDialog.confirm({ title, text, icon, confirmButtonText, cancelButtonText })    (with a cancel button)
  *
- * icon: 'success' | 'warning' | 'danger' | 'error' (alias of danger) | 'info' | 'question'
- * confirmButtonVariant: any pc-btn-* suffix ('primary', 'danger-solid', ...). Defaults to
- * 'danger-solid' for danger/error icons and 'primary' otherwise.
+ * icon (the dialog type): 'primary' | 'question' | 'info' | 'success' | 'warning' | 'danger' | 'error' (alias of
+ * danger). It picks the icon and the confirm button's colour: brand for primary / question, then info, success,
+ * warning and danger in their status colours. confirmButtonVariant overrides the button with any pc-btn-* suffix.
  *
- * A window.Swal.fire(...) alias is also exposed, so snippets written
- * against SweetAlert2's fire() API work unmodified without loading the
- * real library.
+ * A window.Swal.fire(...) alias is also exposed, so snippets written against SweetAlert2's fire() API work
+ * unmodified without loading the real library.
  */
 (function () {
-  const ICON_GLYPHS = {
-    success: "✓",
-    warning: "!",
-    danger: "✕",
-    error: "✕",
-    info: "i",
-    question: "?",
+  // per type: the Phosphor icon by the title, and the confirm button's pc-btn-* variant
+  const TYPES = {
+    primary: { icon: "ph-sparkle", button: "brand" },
+    question: { icon: "ph-question", button: "brand" },
+    info: { icon: "ph-info", button: "info-solid" },
+    success: { icon: "ph-check-circle", button: "success-solid" },
+    warning: { icon: "ph-warning", button: "warning-solid" },
+    danger: { icon: "ph-warning-octagon", button: "danger-solid" },
   };
-
-  function iconClass(icon) {
-    return `pc-dialog-icon-${icon === "error" ? "danger" : icon}`;
-  }
 
   let seq = 0;
 
+  /** The type's key, with 'error' read as danger and anything unknown as primary. */
+  function typeOf(icon) {
+    if (icon === "error") return "danger";
+    return TYPES[icon] ? icon : "primary";
+  }
+
+  /**
+   * Opens the dialog and resolves once it closes: confirmed by its button, dismissed by Cancel, the backdrop or
+   * Escape. Focus stays inside while open and goes back afterwards.
+   */
   function fire(options) {
     const {
       title = "",
       text = "",
-      icon = "info",
+      icon = "primary",
       confirmButtonText = "OK",
       cancelButtonText = "Cancel",
       showCancelButton = false,
@@ -45,26 +53,29 @@
     } = options || {};
 
     return new Promise((resolve) => {
-      const variant = confirmButtonVariant || (icon === "error" || icon === "danger" ? "danger-solid" : "primary");
+      const type = typeOf(icon);
+      const variant = confirmButtonVariant || TYPES[type].button;
       const titleId = `pc-dialog-title-${++seq}`;
+      const textId = `pc-dialog-text-${seq}`;
 
       const root = document.createElement("div");
-      root.className = "pc-modal pc-modal-sm";
+      root.className = "pc-modal pc-modal-sm pc-dialog";
       root.setAttribute("role", "alertdialog");
       root.setAttribute("aria-modal", "true");
       if (title) root.setAttribute("aria-labelledby", titleId);
+      if (text) root.setAttribute("aria-describedby", textId);
       root.innerHTML = `
         <div class="pc-modal-backdrop"></div>
         <div class="pc-modal-panel">
-          <div class="flex flex-col items-center gap-3 p-6 text-center">
-            <div class="pc-dialog-icon ${iconClass(icon)}" aria-hidden="true">${ICON_GLYPHS[icon] || ICON_GLYPHS.info}</div>
-            <div>
-              ${title ? `<div id="${titleId}" class="text-base font-semibold">${pc.escapeHtml(title)}</div>` : ""}
-              ${text ? `<div class="mt-1 text-[13px] text-pc-muted">${pc.escapeHtml(text)}</div>` : ""}
+          <div class="pc-dialog-body">
+            <div class="pc-dialog-head">
+              ${title ? `<div id="${titleId}" class="pc-dialog-title">${pc.escapeHtml(title)}</div>` : ""}
+              <i class="ph-duotone ${TYPES[type].icon} pc-dialog-icon pc-dialog-icon-${type}" aria-hidden="true"></i>
             </div>
-            <div class="mt-2 flex w-full gap-2">
-              ${showCancelButton ? `<button type="button" data-pc-dialog-cancel class="pc-btn pc-btn-secondary flex-1">${pc.escapeHtml(cancelButtonText)}</button>` : ""}
-              <button type="button" data-pc-dialog-confirm data-pc-autofocus class="pc-btn pc-btn-${variant} flex-1">${pc.escapeHtml(confirmButtonText)}</button>
+            ${text ? `<div id="${textId}" class="pc-dialog-text">${pc.escapeHtml(text)}</div>` : ""}
+            <div class="pc-dialog-actions">
+              ${showCancelButton ? `<button type="button" data-pc-dialog-cancel class="pc-btn pc-dialog-cancel">${pc.escapeHtml(cancelButtonText)}</button>` : ""}
+              <button type="button" data-pc-dialog-confirm data-pc-autofocus class="pc-btn pc-btn-${variant}">${pc.escapeHtml(confirmButtonText)}</button>
             </div>
           </div>
         </div>
@@ -78,6 +89,7 @@
       pc.focusFirst(panel);
       const untrap = pc.trapFocus(panel);
 
+      /** Closes the dialog, gives focus back and resolves with the result. */
       function settle(result) {
         untrap();
         unesc();
@@ -99,10 +111,12 @@
     });
   }
 
+  /** A dialog with only the confirm button. */
   function alert(options) {
     return fire({ ...options, showCancelButton: false });
   }
 
+  /** A dialog with Cancel and the confirm button. */
   function confirm(options) {
     return fire({ ...options, showCancelButton: true });
   }

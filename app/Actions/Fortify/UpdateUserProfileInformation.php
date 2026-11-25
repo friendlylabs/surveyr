@@ -11,6 +11,11 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 use Laravel\Fortify\Features;
 
+/**
+ * UpdateUserProfileInformation
+ *
+ * Fortify's profile update: validates and saves the user's name and email.
+ */
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
     /**

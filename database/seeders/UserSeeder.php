@@ -9,9 +9,13 @@ use App\Support\Workspaces;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-// the roles (admin, and config/auth.php registration.default_role), one admin to sign in with
-// (admin@admin.com / password), and some accounts with the default role so the users list has something to show;
-// drop those for production
+/**
+ * UserSeeder
+ *
+ * The roles (admin, and config/auth.php registration.default_role), one admin to sign in with
+ * (admin@admin.com / password), and some accounts with the default role so the users list has something to show;
+ * drop those for production.
+ */
 class UserSeeder extends Seeder
 {
     use WithoutModelEvents;
