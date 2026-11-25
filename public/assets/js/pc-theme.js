@@ -60,8 +60,10 @@
     apply();
   }
 
-  // the opposite of what is showing now, whether that came from a saved choice or the OS. With a trigger element, the
-  // new theme grows out of it in a circle (a view transition); without support, or with reduced motion, it just swaps.
+  /**
+   * The opposite of what is showing now, whether that came from a saved choice or the OS. With a trigger element, the
+   * new theme grows out of it in a circle (a view transition); without support, or with reduced motion, it just swaps.
+   */
   function toggle(trigger = null) {
     const next = document.documentElement.dataset.pcTheme === "dark" ? "light" : "dark";
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
