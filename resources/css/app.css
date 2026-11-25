@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import '@phosphor-icons/web/regular';
 @import '@phosphor-icons/web/duotone';
+@import './vendor/fontawesome/all.css' layer(base); /* Font Awesome Pro 6.6.0, from the legacy app */
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
