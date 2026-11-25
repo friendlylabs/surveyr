@@ -105,7 +105,12 @@ async function submitForm(event, responseHandler = null) {
 
     if (response.ok && data.success) {
       if (data.message) toast.success({ message: data.message });
-      if (data.redirect) setTimeout(() => (window.location.href = data.redirect), 800);
+      if (data.redirect) {
+        setTimeout(() => {
+          window.pcPageLoader?.show();
+          window.location.href = data.redirect;
+        }, 800);
+      }
     } else {
       toast.error({ message: data.message || "An unknown error occurred." });
     }
@@ -173,9 +178,9 @@ function fillForm(form, fields) {
 }
 
 (function () {
-  /* Shared edit dialogs: one modal per page, filled from the clicked row.
-   *   <button data-pc-edit="#editModule" data-pc-payload='{"action": "...", "title": "...", "subtitle": "...", "fields": {...}}'>
-   * The modal's form posts to `action`; [data-title] / [data-subtitle] in the modal take `title` / `subtitle`. */
+  // Shared edit dialogs: one modal per page, filled from the clicked row.
+  //   <button data-pc-edit="#editModule" data-pc-payload='{"action": "...", "title": "...", "subtitle": "...", "fields": {...}}'>
+  // The modal's form posts to `action`; [data-title] / [data-subtitle] in the modal take `title` / `subtitle`.
   document.addEventListener("click", (e) => {
     const trigger = e.target.closest("[data-pc-edit]");
     if (!trigger) return;
@@ -196,7 +201,7 @@ function fillForm(form, fields) {
     pcModal.open(modal.id);
   });
 
-  /* Add dialogs start empty: pc:open doesn't bubble, so listen in the capture phase */
+  // Add dialogs start empty: pc:open doesn't bubble, so listen in the capture phase
   document.addEventListener("pc:open", (e) => {
     const modal = e.target;
     if (!(modal instanceof Element) || !modal.matches(".pc-modal[data-pc-reset]")) return;
@@ -206,9 +211,9 @@ function fillForm(form, fields) {
     clearFormErrors(form);
   }, true);
 
-  /* Confirm before acting:
-   *   <a href="/somewhere" data-pc-confirm="Leave this page?" data-pc-confirm-text="..." data-pc-confirm-icon="warning">
-   * Links are followed and submit buttons submit their form after confirmation; other elements get a `pc:confirmed` event. */
+  // Confirm before acting:
+  //   <a href="/somewhere" data-pc-confirm="Leave this page?" data-pc-confirm-text="..." data-pc-confirm-icon="warning">
+  // Links are followed and submit buttons submit their form after confirmation; other elements get a `pc:confirmed` event.
   document.addEventListener("click", (e) => {
     const el = e.target.closest("[data-pc-confirm]");
     if (!el || el.dataset.pcConfirmed === "true") return;
@@ -231,7 +236,7 @@ function fillForm(form, fields) {
       });
   }, true);
 
-  /* Flashed messages: redirect()->with("toast", "...") renders <meta name="pc-toast"> in the layout */
+  // Flashed messages: redirect()->with("toast", "...") renders <meta name="pc-toast"> in the layout
   document.addEventListener("DOMContentLoaded", () => {
     const flash = document.querySelector('meta[name="pc-toast"]');
     if (flash && flash.content) toast[flash.dataset.type || "success"]({ message: flash.content, duration: 3200 });
