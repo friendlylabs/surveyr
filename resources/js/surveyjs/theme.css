@@ -1,0 +1,30 @@
+/*
+ * Additions to the SurveyJS themes built by theme.js. Radio and checkbox rings and the yes / no switch share the text
+ * fields' inset-shadow border, so the Minimal style's underline would bend into an arc on them; a theme can give them
+ * their own ring through --surveyr-decorator-shadow. Pill-shaped controls (the switch, rating buttons, ranking items)
+ * take --surveyr-control-radius, so square styles square them too. Without these they draw as SurveyJS does. Checked
+ * and focused states keep SurveyJS's (more specific) rules.
+ */
+.sd-root-modern .sd-title.sd-container-modern__title {
+  /* the title band: clear in the panelless layout (--surveyr-header-backcolor), else the panel colour as usual */
+  background-color: var(--surveyr-header-backcolor, var(--sjs-general-backcolor, var(--background, #fff)));
+}
+
+.sd-root-modern .sd-item__decorator {
+  box-shadow: var(--surveyr-decorator-shadow, var(--sjs-shadow-inner, inset 0px 1px 2px 0px rgba(0, 0, 0, 0.15))),
+    0 0 0 0px var(--sjs-primary-backcolor, var(--primary, #19b394));
+}
+
+.sd-root-modern .sd-boolean {
+  box-shadow: var(--surveyr-decorator-shadow, var(--sjs-shadow-inner, inset 0px 1px 2px 0px rgba(0, 0, 0, 0.15)));
+}
+
+.sd-root-modern :is(.sd-boolean, .sd-boolean__switch, .sd-boolean__thumb, .sd-boolean__thumb-ghost, .sd-rating__item,
+  .sd-rating__item-smiley, .sv-ranking-item__content.sv-ranking-item__content, .sv-ranking-item__ghost.sv-ranking-item__ghost) {
+  border-radius: var(--surveyr-control-radius, calc(12.5 * var(--sjs-base-unit, var(--base-unit, 8px))));
+}
+
+/* read-only (a response on display): SurveyJS drops the rings; a theme with its own decorator ring keeps it */
+.sd-root-modern .sd-item--readonly.sd-item--readonly .sd-item__decorator {
+  box-shadow: var(--surveyr-decorator-shadow, none);
+}
