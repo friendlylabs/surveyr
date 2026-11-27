@@ -2,7 +2,11 @@
  * Charts for the whole app (ApexCharts), loaded by <x-chart> on the pages that have one. Each chart is a
  * <div data-pc-chart> holding its ApexCharts options as JSON (<script type="application/json">); they're drawn on the
  * app's look (font, brand colour, muted axes and grid, no toolbar) and redrawn when light / dark mode changes.
- * Page code can use window.ApexCharts, and window.pcCharts.render(el) for a chart added later.
+ * Page code can use window.ApexCharts, window.pcCharts.render(el) for a chart added later or render(el, options) for
+ * one whose options page code builds (kept for the redraws; they may hold formatter functions), and
+ * window.pcCharts.get(el) for its ApexCharts instance. A chart marked data-pc-chart-manual waits for render(el, options).
+ * Any string in the options naming a colour token ("--color-pc-chart-1") is read from the page when the chart is
+ * drawn, so it follows the theme.
  */
 import ApexCharts from "apexcharts";
 
@@ -46,23 +50,45 @@ function defaults() {
     };
 }
 
+/** The options with every "--color-…" string swapped for that token's value. */
+function resolveTokens(value) {
+    if (typeof value === "string") return value.startsWith("--color-") ? token(value) : value;
+    if (Array.isArray(value)) return value.map(resolveTokens);
+    if (value && typeof value === "object" && Object.getPrototypeOf(value) === Object.prototype) {
+        return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, resolveTokens(item)]));
+    }
+    return value;
+}
+
 const charts = new Map();
 
-function render(el) {
+/** Options page code handed over, per chart. */
+const given = new WeakMap();
+
+function render(el, options) {
+    if (options) given.set(el, options);
     charts.get(el)?.destroy();
-    const options = JSON.parse(el.querySelector("script[type='application/json']")?.textContent || "{}");
+    const source = given.get(el) || JSON.parse(el.querySelector("script[type='application/json']")?.textContent || "{}");
     const host = el.querySelector("[data-pc-chart-canvas]") || el;
-    const chart = new ApexCharts(host, merge(defaults(), options));
+    const chart = new ApexCharts(host, merge(defaults(), resolveTokens(source)));
     chart.render();
     charts.set(el, chart);
 }
 
+/** A chart's ApexCharts instance (for dataURI() and the like), or null. */
+function get(el) {
+    return charts.get(el) || null;
+}
+
+/** Draws every chart; those marked data-pc-chart-manual only once page code has given their options. */
 function renderAll() {
-    document.querySelectorAll("[data-pc-chart]").forEach(render);
+    document.querySelectorAll("[data-pc-chart]").forEach((el) => {
+        if (!el.hasAttribute("data-pc-chart-manual") || given.has(el)) render(el);
+    });
 }
 
 window.ApexCharts = ApexCharts;
-window.pcCharts = { render, renderAll };
+window.pcCharts = { render, renderAll, get };
 
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", renderAll);

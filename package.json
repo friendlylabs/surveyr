@@ -19,7 +19,6 @@
     "dependencies": {
         "@phosphor-icons/web": "2.1.2",
         "apexcharts": "8.7.0",
-        "survey-analytics": "2.5.48",
         "survey-core": "2.5.48",
         "survey-creator-core": "2.5.48",
         "survey-creator-js": "2.5.48",

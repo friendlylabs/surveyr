@@ -65,15 +65,6 @@
         'uploadUrl' => route('forms.responses.upload', [$form, '__response__', '__upload__']),
     ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}</script>
 
-    {{-- read by pages/response-filters.js: the questions a rule can use, its operators, and the filters in force --}}
-    <script type="application/json" id="responseFiltersConfig">{!! json_encode([
-        'fields' => $fields ?: (object) [],
-        'operators' => App\Support\SubmissionFilters::OPERATORS,
-        'labels' => App\Support\SubmissionFilters::operatorLabels(),
-        'filters' => $filters,
-        'strings' => ['question' => __('Question'), 'value' => __('Value'), 'min' => __('Min'), 'max' => __('Max'), 'choose' => __('Choose…'), 'remove' => __('Remove rule')],
-    ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}</script>
-
     @push('body')
         <script src="@asset('assets/js/pages/responses.js')" defer></script>
         <script src="@asset('assets/js/pages/response-filters.js')" defer></script>

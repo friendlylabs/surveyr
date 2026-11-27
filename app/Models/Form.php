@@ -114,6 +114,18 @@ class Form extends Model
         return $this->hasMany(SubmissionView::class)->orderBy('name');
     }
 
+    /** Its Visualize tabs, in order. */
+    public function visualizationTabs(): HasMany
+    {
+        return $this->hasMany(VisualizationTab::class)->orderBy('position')->orderBy('id');
+    }
+
+    /** The charts on all its Visualize tabs (scoped route bindings find a chart through its form). */
+    public function visualizationCharts(): HasMany
+    {
+        return $this->hasMany(VisualizationChart::class);
+    }
+
     /** Whether the form has collected data (archived responses count); a form with data can only be archived, never deleted. */
     public function hasResponses(): bool
     {

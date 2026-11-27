@@ -145,7 +145,7 @@ class SurveyAnswers
      *
      * @return array<string, string>
      */
-    private static function choices(array $choices): array
+    public static function choices(array $choices): array
     {
         $labels = [];
         foreach ($choices as $choice) {
@@ -161,7 +161,7 @@ class SurveyAnswers
     }
 
     /** A SurveyJS text that may be translated ({default: ..., fr: ...}): the default language's. */
-    private static function text(mixed $text): string
+    public static function text(mixed $text): string
     {
         if (is_array($text)) {
             $text = $text['default'] ?? reset($text);

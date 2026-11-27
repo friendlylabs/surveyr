@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
  */
 class SubmissionViewsController extends Controller
 {
-    /** Saves the posted filters as a new view, then opens it. */
+    /** Saves the posted filters as a new view, then opens it: on the responses table, or with return=visualize on Visualize. */
     public function store(Request $request, Form $form): JsonResponse
     {
         Gate::authorize('view', $form);
@@ -32,7 +32,7 @@ class SubmissionViewsController extends Controller
         $view->form()->associate($form);
         $view->save();
 
-        $this->redirect = route('forms.responses', [$form, 'view' => $view]);
+        $this->redirect = $this->opened($request, $form, $view);
 
         return $this->jsonSuccess(__('View saved'));
     }
@@ -43,9 +43,17 @@ class SubmissionViewsController extends Controller
         Gate::authorize('update', $view);
 
         $view->update($this->validated($request, $form, $view));
-        $this->redirect = route('forms.responses', [$form, 'view' => $view]);
+        $this->redirect = $this->opened($request, $form, $view);
 
         return $this->jsonSuccess(__('View updated'));
+    }
+
+    /** Where a saved view opens: the page it was saved from (return=visualize), else the responses table. */
+    private function opened(Request $request, Form $form, SubmissionView $view): string
+    {
+        return $request->input('return') === 'visualize'
+            ? route('forms.responses.visualize', [$form, 'view' => $view])
+            : route('forms.responses', [$form, 'view' => $view]);
     }
 
     /** Deletes a view; its responses are untouched. */

@@ -106,10 +106,6 @@
   --color-pc-info-field: #eef8ff;
   --color-pc-info-border: #98d9ff;
 
-  /* Chart series */
-  --color-pc-chart-1: #19b394;
-  --color-pc-chart-2: #3874ff;
-
   /* Toast type dots: the toast is inverted (ink), so they take the other theme's status colours */
   --color-pc-toast-success: #4fd1a1;
   --color-pc-toast-warning: #ffcc85;
@@ -189,6 +185,21 @@
   }
 }
 
+/* Chart series: the categorical order (resources/js/charts.js, libs/surveyr_analytics), checked for colour-blind
+   separation in both themes (dataviz validator, adjacent pairs). Assign in order; never cycle past 8. Slots 1-3 sit
+   under 3:1 on white, so charts carrying them always show labels or a table. Static: emitted whether or not a class
+   uses them, as charts read them from JS. */
+@theme static {
+  --color-pc-chart-1: #19b394;
+  --color-pc-chart-2: #eda100;
+  --color-pc-chart-3: #e87ba4;
+  --color-pc-chart-4: #008300;
+  --color-pc-chart-5: #6250d6;
+  --color-pc-chart-6: #e34948;
+  --color-pc-chart-7: #2a78d6;
+  --color-pc-chart-8: #eb6834;
+}
+
 /* Dark theme: <x-theme-boot /> sets data-pc-theme on <html> before first paint from the saved choice (pc-theme.js:
    light, dark, or system); these redefine the @theme tokens, so every utility and component follows. */
 @layer base {
@@ -255,8 +266,14 @@
     --color-pc-info-field: #142131;
     --color-pc-info-border: #1f4560;
 
-    --color-pc-chart-1: #83d66f;
-    --color-pc-chart-2: #60c6ff;
+    --color-pc-chart-1: #199e70;
+    --color-pc-chart-2: #c98500;
+    --color-pc-chart-3: #d55181;
+    --color-pc-chart-4: #0ca30c;
+    --color-pc-chart-5: #9085e9;
+    --color-pc-chart-6: #e66767;
+    --color-pc-chart-7: #3987e5;
+    --color-pc-chart-8: #d95926;
 
     --color-pc-toast-success: #0f9d6b;
     --color-pc-toast-warning: #e5780b;
@@ -1212,6 +1229,10 @@
     @apply -mx-2 grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2 rounded-pc-control p-2 transition-colors
       hover:bg-pc-surface-alt focus-within:bg-pc-surface-alt sm:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1.3fr)_auto];
   }
+  /* a two-field rule (Visualize's numbers: question / worked out as) */
+  .pc-filter-rule.pc-filter-rule-pair {
+    @apply sm:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_auto];
+  }
   .pc-filter-rule [data-filter-remove] {
     @apply opacity-0 transition-opacity;
   }
@@ -1304,6 +1325,13 @@
   /* A chart (x-chart, ApexCharts): its tooltip in the app's type. */
   .pc-chart .apexcharts-tooltip {
     @apply text-xs shadow-pc-pop;
+  }
+  /* a legend beside the chart sits level with its middle (ApexCharts pins it to the top) */
+  .pc-chart .apexcharts-legend.apx-legend-position-right,
+  .pc-chart .apexcharts-legend.apx-legend-position-left {
+    top: 50% !important;
+    bottom: auto !important;
+    transform: translateY(-50%);
   }
   .pc-mono {
     @apply font-pc-mono tabular-nums;
@@ -2270,12 +2298,21 @@
   .pc-tabs-underline .pc-tab-active {
     @apply border-pc-ink bg-transparent text-pc-text;
   }
-  /* Soft variant — light track, white raised tab; for filters inside a toolbar. */
+  /* Soft variant — light track, white raised tab; for filters inside a toolbar and choices in a form. As tall as an
+     input (36px: 30px tabs in a 3px track), so it lines up with the fields around it. */
   .pc-tabs-soft {
     @apply gap-0.5 rounded-pc-sm bg-pc-surface-soft p-[3px];
   }
+  /* in a form (pc-tabs-field): framed and set like the inputs beside it, as wide as they are, the choices sharing the
+     width, so it doesn't read smaller than they do */
+  .pc-tabs-soft.pc-tabs-field {
+    @apply flex h-9 w-full items-stretch border border-pc-border p-[2px];
+  }
+  .pc-tabs-soft.pc-tabs-field .pc-tab {
+    @apply h-auto flex-1 justify-center px-3.5 text-sm;
+  }
   .pc-tabs-soft .pc-tab {
-    @apply h-7 rounded-pc-control px-3 text-[13px] text-pc-muted hover:bg-transparent hover:text-pc-text;
+    @apply h-[30px] rounded-pc-control px-3 text-[13px] text-pc-muted hover:bg-transparent hover:text-pc-text;
   }
   .pc-tabs-soft .pc-tab-active {
     @apply border-pc-border-soft bg-pc-surface text-pc-text shadow-xs hover:bg-pc-surface;
@@ -2721,5 +2758,347 @@
   /* A settled value: shown, not editable */
   .pc-input[readonly] {
     @apply cursor-default border-pc-border-soft bg-pc-surface-alt text-pc-text-2 focus:border-pc-border-soft focus:ring-0;
+  }
+}
+
+/* ================= Visualize (app/responses/visualize) ================= */
+@layer components {
+  /* Masonry: columns that share the page's width (printing redraws every chart at a set print width, so a card's
+     width on screen doesn't matter on paper). Until the page script deals the cards into columns (pc-viz-packed), CSS
+     columns at least 420px wide hold them. */
+  /* its own room at the foot, as the page's padding there goes under the tab bar */
+  .pc-viz {
+    @apply block w-full gap-4 pb-6 max-sm:pb-4;
+    column-width: 420px;
+  }
+  .pc-viz > * {
+    @apply mb-4 w-full break-inside-avoid;
+  }
+  .pc-viz > :is(.pc-viz-scope, .pc-empty) {
+    column-span: all;
+  }
+  /* Dealt into columns (pages/response-visualize.js): equal-width columns side by side, all as tall as the tallest;
+     in an evened column (pc-viz-column-even) the cards share the spare room, their bodies pushed to the bottom so the
+     charts line up along it. */
+  .pc-viz.pc-viz-packed {
+    columns: auto;
+  }
+  .pc-viz.pc-viz-packed > .pc-viz-columns {
+    @apply flex max-w-none items-stretch gap-4;
+  }
+  .pc-viz.pc-viz-packed > .pc-viz-columns:last-child {
+    @apply mb-0;
+  }
+  .pc-viz-column {
+    @apply flex min-w-0 flex-1 basis-0 flex-col gap-4;
+  }
+  /* a wide chart's column, two of three across (the column beside it the third) */
+  .pc-viz-column.pc-viz-wide-column {
+    @apply grow-2;
+  }
+  .pc-viz-column-even > .pc-viz-card:not([hidden]) {
+    @apply grow;
+  }
+  .pc-viz-card > .pc-viz-head + * {
+    @apply mt-auto;
+  }
+  .pc-viz-scope {
+    @apply flex flex-wrap items-center gap-2 text-[13px] text-pc-muted empty:hidden;
+  }
+  /* on screen it only holds filters; with none (the print date is screen-hidden) it takes no room */
+  .pc-viz-scope:not(:has(.pc-badge)) {
+    @apply hidden;
+  }
+  .pc-viz-printed {
+    @apply hidden;
+  }
+  .pc-viz-card {
+    @apply flex flex-col gap-4 rounded-pc-card border border-pc-border bg-pc-surface p-5 max-sm:p-4;
+  }
+  .pc-viz-card[hidden] {
+    @apply hidden;
+  }
+  .pc-viz-head {
+    @apply flex items-start justify-between gap-3;
+  }
+  .pc-viz-title {
+    @apply m-0 text-[15px] leading-snug font-semibold text-pc-ink;
+  }
+  .pc-viz-meta {
+    @apply m-0 mt-1 text-xs text-pc-muted;
+  }
+  .pc-viz-tools {
+    @apply flex flex-none items-center gap-1;
+  }
+  .pc-viz-subtitle {
+    @apply m-0 text-[13px] font-semibold text-pc-text;
+  }
+  .pc-viz-note,
+  .pc-viz-none {
+    @apply m-0 text-xs text-pc-muted;
+  }
+  /* Figures: the number on top, its label beneath. */
+  .pc-viz-stats {
+    @apply m-0 grid grid-cols-4 gap-4 max-sm:grid-cols-2;
+  }
+  .pc-viz-stat {
+    @apply flex flex-col;
+  }
+  .pc-viz-stat-value {
+    @apply text-[22px] leading-tight font-semibold tracking-[-0.02em] text-pc-ink tabular-nums;
+  }
+  .pc-viz-stat-label {
+    @apply mt-0.5 text-xs text-pc-muted;
+  }
+  .pc-viz-chart {
+    @apply min-w-0;
+  }
+  /* ApexCharts reserves 15px under every chart for a legend; these keep theirs inside the drawing */
+  .pc-viz-chart .apexcharts-canvas {
+    min-height: 0 !important;
+  }
+  .pc-viz-chart[hidden] {
+    @apply hidden;
+  }
+  .pc-viz-scroll {
+    @apply overflow-x-auto;
+  }
+  .pc-viz-table thead th {
+    @apply py-2.5;
+  }
+  .pc-viz-table tbody td,
+  .pc-viz-table tbody th {
+    @apply border-b border-pc-border-soft px-3 py-2.5 align-middle;
+  }
+  .pc-viz-row-label {
+    @apply text-start text-[13px] font-normal text-pc-text;
+  }
+  .pc-viz-share {
+    @apply inline-flex items-center justify-end gap-2;
+  }
+  .pc-viz-share .pc-progress {
+    @apply w-16 max-sm:hidden;
+  }
+  /* Heat table: each cell tinted by its share of the row (at most 45% of the first series colour, so the ink stays
+     readable in both themes); the share and count are always printed in it. */
+  .pc-viz-heat-cell {
+    @apply text-center;
+    background: color-mix(in srgb, var(--color-pc-chart-1) calc(var(--pc-viz-share, 0) * 45%), transparent);
+  }
+  .pc-viz-heat-count {
+    @apply block text-[11px] text-pc-muted;
+  }
+  /* Typed answers: the text, then the response it came in and when. */
+  .pc-viz-answers {
+    @apply m-0 flex list-none flex-col p-0;
+  }
+  .pc-viz-answer {
+    @apply flex flex-col gap-0.5 border-b border-pc-border-soft py-2.5 first:pt-0 last:border-b-0;
+  }
+  .pc-viz-answer-text {
+    @apply m-0 max-w-[68ch] text-[13px] whitespace-pre-line text-pc-text no-underline [overflow-wrap:anywhere];
+  }
+  a.pc-viz-answer-text:hover {
+    @apply text-pc-brand-ink;
+  }
+  .pc-viz-answer-meta {
+    @apply font-pc-mono text-[11px] text-pc-muted;
+  }
+  .pc-viz-answer-meta a {
+    @apply text-pc-muted hover:text-pc-brand-ink;
+  }
+  .pc-viz-answers-wrap[aria-busy="true"] .pc-viz-answers {
+    @apply opacity-50 transition-opacity;
+  }
+  .pc-viz-pager {
+    @apply flex items-center justify-between gap-2 pt-1;
+  }
+
+  /* Visualize's tabs, along the bottom like a workbook's sheets: a strip flush with the page's foot and left edge (the
+     content's padding cancelled; a sticky edge stops at that padding, hence the negative bottom), stuck there while
+     the page scrolls; tabs side by side from the left, each closed by a line on its right; the open one on the page's
+     surface with a brand line along its top; at the far end, after a divider, the saved view and adding a tab. */
+  .pc-viz-tabs {
+    @apply sticky -bottom-7 z-5 -mx-7 mt-auto -mb-7 flex flex-none items-stretch overflow-x-auto border-t border-pc-border
+      bg-pc-sheet max-sm:-bottom-4 max-sm:-mx-4 max-sm:-mb-4;
+  }
+  .pc-viz-tabs-end {
+    @apply ms-auto flex flex-none items-center gap-1 border-s border-pc-border px-3;
+  }
+  .pc-viz-tab {
+    @apply flex flex-none items-center border-e border-pc-border text-[13px] text-pc-text-2;
+  }
+  .pc-viz-tab:hover {
+    @apply bg-pc-surface-soft;
+  }
+  .pc-viz-tab-active {
+    @apply bg-pc-surface font-semibold text-pc-ink shadow-[inset_0_2px_0_var(--color-pc-brand)] hover:bg-pc-surface;
+  }
+  /* no charts yet: the empty state in the middle of the page */
+  .pc-viz.pc-viz-empty {
+    @apply flex flex-1 flex-col items-center justify-center;
+  }
+  .pc-viz-tab-link {
+    @apply block max-w-56 truncate px-4 py-2.5 text-inherit no-underline;
+  }
+  .pc-viz-tab-menu {
+    @apply -ms-2 me-1 grid size-6 place-items-center rounded-pc-control text-pc-muted hover:bg-pc-surface-soft
+      hover:text-pc-text;
+  }
+}
+
+/* ================= Print ================= */
+/* The app shell scrolls inside a fixed-height frame on screen; on paper it flows, without the sidebar, toolbars or
+   floating panels. Dark mode prints light (the tokens below), and colours print as drawn. */
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+  :root,
+  :root[data-pc-theme="dark"] {
+    color-scheme: light;
+    --color-pc-bg: #ffffff;
+    --color-pc-surface: #ffffff;
+    --color-pc-surface-alt: #f5f7fa;
+    --color-pc-sheet: #ffffff;
+    --color-pc-frame: #ffffff;
+    --color-pc-ink: #141824;
+    --color-pc-text: #31374a;
+    --color-pc-text-2: #3e465b;
+    --color-pc-muted: #6e7891;
+    --color-pc-muted-2: #9fa6bc;
+    --color-pc-muted-3: #cbd0dd;
+    --color-pc-border: #cbd0dd;
+    --color-pc-border-soft: #e3e6ed;
+    --color-pc-track: #e3e6ed;
+    --color-pc-brand: #19b394;
+    --color-pc-on-brand: #ffffff;
+    --color-pc-success: #0f9d6b;
+    --color-pc-warning: #e5780b;
+    --color-pc-danger: #fa3b1d;
+    --color-pc-chart-1: #19b394;
+    --color-pc-chart-2: #eda100;
+    --color-pc-chart-3: #e87ba4;
+    --color-pc-chart-4: #008300;
+    --color-pc-chart-5: #6250d6;
+    --color-pc-chart-6: #e34948;
+    --color-pc-chart-7: #2a78d6;
+    --color-pc-chart-8: #eb6834;
+  }
+  body {
+    background: #ffffff;
+  }
+  .pc-app,
+  .pc-main,
+  .pc-sheet,
+  .pc-content,
+  .pc-content-flush {
+    display: block;
+    height: auto;
+    overflow: visible;
+    padding: 0;
+    border-radius: 0;
+    background: #ffffff;
+  }
+  .pc-sidebar,
+  .pc-sidebar-backdrop,
+  .pc-offcanvas,
+  .pc-modal,
+  .pc-tooltip,
+  .pc-toast-viewport,
+  .pc-page-head [data-pc-trigger="sidebar"],
+  [data-viz-print-hide] {
+    display: none !important;
+  }
+  .pc-page-head {
+    padding: 0 0 4mm;
+  }
+
+  /* Visualize: rows of two cards (pages/response-visualize.js lays them out before printing), each row a plain block
+     kept on one page, as grids and columns break pages unreliably; without the script, one card per row. A tall table
+     may split, its head repeated on the next page. */
+  .pc-viz {
+    display: block;
+    max-width: none;
+    columns: auto;
+  }
+  .pc-viz > * {
+    max-width: none;
+    margin-bottom: 0;
+  }
+  .pc-viz > * + * {
+    margin-top: 4mm;
+  }
+  .pc-viz-scope {
+    display: flex;
+  }
+  .pc-viz-printed {
+    display: inline;
+    margin-inline-start: auto;
+  }
+  .pc-viz-card {
+    display: block;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  /* 16px between the two: the page script draws the charts to that width */
+  .pc-viz-print-row {
+    display: flex;
+    gap: 16px;
+    align-items: stretch;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .pc-viz-print-row > .pc-viz-card {
+    flex: 0 0 calc((100% - 16px) / 2);
+    min-width: 0;
+    padding: 20px;
+  }
+  .pc-viz-print-row .pc-viz-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pc-viz-card > * + * {
+    margin-top: 3mm;
+  }
+  .pc-viz-card:has(.pc-viz-heat, .pc-viz-answers li:nth-child(6)) {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+  .pc-viz-card thead {
+    display: table-header-group;
+  }
+  .pc-viz-card tr {
+    break-inside: avoid;
+  }
+  .pc-viz-card,
+  .pc-viz-card *,
+  .pc-chart svg {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .pc-viz-scroll {
+    overflow: visible;
+  }
+  /* ApexCharts writes its text and grid colours into the SVG when it draws; CSS outranks those attributes, so a chart
+     drawn in dark mode still prints in the light theme's ink. */
+  .pc-chart .apexcharts-text,
+  .pc-chart .apexcharts-legend-text,
+  .pc-chart .apexcharts-datalabel {
+    fill: #3e465b !important;
+    color: #3e465b !important;
+  }
+  .pc-chart .apexcharts-gridline,
+  .pc-chart .apexcharts-xaxis line,
+  .pc-chart .apexcharts-yaxis line {
+    stroke: #e3e6ed !important;
+  }
+  .pc-chart .apexcharts-pie-area,
+  .pc-chart .apexcharts-marker {
+    stroke: #ffffff !important;
+  }
+  .pc-chart .apexcharts-tooltip,
+  .pc-chart .apexcharts-xaxistooltip {
+    display: none !important;
   }
 }

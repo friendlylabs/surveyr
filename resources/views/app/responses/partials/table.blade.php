@@ -31,7 +31,7 @@
 
     {{-- as in the legacy app: the exports and Visualize at the end, the bulk pill beside them. Export opens its options
          (partials/export) for what the table lists; Export attachments (forms that take files) zips just the files in the
-         background; Visualize isn't built yet --}}
+         background; Visualize summarises the same responses, question by question --}}
     <x-slot:tools>
         <button type="button" class="pc-btn pc-btn-secondary pc-btn-icon" data-pc-trigger="modal" data-pc-target="#exportResponses" aria-label="{{ __('Export to Excel') }}" data-pc-tooltip="{{ __('Export to Excel') }}">
             <i class="fa-regular fa-file-excel text-base" aria-hidden="true"></i>
@@ -41,9 +41,9 @@
                 <i class="fa-regular fa-paperclip text-base" aria-hidden="true"></i>
             </button>
         @endif
-        <button type="button" class="pc-btn pc-btn-secondary pc-btn-icon" aria-label="{{ __('Visualize') }}" data-pc-tooltip="{{ __('Visualize') }}" onclick="underDevelopment(event)">
+        <a href="{{ route('forms.responses.visualize', [$form, ...App\Support\ResponsesQuery::carried(request())]) }}" class="pc-btn pc-btn-secondary pc-btn-icon" aria-label="{{ __('Visualize') }}" data-pc-tooltip="{{ __('Visualize') }}">
             <i class="fa-regular fa-chart-pie text-base" aria-hidden="true"></i>
-        </button>
+        </a>
     </x-slot:tools>
 
     {{-- anyone can export the ticked rows (the export options open for them); those who can edit the form archive or restore them --}}

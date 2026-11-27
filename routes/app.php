@@ -15,8 +15,11 @@ use App\Http\Controllers\App\FormsController;
 use App\Http\Controllers\App\FormSettingsController;
 use App\Http\Controllers\App\FormWebhooksController;
 use App\Http\Controllers\App\ProfileController;
+use App\Http\Controllers\App\ResponsesVisualizeController;
 use App\Http\Controllers\App\SpacesController;
 use App\Http\Controllers\App\SubmissionViewsController;
+use App\Http\Controllers\App\VisualizationChartsController;
+use App\Http\Controllers\App\VisualizationTabsController;
 use App\Http\Controllers\App\WorkspacesController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,8 +29,12 @@ Route::prefix('forms')->group(function () {
     FormBuilderController::routes();
     FormSettingsController::routes();
     FormWebhooksController::routes();
+    // before the responses: /{form}/responses/{submission} would otherwise catch /visualize
+    ResponsesVisualizeController::routes();
     FormResponsesController::routes();
     SubmissionViewsController::routes();
+    VisualizationTabsController::routes();
+    VisualizationChartsController::routes();
     // last: /{form} would otherwise catch the paths above
     FormOverviewController::routes();
 });

@@ -9,8 +9,8 @@ use App\Models\Submission;
 use App\Models\Upload;
 use App\Support\AttachmentsExport;
 use App\Support\ResponsesExport;
+use App\Support\ResponsesQuery;
 use App\Support\SubmissionFilters;
-use App\Support\SurveyAnswers;
 use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -243,18 +243,17 @@ class FormResponsesController extends Controller
      */
     private function listed(Request $request, Form $form): Builder
     {
-        $this->archived = $request->boolean('archived');
-        $this->questions = SurveyAnswers::questions($form->content);
+        $listing = ResponsesQuery::from($request, $form);
+        $this->archived = $listing->archived;
+        $this->questions = $listing->questions;
         [$this->sort, $this->direction] = $this->sorting($request);
 
-        $this->fields = SubmissionFilters::fields($this->questions);
-        $this->activeView = $request->filled('view') ? $form->views()->where('hash', $request->query('view'))->first() : null;
-        $this->filters = SubmissionFilters::normalise($this->requestedFilters($request) ?? $this->activeView?->filters, $this->fields);
-        $this->filterCount = SubmissionFilters::count($this->filters);
+        $this->fields = $listing->fields;
+        $this->activeView = $listing->activeView;
+        $this->filters = $listing->filters;
+        $this->filterCount = $listing->filterCount();
 
-        return $form->submissions()->getQuery()->{$this->archived ? 'archived' : 'active'}()
-            ->tap(fn (Builder $query) => SubmissionFilters::apply($query, $this->filters))
-            ->when($request->query('q'), fn (Builder $query, $q) => $query->where('data', 'like', '%'.addcslashes($q, '%_\\').'%'))
+        return $listing->query()
             ->when($this->sort === 'submitted', fn (Builder $query) => $query->orderBy('created_at', $this->direction))
             ->when(! in_array($this->sort, self::SORTS, true), fn (Builder $query) => $query->orderBy('data->'.$this->sort, $this->direction))
             ->orderBy('number', $this->sort === 'number' ? $this->direction : 'desc');
@@ -276,18 +275,6 @@ class FormResponsesController extends Controller
         ])->valid();
 
         return [$validated['sort'] ?? 'submitted', $validated['dir'] ?? 'desc'];
-    }
-
-    /** The panel's filters from ?filters= (base64url JSON), or null when there are none or they don't decode. */
-    private function requestedFilters(Request $request): ?array
-    {
-        $encoded = $request->query('filters');
-        if (! is_string($encoded) || $encoded === '') {
-            return null;
-        }
-        $decoded = json_decode((string) base64_decode(strtr($encoded, '-_', '+/'), true), true);
-
-        return is_array($decoded) ? $decoded : null;
     }
 
     /** Whether the table can sort on the question. */
