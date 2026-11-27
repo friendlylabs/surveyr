@@ -9,6 +9,8 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
+                // ApexCharts, on pages with a chart (<x-chart>)
+                'resources/js/charts.js',
                 // SurveyJS bundles, one per page type (<x-surveyjs entry="...">)
                 'resources/js/surveyjs/form.js',
                 'resources/js/surveyjs/creator.js',
