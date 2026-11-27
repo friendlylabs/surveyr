@@ -69,7 +69,7 @@ class RegistrationTest extends TestCase
         $this->actingAs($admin)->postJson(route('admin.users.store'), [
             'name' => 'Invited Person',
             'email' => 'invited@example.com',
-            'role_id' => Role::firstOrCreate(['name' => 'member'])->id,
+            'role' => Role::firstOrCreate(['name' => 'member'])->hash,
         ])->assertOk();
         $this->assertDatabaseHas('users', ['email' => 'invited@example.com']);
     }

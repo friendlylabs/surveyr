@@ -12,12 +12,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
+use Tests\Concerns\ConfiguresEmailVerification;
 use Tests\Concerns\ConfiguresRegistration;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
-    use ConfiguresRegistration, RefreshDatabase;
+    use ConfiguresEmailVerification, ConfiguresRegistration, RefreshDatabase;
 
     private function user(array $attributes = []): User
     {
@@ -89,6 +90,7 @@ class AuthTest extends TestCase
     public function test_register_creates_an_account_with_the_default_role_and_asks_them_to_confirm_their_email(): void
     {
         $this->withRegistration();
+        $this->withEmailVerification();
         Notification::fake();
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'member']); // an existing role that isn't the default
@@ -122,8 +124,52 @@ class AuthTest extends TestCase
             ->assertJsonValidationErrors(['name', 'email', 'password']);
     }
 
+    public function test_self_hosted_sign_ups_need_no_email_confirmation(): void
+    {
+        $this->withRegistration();
+        Notification::fake();
+
+        $this->postJson(route('auth.store'), [
+            'name' => 'Jane Doe',
+            'email' => 'jane@example.com',
+            'password' => 'a-good-password',
+            'password_confirmation' => 'a-good-password',
+        ])->assertOk()->assertJson(['redirect' => route('dashboard')]);
+
+        Notification::assertNothingSent();
+        $this->get(route('dashboard'))->assertOk();
+    }
+
+    public function test_signing_in_records_the_time(): void
+    {
+        $user = $this->user();
+        $this->assertNull($user->last_login_at);
+
+        $this->postJson(route('auth.authenticate'), ['email' => $user->email, 'password' => 'secret-password'])->assertOk();
+
+        $this->assertNotNull($user->fresh()->last_login_at);
+    }
+
+    public function test_a_disabled_account_cannot_sign_in(): void
+    {
+        $user = $this->user(['disabled_at' => now()]);
+
+        $this->postJson(route('auth.authenticate'), ['email' => $user->email, 'password' => 'secret-password'])
+            ->assertStatus(422)->assertJsonValidationErrors(['email' => __('This account is disabled. Ask an admin to enable it.')]);
+        $this->assertGuest();
+    }
+
+    public function test_a_disabled_account_is_signed_out_on_its_next_request(): void
+    {
+        $user = $this->user(['disabled_at' => now()]);
+
+        $this->actingAs($user)->get(route('dashboard'))->assertRedirect(route('auth.login'));
+        $this->assertGuest();
+    }
+
     public function test_the_verification_link_confirms_the_email(): void
     {
+        $this->withEmailVerification();
         Notification::fake();
         $user = $this->user(['email_verified_at' => null]);
 
@@ -145,6 +191,7 @@ class AuthTest extends TestCase
 
     public function test_a_tampered_verification_link_is_rejected(): void
     {
+        $this->withEmailVerification();
         $user = $this->user(['email_verified_at' => null]);
 
         $this->actingAs($user)->get(route('auth.verify-email.verify', ['id' => $user->id, 'hash' => sha1($user->email)]))

@@ -16,7 +16,7 @@ use Tests\TestCase;
 /**
  * WorkspacesTest
  *
- * config/surveyr.php `workspaces`: self-hosted (one shared workspace) and SaaS (a workspace per account).
+ * config/surveyr.php `workspaces`: one shared workspace (the default) and multiple (a workspace per account).
  */
 class WorkspacesTest extends TestCase
 {
@@ -79,7 +79,7 @@ class WorkspacesTest extends TestCase
         $this->actingAs($admin)->postJson(route('admin.users.store'), [
             'name' => 'Ivy Invited',
             'email' => 'ivy@example.com',
-            'role_id' => Role::firstOrCreate(['name' => 'member'])->id,
+            'role' => Role::firstOrCreate(['name' => 'member'])->hash,
         ])->assertOk();
 
         $invited = User::where('email', 'ivy@example.com')->firstOrFail();
@@ -173,7 +173,7 @@ class WorkspacesTest extends TestCase
 
         $this->assertTrue(Gate::forUser($installAdmin)->allows('manage-workspace'));
 
-        // SaaS: admin is a platform role, with no pass into a workspace it isn't a member of
+        // multiple workspaces: admin is an install-wide role, with no pass into a workspace it isn't a member of
         $this->multipleWorkspaces();
         $this->assertFalse(Gate::forUser($installAdmin)->allows('manage-workspace'));
         $this->assertTrue(Gate::forUser($installAdmin)->allows('admin'));

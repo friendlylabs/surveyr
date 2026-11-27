@@ -6,15 +6,18 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Fortify;
 
 /**
@@ -29,7 +32,7 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // AuthController owns the auth routes (see routes/web.php); Fortify supplies the actions behind them
+        // Auth\AuthController owns the auth routes (routes/auth.php); Fortify supplies the actions behind them
         Fortify::ignoreRoutes();
     }
 
@@ -42,6 +45,20 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
+
+        // the usual email + password check, but a disabled account is turned away (only once the password is right,
+        // so it says nothing about accounts to someone guessing)
+        Fortify::authenticateUsing(function (Request $request) {
+            $user = User::where('email', $request->input(Fortify::username()))->first();
+            if (! $user || ! Hash::check((string) $request->input('password'), $user->password)) {
+                return null;
+            }
+            if ($user->isDisabled()) {
+                throw ValidationException::withMessages([Fortify::username() => __('This account is disabled. Ask an admin to enable it.')]);
+            }
+
+            return $user;
+        });
 
         // reset emails link to our route name, not Fortify's password.reset
         ResetPassword::createUrlUsing(fn ($user, string $token) => route('auth.reset-password', [

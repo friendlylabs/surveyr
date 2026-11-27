@@ -5,9 +5,10 @@ namespace App\Models\Concerns;
 /**
  * HasHash
  *
- * For models that show up in urls: a random `hash` column is filled on insert and used as the route key, so urls read
- * /users/3f9a0c... instead of exposing sequential ids. Uses Eloquent's unique-id insert hook rather than a `creating`
- * listener, so it still works where model events are muted (seeders with WithoutModelEvents).
+ * For every record that can be seen on a page (urls, links, embeds, the API): a random `hash` column is filled on
+ * insert and used as the public and route key, so urls read /users/3f9a0c... instead of exposing sequential ids. Uses
+ * Eloquent's unique-id insert hook rather than a `creating` listener, so it still works where model events are muted
+ * (seeders with WithoutModelEvents).
  */
 trait HasHash
 {

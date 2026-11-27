@@ -39,7 +39,15 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
+            'disabled_at' => 'datetime',
+            'last_login_at' => 'datetime',
         ];
+    }
+
+    /** Disabled by an admin: can't sign in (users are disabled, never deleted). */
+    public function isDisabled(): bool
+    {
+        return $this->disabled_at !== null;
     }
 
     /** True once two-factor authentication is set up and confirmed with a first code. */

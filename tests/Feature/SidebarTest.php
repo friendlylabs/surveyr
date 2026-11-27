@@ -30,7 +30,7 @@ class SidebarTest extends TestCase
 
     public function test_an_item_without_a_route_opens_the_under_development_dialog(): void
     {
-        $this->actingAs(User::factory()->admin()->create())->get(route('dashboard'))
+        $this->blade('<x-sidebar.item route="admin.not-built-yet" icon="gear" label="Soon" />')
             ->assertSee('onclick="underDevelopment(event)"', false);
     }
 
