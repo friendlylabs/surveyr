@@ -135,7 +135,9 @@ return [
     |
     |   registration       public sign-up at /auth/register; its rules (on/off, invitation-only, default role,
     |                      allowed email domains) are config/auth.php `registration`
-    |   emailVerification  new and changed emails must be confirmed before the app opens
+    |   emailVerification  new and changed emails must be confirmed before the app opens; on with multiple
+    |                      workspaces by default (follows SURVEYR_MULTIPLE_WORKSPACES; SURVEYR_CONFIRM_EMAILS
+    |                      overrides it), since with one workspace accounts are added by an admin
     |   'email-link'       passwordless sign-in with a one-time emailed link
     |   twoFactorAuthentication  authenticator-app codes at sign-in, managed on the profile page
     |   passkeys           sign in with the device (fingerprint, face, security key), managed on the profile page
@@ -145,15 +147,16 @@ return [
     |
     */
 
-    'features' => [
+    // email confirmation matters with open sign-ups (multiple workspaces); one-workspace installs skip it
+    'features' => array_values(array_filter([
         Features::registration(),
         Features::resetPasswords(),
-        Features::emailVerification(),
+        env('SURVEYR_CONFIRM_EMAILS', env('SURVEYR_MULTIPLE_WORKSPACES', false)) ? Features::emailVerification() : null,
         Features::updateProfileInformation(),
         Features::updatePasswords(),
         Features::twoFactorAuthentication(['confirm' => true, 'confirmPassword' => true]),
         Features::passkeys(['confirmPassword' => true]),
         'email-link',
-    ],
+    ])),
 
 ];

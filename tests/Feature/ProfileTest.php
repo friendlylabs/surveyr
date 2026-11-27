@@ -7,11 +7,12 @@ use App\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
+use Tests\Concerns\ConfiguresEmailVerification;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
 {
-    use RefreshDatabase;
+    use ConfiguresEmailVerification, RefreshDatabase;
 
     public function test_update_the_name(): void
     {
@@ -26,6 +27,7 @@ class ProfileTest extends TestCase
 
     public function test_a_new_email_must_be_confirmed(): void
     {
+        $this->withEmailVerification();
         Notification::fake();
         $user = User::factory()->role('member')->create(['email' => 'jane@example.com']);
 
