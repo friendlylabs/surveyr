@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
             ],
         ]);
 
-        // the admin owns the workspace (self-hosted: the one everyone joins)
+        // the admin owns the workspace (with one workspace, the one everyone joins)
         Workspaces::provision(User::factory()->admin()->create([
             'name' => 'Admin User',
             'email' => 'admin@admin.com',

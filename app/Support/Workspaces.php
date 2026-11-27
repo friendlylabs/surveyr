@@ -10,18 +10,18 @@ use Illuminate\Support\Facades\DB;
 /**
  * Workspaces
  *
- * The workspace rules, from config/surveyr.php `workspaces`. Self-hosted (multiple off): one workspace, which every
- * account joins (its first account as Owner). SaaS (multiple on): each new account gets a workspace of its own.
+ * The workspace rules, from config/surveyr.php `workspaces`. Multiple off (the default): one workspace, which every
+ * account joins (its first account as Owner). Multiple on: each new account gets a workspace of its own.
  */
 class Workspaces
 {
-    /** True when accounts get workspaces of their own (SaaS); false for the self-hosted single workspace. */
+    /** True when accounts get workspaces of their own; false for the single shared workspace. */
     public static function multiple(): bool
     {
         return (bool) config('surveyr.workspaces.multiple', false);
     }
 
-    /** The self-hosted install's one workspace: the oldest, created (unowned) on first use. */
+    /** The install's one shared workspace: the oldest, created (unowned) on first use. */
     public static function default(): Workspace
     {
         return Workspace::oldest('id')->first()
@@ -29,8 +29,8 @@ class Workspaces
     }
 
     /**
-     * Give a new account its workspace and make it current: self-hosted, a seat in the one workspace (as Owner when
-     * nobody owns it yet); SaaS, a workspace of its own, as Owner.
+     * Give a new account its workspace and make it current: with one workspace, a seat in it (as Owner when
+     * nobody owns it yet); with multiple, a workspace of its own, as Owner.
      */
     public static function provision(User $user): Workspace
     {

@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * Workspace
  *
- * The tenant. Self-hosted installs have one (App\Support\Workspaces::default()); with multiple workspaces on (SaaS)
- * each sign-up gets its own. Workspace data models use App\Models\Concerns\BelongsToWorkspace.
+ * The tenant. By default an install has one (App\Support\Workspaces::default()); with multiple workspaces on, each
+ * sign-up gets its own. Workspace data models use App\Models\Concerns\BelongsToWorkspace.
  */
 #[Fillable(['name', 'locale'])]
 #[Hidden(['id', 'owner_id'])]
