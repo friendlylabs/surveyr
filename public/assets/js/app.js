@@ -333,6 +333,90 @@ function fillForm(form, fields) {
   });
 
   /*
+   * Bulk actions (x-table bulk slot): ticking rows slides the selection pill into the toolbar's end, with the count and
+   * the actions. Select-all ticks the page's rows (a dash when only some are). A [data-pc-bulk-form="name"] form posts the
+   * ticked values as name[]; a button's data-pc-bulk-confirm ("singular|plural", :count) keeps its confirm title in step.
+   */
+  function syncBulk(list) {
+    const boxes = pc.qsa("[data-pc-select]", list);
+    const ticked = boxes.filter((box) => box.checked).length;
+    const all = list.querySelector("[data-pc-select-all]");
+    if (all) {
+      all.checked = boxes.length > 0 && ticked === boxes.length;
+      all.indeterminate = ticked > 0 && ticked < boxes.length;
+    }
+    const bar = list.querySelector("[data-pc-bulk]");
+    if (!bar) return;
+    list.toggleAttribute("data-pc-selecting", ticked > 0);
+    // the select-all box appears with the first tick and stays until the list is reloaded
+    if (ticked > 0) list.setAttribute("data-pc-armed", "");
+    if (!ticked) return;
+
+    // the number rolls up or down to its new value
+    const number = bar.querySelector("[data-pc-bulk-number]");
+    const before = Number(number.textContent) || 0;
+    if (before !== ticked) {
+      number.textContent = ticked;
+      number.classList.remove("pc-roll-up", "pc-roll-down");
+      void number.offsetWidth;
+      if (before) number.classList.add(ticked > before ? "pc-roll-up" : "pc-roll-down");
+    }
+    // actions for a row state (data-pc-bulk-for) show only while a ticked row is in it
+    const states = new Set(boxes.filter((box) => box.checked).map((box) => box.dataset.pcState));
+    pc.qsa("[data-pc-bulk-for]", bar).forEach((action) => {
+      action.hidden = !action.getAttribute("data-pc-bulk-for").split(" ").some((state) => states.has(state));
+    });
+    // one action left: it shows as a plain button in the pill, not behind the Actions menu
+    const menu = bar.querySelector(".pc-dropdown-menu");
+    const single = pc.qsa(":scope > :is(form, button, a)", menu).filter((action) => !action.hidden).length === 1;
+    if (single !== bar.hasAttribute("data-pc-single")) {
+      if (window.pcDropdown) pcDropdown.closeAll();
+      menu.removeAttribute("style");
+      bar.toggleAttribute("data-pc-single", single);
+      menu.setAttribute("role", single ? "group" : "menu");
+      menu.setAttribute("aria-hidden", String(!single));
+    }
+    pc.qsa("[data-pc-bulk-confirm]", bar).forEach((button) => {
+      const [one, many] = button.getAttribute("data-pc-bulk-confirm").split("|");
+      button.setAttribute("data-pc-confirm", (ticked === 1 ? one : many || one).split(":count").join(String(ticked)));
+    });
+  }
+
+  document.addEventListener("change", (e) => {
+    const box = e.target;
+    const list = box.closest?.("[data-pc-list]");
+    if (!list || !box.matches("[data-pc-select], [data-pc-select-all]")) return;
+    if (box.matches("[data-pc-select-all]")) pc.qsa("[data-pc-select]", list).forEach((row) => { row.checked = box.checked; });
+    syncBulk(list);
+  });
+
+  // Esc inside a list with ticked rows clears them (menus and dialogs handle their own Esc first)
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || e.defaultPrevented) return;
+    const list = e.target.closest?.("[data-pc-list][data-pc-selecting]");
+    if (!list || e.target.closest(".pc-dropdown-menu, .pc-select-wrap")) return;
+    pc.qsa("[data-pc-select]", list).forEach((box) => { box.checked = false; });
+    syncBulk(list);
+    list.querySelector("[data-pc-select-all]")?.focus();
+  });
+
+  // capture: fills in the ticked values before the form's own onsubmit (submitForm) reads it
+  document.addEventListener("submit", (e) => {
+    const form = e.target.closest("[data-pc-bulk-form]");
+    if (!form) return;
+    const name = form.getAttribute("data-pc-bulk-form");
+    pc.qsa("input[data-pc-bulk-value]", form).forEach((input) => input.remove());
+    pc.qsa("[data-pc-select]:checked", form.closest("[data-pc-list]")).forEach((box) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = `${name}[]`;
+      input.value = box.value;
+      input.setAttribute("data-pc-bulk-value", "");
+      form.append(input);
+    });
+  }, true);
+
+  /*
    * Lists update in place: inside an x-table list ([data-pc-list]) the search (as you type), filters, tabs, page links
    * and other links to this same page fetch that page and swap only the list; the URL follows (history), so reload,
    * sharing and back / forward still work. Anything unexpected falls back to a normal page load.

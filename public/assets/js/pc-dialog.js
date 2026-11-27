@@ -21,12 +21,12 @@
 (function () {
   // per type: the Phosphor icon by the title, and the confirm button's pc-btn-* variant
   const TYPES = {
-    primary: { icon: "ph-sparkle", button: "brand" },
-    question: { icon: "ph-question", button: "brand" },
-    info: { icon: "ph-info", button: "info-solid" },
-    success: { icon: "ph-check-circle", button: "success-solid" },
-    warning: { icon: "ph-warning", button: "warning-solid" },
-    danger: { icon: "ph-warning-octagon", button: "danger-solid" },
+    primary: { icon: "fa-sparkles", button: "brand" },
+    question: { icon: "fa-circle-question", button: "brand" },
+    info: { icon: "fa-circle-info", button: "info-solid" },
+    success: { icon: "fa-circle-check", button: "success-solid" },
+    warning: { icon: "fa-triangle-exclamation", button: "warning-solid" },
+    danger: { icon: "fa-octagon-exclamation", button: "danger-solid" },
   };
 
   let seq = 0;
@@ -70,7 +70,7 @@
           <div class="pc-dialog-body">
             <div class="pc-dialog-head">
               ${title ? `<div id="${titleId}" class="pc-dialog-title">${pc.escapeHtml(title)}</div>` : ""}
-              <i class="ph-duotone ${TYPES[type].icon} pc-dialog-icon pc-dialog-icon-${type}" aria-hidden="true"></i>
+              <i class="fa-duotone ${TYPES[type].icon} pc-dialog-icon pc-dialog-icon-${type}" aria-hidden="true"></i>
             </div>
             ${text ? `<div id="${textId}" class="pc-dialog-text">${pc.escapeHtml(text)}</div>` : ""}
             <div class="pc-dialog-actions">

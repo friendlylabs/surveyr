@@ -2,7 +2,7 @@
 <x-layout-auth :title="__('Confirm your email')">
     <section class="pc-auth-card items-center text-center" aria-labelledby="title">
         <span class="pc-auth-badge">
-            <i class="ph ph-envelope-simple text-[22px]" aria-hidden="true"></i>
+            <i class="fa-regular fa-envelope text-[22px]" aria-hidden="true"></i>
         </span>
         <div>
             <h1 id="title" class="pc-auth-title">{{ __('Confirm your email') }}</h1>

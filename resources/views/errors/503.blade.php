@@ -6,5 +6,5 @@
 @section('message', __('We\'re doing some maintenance right now. Check back in a few minutes.'))
 
 @section('actions')
-    <button type="button" class="pc-btn pc-btn-primary pc-btn-pill" onclick="location.reload()"><i class="ph ph-arrow-clockwise text-base" aria-hidden="true"></i>{{ __('Try again') }}</button>
+    <button type="button" class="pc-btn pc-btn-primary pc-btn-pill" onclick="location.reload()"><i class="fa-regular fa-arrow-rotate-right text-base" aria-hidden="true"></i>{{ __('Try again') }}</button>
 @endsection

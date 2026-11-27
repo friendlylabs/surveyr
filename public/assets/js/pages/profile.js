@@ -205,12 +205,12 @@
       li.className = "pc-section-row";
       li.dataset.passkeyRow = "";
       li.innerHTML = `
-        <span class="pc-empty-icon mb-0 size-9 flex-none"><i class="ph ph-fingerprint text-lg" aria-hidden="true"></i></span>
+        <span class="pc-empty-icon mb-0 size-9 flex-none"><i class="fa-regular fa-fingerprint text-lg" aria-hidden="true"></i></span>
         <div class="min-w-0 flex-1">
           <div class="truncate text-[13px] font-medium">${pc.escapeHtml(passkey.name)}</div>
           <div class="font-pc-mono text-[11px] text-pc-muted">${pc.escapeHtml(pc.t("Added just now · not used yet"))}</div>
         </div>
-        <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm text-pc-danger-strong" aria-label="${pc.escapeHtml(pc.t("Remove :name", { name: passkey.name }))}" data-pc-tooltip="${pc.escapeHtml(pc.t("Remove"))}" data-passkey-action="remove" data-passkey-id="${pc.escapeHtml(passkey.id)}"><i class="ph ph-trash text-base" aria-hidden="true"></i></button>`;
+        <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm text-pc-danger-strong" aria-label="${pc.escapeHtml(pc.t("Remove :name", { name: passkey.name }))}" data-pc-tooltip="${pc.escapeHtml(pc.t("Remove"))}" data-passkey-action="remove" data-passkey-id="${pc.escapeHtml(passkey.id)}"><i class="fa-regular fa-trash-can text-base" aria-hidden="true"></i></button>`;
       return li;
     }
 

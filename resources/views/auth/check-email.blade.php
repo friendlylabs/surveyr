@@ -1,7 +1,7 @@
 <x-layout-auth :title="__('Check your email')">
     <section class="pc-auth-card items-center text-center" aria-labelledby="title">
         <span class="pc-auth-badge">
-            <i class="ph ph-envelope-simple text-[22px]" aria-hidden="true"></i>
+            <i class="fa-regular fa-envelope text-[22px]" aria-hidden="true"></i>
         </span>
         <div>
             <h1 id="title" class="pc-auth-title">{{ __('Check your email') }}</h1>
@@ -25,7 +25,7 @@
     </section>
 
     <a href="{{ route('auth.login') }}" class="pc-auth-link inline-flex items-center gap-1.5 text-[13px]">
-        <i class="ph ph-arrow-left text-sm rtl:-scale-x-100" aria-hidden="true"></i>{{ __('Back to sign in') }}
+        <i class="fa-regular fa-arrow-left text-sm rtl:-scale-x-100" aria-hidden="true"></i>{{ __('Back to sign in') }}
     </a>
 
     @push('body')

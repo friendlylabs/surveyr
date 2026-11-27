@@ -7,6 +7,6 @@
 <form method="POST" action="{{ $action }}" onsubmit="submitForm(event)" class="inline-flex">
     <button type="submit" {{ $attributes->class('pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm text-pc-danger-strong') }} aria-label="{{ $label }}" data-pc-tooltip="{{ __('Delete') }}"
         data-pc-confirm="{{ $confirm }}" data-pc-confirm-text="{{ $text }}" data-pc-confirm-icon="danger" data-pc-confirm-button="{{ __('Delete') }}">
-        <i class="ph ph-trash text-base" aria-hidden="true"></i>
+        <i class="fa-regular fa-trash-can text-base" aria-hidden="true"></i>
     </button>
 </form>

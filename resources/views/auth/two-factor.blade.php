@@ -4,7 +4,7 @@
         @csrf
 
         <span class="pc-auth-badge">
-            <i class="ph ph-shield-check text-[22px]" aria-hidden="true"></i>
+            <i class="fa-regular fa-shield-check text-[22px]" aria-hidden="true"></i>
         </span>
         <div>
             <h1 class="pc-auth-title">{{ __('Two-factor authentication') }}</h1>
@@ -32,7 +32,7 @@
     </form>
 
     <a href="{{ route('auth.login') }}" class="pc-auth-link inline-flex items-center gap-1.5 text-[13px]">
-        <i class="ph ph-arrow-left text-sm rtl:-scale-x-100" aria-hidden="true"></i>{{ __('Back to sign in') }}
+        <i class="fa-regular fa-arrow-left text-sm rtl:-scale-x-100" aria-hidden="true"></i>{{ __('Back to sign in') }}
     </a>
 
     @push('body')

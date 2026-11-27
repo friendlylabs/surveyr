@@ -48,14 +48,13 @@
 
         <script>window.pcStrings = @json(App\Support\Locales::strings(), JSON_FORCE_OBJECT);</script>
 
-        <script src="{{ asset('assets/js/pc-core.js') }}" defer></script>
-        <script src="{{ asset('assets/js/pc-loader.js') }}" defer></script>
-        <script src="{{ asset('assets/js/pc-theme.js') }}" defer></script>
-        <script src="{{ asset('assets/js/pc-toast.js') }}" defer></script>
-        <script src="{{ asset('assets/js/pc-dialog.js') }}" defer></script>
-        <script src="{{ asset('assets/js/pc-password.js') }}" defer></script>
-        <script src="{{ asset('assets/js/app.js') }}" defer></script>
-        <script src="{{ asset('assets/js/pages/auth.js') }}" defer></script>
+        <script src="@asset('assets/js/pc-core.js')" defer></script>
+        <script src="@asset('assets/js/pc-theme.js')" defer></script>
+        <script src="@asset('assets/js/pc-toast.js')" defer></script>
+        <script src="@asset('assets/js/pc-dialog.js')" defer></script>
+        <script src="@asset('assets/js/pc-password.js')" defer></script>
+        <script src="@asset('assets/js/app.js')" defer></script>
+        <script src="@asset('assets/js/pages/auth.js')" defer></script>
 
         @stack('body')
     </body>

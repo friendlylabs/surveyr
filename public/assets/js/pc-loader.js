@@ -1,8 +1,8 @@
 /**
  * pc-loader.js — the full-page loader (<x-page-loader />).
- * The layout renders it in data-pc-state="loading"; app.css only fades it in after a short delay, so a page that's
- * ready quickly never shows it. This file finishes it once the page is ready, and starts it again when the user
- * leaves for another page: a same-tab link to this site, or a form that submits the normal (non-AJAX) way.
+ * The layout renders it in data-pc-state="loading", so it's up from the page's first paint. This file finishes it once
+ * the page has fully loaded (images, fonts and scripts included), and fades it back in over the page the moment the
+ * user leaves for another: a same-tab link to this site, or a form that submits the normal (non-AJAX) way.
  * Markup contract:
  *   <div class="pc-loader pc-page-loader" data-pc-component="page-loader" data-pc-state="loading|done">
  *     ... <div class="pc-loader-progress"><span></span></div> ...
@@ -14,19 +14,20 @@
   const loader = document.querySelector('[data-pc-component="page-loader"]');
   if (!loader) return;
 
-  /** Start the loader again; a navigation that finishes inside the fade-in delay still never shows it. */
+  /** Fade the loader in over the current page, the line starting over empty. */
   function show() {
     loader.getAnimations().forEach((animation) => animation.cancel());
     loader.dataset.pcState = "done";
     // data-pc-restart drops every scene animation for one reflow, so the line starts over empty (app.css warm-up)
-    // and the fade-in delay and progress restart from zero
+    // and the progress restarts from zero
     loader.dataset.pcRestart = "";
     void loader.offsetWidth;
     delete loader.dataset.pcRestart;
     loader.dataset.pcState = "loading";
+    loader.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 150, easing: "ease-out" });
   }
 
-  /** Fill the progress bar and fade out; skipped straight to hidden if it never became visible. */
+  /** Fill the progress bar and fade out. */
   function hide() {
     if (loader.dataset.pcState === "done") return;
     const opacity = Number(getComputedStyle(loader).opacity);
@@ -34,8 +35,10 @@
     if (opacity > 0) {
       loader.animate([{ visibility: "visible", opacity }, { visibility: "visible", opacity: 0 }], {
         duration: 260,
+        // the delay lets the progress bar finish; "backwards" holds the loader up through it instead of blinking out
         delay: 160,
         easing: "ease",
+        fill: "backwards",
       });
     }
   }
@@ -70,8 +73,8 @@
     if (event.persisted) hide();
   });
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", hide, { once: true });
-  else hide();
+  if (document.readyState === "complete") hide();
+  else window.addEventListener("load", hide, { once: true });
 
   window.pcPageLoader = { show, hide };
 })();

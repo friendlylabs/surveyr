@@ -1,6 +1,4 @@
 @import 'tailwindcss';
-@import '@phosphor-icons/web/regular';
-@import '@phosphor-icons/web/duotone';
 @import './vendor/fontawesome/all.css' layer(base); /* Font Awesome Pro 6.6.0, from the legacy app */
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -52,18 +50,18 @@
 
   /* The app frame and sidebar: dark in both themes */
   --color-pc-frame: #0c0c0c;
-  --color-pc-sheet: #ffffff; /* the app shell's content sheet */
+  --color-pc-sheet: #ffffff;
   --color-pc-sidebar-text: #cbd0dd;
   --color-pc-sidebar-muted: #8a94ad;
   --color-pc-sidebar-strong: #ffffff;
   --color-pc-sidebar-hover: rgb(255 255 255 / 0.05);
   --color-pc-sidebar-active: rgb(255 255 255 / 0.09);
   --color-pc-sidebar-border: rgb(255 255 255 / 0.08);
-  --color-pc-sidebar-raised: var(--color-pc-frame); /* menus opened from the sidebar: the sidebar's own colour */
+  --color-pc-sidebar-raised: var(--color-pc-frame);
   --color-pc-sidebar-danger: #f48270;
 
   --color-pc-scrim: rgb(15 17 26 / 0.25);
-  --color-pc-scrim-soft: rgb(15 17 26 / 0.1); /* the light veil behind floating panels */
+  --color-pc-scrim-soft: rgb(15 17 26 / 0.1);
   --color-pc-text: #31374a;
   --color-pc-text-2: #3e465b;
   --color-pc-muted: #6e7891;
@@ -125,10 +123,29 @@
   --animate-pc-fade-up: pc-fade-up 0.18s ease;
   --animate-pc-slide-in: pc-slide-in 0.22s ease;
   --animate-pc-slide-in-start: pc-slide-in-start 0.22s ease;
+  --animate-pc-slide-out: pc-slide-out 0.18s ease-in forwards;
+  --animate-pc-slide-out-start: pc-slide-out-start 0.18s ease-in forwards;
+  --animate-pc-fade-out: pc-fade-out 0.18s ease-in forwards;
   --animate-pc-drop: pc-drop 0.14s ease;
   --animate-pc-toast-in: pc-toast-in 0.2s ease;
   --animate-pc-fade: pc-fade 0.18s ease;
   --animate-pc-sheet-up: pc-sheet-up 0.22s ease;
+  --animate-pc-bulk-in: pc-bulk-in 0.26s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --animate-pc-roll-up: pc-roll-up 0.18s ease-out;
+  --animate-pc-roll-down: pc-roll-down 0.18s ease-out;
+
+  @keyframes pc-bulk-in {
+    from { opacity: 0; transform: translateY(6px) scale(0.92); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes pc-roll-up {
+    from { opacity: 0; transform: translateY(70%); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes pc-roll-down {
+    from { opacity: 0; transform: translateY(-70%); }
+    to { opacity: 1; transform: none; }
+  }
 
   @keyframes pc-fade-up {
     from { opacity: 0; transform: translateY(8px); }
@@ -141,6 +158,18 @@
   @keyframes pc-slide-in-start {
     from { transform: translateX(-100%); }
     to { transform: none; }
+  }
+  @keyframes pc-slide-out {
+    from { transform: none; }
+    to { transform: translateX(100%); }
+  }
+  @keyframes pc-slide-out-start {
+    from { transform: none; }
+    to { transform: translateX(-100%); }
+  }
+  @keyframes pc-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
   }
   @keyframes pc-sheet-up {
     from { transform: translateY(100%); }
@@ -169,9 +198,9 @@
   :root[data-pc-theme="dark"] {
     color-scheme: dark;
 
-    --color-pc-bg: #0f111a;
+    --color-pc-bg: #0c0c0c;
     --color-pc-surface: #141824;
-    --color-pc-surface-alt: #0f111a;
+    --color-pc-surface-alt: #0c0c0c;
     --color-pc-surface-soft: #222834;
     --color-pc-surface-sunken: #31374a;
     --color-pc-ink: #eff2f6;
@@ -197,7 +226,7 @@
     --color-pc-brand: #83d66f;
     --color-pc-brand-soft: #283a31;
     --color-pc-brand-ink: #a6e39a;
-    --color-pc-on-brand: #0f111a;
+    --color-pc-on-brand: #0c0c0c;
 
     --color-pc-success: #4fd1a1;
     --color-pc-success-line: #3fb88c;
@@ -321,6 +350,13 @@
   html.pc-overlay-scroll body *::-webkit-scrollbar {
     display: none;
   }
+  /* data-pc-scrollbar="y": no sideways bar on touch screens either (they swipe) */
+  [data-pc-scrollbar="y"] {
+    scrollbar-width: none;
+  }
+  [data-pc-scrollbar="y"]::-webkit-scrollbar {
+    display: none;
+  }
   html.pc-scrollbar-dragging,
   html.pc-scrollbar-dragging * {
     cursor: default !important;
@@ -404,6 +440,10 @@
   .pc-page-title {
     @apply min-w-0 truncate text-2xl leading-tight font-semibold tracking-[-0.02em] text-pc-ink max-sm:text-xl;
   }
+  /* <x-layout-app subtitle="...">: a muted line under the title */
+  .pc-page-subtitle {
+    @apply mt-0.5 truncate text-[13px] text-pc-muted;
+  }
   .pc-header-chip {
     @apply flex flex-none items-center gap-2 rounded-pc-control border border-pc-border px-2.5 py-1 text-[13px] max-md:hidden;
   }
@@ -472,7 +512,7 @@
       text-pc-sidebar-text no-underline transition-colors hover:bg-pc-sidebar-hover hover:text-pc-sidebar-strong;
   }
   .pc-nav-icon {
-    @apply inline-flex w-5 flex-none justify-center text-[15px] text-pc-sidebar-muted;
+    @apply inline-flex w-5 flex-none justify-center text-[12px] text-pc-sidebar-muted;
   }
   .pc-nav-item-active {
     @apply bg-pc-sidebar-active font-medium text-pc-sidebar-strong hover:bg-pc-sidebar-active;
@@ -587,6 +627,9 @@
   .pc-btn-success {
     @apply border-pc-success-line bg-pc-surface text-pc-success-ink hover:bg-pc-success-bg;
   }
+  .pc-btn-warning {
+    @apply border-pc-warning-border bg-pc-surface text-pc-warning-text hover:bg-pc-warning-bg hover:text-pc-warning-text;
+  }
   .pc-btn-danger {
     @apply border-pc-danger bg-pc-surface text-pc-danger-ink hover:bg-pc-danger-bg;
   }
@@ -663,6 +706,69 @@
   .pc-pill {
     @apply rounded-full bg-pc-danger-bg px-[7px] font-pc-mono text-[11px] leading-[18px] font-medium text-pc-danger-ink;
   }
+  /* Plain status (prefer it to badges in tables and lists): a coloured dot and text, no pill.
+       <span class="pc-status pc-status-success"><span class="pc-dot pc-dot-sm"></span>Open</span> */
+  .pc-status {
+    @apply inline-flex items-center gap-1.5 text-[13px] font-medium whitespace-nowrap text-pc-text-2;
+  }
+  .pc-status > .pc-dot {
+    @apply bg-current;
+  }
+  /* The builder's save state in the page head (pages/builder.js sets data-state): a dot and a word, like pc-status;
+     the dot pulses while saving. Saved is the quiet default, so it shows nothing. */
+  .pc-save-status {
+    @apply inline-flex items-center gap-1.5 px-2 text-[13px] font-medium whitespace-nowrap text-pc-muted;
+  }
+  .pc-save-status[data-state="saved"] {
+    @apply hidden;
+  }
+  .pc-save-status > .pc-dot {
+    @apply bg-current;
+  }
+  .pc-save-status[data-state="saved"] > .pc-dot {
+    @apply text-pc-success-ink;
+  }
+  .pc-save-status[data-state="saving"] > .pc-dot {
+    @apply animate-pulse text-pc-info;
+  }
+  .pc-save-status[data-state="unsaved"] {
+    @apply text-pc-text-2;
+  }
+  .pc-save-status[data-state="unsaved"] > .pc-dot {
+    @apply text-pc-warning-text;
+  }
+  .pc-save-status:is([data-state="error"], [data-state="conflict"]) {
+    @apply text-pc-danger-ink;
+  }
+  /* The builder (app/forms/build): the SurveyJS Creator fills the sheet below the page head. */
+  .pc-builder {
+    @apply relative min-h-0 min-w-0 flex-1 border-t border-pc-border-soft;
+  }
+  .pc-builder > * {
+    @apply h-full;
+  }
+  .pc-preview {
+    @apply min-h-0 flex-1 overflow-y-auto border-t border-pc-border-soft;
+  }
+  .pc-builder-notice {
+    @apply flex flex-none items-center gap-2 border-t border-pc-warning-border bg-pc-warning-bg px-7 py-2.5 text-[13px]
+      text-pc-warning-text;
+  }
+  .pc-status-success {
+    @apply text-pc-success-ink;
+  }
+  .pc-status-warning {
+    @apply text-pc-warning-text;
+  }
+  .pc-status-danger {
+    @apply text-pc-danger-ink;
+  }
+  .pc-status-info {
+    @apply text-pc-info-ink;
+  }
+  .pc-status-muted {
+    @apply text-pc-muted;
+  }
   .pc-dot {
     @apply inline-block size-2.5 flex-none rounded-full bg-pc-muted-3;
   }
@@ -697,20 +803,34 @@
   .pc-legend-box {
     @apply size-2 rounded-pc-xs border-2;
   }
-  .pc-status {
-    @apply font-pc-mono text-xs text-pc-muted;
-  }
-  .pc-status-success {
-    @apply text-pc-success-ink;
-  }
-  .pc-status-warning {
-    @apply text-pc-warning-text;
-  }
-  .pc-status-danger {
-    @apply text-pc-danger-ink;
-  }
-
   /* ================= Avatars ================= */
+  /* Letter tiles: a form's (brand tint, as Surveyr's forms list) and a space's, in the space's colour */
+  .pc-form-tile,
+  .pc-space-tile {
+    @apply grid size-8 flex-none place-items-center rounded-pc-sm text-[13px] leading-none font-bold;
+  }
+  .pc-form-tile,
+  .pc-space-brand {
+    @apply bg-pc-brand-soft text-pc-brand-ink;
+  }
+  .pc-space-neutral {
+    @apply bg-pc-surface-soft text-pc-text-2;
+  }
+  .pc-space-info {
+    @apply bg-pc-info-bg text-pc-info-ink;
+  }
+  .pc-space-success {
+    @apply bg-pc-success-bg text-pc-success-ink;
+  }
+  .pc-space-warning {
+    @apply bg-pc-warning-bg text-pc-warning-ink;
+  }
+  .pc-space-danger {
+    @apply bg-pc-danger-bg text-pc-danger-ink;
+  }
+  .pc-space-ink {
+    @apply bg-pc-fill text-pc-on-fill;
+  }
   .pc-avatar {
     @apply relative grid size-9 flex-none place-items-center overflow-hidden rounded-full border-0 bg-pc-brand-soft p-0
       text-[13px] leading-none font-semibold text-pc-brand-ink;
@@ -822,12 +942,90 @@
   .pc-toolbar-filters .pc-tabs {
     @apply max-sm:flex-wrap;
   }
+  /* Bulk actions (x-table bulk slot): with rows ticked (app.js sets data-pc-selecting) a pill pops in at the toolbar's
+     end, in the page's own surface colours (light on light, dark on dark), the filters staying put. Its count rolls as
+     rows are ticked; its Actions button opens the actions as a menu. Phones have no room beside the search, so there
+     the pill takes the toolbar row for as long as the selection lasts. */
+  .pc-list-bulk {
+    @apply relative z-10 ms-auto hidden h-[34px] flex-none items-center gap-3 rounded-pc-control border border-pc-border
+      bg-pc-surface ps-3 pe-1 text-pc-ink shadow-pc-pop;
+  }
+  .pc-list[data-pc-selecting] .pc-list-bulk {
+    @apply flex animate-pc-bulk-in;
+  }
+  .pc-list[data-pc-selecting] .pc-list-toolbar > :not(.pc-list-bulk) {
+    @apply max-sm:hidden;
+  }
+  .pc-list[data-pc-selecting] .pc-list-bulk {
+    @apply max-sm:ms-0 max-sm:flex-1 max-sm:justify-between;
+  }
+  /* x-table tools slot: buttons at the toolbar's end; a ticked selection's pill sits after them */
+  .pc-toolbar-tools {
+    @apply ms-auto flex flex-none items-center gap-2;
+  }
+  .pc-toolbar-tools ~ .pc-list-bulk {
+    @apply ms-0;
+  }
+  /* the select-all box keeps its room but shows only once a row has been ticked (app.js data-pc-armed) */
+  .pc-list:not([data-pc-armed]) [data-pc-select-all] {
+    @apply invisible;
+  }
+  .pc-list[data-pc-armed] [data-pc-select-all] {
+    @apply animate-pc-fade;
+  }
+  .pc-list-bulk-count {
+    @apply inline-flex items-center gap-1 text-[13px] whitespace-nowrap text-pc-muted;
+  }
+  .pc-list-bulk-number {
+    @apply inline-block min-w-[1ch] text-center font-extrabold text-pc-ink tabular-nums;
+  }
+  .pc-list-bulk-number.pc-roll-up {
+    @apply animate-pc-roll-up;
+  }
+  .pc-list-bulk-number.pc-roll-down {
+    @apply animate-pc-roll-down;
+  }
+  .pc-list-bulk-trigger {
+    @apply inline-flex h-[26px] cursor-pointer items-center gap-1.5 rounded-pc-control border-0 bg-pc-surface-soft px-2.5
+      text-xs font-semibold text-pc-ink transition-colors outline-none hover:bg-pc-border-soft
+      focus-visible:ring-2 focus-visible:ring-pc-brand/25 aria-expanded:bg-pc-border-soft;
+  }
+  /* one action left (app.js data-pc-single): the menu sits in the pill as a plain button, no Actions flyout */
+  .pc-list-bulk[data-pc-single] .pc-list-bulk-trigger,
+  .pc-list-bulk[data-pc-single] .pc-dropdown-divider {
+    @apply hidden;
+  }
+  .pc-list-bulk[data-pc-single] .pc-dropdown-menu {
+    @apply static! flex! min-w-0 animate-none border-0 bg-transparent p-0 shadow-none;
+  }
+  .pc-list-bulk[data-pc-single] .pc-dropdown-item {
+    @apply h-[26px] gap-1.5 px-2.5 text-xs font-semibold;
+  }
+  .pc-list-bulk[data-pc-single] .pc-dropdown-item > i {
+    @apply text-sm;
+  }
+  .pc-list-bulk-trigger > i {
+    @apply transition-transform duration-150;
+  }
+  .pc-list-bulk-trigger[aria-expanded="true"] > i {
+    @apply rotate-180;
+  }
+  .pc-table :is(th, td).pc-col-select {
+    @apply w-px pe-0;
+  }
+  .pc-table tbody tr:has(> td.pc-col-select > :checked) > td {
+    @apply bg-pc-surface-alt;
+  }
   /* page actions (layout header slot): below sm a button shows only its icon; the words stay for screen readers */
   .pc-page-head .pc-btn:has(.pc-btn-label) {
     @apply max-sm:w-[34px] max-sm:px-0;
   }
   .pc-page-head .pc-btn-label {
     @apply max-sm:sr-only;
+  }
+  /* a count on such a button rides its corner once only the icon shows */
+  .pc-page-head .pc-btn-badge {
+    @apply max-sm:absolute max-sm:-end-1.5 max-sm:-top-1.5 max-sm:ring-2 max-sm:ring-pc-sheet;
   }
   .pc-list-card {
     @apply flex min-h-0 flex-col;
@@ -867,7 +1065,7 @@
     @apply mb-2 block text-xl;
   }
   .pc-stat-label {
-    @apply m-0 text-[13px] text-pc-muted;
+    @apply m-0 mt-0.5 text-[13px] text-pc-text-2;
   }
   .pc-stat-value {
     @apply block text-[26px] leading-[1.15] font-semibold tracking-[-0.02em] text-pc-ink transition-colors;
@@ -911,6 +1109,13 @@
   .pc-section-split {
     @apply lg:grid lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-x-12;
   }
+  /* <div class="pc-settings-actions"> after split sections in one form: its Save button lines up with their fields */
+  .pc-settings-actions {
+    @apply lg:grid lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-x-12;
+  }
+  .pc-settings-actions > * {
+    @apply lg:col-start-2 lg:justify-self-start;
+  }
   .pc-section-split .pc-section-header {
     @apply lg:mb-0 lg:flex-col lg:justify-start;
   }
@@ -922,6 +1127,183 @@
   }
   .pc-section-row {
     @apply flex items-center gap-3 border-b border-pc-border-soft py-3 first:pt-0 last:border-b-0;
+  }
+  /* A view to open (a form overview's Submissions tab): icon, name and description, a count, a chevron. */
+  .pc-view-row {
+    @apply flex items-center gap-3 rounded-pc-item px-2 py-3 text-pc-text no-underline transition-colors
+      hover:bg-pc-surface-alt;
+  }
+  .pc-view-icon {
+    @apply grid size-9 flex-none place-items-center rounded-pc-control bg-pc-surface-soft text-pc-text-2;
+  }
+  /* Settings forms stacked in one tab (a form's Settings): a line between each form, as between sections. */
+  .pc-section-stack > form + form {
+    @apply border-t border-pc-border-soft;
+  }
+  .pc-section-stack > form + form > .pc-section {
+    @apply pt-7;
+  }
+  /* A sortable column heading (x-table.sort): the heading as a link, an arrow that's faint until the column sorts. */
+  .pc-sort {
+    @apply inline-flex max-w-60 items-center gap-1.5 text-inherit no-underline hover:text-pc-ink;
+  }
+  .pc-sort > i {
+    @apply flex-none opacity-0 transition-opacity;
+  }
+  .pc-sort:hover > i {
+    @apply opacity-40;
+  }
+  .pc-sort-active > i,
+  .pc-sort-active:hover > i {
+    @apply text-pc-brand opacity-100;
+  }
+  /* The responses table: the checkbox and the reference column stay put while the questions scroll sideways (their
+     cells take the row's tint when hovered or ticked); the open response's row is tinted too. */
+  .pc-responses-table :where(.pc-col-select) {
+    @apply sticky start-0 z-1 w-10 min-w-10 bg-pc-sheet;
+    /* sticky cells stop at the scroll area's padding; this fills that strip so scrolled cells don't show through */
+    box-shadow: -1rem 0 0 var(--color-pc-sheet);
+  }
+  .pc-responses-table thead :where(.pc-col-select) {
+    box-shadow: -1rem 0 0 var(--color-pc-surface);
+  }
+  .pc-responses-table :where(.pc-col-pin) {
+    @apply sticky start-0 z-1 bg-pc-sheet shadow-[inset_-1px_0_0_var(--color-pc-border-soft)];
+  }
+  .pc-responses-table:has(.pc-col-select) :where(.pc-col-pin) {
+    @apply start-10;
+  }
+  /* the pinned headings stack above the others (every sticky heading is z-3), or headings scrolled under show through */
+  .pc-responses-table thead th:is(.pc-col-select, .pc-col-pin) {
+    @apply z-4 bg-pc-surface;
+  }
+  .pc-responses-table tbody tr[data-pc-current] > td {
+    @apply bg-pc-surface-alt;
+  }
+  /* Edge tabs (pages/responses.js): a slim, solid tab with a chevron on an edge the columns run past; the end one
+     flush with the table's end (square on that side), the start one against the pinned columns. Phones swipe instead,
+     so they have none. */
+  .pc-responses-table {
+    @apply relative;
+  }
+  .pc-edge-tab {
+    @apply absolute z-5 grid h-18 w-[18px] cursor-pointer place-items-center border border-pc-border bg-pc-surface text-sm
+      text-pc-text-2 transition-[opacity,color,background-color] duration-150 hover:bg-pc-surface-soft hover:text-pc-ink;
+  }
+  .pc-edge-tab {
+    @apply max-sm:hidden;
+  }
+  .pc-edge-tab[data-off] {
+    @apply pointer-events-none opacity-0;
+  }
+  .pc-edge-tab-end {
+    @apply end-0 rounded-s-pc-control border-e-0;
+  }
+  .pc-edge-tab-start {
+    @apply rounded-e-pc-control border-s-0;
+  }
+  /* The responses filter panel (pages/response-filters.js): a rule per row (question / operator / value), tinted on
+     hover, its remove button showing then. The add line appears only while the
+     rules are hovered or it has focus, and stays faint on touch screens, where there's no hover. */
+  .pc-filter-rules {
+    @apply flex flex-col gap-1;
+  }
+  .pc-filter-rule {
+    @apply -mx-2 grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2 rounded-pc-control p-2 transition-colors
+      hover:bg-pc-surface-alt focus-within:bg-pc-surface-alt sm:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1.3fr)_auto];
+  }
+  .pc-filter-rule [data-filter-remove] {
+    @apply opacity-0 transition-opacity;
+  }
+  .pc-filter-rule:hover [data-filter-remove],
+  .pc-filter-rule:focus-within [data-filter-remove] {
+    @apply opacity-100;
+  }
+  .pc-filter-value {
+    @apply flex min-w-0 gap-2 empty:hidden;
+  }
+  .pc-filter-value > * {
+    @apply min-w-0 flex-1;
+  }
+  .pc-filter-insert {
+    @apply relative flex h-7 w-full cursor-pointer items-center justify-center opacity-0 transition-opacity
+      before:absolute before:inset-x-0 before:top-1/2 before:border-t before:border-dashed before:border-pc-border
+      focus-visible:opacity-100;
+  }
+  .pc-filter-insert > span {
+    @apply relative inline-flex items-center gap-1.5 bg-pc-surface px-2.5 text-[13px] font-medium text-pc-text-2;
+  }
+  .pc-filter-insert:hover > span {
+    @apply text-pc-brand-ink;
+  }
+  .pc-filter-section:hover .pc-filter-insert {
+    @apply opacity-100;
+  }
+  @media (hover: none) {
+    .pc-filter-insert {
+      @apply opacity-70;
+    }
+    .pc-filter-rule [data-filter-remove] {
+      @apply opacity-100;
+    }
+  }
+  .pc-btn-active {
+    @apply border-pc-brand text-pc-brand-ink;
+  }
+  .pc-count-badge {
+    @apply inline-grid h-[18px] min-w-[18px] place-items-center rounded-full bg-pc-brand px-1 text-[11px] font-bold text-pc-on-brand tabular-nums;
+  }
+  /* on a brand button the badge flips: light on the brand fill */
+  .pc-btn-primary .pc-count-badge {
+    @apply bg-pc-on-brand text-pc-brand;
+  }
+  .pc-response-ref {
+    @apply block cursor-pointer text-start;
+  }
+  /* The answers in the response panel: flat on the panel (panelless), lined up with its title, no padding of their own */
+  .pc-response-view {
+    @apply min-h-40 min-w-0 overflow-x-clip pt-2;
+  }
+  /* wide controls (a signature pad, images) fit the panel instead of pushing it sideways */
+  .pc-response-view :is(.sd-signaturepad, .sd-signaturepad canvas, .sd-image__image, img) {
+    @apply max-w-full;
+  }
+  .pc-response-view .sd-body {
+    @apply max-w-none! p-0!;
+  }
+  /* panelless forms are compact, which frames matrices and panels in a padded box: flat here like the other questions */
+  .pc-response-view .sd-element--with-frame.sd-element--compact {
+    @apply border-0! px-0! pb-0!;
+  }
+  /* their tables bleed into that padding (a negative margin, 48px wider); without it they'd overhang the panel */
+  .pc-response-view .sd-table-wrapper {
+    @apply mx-0! min-w-full!;
+  }
+  /* and the sticky strips SurveyJS puts at a table's sides to cover that padding, and the line under a table's title,
+     which spans it too (!: SurveyJS's unlayered rules beat this layer otherwise) */
+  .pc-response-view .sd-table-wrapper::before,
+  .pc-response-view .sd-table-wrapper::after {
+    @apply hidden!;
+  }
+  .pc-response-view .sd-question__header::after {
+    @apply start-0! end-0! w-full!;
+  }
+  /* the form sits on the panel, at its full height: no backdrop of its own, the panel does the scrolling */
+  .pc-response-view .sd-root-modern {
+    @apply h-auto! overflow-x-clip! bg-transparent!;
+  }
+  .pc-response-view :is(.sv-scroll__wrapper, .sv-scroll__scroller) {
+    @apply h-auto! overflow-visible!;
+  }
+  .pc-response-view .sv-scroll__scrollbar {
+    @apply hidden;
+  }
+  #responsePanel[aria-busy="true"] .pc-response-view {
+    @apply opacity-50 transition-opacity;
+  }
+  /* A chart (x-chart, ApexCharts): its tooltip in the app's type. */
+  .pc-chart .apexcharts-tooltip {
+    @apply text-xs shadow-pc-pop;
   }
   .pc-mono {
     @apply font-pc-mono tabular-nums;
@@ -951,10 +1333,10 @@
   }
 
   /* ================= Page loader (<x-page-loader />, pc-loader.js) ================= */
-  /* A form assembly line on one loop: the belt rests while the fill station pours answers into the form in front of
-     it and the form it filled last loop gets its check, then moves everything one pitch (54 units) to the right. At
+  /* A form assembly line on one loop: the belt rests while the form at the fill station gets its answers typed in and
+     the form filled last loop gets its check, then moves everything one pitch (54 units) to the right. At
      the end of a loop every card sits where the card behind it started, in the state it started in, so the loop is
-     seamless. Each card's job is fixed by data-step (blank / fill / seal / done); only the belt and the stream move. */
+     seamless. Each card's job is fixed by data-step (blank / fill / seal / done); only the belt moves. */
   .pc-loader {
     --pc-loader-loop: 1.6s;
     @apply flex flex-col items-center gap-4;
@@ -962,10 +1344,9 @@
   .pc-page-loader {
     @apply invisible fixed inset-0 z-[200] justify-center bg-pc-bg opacity-0;
   }
-  /* wait a beat before showing: pages that are ready quickly never flash it */
+  /* up from the first paint: a page loads under it; a click fades it in over the old page (pc-loader.js) */
   .pc-page-loader[data-pc-state="loading"] {
-    @apply visible;
-    animation: pc-loader-in 0.3s ease 0.45s both;
+    @apply visible opacity-100;
   }
   .pc-loader-scene {
     @apply w-72 max-w-full overflow-visible;
@@ -976,10 +1357,6 @@
     transform-origin: center;
     animation-duration: var(--pc-loader-loop);
     animation-iteration-count: infinite;
-  }
-  .pc-loader-disc {
-    fill: var(--color-pc-brand-soft);
-    animation-name: pc-loader-disc;
   }
   .pc-loader-belt {
     stroke: var(--color-pc-border);
@@ -995,14 +1372,6 @@
   }
   .pc-loader-line {
     animation-name: pc-loader-belt;
-  }
-  .pc-loader-stream {
-    stroke: var(--color-pc-brand);
-    stroke-width: 1.5;
-    stroke-linecap: round;
-    stroke-dasharray: 100 100;
-    stroke-dashoffset: 100;
-    animation-name: pc-loader-stream;
   }
 
   /* cards: an empty form is a dashed outline; a filled one gets a solid edge, answers and finally a seal */
@@ -1080,7 +1449,7 @@
   [data-step="seal"] .pc-loader-seal {
     animation-name: pc-loader-sealed;
   }
-  /* warm-up: the line starts with nothing past the drip. A stop only gets a card once the first filled form rides
+  /* warm-up: the line starts with nothing past the fill station. A stop only gets a card once the first filled form rides
      into it: one loop for the check stop, two for the stop after it. pc-loader.js restarts this on every show. */
   [data-step="seal"].pc-loader-card {
     animation:
@@ -1120,10 +1489,6 @@
     }
   }
 
-  @keyframes pc-loader-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
   @keyframes pc-loader-progress {
     from { width: 0; }
     to { width: 92%; }
@@ -1137,11 +1502,6 @@
     0%, 56% { stroke-dashoffset: 0; animation-timing-function: cubic-bezier(0.6, 0, 0.3, 1); }
     88% { stroke-dashoffset: -56; animation-timing-function: ease-out; }
     100% { stroke-dashoffset: -54; }
-  }
-  @keyframes pc-loader-stream {
-    0%, 4% { stroke-dashoffset: 100; animation-timing-function: ease-in; }
-    14%, 40% { stroke-dashoffset: 0; animation-timing-function: ease-in; }
-    50%, 100% { stroke-dashoffset: -100; }
   }
   @keyframes pc-loader-edge {
     0%, 8% { stroke-dashoffset: 100; animation-timing-function: ease-in-out; }
@@ -1186,11 +1546,6 @@
     0%, 6% { scale: 0; animation-timing-function: cubic-bezier(0.3, 1.6, 0.6, 1); }
     16%, 100% { scale: 1; }
   }
-  @keyframes pc-loader-disc {
-    0%, 6% { scale: 1; }
-    12% { scale: 1.06; }
-    26%, 100% { scale: 1; }
-  }
   .pc-hatch {
     background: repeating-linear-gradient(135deg, var(--color-pc-surface-sunken) 0 6px, var(--color-pc-surface-soft) 6px 12px);
     @apply grid place-items-center rounded-pc-sm border border-dashed border-pc-border text-center font-pc-mono text-[11px] text-pc-muted;
@@ -1202,7 +1557,7 @@
     @apply max-xl:overflow-hidden;
   }
   .pc-screen-gate {
-    @apply absolute inset-0 z-40 flex items-center justify-center bg-pc-surface/45 p-4 backdrop-blur-md animate-pc-fade xl:hidden;
+    @apply absolute inset-0 z-[200] flex items-center justify-center bg-pc-surface/45 p-4 backdrop-blur-md animate-pc-fade xl:hidden;
   }
   .pc-screen-gate-panel {
     @apply flex w-full max-w-[380px] flex-col items-center gap-2 rounded-pc-modal border border-pc-border bg-pc-surface px-6 py-8
@@ -1213,6 +1568,33 @@
   }
   .pc-empty-icon {
     @apply mb-1 grid size-11 place-items-center rounded-full bg-pc-surface-soft text-pc-muted;
+  }
+
+  /* ================= Public form (public/form) ================= */
+  /* The form fills the page and draws its own background (its theme); a panelless one leaves the page clear, so an
+     embedding page shows through. Notices (closed, not open yet, access code) sit centred on the app's background. */
+  .pc-public {
+    @apply min-h-dvh;
+  }
+  .pc-public-form {
+    @apply min-h-dvh;
+  }
+  .pc-public-form > .sd-root-modern {
+    @apply min-h-dvh;
+  }
+  .pc-public-clear,
+  .pc-public-clear body {
+    @apply bg-transparent;
+  }
+  .pc-public-notice {
+    @apply grid min-h-dvh place-items-center p-4;
+  }
+  .pc-public-notice-card {
+    @apply flex w-full max-w-sm flex-col items-center gap-2 rounded-pc-card bg-pc-surface px-6 py-8 text-center text-[13px]
+      text-pc-text-2 shadow-pc-pop;
+  }
+  .pc-public-notice-title {
+    @apply m-0 text-base font-semibold text-pc-ink;
   }
 
   /* ================= Forms ================= */
@@ -1269,8 +1651,46 @@
   .pc-check {
     @apply inline-flex cursor-pointer items-center gap-2 text-sm select-none;
   }
+  /* Option cards (export options): a box per checkbox, its title and what it does,
+     tinted when chosen. */
+  .pc-options {
+    @apply flex flex-col gap-2;
+  }
+  .pc-option {
+    @apply flex cursor-pointer items-start gap-3 rounded-pc-control border border-pc-border p-3 transition-colors
+      hover:border-pc-muted-2 has-checked:border-pc-brand has-checked:bg-pc-brand-soft/40;
+  }
+  .pc-option > input {
+    @apply mt-0.5;
+  }
+  .pc-option-title {
+    @apply block text-sm font-semibold text-pc-ink;
+  }
+  .pc-option-hint {
+    @apply mt-0.5 block text-xs leading-relaxed text-pc-muted;
+  }
   .pc-check > input {
     @apply size-4 cursor-pointer accent-pc-brand;
+  }
+  /* x-table's row checkboxes (bulk actions): a slim box, filled with the brand colour and a tick when checked,
+     a dash when part of the page is ticked (select-all, indeterminate). */
+  .pc-select-box {
+    @apply m-0 grid size-4 flex-none cursor-pointer appearance-none place-content-center rounded-pc-control border-[1.5px]
+      border-pc-border bg-pc-surface align-middle transition-colors outline-none
+      hover:border-pc-muted focus-visible:ring-2 focus-visible:ring-pc-brand/25;
+  }
+  .pc-select-box::before {
+    @apply size-2.5 scale-0 bg-pc-on-brand transition-transform duration-100 content-[''];
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2 5 8.6l4.5-5' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  .pc-select-box:is(:checked, :indeterminate) {
+    @apply border-pc-brand bg-pc-brand;
+  }
+  .pc-select-box:is(:checked, :indeterminate)::before {
+    @apply scale-100;
+  }
+  .pc-select-box:indeterminate::before {
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 6h6' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
   }
 
   /* ================= Select (pc-select.js) ================= */
@@ -1311,6 +1731,13 @@
   }
   .pc-select-text {
     @apply truncate;
+  }
+  /* <option data-pc-swatch>: a small colour box before the text, in the list and the field; dashed when empty */
+  .pc-select-swatch {
+    @apply inline-block h-3.5 w-6 flex-none rounded-pc-xs ring-1 ring-pc-ink/10 ring-inset;
+  }
+  .pc-select-swatch-none {
+    @apply border border-dashed border-pc-muted ring-0;
   }
   .pc-select-chip {
     @apply inline-flex h-6 max-w-full min-w-0 items-center gap-0.5 rounded-pc-sm bg-pc-surface-soft pe-0.5 ps-2 text-xs text-pc-text;
@@ -1891,6 +2318,10 @@
     @apply flex h-9 w-full items-center gap-2.5 rounded-pc-item border-0 bg-transparent px-2.5 text-start text-sm text-pc-text
       no-underline hover:bg-pc-surface-soft hover:text-pc-text;
   }
+  /* a leading icon (Font Awesome icons vary in width) takes a fixed slot, so the labels line up */
+  .pc-dropdown-item > i:first-child {
+    @apply w-4 flex-none text-center;
+  }
   .pc-dropdown-item > :is(svg, i) {
     @apply flex-none text-pc-text-2;
   }
@@ -1918,7 +2349,7 @@
     @apply text-pc-sidebar-text hover:bg-pc-sidebar-hover hover:text-pc-sidebar-strong;
   }
   .pc-dropdown-menu-dark .pc-dropdown-item > .fa-solid {
-    @apply w-4 flex-none text-center text-[13px];
+    @apply text-[13px];
   }
   .pc-dropdown-menu-dark .pc-dropdown-item-active {
     @apply bg-pc-sidebar-active text-pc-sidebar-strong;
@@ -2042,17 +2473,28 @@
   .pc-offcanvas-start .pc-offcanvas-panel {
     @apply end-auto start-2 animate-pc-slide-in-start rtl:animate-pc-slide-in;
   }
+  /* closing (pc-offcanvas.js): the panel slides back out and the veil fades before it's hidden */
+  .pc-offcanvas[data-pc-closing] .pc-offcanvas-panel {
+    @apply animate-pc-slide-out rtl:animate-pc-slide-out-start;
+  }
+  .pc-offcanvas-start[data-pc-closing] .pc-offcanvas-panel {
+    @apply animate-pc-slide-out-start rtl:animate-pc-slide-out;
+  }
+  .pc-offcanvas[data-pc-closing] .pc-offcanvas-backdrop {
+    @apply animate-pc-fade-out;
+  }
   .pc-offcanvas-lg .pc-offcanvas-panel {
     @apply max-w-[560px];
   }
   .pc-offcanvas[data-pc-expanded="true"] .pc-offcanvas-panel {
     @apply max-w-[min(960px,calc(100vw-16px))];
   }
+  /* the title with the expand / close tools on its line, the subtitle under the title */
   .pc-offcanvas-header {
-    @apply flex flex-none flex-col px-6 pt-3 pb-4;
+    @apply grid flex-none grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 px-6 pt-5 pb-4;
   }
   .pc-offcanvas-tools {
-    @apply -me-2 mb-2 flex items-center justify-end gap-0.5;
+    @apply col-start-2 row-start-1 -me-2 flex items-center justify-end gap-0.5;
   }
   .pc-offcanvas-tools .pc-btn {
     @apply text-pc-muted hover:text-pc-ink;
@@ -2069,10 +2511,10 @@
     @apply inline-block;
   }
   .pc-offcanvas-title {
-    @apply text-2xl leading-tight font-semibold tracking-[-0.02em] text-pc-ink;
+    @apply col-start-1 row-start-1 min-w-0 text-2xl leading-tight font-semibold tracking-[-0.02em] text-pc-ink;
   }
   .pc-offcanvas-subtitle {
-    @apply mt-1 truncate text-sm text-pc-muted;
+    @apply col-start-1 row-start-2 mt-1 truncate text-sm text-pc-muted;
   }
   .pc-offcanvas-body {
     @apply flex-1 overflow-y-auto px-6 pb-6;

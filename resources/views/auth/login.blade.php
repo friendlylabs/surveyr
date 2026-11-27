@@ -27,13 +27,13 @@
             <div class="grid grid-flow-col auto-cols-fr gap-2.5">
                 @if ($features::enabled($features::passkeys()))
                     <button type="button" id="passkeyBtn" class="pc-btn pc-btn-outline pc-btn-lg" aria-label="{{ __('Sign in with a passkey') }}">
-                        <i class="ph ph-fingerprint text-lg" aria-hidden="true"></i>
+                        <i class="fa-regular fa-fingerprint text-lg" aria-hidden="true"></i>
                         <span>{{ __('Passkey') }}</span>
                     </button>
                 @endif
                 @if ($features::enabled('email-link'))
                     <a href="{{ route('auth.email-link') }}" class="pc-btn pc-btn-outline pc-btn-lg" aria-label="{{ __('Email me a sign-in link') }}" data-auth-carry-email>
-                        <i class="ph ph-envelope-simple text-lg" aria-hidden="true"></i>
+                        <i class="fa-regular fa-envelope text-lg" aria-hidden="true"></i>
                         <span>{{ __('Email link') }}</span>
                     </a>
                 @endif
@@ -73,7 +73,7 @@
 
     @push('body')
         @if ($features::enabled($features::passkeys()))
-            <script src="{{ asset('assets/js/pc-webauthn.js') }}" defer></script>
+            <script src="@asset('assets/js/pc-webauthn.js')" defer></script>
         @endif
         <script>
             document.addEventListener("DOMContentLoaded", () => {

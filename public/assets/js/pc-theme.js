@@ -6,7 +6,7 @@
  * and wires the toggles.
  * Markup contract (<x-theme-picker />):
  *   <button type="button" data-pc-trigger="theme-toggle" aria-label="Switch to dark theme">
- *     <i class="ph ph-moon pc-theme-to-dark"></i><i class="ph ph-sun pc-theme-to-light"></i>
+ *     <i class="fa-regular fa-moon pc-theme-to-dark"></i><i class="fa-regular fa-sun pc-theme-to-light"></i>
  *   </button>
  * A toggle flips whatever is showing, the OS's theme included: on a dark system the first click goes light.
  * Which icon shows is pure CSS on data-pc-theme (moon while light, sun while dark); the label is kept in step here.

@@ -76,7 +76,7 @@
                         @isset($currentWorkspace)
                             <div class="pc-dropdown-divider"></div>
                             @if (\App\Support\Workspaces::multiple())
-                                {{-- SaaS: every workspace the user is in, the current one ticked --}}
+                                {{-- multiple workspaces: every workspace the user is in, the current one ticked --}}
                                 @foreach ($user->workspaces()->orderBy('name')->get() as $workspace)
                                     <form method="POST" action="{{ route('workspaces.switch', $workspace) }}" onsubmit="submitForm(event)">
                                         <button type="submit" @class(['pc-dropdown-item w-full', 'pc-dropdown-item-active' => $workspace->is($currentWorkspace)]) role="menuitem" @disabled($workspace->is($currentWorkspace))>
@@ -111,9 +111,16 @@
         <div @class(['pc-sheet', 'pc-requires-xl' => $desktopOnly])>
             <header class="pc-page-head">
                 <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon -ms-2 lg:hidden" data-pc-trigger="sidebar" aria-label="{{ __('Open navigation') }}">
-                    <i class="ph ph-list text-xl" aria-hidden="true"></i>
+                    <i class="fa-regular fa-bars text-xl" aria-hidden="true"></i>
                 </button>
-                <h1 class="pc-page-title">{{ $title }}</h1>
+                @if ($subtitle)
+                    <div class="min-w-0">
+                        <h1 class="pc-page-title">{{ $title }}</h1>
+                        <p class="pc-page-subtitle">{{ $subtitle }}</p>
+                    </div>
+                @else
+                    <h1 class="pc-page-title">{{ $title }}</h1>
+                @endif
                 {{ $header ?? '' }}
             </header>
 
@@ -125,7 +132,7 @@
                 {{-- Below xl (1280px): frosted over the sheet, never dismissible. Pages can explain why with <x-slot:screen-gate>. --}}
                 <div class="pc-screen-gate" role="alertdialog" aria-modal="true" aria-labelledby="pcScreenGateTitle">
                     <div class="pc-screen-gate-panel">
-                        <span class="pc-empty-icon"><i class="ph ph-monitor text-[22px]" aria-hidden="true"></i></span>
+                        <span class="pc-empty-icon"><i class="fa-regular fa-desktop text-[22px]" aria-hidden="true"></i></span>
                         <div id="pcScreenGateTitle" class="text-base font-semibold text-pc-text">{{ __(':page needs a larger screen', ['page' => $title ?? __('This page')]) }}</div>
                         <p class="max-w-xs">{{ $screenGate ?? __('This page works with several panels side by side.') }} {{ __('Open it on a laptop or desktop — at least 1280px wide.') }}</p>
                         <a href="{{ url('/') }}" class="pc-btn pc-btn-secondary mt-2">{{ __('Back to Home') }}</a>
@@ -142,21 +149,20 @@
      pc-popover, pc-table, pc-toggle) go in @push('body'). --}}
 {{-- the current language's strings for pc.t() (pc-core.js) --}}
 <script>window.pcStrings = @json(App\Support\Locales::strings(), JSON_FORCE_OBJECT);</script>
-<script src="{{ asset('assets/js/pc-core.js') }}" defer></script>
-<script src="{{ asset('assets/js/pc-loader.js') }}" defer></script>
-<script src="{{ asset('assets/js/pc-theme.js') }}" defer></script>
-<script src="{{ asset('assets/js/pc-toast.js') }}" defer></script>
-<script src="{{ asset('assets/js/pc-dialog.js') }}" defer></script>
-<script src="{{ asset('assets/js/pc-tooltip.js') }}" defer></script>
-<script src="{{ asset('assets/js/pc-dropdown.js') }}" defer></script>
-<script src="{{ asset('assets/js/pc-modal.js') }}" defer></script>
-<script src="{{ asset('assets/js/pc-offcanvas.js') }}" defer></script>
-<script src="{{ asset('assets/js/pc-select.js') }}" defer></script>
-<script src="{{ asset('assets/js/pc-date.js') }}" defer></script>
-<script src="{{ asset('assets/js/pc-sidebar.js') }}" defer></script>
-<script src="{{ asset('assets/js/pc-scrollbar.js') }}" defer></script>
-<script src="{{ asset('assets/js/pc-password.js') }}" defer></script>
-<script src="{{ asset('assets/js/app.js') }}" defer></script>
+<script src="@asset('assets/js/pc-core.js')" defer></script>
+<script src="@asset('assets/js/pc-theme.js')" defer></script>
+<script src="@asset('assets/js/pc-toast.js')" defer></script>
+<script src="@asset('assets/js/pc-dialog.js')" defer></script>
+<script src="@asset('assets/js/pc-tooltip.js')" defer></script>
+<script src="@asset('assets/js/pc-dropdown.js')" defer></script>
+<script src="@asset('assets/js/pc-modal.js')" defer></script>
+<script src="@asset('assets/js/pc-offcanvas.js')" defer></script>
+<script src="@asset('assets/js/pc-select.js')" defer></script>
+<script src="@asset('assets/js/pc-date.js')" defer></script>
+<script src="@asset('assets/js/pc-sidebar.js')" defer></script>
+<script src="@asset('assets/js/pc-scrollbar.js')" defer></script>
+<script src="@asset('assets/js/pc-password.js')" defer></script>
+<script src="@asset('assets/js/app.js')" defer></script>
 
 @stack('body')
 </body>

@@ -11,6 +11,8 @@
  * to re-render whatever the tab controls.
  * Optional panels: give the group data-pc-tabs-panels="#container" and each child panel
  * data-pc-tab-panel="<value>"; the matching panel gets data-pc-open="true", the rest "false".
+ * Optional url: data-pc-tabs-query="tab" keeps ?tab=<value> in step with the open tab, so a reload (e.g. after a
+ * save) or a shared link comes back to it; the server opens that tab on render.
  * Left/Right arrow keys move between tabs of a focused group.
  * JS API: pcTabs.activate(groupEl, value)
  */
@@ -41,6 +43,12 @@
     if (!group) return;
     const value = trigger.getAttribute("data-pc-value");
     activate(group, value);
+    const key = group.getAttribute("data-pc-tabs-query");
+    if (key) {
+      const url = new URL(location.href);
+      url.searchParams.set(key, value);
+      history.replaceState(history.state, "", url);
+    }
     group.dispatchEvent(new CustomEvent("pc:tabchange", { detail: { value }, bubbles: true }));
   }
 

@@ -15,6 +15,9 @@ class AppLayout extends Component
     /** The page title. */
     public ?string $title;
 
+    /** A line of muted text under the title. */
+    public ?string $subtitle;
+
     /** Determine if the sidebar should be collapsed (false) or expanded (true). */
     public bool $sidebar;
 
@@ -25,9 +28,10 @@ class AppLayout extends Component
     public bool $desktopOnly;
 
     /** Create the component. */
-    public function __construct(?string $title = null, bool $sidebar = true, bool $containedLayout = true, bool $desktopOnly = false)
+    public function __construct(?string $title = null, bool $sidebar = true, bool $containedLayout = true, bool $desktopOnly = false, ?string $subtitle = null)
     {
         $this->title = $title;
+        $this->subtitle = $subtitle;
         $this->sidebar = $sidebar;
         $this->contained = $containedLayout;
         $this->desktopOnly = $desktopOnly;

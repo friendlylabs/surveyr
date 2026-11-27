@@ -1,10 +1,11 @@
 {{--
     Page loader: a little form assembly line. Blank forms ride in on a belt, get filled at the first station
-    (a stream of answers pours in, fields tick in like keystrokes), get a check as they reach the next stop, and ride out.
+    (fields tick in like keystrokes), get a check as they reach the next stop, and ride out.
     One loop = one form; the belt moves one pitch per loop, so the scene repeats seamlessly (app.css, "Page loader").
 
-    Layouts render it once, first thing in <body>: <x-page-loader />. pc-loader.js hides it when the page is ready
-    and brings it back on navigation. It only fades in after a short delay, so fast pages never show it.
+    Layouts render it once, first thing in <body>: <x-page-loader /> (it brings its own script). It's up from the
+    first paint; pc-loader.js hides it once the page has fully loaded and brings it back the moment the user
+    navigates away.
     `overlay` false renders the scene inline (showcases, panels that load their own content).
 --}}
 @props(['overlay' => true, 'message' => __('Getting things ready…')])
@@ -13,15 +14,9 @@
     @if ($overlay) data-pc-component="page-loader" data-pc-state="loading" @endif
     role="status" aria-live="polite">
     <svg class="pc-loader-scene" viewBox="0 0 216 108" aria-hidden="true" focusable="false">
-        {{-- soft disc behind the stop where the check lands --}}
-        <circle class="pc-loader-disc" cx="149" cy="62" r="34"/>
-
         {{-- belt: rollers drift by one pitch per loop --}}
         <line class="pc-loader-belt" x1="-20" y1="95" x2="236" y2="95"/>
         <line class="pc-loader-rollers" x1="-20" y1="99" x2="236" y2="99"/>
-
-        {{-- answer stream at the fill station --}}
-        <line class="pc-loader-stream" x1="81" y1="-2" x2="81" y2="47" pathLength="100"/>
 
         <g class="pc-loader-line">
             @foreach ([-27 => 'blank', 27 => 'blank', 81 => 'fill', 135 => 'seal', 189 => 'done'] as $x => $step)
@@ -52,3 +47,7 @@
     <div class="pc-loader-message">{{ $message }}</div>
     @if ($overlay)<noscript><style>.pc-page-loader{display:none}</style></noscript>@endif
 </div>
+@if ($overlay)
+    {{-- async, straight after the element: runs as soon as it arrives, not queued behind the deferred scripts --}}
+    <script src="@asset('assets/js/pc-loader.js')" async></script>
+@endif

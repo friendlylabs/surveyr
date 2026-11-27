@@ -1,13 +1,15 @@
 {{--
     Labelled select with its hint and error box (error id = "{id}Error"); pc-select.js turns it into the
     searchable flyout select, single or multiple.
-      <x-form.select id="addRole" name="role_id" label="Role" :options="$roles" placeholder="Choose a role" />
+      <x-form.select id="addRole" name="role" label="Role" :options="$roles" placeholder="Choose a role" />
       <x-form.select id="addTeams" name="teams" label="Teams" :options="$teams" multiple placeholder="Choose teams" />
     options: [value => label], or [group label => [value => label]] for grouped options.
     `selected` preselects a value (an array when multiple); multiple posts as name[].
     search: true / false forces the search box (default: shown when there are more than 7 options).
+    swatches: [value => css colour] shows a small colour box before those options' text ('none' for an empty box;
+    the key '' covers the placeholder), e.g. for a colour picker.
 --}}
-@props(['id', 'name', 'label', 'options' => [], 'selected' => null, 'placeholder' => null, 'hint' => null, 'multiple' => false, 'search' => null])
+@props(['id', 'name', 'label', 'options' => [], 'selected' => null, 'placeholder' => null, 'hint' => null, 'multiple' => false, 'search' => null, 'swatches' => []])
 
 @php
     $chosen = array_map('strval', array_filter((array) $selected, fn ($v) => $v !== null));
@@ -20,7 +22,7 @@
         @if ($multiple) multiple @if ($placeholder) data-placeholder="{{ $placeholder }}" @endif @endif
         @if ($search !== null) data-search="{{ $search ? 'true' : 'false' }}" @endif
         aria-describedby="{{ $hint ? "{$id}Hint " : '' }}{{ $id }}Error">
-        @if ($placeholder && ! $multiple)<option value="">{{ $placeholder }}</option>@endif
+        @if ($placeholder && ! $multiple)<option value="" @isset($swatches['']) data-pc-swatch="{{ $swatches[''] }}" @endisset>{{ $placeholder }}</option>@endif
         @foreach ($options as $value => $text)
             @if (is_iterable($text))
                 <optgroup label="{{ $value }}">
@@ -29,7 +31,7 @@
                     @endforeach
                 </optgroup>
             @else
-                <option value="{{ $value }}" @selected($isChosen($value))>{{ $text }}</option>
+                <option value="{{ $value }}" @selected($isChosen($value)) @isset($swatches[$value]) data-pc-swatch="{{ $swatches[$value] }}" @endisset>{{ $text }}</option>
             @endif
         @endforeach
     </select>

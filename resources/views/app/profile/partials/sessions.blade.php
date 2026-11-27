@@ -12,7 +12,7 @@
             @foreach ($sessions as $session)
                 <li class="pc-section-row" data-session-row>
                     <span class="relative flex-none">
-                        <span class="pc-empty-icon mb-0 size-9"><i class="ph ph-{{ $session->mobile ? 'device-mobile' : 'desktop' }} text-lg" aria-hidden="true"></i></span>
+                        <span class="pc-empty-icon mb-0 size-9"><i class="fa-regular fa-{{ $session->mobile ? 'mobile-screen' : 'desktop' }} text-lg" aria-hidden="true"></i></span>
                         {{-- this device: a green dot on the icon's bottom-left --}}
                         @if ($session->current)
                             <span class="pc-dot pc-dot-sm pc-dot-success absolute bottom-0 start-0 box-content size-2 border-2 border-pc-sheet" data-pc-tooltip="{{ __('This device') }}"></span>

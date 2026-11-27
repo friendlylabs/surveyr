@@ -243,7 +243,7 @@
       if (describedBy) this.trigger.setAttribute("aria-describedby", describedBy);
       this.clearX = el("span", "pc-date-clear", { "aria-hidden": "true", title: pc.t("Clear") });
       this.clearX.textContent = "×";
-      this.trigger.append(el("i", `ph ph-${this.hasDate ? "calendar-blank" : "clock"} pc-date-icon`, { "aria-hidden": "true" }), this.value, this.clearX);
+      this.trigger.append(el("i", `fa-regular fa-${this.hasDate ? "calendar" : "clock"} pc-date-icon`, { "aria-hidden": "true" }), this.value, this.clearX);
 
       this.backdrop = el("div", "pc-date-backdrop");
       this.backdrop.hidden = true;
@@ -586,8 +586,8 @@
       const prev = el("button", "pc-date-nav", { type: "button", "data-nav": "prev" });
       const next = el("button", "pc-date-nav", { type: "button", "data-nav": "next" });
       // the head row mirrors on RTL pages, so the carets swap to keep pointing outwards
-      prev.appendChild(el("i", `ph ph-caret-${pc.rtl() ? "right" : "left"}`, { "aria-hidden": "true" }));
-      next.appendChild(el("i", `ph ph-caret-${pc.rtl() ? "left" : "right"}`, { "aria-hidden": "true" }));
+      prev.appendChild(el("i", `fa-regular fa-chevron-${pc.rtl() ? "right" : "left"}`, { "aria-hidden": "true" }));
+      next.appendChild(el("i", `fa-regular fa-chevron-${pc.rtl() ? "left" : "right"}`, { "aria-hidden": "true" }));
       head.append(prev, title, next);
       c.appendChild(head);
       const year = this.view.getFullYear();

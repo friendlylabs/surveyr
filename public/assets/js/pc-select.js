@@ -11,6 +11,8 @@
  *   data-placeholder="..."    text when nothing is chosen (single selects also use an empty-value option's text)
  *   data-max-chips="3"        multiple: chips shown before collapsing into "+N more"
  *   data-pc-native            leave this select alone
+ * On an <option>: data-pc-swatch="<css colour>" shows a small colour box before its text, in the list and in the field;
+ * data-pc-swatch="none" shows an empty (dashed) box, e.g. for a "No colour" choice.
  * The flyout opens below the field, or above it when there's more room there, and sizes itself to the space
  * available; on small screens (< 640px) it becomes a bottom sheet.
  * JS API: pcSelect.refresh(select) after replacing options without DOM mutation, pcSelect.close().
@@ -26,6 +28,16 @@
   const indexDesc = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "selectedIndex");
   let uid = 0;
   let current = null; // the open instance
+
+  /** The option's colour box (data-pc-swatch), or null when it has none. */
+  function swatch(option) {
+    const colour = option.dataset.pcSwatch;
+    if (colour === undefined) return null;
+    const box = el("span", "pc-select-swatch", { "aria-hidden": "true" });
+    if (colour && colour !== "none") box.style.background = colour;
+    else box.classList.add("pc-select-swatch-none");
+    return box;
+  }
 
   class Select {
     constructor(select) {
@@ -67,7 +79,7 @@
       const describedBy = s.getAttribute("aria-describedby");
       if (describedBy) this.trigger.setAttribute("aria-describedby", describedBy);
       this.value = el("span", "pc-select-value");
-      this.trigger.append(this.value, el("i", "ph ph-caret-down pc-select-caret", { "aria-hidden": "true" }));
+      this.trigger.append(this.value, el("i", "fa-regular fa-chevron-down pc-select-caret", { "aria-hidden": "true" }));
 
       this.backdrop = el("div", "pc-select-backdrop");
       this.backdrop.hidden = true;
@@ -219,6 +231,8 @@
         item.dataset.index = index;
         if (option.disabled || (parent && parent.disabled)) item.setAttribute("aria-disabled", "true");
         if (this.multiple) item.appendChild(el("span", "pc-select-box", { "aria-hidden": "true" }));
+        const mark = swatch(option);
+        if (mark) item.appendChild(mark);
         const text = el("span", "pc-select-option-text");
         text.textContent = option.textContent.trim();
         if (option.value === "") text.classList.add("text-pc-muted");
@@ -240,12 +254,17 @@
       const chosen = Array.from(this.select.selectedOptions).filter((o) => o.value !== "");
       this.value.textContent = "";
       if (!chosen.length) {
+        const emptyOption = Array.from(this.select.options).find((o) => o.value === "");
+        const emptyMark = !this.multiple && emptyOption && swatch(emptyOption);
+        if (emptyMark) this.value.appendChild(emptyMark);
         const ph = el("span", "pc-select-placeholder");
         ph.textContent = this.placeholder();
         this.value.appendChild(ph);
         return;
       }
       if (!this.multiple) {
+        const mark = swatch(chosen[0]);
+        if (mark) this.value.appendChild(mark);
         const text = el("span", "pc-select-text");
         text.textContent = chosen[0].textContent.trim();
         this.value.appendChild(text);

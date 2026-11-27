@@ -24,12 +24,12 @@
                     <button type="button" class="pc-btn pc-btn-secondary" disabled>Disabled</button>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="pc-btn pc-btn-primary pc-btn-sm"><i class="ph ph-plus" aria-hidden="true"></i>Small</button>
-                    <button type="button" class="pc-btn pc-btn-primary"><i class="ph ph-plus" aria-hidden="true"></i>Default</button>
-                    <button type="button" class="pc-btn pc-btn-primary pc-btn-lg"><i class="ph ph-plus" aria-hidden="true"></i>Large</button>
-                    <button type="button" class="pc-btn pc-btn-secondary pc-btn-icon" aria-label="Settings" data-pc-tooltip="Icon button"><i class="ph ph-gear-six text-base" aria-hidden="true"></i></button>
-                    <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm" aria-label="Edit" data-pc-tooltip="Small icon"><i class="ph ph-pencil-simple text-base" aria-hidden="true"></i></button>
-                    <button type="button" class="pc-btn pc-btn-secondary" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed') !== 'true')"><i class="ph ph-eye" aria-hidden="true"></i>Toggle (aria-pressed)</button>
+                    <button type="button" class="pc-btn pc-btn-primary pc-btn-sm"><i class="fa-regular fa-plus" aria-hidden="true"></i>Small</button>
+                    <button type="button" class="pc-btn pc-btn-primary"><i class="fa-regular fa-plus" aria-hidden="true"></i>Default</button>
+                    <button type="button" class="pc-btn pc-btn-primary pc-btn-lg"><i class="fa-regular fa-plus" aria-hidden="true"></i>Large</button>
+                    <button type="button" class="pc-btn pc-btn-secondary pc-btn-icon" aria-label="Settings" data-pc-tooltip="Icon button"><i class="fa-regular fa-gear text-base" aria-hidden="true"></i></button>
+                    <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm" aria-label="Edit" data-pc-tooltip="Small icon"><i class="fa-regular fa-pen text-base" aria-hidden="true"></i></button>
+                    <button type="button" class="pc-btn pc-btn-secondary" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.getAttribute('aria-pressed') !== 'true')"><i class="fa-regular fa-eye" aria-hidden="true"></i>Toggle (aria-pressed)</button>
                     <button type="button" class="pc-btn pc-btn-secondary" onclick="demoLoading(this)">buttonState(btn, 'loading')</button>
                     <span class="pc-close" aria-hidden="true">×</span>
                 </div>
@@ -84,7 +84,7 @@
                     <div class="pc-alert pc-alert-success" role="status">Your changes were saved.</div>
                     <div class="pc-alert pc-alert-warning" role="alert">Your trial ends in 3 days.</div>
                     <div class="pc-alert pc-alert-danger flex items-center gap-3" role="alert">
-                        <i class="ph ph-warning-octagon pc-alert-icon text-base" aria-hidden="true"></i>
+                        <i class="fa-regular fa-octagon-exclamation pc-alert-icon text-base" aria-hidden="true"></i>
                         <span class="flex-1">The import failed on row 14.</span>
                         <button type="button" class="pc-btn pc-btn-soft-danger pc-btn-sm">Retry</button>
                     </div>
@@ -120,7 +120,6 @@
                 <h2 class="pc-section-title mb-4">Empty state <code class="pc-badge pc-badge-mono pc-badge-neutral">x-empty</code></h2>
                 <x-empty icon="folder-open" title="No projects yet">
                     <div class="max-w-xs">Projects you create show up here.</div>
-                    <button type="button" class="pc-btn pc-btn-secondary mt-2"><i class="ph ph-plus" aria-hidden="true"></i>New project</button>
                 </x-empty>
             </div>
             </div>
@@ -145,9 +144,9 @@
         <section class="pc-section" aria-label="Stat tiles">
             <h2 class="pc-section-title mb-4">Stats <code class="pc-badge pc-badge-mono pc-badge-neutral">x-stat</code></h2>
             <div class="pc-stat-grid">
-            <x-stat icon="currency-dollar" tone="ink" label="Revenue" value="$48.2k">+12% on last month</x-stat>
-            <x-stat icon="shopping-cart" tone="brand" label="Orders" value="1,204" :href="route('components')">Linked: the whole tile is a link</x-stat>
-            <x-stat icon="warning" tone="danger" label="Failed payments" value="7" />
+            <x-stat icon="dollar-sign" tone="ink" label="Revenue" value="$48.2k">+12% on last month</x-stat>
+            <x-stat icon="cart-shopping" tone="brand" label="Orders" value="1,204" :href="route('components')">Linked: the whole tile is a link</x-stat>
+            <x-stat icon="triangle-exclamation" tone="danger" label="Failed payments" value="7" />
             <x-stat icon="clock" tone="warning" label="Avg. response" value="2.4h">tone = ink | brand | success | warning | danger</x-stat>
             </div>
         </section>
@@ -172,7 +171,7 @@
 
                 <div>
                     <span class="pc-label">Search input group</span>
-                    <span class="pc-input-group"><i class="ph ph-magnifying-glass text-base" aria-hidden="true"></i><input class="pc-input" type="search" placeholder="Search…" aria-label="Search"></span>
+                    <span class="pc-input-group"><i class="fa-regular fa-magnifying-glass text-base" aria-hidden="true"></i><input class="pc-input" type="search" placeholder="Search…" aria-label="Search"></span>
                 </div>
                 <div data-pc-pw-strength>
                     <label class="pc-label" for="demoPassword">Password with strength</label>
@@ -251,14 +250,14 @@
                     <div class="pc-eyebrow">Dropdown · pc-dropdown.js</div>
                     <div class="pc-dropdown">
                         <button type="button" class="pc-btn pc-btn-secondary" data-pc-trigger="dropdown" data-pc-target="#demoMenu" aria-haspopup="menu" aria-expanded="false">
-                            Actions <i class="ph ph-caret-down text-xs" aria-hidden="true"></i>
+                            Actions <i class="fa-regular fa-chevron-down text-xs" aria-hidden="true"></i>
                         </button>
                         <div id="demoMenu" class="pc-dropdown-menu" role="menu" aria-hidden="true">
-                            <button type="button" class="pc-dropdown-item" role="menuitem" data-pc-dismiss="dropdown"><i class="ph ph-pencil-simple text-base" aria-hidden="true"></i>Edit</button>
-                            <button type="button" class="pc-dropdown-item pc-dropdown-item-active" role="menuitem" data-pc-dismiss="dropdown"><i class="ph ph-star text-base" aria-hidden="true"></i>Starred</button>
-                            <button type="button" class="pc-dropdown-item" role="menuitem" data-pc-dismiss="dropdown" onclick="copyToClipboard(location.href)"><i class="ph ph-link text-base" aria-hidden="true"></i>Copy link</button>
+                            <button type="button" class="pc-dropdown-item" role="menuitem" data-pc-dismiss="dropdown"><i class="fa-regular fa-pen text-base" aria-hidden="true"></i>Edit</button>
+                            <button type="button" class="pc-dropdown-item pc-dropdown-item-active" role="menuitem" data-pc-dismiss="dropdown"><i class="fa-regular fa-star text-base" aria-hidden="true"></i>Starred</button>
+                            <button type="button" class="pc-dropdown-item" role="menuitem" data-pc-dismiss="dropdown" onclick="copyToClipboard(location.href)"><i class="fa-regular fa-link text-base" aria-hidden="true"></i>Copy link</button>
                             <div class="pc-dropdown-divider"></div>
-                            <button type="button" class="pc-dropdown-item pc-dropdown-item-danger" role="menuitem" data-pc-dismiss="dropdown"><i class="ph ph-trash text-base" aria-hidden="true"></i>Delete</button>
+                            <button type="button" class="pc-dropdown-item pc-dropdown-item-danger" role="menuitem" data-pc-dismiss="dropdown"><i class="fa-regular fa-trash-can text-base" aria-hidden="true"></i>Delete</button>
                         </div>
                     </div>
                 </div>
@@ -295,8 +294,8 @@
                         <button type="button" data-pc-trigger="tabs" data-pc-value="month" class="pc-tab" role="tab" aria-selected="false" tabindex="-1">Month</button>
                     </div>
                     <div data-pc-tabs-group class="pc-tabs pc-tabs-soft" role="tablist" aria-label="Soft tabs">
-                        <button type="button" data-pc-trigger="tabs" data-pc-value="list" class="pc-tab pc-tab-active" role="tab" aria-selected="true"><i class="ph ph-list" aria-hidden="true"></i>List</button>
-                        <button type="button" data-pc-trigger="tabs" data-pc-value="grid" class="pc-tab" role="tab" aria-selected="false" tabindex="-1"><i class="ph ph-squares-four" aria-hidden="true"></i>Grid</button>
+                        <button type="button" data-pc-trigger="tabs" data-pc-value="list" class="pc-tab pc-tab-active" role="tab" aria-selected="true"><i class="fa-regular fa-list" aria-hidden="true"></i>List</button>
+                        <button type="button" data-pc-trigger="tabs" data-pc-value="grid" class="pc-tab" role="tab" aria-selected="false" tabindex="-1"><i class="fa-regular fa-grid-2" aria-hidden="true"></i>Grid</button>
                     </div>
                 </div>
 
@@ -333,9 +332,9 @@
                         <td><span class="pc-badge pc-badge-{{ $tone }}">{{ $status }}</span></td>
                         <td class="pc-num">{{ $amount }}</td>
                         <td class="text-end whitespace-nowrap">
-                            <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm" aria-label="Edit {{ $number }}" data-pc-tooltip="Edit" onclick="underDevelopment(event)"><i class="ph ph-pencil-simple text-base" aria-hidden="true"></i></button>
+                            <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm" aria-label="Edit {{ $number }}" data-pc-tooltip="Edit" onclick="underDevelopment(event)"><i class="fa-regular fa-pen text-base" aria-hidden="true"></i></button>
                             <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm text-pc-danger-strong" aria-label="Delete {{ $number }}" data-pc-tooltip="Delete"
-                                data-pc-confirm="Delete {{ $number }}?" data-pc-confirm-text="This can't be undone." data-pc-confirm-icon="danger" data-pc-confirm-button="Delete"><i class="ph ph-trash text-base" aria-hidden="true"></i></button>
+                                data-pc-confirm="Delete {{ $number }}?" data-pc-confirm-text="This can't be undone." data-pc-confirm-icon="danger" data-pc-confirm-button="Delete"><i class="fa-regular fa-trash-can text-base" aria-hidden="true"></i></button>
                         </td>
                     </tr>
                 @endforeach
@@ -396,9 +395,9 @@
     </x-dialog.offcanvas>
 
     @push('body')
-        <script src="{{ asset('assets/js/pc-tabs.js') }}" defer></script>
-        <script src="{{ asset('assets/js/pc-toggle.js') }}" defer></script>
-        <script src="{{ asset('assets/js/pc-popover.js') }}" defer></script>
+        <script src="@asset('assets/js/pc-tabs.js')" defer></script>
+        <script src="@asset('assets/js/pc-toggle.js')" defer></script>
+        <script src="@asset('assets/js/pc-popover.js')" defer></script>
         <script>
             function demoLoading(button) {
                 buttonState(button, "loading");

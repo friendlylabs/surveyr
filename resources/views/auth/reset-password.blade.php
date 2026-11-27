@@ -2,7 +2,7 @@
     @if ($expired)
         <section id="expired" class="pc-auth-card items-center text-center" aria-labelledby="expiredTitle">
             <span class="pc-auth-badge bg-pc-warning-bg text-pc-warning-text">
-                <i class="ph ph-clock text-[22px]" aria-hidden="true"></i>
+                <i class="fa-regular fa-clock text-[22px]" aria-hidden="true"></i>
             </span>
             <div>
                 <h1 id="expiredTitle" class="pc-auth-title">{{ __('This link has expired') }}</h1>

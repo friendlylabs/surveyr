@@ -18,6 +18,8 @@
  * Variants: pc-offcanvas-start (slides in from the left), pc-offcanvas-lg (wider panel).
  * Trigger: <button data-pc-trigger="offcanvas" data-pc-target="#detailDrawer">Open</button>
  * Expanded state lives on the root as data-pc-expanded="true" and resets each time the panel closes.
+ * Closing plays the slide-in backwards (data-pc-closing while it runs) before the panel is hidden; with reduced motion
+ * it hides at once.
  * JS API: pcOffcanvas.open('detailDrawer') / close('detailDrawer') / toggle('detailDrawer') / expand(id, on?) / isOpen(id)
  * Events: `pc:open` / `pc:close` on the root element.
  */
@@ -28,14 +30,31 @@
     return document.getElementById(id);
   }
 
+  /** How long the closing slide runs (matches --animate-pc-slide-out). */
+  const CLOSE_MS = 180;
+  const closing = new Map();
+
   function isOpen(id) {
     const el = getEl(id);
-    return !!el && el.getAttribute("data-pc-open") === "true";
+    return !!el && el.getAttribute("data-pc-open") === "true" && !el.hasAttribute("data-pc-closing");
+  }
+
+  /** Hides the panel for good (after its closing slide). */
+  function hide(id) {
+    const el = getEl(id);
+    clearTimeout(closing.get(id));
+    closing.delete(id);
+    if (!el) return;
+    el.removeAttribute("data-pc-closing");
+    el.setAttribute("data-pc-open", "false");
+    expand(id, false);
   }
 
   function open(id) {
     const el = getEl(id);
     if (!el || isOpen(id)) return;
+    // reopened while still sliding out: stop the slide and stay open
+    if (el.hasAttribute("data-pc-closing")) hide(id);
     const lastFocused = document.activeElement;
     el.setAttribute("data-pc-open", "true");
     el.setAttribute("aria-hidden", "false");
@@ -51,9 +70,13 @@
   function close(id) {
     const el = getEl(id);
     if (!el || !isOpen(id)) return;
-    el.setAttribute("data-pc-open", "false");
     el.setAttribute("aria-hidden", "true");
-    expand(id, false);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      hide(id);
+    } else {
+      el.setAttribute("data-pc-closing", "");
+      closing.set(id, setTimeout(() => hide(id), CLOSE_MS));
+    }
     pc.lockScroll(false);
     const reg = registry.get(id);
     if (reg) {

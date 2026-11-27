@@ -4,6 +4,8 @@
  * (html.pc-overlay-scroll, see app.css) and one floating thumb per axis is drawn over the area under
  * the pointer instead: it takes no space, fades in on hover, and can be dragged or its track clicked.
  * The page's own scrollbar stays native. Touch devices keep the (already overlay) native bars.
+ * data-pc-scrollbar="y" on an area draws only its vertical thumb: it still scrolls sideways (wheel, trackpad,
+ * shift+wheel) with no horizontal thumb, as list tables do (x-table).
  * Put this in <head> to drop the gutters before first paint:
  *   <script>matchMedia("(hover: hover) and (pointer: fine)").matches&&document.documentElement.classList.add("pc-overlay-scroll")</script>
  */
@@ -40,7 +42,7 @@
     const found = { y: null, x: null };
     for (let el = node; el && el !== document.body && el !== root; el = el.parentElement) {
       if (!found.y && overflows(el, "y")) found.y = el;
-      if (!found.x && overflows(el, "x")) found.x = el;
+      if (!found.x && el.dataset.pcScrollbar !== "y" && overflows(el, "x")) found.x = el;
       if (found.y && found.x) break;
     }
     return found;

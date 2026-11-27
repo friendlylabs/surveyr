@@ -15,11 +15,11 @@
         <div class="pc-offcanvas-header">
             <div class="pc-offcanvas-tools">
                 <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm pc-offcanvas-expand max-sm:hidden" data-pc-offcanvas-expand aria-pressed="false" aria-label="{{ __('Expand panel') }}">
-                    <i class="ph ph-arrows-out-simple pc-offcanvas-expand-icon text-base" aria-hidden="true"></i>
-                    <i class="ph ph-arrows-in-simple pc-offcanvas-shrink-icon text-base" aria-hidden="true"></i>
+                    <i class="fa-regular fa-up-right-and-down-left-from-center pc-offcanvas-expand-icon text-base" aria-hidden="true"></i>
+                    <i class="fa-regular fa-down-left-and-up-right-to-center pc-offcanvas-shrink-icon text-base" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="pc-btn pc-btn-ghost pc-btn-icon pc-btn-sm" data-pc-dismiss="offcanvas" aria-label="{{ __('Close') }}">
-                    <i class="ph ph-x text-base" aria-hidden="true"></i>
+                    <i class="fa-regular fa-xmark text-base" aria-hidden="true"></i>
                 </button>
             </div>
             <div id="{{ $id }}Title" class="pc-offcanvas-title" data-title>{{ $title }}</div>

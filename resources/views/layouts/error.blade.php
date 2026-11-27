@@ -37,8 +37,8 @@
             @hasSection('actions')
                 @yield('actions')
             @else
-                <a href="{{ url('/') }}" class="pc-btn pc-btn-primary pc-btn-pill"><i class="ph ph-house text-base" aria-hidden="true"></i>{{ __('Go home') }}</a>
-                <button type="button" class="pc-btn pc-btn-secondary pc-btn-pill" onclick="history.length > 1 ? history.back() : (location.href = '{{ url('/') }}')"><i class="ph ph-arrow-left text-base rtl:-scale-x-100" aria-hidden="true"></i>{{ __('Go back') }}</button>
+                <a href="{{ url('/') }}" class="pc-btn pc-btn-primary pc-btn-pill"><i class="fa-regular fa-house text-base" aria-hidden="true"></i>{{ __('Go home') }}</a>
+                <button type="button" class="pc-btn pc-btn-secondary pc-btn-pill" onclick="history.length > 1 ? history.back() : (location.href = '{{ url('/') }}')"><i class="fa-regular fa-arrow-left text-base rtl:-scale-x-100" aria-hidden="true"></i>{{ __('Go back') }}</button>
             @endif
         </div>
     </main>
