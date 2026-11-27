@@ -29,4 +29,5 @@ boost.json
 /storage/*.key
 /storage/pail
 
-/vendor
+/libs/
+/vendor/
