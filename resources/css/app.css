@@ -2777,7 +2777,7 @@
   .pc-viz > :is(.pc-viz-scope, .pc-empty) {
     column-span: all;
   }
-  /* Dealt into columns (pages/response-visualize.js): equal-width columns side by side, all as tall as the tallest;
+  /* Dealt into columns (resources/js/visualize.js): equal-width columns side by side, all as tall as the tallest;
      in an evened column (pc-viz-column-even) the cards share the spare room, their bodies pushed to the bottom so the
      charts line up along it. */
   .pc-viz.pc-viz-packed {
@@ -3015,7 +3015,7 @@
     padding: 0 0 4mm;
   }
 
-  /* Visualize: rows of two cards (pages/response-visualize.js lays them out before printing), each row a plain block
+  /* Visualize: rows of two cards (resources/js/visualize.js lays them out before printing), each row a plain block
      kept on one page, as grids and columns break pages unreliably; without the script, one card per row. A tall table
      may split, its head repeated on the next page. */
   .pc-viz {

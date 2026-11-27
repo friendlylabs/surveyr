@@ -1,14 +1,14 @@
 {{--
     Visualize (ResponsesVisualizeController@index): tabs of charts the form's editors build, along the bottom like a
     workbook's sheets; the open tab's charts summarise the responses the responses table lists (the same view, filters,
-    search and archived state). A form starts with no tabs. The server counts; pages/response-visualize.js draws the
+    search and archived state). A form starts with no tabs. The server counts; resources/js/visualize.js draws the
     charts through the analytics engine (libs/surveyr_analytics) and ApexCharts. Each card keeps a data table (shown
     with the table visual, read by screen readers otherwise). Cards pack into columns (masonry), none wider than a
     printed page.
 --}}
 <x-layout-app :title="$form->title" :subtitle="__('Visualize').' · '.($activeView ? $activeView->name.' · ' : '').($archived ? trans_choice(':count archived response|:count archived responses', $total) : trans_choice(':count response|:count responses', $total))">
     @push('head')
-        @vite('resources/js/analytics.js')
+        @vite('resources/js/visualize.js')
     @endpush
 
     <x-slot:header>
@@ -71,7 +71,7 @@
         @endif
     @endif
 
-    {{-- read by pages/response-visualize.js; the hex flags keep a "</script>" in an answer from closing this tag --}}
+    {{-- read by resources/js/visualize.js; the hex flags keep a "</script>" in an answer from closing this tag --}}
     <script type="application/json" id="visualizeConfig">{!! json_encode([
         'summaries' => $summaries,
         'answersUrl' => route('forms.responses.visualize.answers', [$form, ...$carried]),
@@ -97,6 +97,5 @@
 
     @push('body')
         <script src="@asset('assets/js/pages/response-filters.js')" defer></script>
-        <script src="@asset('assets/js/pages/response-visualize.js')" defer></script>
     @endpush
 </x-layout-app>

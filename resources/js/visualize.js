@@ -1,6 +1,6 @@
 /**
- * Visualize (app/responses/visualize): draws the open tab's cards from #visualizeConfig through the analytics engine
- * (window.surveyrAnalytics, libs/surveyr_analytics) and x-chart (window.pcCharts). The engine keeps the visual each
+ * Visualize (app/responses/visualize), bundled with its engine (libs/surveyr_analytics) and the app's charts
+ * (charts.js, window.pcCharts): draws the open tab's cards from #visualizeConfig. The engine keeps the visual each
  * chart shows (a viewer's switch, not saved); this script follows it: the chart pane or the table pane and the pressed
  * visual button. In the add / edit chart forms, the visuals offered follow the question picked.
  * Other texts page through ResponsesVisualizeController@answers; a chart downloads as a PNG. Printing (the Print
@@ -14,13 +14,17 @@
  * A line across many points (more than WIDE_POINTS) is drawn wide: a row of its own with one column beside it (2:1
  * with three columns, 1:1 with two), the charts after it stacked in that column until they reach its height.
  */
-(function () {
+import "./charts.js";
+import { createAnalytics } from "../../libs/surveyr_analytics/src/index.js";
+
+/** Sets the page up; does nothing on a page without #visualizeConfig. */
+function visualize() {
   const configEl = document.getElementById("visualizeConfig");
-  if (!configEl || !window.surveyrAnalytics) return;
+  if (!configEl) return;
 
   const config = JSON.parse(configEl.textContent);
   const root = document.documentElement;
-  const analytics = window.surveyrAnalytics.createAnalytics({
+  const analytics = createAnalytics({
     summaries: config.summaries,
     strings: config.strings,
     locale: root.lang,
@@ -451,16 +455,18 @@
     }
   }
 
-  // after charts.js has set up (it draws on DOMContentLoaded too, skipping these manual charts)
-  // dealt first, so each chart is drawn at its column's width; evened once the charts and fonts have settled
-  const start = () => {
+  // dealt first, so each chart is drawn at its column's width, then evened (again once the fonts have settled)
+  const layout = () => {
     pack();
     cards.forEach((_card, name) => paint(name));
     even();
+  };
+  const start = () => {
+    layout();
     document.fonts?.ready.then(even);
   };
 
-  // a resize that changes how many columns fit re-deals them; otherwise only the heights move
+  // a resize that changes how many columns fit re-deals and redraws them; otherwise only the heights move
   let resizeTimer;
   let lastWidth = board?.clientWidth;
   window.addEventListener("resize", () => {
@@ -468,10 +474,12 @@
     resizeTimer = setTimeout(() => {
       if (!board || board.clientWidth === lastWidth) return;
       const fits = (width) => Math.max(1, Math.min(3, cards.size, Math.floor((width + GAP) / (COLUMN_MIN + GAP))));
-      fits(board.clientWidth) === fits(lastWidth) ? even() : pack();
+      fits(board.clientWidth) === fits(lastWidth) ? even() : layout();
       lastWidth = board.clientWidth;
     }, 150);
   });
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
   else start();
-})();
+}
+
+visualize();

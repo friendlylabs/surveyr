@@ -2,7 +2,7 @@
     Loads one SurveyJS bundle (resources/js/surveyjs/{entry}.js) with the licence key from config/surveyr.php, which
     the bundle registers before rendering. Put it in the page's head stack; page scripts then use window.surveyjs.
       @push('head') <x-surveyjs entry="creator" /> @endpush
-    entry: form (respondent view) | creator (form builder). Response charts are in-house (resources/js/analytics.js).
+    entry: form (respondent view) | creator (form builder). Response charts are in-house (resources/js/visualize.js).
 --}}
 @props(['entry' => 'form'])
 

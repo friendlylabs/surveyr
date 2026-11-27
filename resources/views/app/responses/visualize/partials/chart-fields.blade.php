@@ -6,7 +6,7 @@
       grouped:  the question whose answers group the responses (choices, ratings, yes / no or short text such as a
                 school's name), the title and visual, then either number questions worked out per group (each with sum,
                 average, count, smallest or largest) or a choice question split into its answers. Every group shows.
-    The other kind's fields sit in a disabled fieldset, so they aren't posted. pages/response-visualize.js runs the
+    The other kind's fields sit in a disabled fieldset, so they aren't posted. resources/js/visualize.js runs the
     chips, the number rows and the visual lists.
 --}}
 @php($aggregates = ['sum' => __('Total'), 'avg' => __('Average'), 'count' => __('Count'), 'min' => __('Smallest'), 'max' => __('Largest')])

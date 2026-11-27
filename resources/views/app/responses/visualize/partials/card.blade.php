@@ -2,7 +2,7 @@
     One chart's card: its title and how many answered, the visual switch (icon buttons; only those its kind allows, the
     chart's own first; switching isn't saved), a PNG download, and for editors a menu to edit or remove the chart;
     then the kind's body. $summary comes from App\Support\Analytics, named by the chart's hash.
-    Panes: data-viz-pane="chart" holds the chart (drawn by pages/response-visualize.js), data-viz-pane="table" its
+    Panes: data-viz-pane="chart" holds the chart (drawn by resources/js/visualize.js), data-viz-pane="table" its
     data, shown with the table or heat visual and kept for screen readers otherwise.
 --}}
 @php

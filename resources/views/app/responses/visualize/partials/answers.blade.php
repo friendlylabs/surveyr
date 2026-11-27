@@ -1,6 +1,6 @@
 {{--
     A page of typed answers: each one's text, then the response it came in (opens it) and when. The pager asks
-    ResponsesVisualizeController@answers for the next page (pages/response-visualize.js builds the same rows).
+    ResponsesVisualizeController@answers for the next page (resources/js/visualize.js builds the same rows).
     $page = {items, page, lastPage, total}; $other: the Other texts of a choice question.
 --}}
 <div class="pc-viz-answers-wrap" data-viz-answers="{{ $name }}" data-viz-other="{{ $other ? 1 : 0 }}" data-viz-page="{{ $page['page'] }}" data-viz-last="{{ $page['lastPage'] }}" data-viz-total="{{ $page['total'] }}">

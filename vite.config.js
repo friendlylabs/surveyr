@@ -11,8 +11,8 @@ export default defineConfig({
                 'resources/js/app.js',
                 // ApexCharts, on pages with a chart (<x-chart>)
                 'resources/js/charts.js',
-                // the response visualizer's engine (libs/surveyr_analytics)
-                'resources/js/analytics.js',
+                // Visualize, with its engine (libs/surveyr_analytics) and charts.js
+                'resources/js/visualize.js',
                 // SurveyJS bundles, one per page type (<x-surveyjs entry="...">)
                 'resources/js/surveyjs/form.js',
                 'resources/js/surveyjs/creator.js',
