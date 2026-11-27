@@ -2,6 +2,7 @@
 
 namespace Tests\Concerns;
 
+use App\Providers\AppServiceProvider;
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Support\Facades\Route;
 
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Route;
  * ConfiguresRegistration
  *
  * Sets config/auth.php `registration` for a test, from a fixed baseline (open sign-up, any domain) rather than
- * whatever the app is configured with, then registers the routes again: they're added at boot from that config.
+ * whatever the app is configured with, then registers the routes again (web.php and AppServiceProvider::routesRegistrar): they're added at boot from that config.
  */
 trait ConfiguresRegistration
 {
@@ -25,6 +26,7 @@ trait ConfiguresRegistration
         $router = $this->app['router'];
         $router->setRoutes(new RouteCollection);
         Route::middleware('web')->group(base_path('routes/web.php'));
+        $this->app->getProvider(AppServiceProvider::class)->routesRegistrar();
         $router->getRoutes()->refreshNameLookups();
     }
 }

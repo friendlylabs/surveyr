@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * App routes: everything a signed-in workspace member uses. Prefixed /app, with the member middleware
+ * (AppServiceProvider::routesRegistrar).
+ */
+
 use App\Http\Controllers\App\ComponentsController;
 use App\Http\Controllers\App\DashboardController;
 use App\Http\Controllers\App\ProfileController;

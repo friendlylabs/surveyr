@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Notifications\LoginLink;
 use App\Support\Registration;
@@ -308,7 +309,8 @@ class AuthController extends Controller
         $request->validate(['email' => ['required', 'string', 'email']]);
         $email = Str::lower($request->input('email'));
 
-        if ($user = User::where('email', $email)->first()) {
+        // a disabled account gets no link; the page reads the same either way
+        if (($user = User::where('email', $email)->first()) && ! $user->isDisabled()) {
             $token = Str::random(64);
             Cache::put('login-link:'.hash('sha256', $token), $user->id, now()->addMinutes(self::LOGIN_LINK_MINUTES));
 
