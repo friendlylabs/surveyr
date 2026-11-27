@@ -8,14 +8,13 @@ return [
     |--------------------------------------------------------------------------
     |
     | Every form, space, report and zone belongs to a workspace (App\Support\Workspaces).
-    | Self-hosted runs with one workspace that every account joins; turn `multiple` on
-    | (SaaS) and each sign-up gets a workspace of its own.
+    | By default there is one workspace that every account joins; turn `multiple`
+    | on and each sign-up gets a workspace of its own.
     |
     */
 
     'workspaces' => [
         'multiple' => (bool) env('SURVEYR_MULTIPLE_WORKSPACES', false),
-        // the single workspace's name, while `multiple` is off
         'default_name' => env('SURVEYR_WORKSPACE_NAME', env('APP_NAME', 'Surveyr')),
     ],
 
@@ -47,6 +46,39 @@ return [
 
     'avatars' => [
         'url' => env('SURVEYR_AVATAR_URL', 'https://api.dicebear.com/7.x/lorelei/svg?seed=:seed'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Uploads
+    |--------------------------------------------------------------------------
+    |
+    | Where files respondents upload are kept (App\Support\FileStorage): local
+    | (storage/app/private/uploads), s3 (Amazon S3, or any S3-compatible store
+    | through `endpoint`) or r2 (Cloudflare R2). These are the defaults; an
+    | admin can switch storage and enter its details under Admin › Settings,
+    | which wins over them. Files are never public: they're seen through
+    | short-lived signed links. max_kb is the largest file one upload takes.
+    |
+    */
+
+    'uploads' => [
+        'disk' => env('SURVEYR_UPLOADS_DISK', 'local'),
+        'max_kb' => (int) env('SURVEYR_UPLOADS_MAX_KB', 51200),
+        's3' => [
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+            'bucket' => env('AWS_BUCKET'),
+            'endpoint' => env('AWS_ENDPOINT'),
+            'path_style' => (bool) env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+        ],
+        'r2' => [
+            'account' => env('R2_ACCOUNT_ID'),
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'bucket' => env('R2_BUCKET'),
+        ],
     ],
 
     /*
