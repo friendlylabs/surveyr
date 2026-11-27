@@ -13,6 +13,7 @@ use App\Http\Controllers\App\FormOverviewController;
 use App\Http\Controllers\App\FormResponsesController;
 use App\Http\Controllers\App\FormsController;
 use App\Http\Controllers\App\FormSettingsController;
+use App\Http\Controllers\App\FormWebhooksController;
 use App\Http\Controllers\App\ProfileController;
 use App\Http\Controllers\App\SpacesController;
 use App\Http\Controllers\App\SubmissionViewsController;
@@ -24,6 +25,7 @@ Route::prefix('forms')->group(function () {
     FormsController::routes();
     FormBuilderController::routes();
     FormSettingsController::routes();
+    FormWebhooksController::routes();
     FormResponsesController::routes();
     SubmissionViewsController::routes();
     // last: /{form} would otherwise catch the paths above

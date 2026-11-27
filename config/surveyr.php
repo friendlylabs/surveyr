@@ -83,6 +83,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Webhooks
+    |--------------------------------------------------------------------------
+    |
+    | A form's webhook is told about each new response (App\Support\Webhooks).
+    | Requests only go to public addresses, so a webhook can't reach into this
+    | server's own network; turn `allow_private` on to send to localhost or a
+    | LAN address while developing.
+    |
+    */
+
+    'webhooks' => [
+        'allow_private' => (bool) env('SURVEYR_WEBHOOKS_ALLOW_PRIVATE', false),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Languages
     |--------------------------------------------------------------------------
     |
